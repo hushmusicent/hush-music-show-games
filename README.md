@@ -10,7 +10,7 @@ leaderboard. **Bronze/dark theme** (per your correction — not the hand hub's g
 
 | Game | What's inside |
 |---|---|
-| 🧠 Jeopardy | 4 full board sets (6 categories × 5 clues = 120 clues), Daily Double, Final Jeopardy, 2 bot opponents |
+| 🧠 Jeopardy | 36 full board sets (6 categories × 5 clues = 1,080 clues + 36 Final Jeopardy), Daily Double, 2 bot opponents |
 | 🎡 Wheel of Fortune | 48 puzzles, 24-segment wheel (Bankrupt / Lose a Turn), buy vowels, solve |
 | 💰 Who Wants to Be a Millionaire | 60 questions across 3 tiers, 15-rung money ladder, 50:50 / Phone a Friend / Ask the Audience, safe havens |
 | 🏷️ The Price Is Right | Contestant's Row one-bid, Plinko, Showcase Showdown wheel, Showcase bid |
