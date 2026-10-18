@@ -1,0 +1,418 @@
+:root {
+  --bg: #0d1420;
+  --bg2: #131c2e;
+  --card: #1a2540;
+  --card2: #223052;
+  --gold: #cf8f3f;
+  --gold2: #eab676;
+  --green: #2ecc71;
+  --red: #e74c3c;
+  --blue: #3498db;
+  --text: #f2f5fa;
+  --muted: #8b98b8;
+  --line: #2c3a5e;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: linear-gradient(180deg, #182238, #101828);
+  border-bottom: 2px solid var(--gold);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+header .logo {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--gold);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.5px;
+}
+
+.pill {
+  background: var(--card2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.pill.gold {
+  color: var(--gold2);
+  border-color: var(--gold);
+}
+
+.iconbtn {
+  background: var(--card2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 12px;
+  font-size: 18px;
+  padding: 6px 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.iconbtn.off {
+  opacity: 0.45;
+}
+
+main {
+  padding: 12px 12px 90px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+nav.bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #101828;
+  border-top: 1px solid var(--line);
+  display: flex;
+  z-index: 50;
+}
+
+nav.bottom button {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 11px;
+  padding: 10px 4px 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+
+nav.bottom button .e {
+  font-size: 22px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+nav.bottom button.active {
+  color: var(--gold);
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  background: linear-gradient(180deg, var(--gold), #a66a24);
+  color: #231703;
+  border: none;
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  margin: 8px 0;
+  text-align: center;
+  transition: opacity 0.15s, transform 0.05s;
+}
+
+.btn:active {
+  transform: scale(0.99);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn.secondary {
+  background: var(--card2);
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+
+.btn.small {
+  padding: 8px 10px;
+  font-size: 14px;
+  width: auto;
+  display: inline-block;
+  margin: 4px;
+}
+
+.btn.danger {
+  background: var(--red);
+  color: #fff;
+}
+
+input, select {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 16px;
+  margin: 6px 0;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: var(--gold);
+}
+
+label {
+  font-size: 13px;
+  color: var(--muted);
+  display: block;
+  margin-top: 8px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.gamecard {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.gamecard:hover {
+  border-color: var(--gold);
+}
+
+.gamecard:active {
+  transform: scale(0.98);
+}
+
+.gamecard .e {
+  font-size: 40px;
+}
+
+.gamecard .n {
+  font-weight: 700;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.gamecard .t {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+h2 {
+  color: var(--gold);
+  margin: 8px 0 12px;
+  font-size: 20px;
+}
+
+h3 {
+  margin: 10px 0 6px;
+  color: var(--gold2);
+  font-size: 16px;
+}
+
+.msg {
+  background: var(--bg2);
+  border-left: 3px solid var(--gold);
+  padding: 8px 10px;
+  border-radius: 0 10px 10px 0;
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+.msg .who {
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.err {
+  color: var(--red);
+  font-size: 14px;
+  margin: 6px 0;
+  font-weight: 600;
+}
+
+.ok {
+  color: var(--green);
+  font-size: 14px;
+  margin: 6px 0;
+  font-weight: 600;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.row .grow {
+  flex: 1;
+}
+
+table.lb {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+table.lb td, table.lb th {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+table.lb tr.me td {
+  color: var(--gold);
+  font-weight: 800;
+}
+
+.betrow {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+.betrow button {
+  background: var(--card2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.betrow button.sel {
+  border-color: var(--gold);
+  color: var(--gold2);
+  background: rgba(207, 143, 63, 0.15);
+}
+
+.chatbox {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px;
+  max-height: 180px;
+  overflow-y: auto;
+  margin: 8px 0;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+
+.modal .card {
+  max-width: 420px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.center {
+  text-align: center;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.big {
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.status {
+  font-size: 15px;
+  margin: 8px 0;
+  min-height: 22px;
+  font-weight: 600;
+}
+
+.turn-banner {
+  background: rgba(245, 185, 66, 0.15);
+  border: 1px solid var(--gold);
+  color: var(--gold2);
+  border-radius: 10px;
+  padding: 8px;
+  text-align: center;
+  font-weight: 700;
+  margin: 8px 0;
+}
+
+.voicebar {
+  background: #1d2b1d;
+  border: 1px solid var(--green);
+  border-radius: 12px;
+  padding: 8px;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.codechip {
+  display: inline-block;
+  background: var(--bg2);
+  border: 1px dashed var(--gold);
+  color: var(--gold2);
+  border-radius: 10px;
+  padding: 6px 14px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 4px;
+}
+
+.kbd {
+  font-size: 12px;
+  color: var(--muted);
+}

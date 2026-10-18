@@ -1,0 +1,8 @@
+{
+  "name": "Hush Music Show Games",
+  "description": "16 TV game shows mobile hub with vs-computer play, online PvP rooms, live voice talk, friends system, and Top 50 leaderboard.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
