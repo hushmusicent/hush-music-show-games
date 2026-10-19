@@ -7180,15 +7180,17 @@ const QuizPVP = {
 /* ================= VIEWS & ROUTER ================= */
 let cleanup=null;
 function setCleanup(fn){ if(cleanup){ try{cleanup();}catch(e){} } cleanup=fn; }
-function goHome(){ setCleanup(null); Net.leave(true); Voice.leave(); show('home'); }
-function confirmQuitGame(){
+let inGame=false;
+function goHome(){ inGame=false; setCleanup(null); Net.leave(true); Voice.leave(); show('home'); }
+/* ask "are you sure?" before leaving a game — back button, nav tabs, etc. */
+function confirmQuitGame(onYes){
   Sound.click();
   const r=$('#modalRoot');
   r.innerHTML='<div class="modal"><div class="card center"><div class="big">🚪 Quit this game?</div>'
-    +'<div class="muted" style="margin:8px 0">Your progress in this round will be lost.</div>'
+    +'<div class="muted" style="margin:8px 0">Are you sure you want to quit? Your progress will be lost.</div>'
     +'<div class="row" style="gap:8px"><button class="btn grow" id="qy">Yes, quit</button>'
     +'<button class="btn secondary grow" id="qn">Keep playing</button></div></div></div>';
-  r.querySelector('#qy').onclick=()=>{ r.innerHTML=''; goHome(); };
+  r.querySelector('#qy').onclick=()=>{ r.innerHTML=''; inGame=false; (onYes||goHome)(); };
   r.querySelector('#qn').onclick=()=>{ Sound.click(); r.innerHTML=''; };
   r.querySelector('.modal').onclick=(e)=>{ if(e.target.classList.contains('modal')) r.innerHTML=''; };
 }
@@ -7234,6 +7236,7 @@ function showHome(){
 
 /* ---------- GAME ---------- */
 function showGame(id){
+  inGame=true;
   const g=Games[id]||{}; const v=$('#view');
   v.innerHTML='<button class="btn small secondary" id="back">← All games</button><div id="stage"></div>';
   v.querySelector('#back').onclick=()=>confirmQuitGame();
@@ -7363,7 +7366,12 @@ function show(name){
   else if(name==='leaderboard') showBoard();
   else if(name==='profile') showProfile();
 }
-document.querySelectorAll('#bottomNav button').forEach(b=>b.onclick=()=>{ Sound.ensure(); if(!Auth.user){ showAuth(); return; } if(b.getAttribute('data-v')!=='home') setCleanup(null),Net.leave(true),Voice.leave(); show(b.getAttribute('data-v')); });
+document.querySelectorAll('#bottomNav button').forEach(b=>b.onclick=()=>{
+  Sound.ensure(); if(!Auth.user){ showAuth(); return; }
+  const v=b.getAttribute('data-v');
+  const go=()=>{ if(v!=='home'){ setCleanup(null); Net.leave(true); Voice.leave(); } inGame=false; show(v); };
+  if(inGame) confirmQuitGame(go); else go();
+});
 
 /* ---------- init ---------- */
 (async function(){
@@ -7376,7 +7384,7 @@ document.querySelectorAll('#bottomNav button').forEach(b=>b.onclick=()=>{ Sound.
       show('home');
     } else showAuth();
   });
-  window.addEventListener('beforeunload', ()=>Friends.setOnline(false));
+  window.addEventListener('beforeunload', (e)=>{ Friends.setOnline(false); if(inGame) e.preventDefault(); });
 })();
 </script>
 </body>
