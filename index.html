@@ -5061,7 +5061,7 @@ render:function(c,ctx){
 });
 
 /* ================= FAMILY FEUD ================= */
-regGame('feud',{howto:"Guess the top survey answers - each is worth its points. 3 strikes and the other family can steal the round. Clear the board to bank the points. After 3 rounds comes Fast Money: 5 rapid questions, 15 seconds each - reach 120 points to win!",name:'Family Feud',icon:'👪',tags:'Game Show',pvp:true,seats:2,
+regGame('feud',{howto:"Two families of five face off. We surveyed 100 people - come up with the top answers!\n\nFACE-OFF: One player from each family faces off on each question. Buzz in first with the higher-ranked answer to win control. If it's the #1 answer your family plays automatically - otherwise your family chooses to PLAY or PASS.\n\nTHE ROUND: The playing family names answers one at a time. Every correct answer is revealed and its points go into the round bank. A miss is a STRIKE - three strikes and the other family gets one chance to STEAL. Name a remaining answer and they steal the whole bank; miss and the playing family keeps it.\n\nPOINTS: Round 1 is single points, Round 2 is DOUBLE, Round 3 and on is TRIPLE. First family to 300 points wins the game!\n\nFAST MONEY: Two players, 5 questions. Player 1 gets 20 seconds; Player 2 gets 25 seconds and can't repeat Player 1's answers. Score 200 points combined to win the grand prize!",name:'Family Feud',icon:'👪',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS2.feud.length>=8))return;
@@ -7042,7 +7042,7 @@ function showGame(id){
     Sound.click();
     var r=$('#modalRoot');
     var txt=(g&&g.howto)||'Have fun and good luck!';
-    r.innerHTML='<div class="modal"><div class="card"><h2>📖 How to play</h2><div style="line-height:1.65">'+esc(txt)+'</div><button class="btn" id="hx" style="margin-top:12px">Got it!</button></div></div>';
+    r.innerHTML='<div class="modal"><div class="card"><h2>📖 How to play</h2><div style="line-height:1.65;white-space:pre-line">'+esc(txt)+'</div><button class="btn" id="hx" style="margin-top:12px">Got it!</button></div></div>';
     r.querySelector('#hx').onclick=function(){Sound.click();r.innerHTML='';};
     r.querySelector('.modal').onclick=function(e){if(e.target.classList.contains('modal'))r.innerHTML='';};
   };
