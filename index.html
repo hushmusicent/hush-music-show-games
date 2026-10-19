@@ -4626,41 +4626,146 @@ render:function(c,ctx){
       });
     }
     function showdown(){
-      var bot=bots[0],spins=[];
-      c.innerHTML='<h2>🎡 Showcase Showdown</h2><div class="card"><div class="muted">Spin twice (0–100 each). Closest total to 100 without going over wins $1,000!</div><div class="status" id="st"></div><button class="btn" id="sp">Spin</button></div>';
-      c.querySelector('#sp').onclick=function(){
+      var bot=bots[0],vals=[],i;
+      for(i=1;i<=20;i++)vals.push(i*5);
+      var ySpins=[],bSpins=[],spinning=false;
+      c.innerHTML='<h2 style="text-align:center;color:#eab676;margin:6px 0">\uD83C\uDFA1 SHOWCASE SHOWDOWN</h2>'
+        +'<div style="max-width:380px;margin:0 auto;text-align:center">'
+        +'<canvas id="sw" width="360" height="360" style="width:100%;max-width:360px"></canvas>'
+        +'<div class="status" id="st">Spin twice &mdash; closest to 100 without going over wins $1,000!</div>'
+        +'<button class="btn" id="sp">SPIN</button></div>';
+      var cv=c.querySelector('#sw'),g=cv.getContext('2d'),rot=-Math.PI/2,N=20,arc=Math.PI*2/N;
+      function paint(){
+        if(!c.isConnected)return;
+        var cx=180,cy=180,R=168,x;
+        g.clearRect(0,0,360,360);
+        for(x=0;x<N;x++){
+          var a0=rot+x*arc,a1=a0+arc;
+          g.beginPath();g.moveTo(cx,cy);g.arc(cx,cy,R,a0,a1);g.closePath();
+          g.fillStyle=x%2?'#a66a24':'#7a1f1f';g.fill();
+          g.lineWidth=2;g.strokeStyle='#0d1420';g.stroke();
+          g.save();g.translate(cx,cy);g.rotate(a0+arc/2);
+          g.fillStyle='#fff';g.font='bold 15px sans-serif';g.textAlign='right';g.textBaseline='middle';
+          g.fillText(vals[x],R-10,0);g.restore();
+        }
+        g.beginPath();g.arc(cx,cy,26,0,Math.PI*2);g.fillStyle='#0d1420';g.fill();
+        g.lineWidth=3;g.strokeStyle='#cf8f3f';g.stroke();
+        g.fillStyle='#eab676';g.font='bold 16px sans-serif';g.textAlign='center';g.textBaseline='middle';
+        g.fillText('$',cx,cy+1);
+        g.beginPath();g.moveTo(cx-12,2);g.lineTo(cx+12,2);g.lineTo(cx,30);g.closePath();
+        g.fillStyle='#eab676';g.fill();
+      }
+      paint();
+      function spinFor(dur,cb){
+        var res=vals[Math.floor(Math.random()*N)],idx=vals.indexOf(res);
+        var target=-Math.PI/2-(idx*arc+arc/2);
+        var TAU=Math.PI*2;
+        var cur=((rot%TAU)+TAU)%TAU,tgt=((target%TAU)+TAU)%TAU;
+        var delta=(tgt-cur+TAU)%TAU+TAU*5;
+        var r0=rot,r1=rot+delta,t0=null,lastW=-1;
+        spinning=true;var btn=c.querySelector('#sp');if(btn)btn.disabled=true;
         Sound.click();
-        spins.push(Math.floor(Math.random()*101));
-        var el=c.querySelector('#st'),pt=spins[0]+(spins[1]||0);
-        el.innerHTML='Your spins: '+spins.join(' + ')+(spins.length<2?'':' = <b>'+pt+'</b>');
-        Sound.beep(400+pt*4,.1);
-        if(spins.length>=2){
-          var b1=Math.floor(Math.random()*101),b2=Math.floor(Math.random()*101),bt=b1+b2;
-          var pw=pt<=100?pt:-1,bw=bt<=100?bt:-1;
-          el.innerHTML+='<br>'+esc(bot)+' spins: '+b1+' + '+b2+' = <b>'+bt+'</b>';
-          if(pw>=bw){winnings+=1000;Sound.win();el.innerHTML+='<div class="ok">🎉 You win the showdown! +$1,000</div>';}
-          else{Sound.lose();el.innerHTML+='<div class="err">'+esc(bot)+' wins the showdown.</div>';}
-          el.innerHTML+='<button class="btn" id="nx">The Showcase →</button>';
-          c.querySelector('#nx').onclick=function(){Sound.click();showcase();};
+        function frame(t){
+          if(!c.isConnected){spinning=false;return;}
+          if(!t0)t0=t;
+          var pr=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-pr,3);
+          rot=r0+(r1-r0)*e;paint();
+          var w=Math.floor(((rot+Math.PI/2)%TAU+TAU)%TAU/arc);
+          if(w!==lastW){lastW=w;Sound.beep(700,.04);}
+          if(pr<1)requestAnimationFrame(frame);
+          else{spinning=false;if(btn)btn.disabled=false;cb(res);}
+        }
+        requestAnimationFrame(frame);
+      }
+      c.querySelector('#sp').onclick=function(){
+        if(spinning)return;
+        var el=c.querySelector('#st'),isBot=ySpins.length>=2&&bSpins.length<2;
+        if(ySpins.length<2){
+          spinFor(3200,function(v){
+            if(!c.isConnected)return;
+            ySpins.push(v);
+            var pt=ySpins[0]+(ySpins[1]||0);
+            el.innerHTML='You: '+ySpins.join(' + ')+(ySpins.length<2?'':' = <b>'+pt+'</b>'+(pt>100?' \u2014 BUST!':''));
+            if(ySpins.length>=2){el.innerHTML+='<br>'+esc(bot)+' spins next\u2026';botTurn();}
+          });
         }
       };
+      function botTurn(){
+        var el=c.querySelector('#st');
+        spinFor(1800,function(v){
+          if(!c.isConnected)return;
+          bSpins.push(v);
+          var bt=bSpins[0]+(bSpins[1]||0);
+          el.innerHTML+='<br>'+esc(bot)+': '+bSpins.join(' + ')+(bSpins.length<2?'':' = <b>'+bt+'</b>'+(bt>100?' \u2014 BUST!':''));
+          if(bSpins.length<2){botTurn();return;}
+          var pt=ySpins[0]+ySpins[1];
+          var pw=pt<=100?pt:-1,bw=bt<=100?bt:-1;
+          if(pw>=bw&&pw>=0){winnings+=1000;Sound.win();el.innerHTML+='<div class="ok">\uD83C\uDF89 You win the showdown! +$1,000</div>';}
+          else{Sound.lose();el.innerHTML+='<div class="err">'+esc(bot)+' wins the showdown.</div>';}
+          el.innerHTML+='<button class="btn" id="nx">The Showcase \u2192</button>';
+          c.querySelector('#nx').onclick=function(){Sound.click();showcase();};
+        });
+      }
+    }
+    function prizeEmoji(n){
+      n=String(n).toLowerCase();
+      if(/car|sedan|suv|truck|jeep/.test(n))return '\uD83D\uDE97';
+      if(/tv|television/.test(n))return '\uD83D\uDCFA';
+      if(/milk/.test(n))return '\uD83E\uDD5B';
+      if(/egg/.test(n))return '\uD83E\uDD5A';
+      if(/bread/.test(n))return '\uD83C\uDF5E';
+      if(/cheese/.test(n))return '\uD83E\uDDC0';
+      if(/coffee/.test(n))return '\u2615';
+      if(/wine|champagne/.test(n))return '\uD83C\uDF77';
+      if(/phone|iphone/.test(n))return '\uD83D\uDCF1';
+      if(/laptop|computer/.test(n))return '\uD83D\uDCBB';
+      if(/watch/.test(n))return '\u231A';
+      if(/bike|bicycle/.test(n))return '\uD83D\uDEB2';
+      if(/grill/.test(n))return '\uD83C\uDF56';
+      if(/sofa|couch/.test(n))return '\uD83D\uDECB\uFE0F';
+      if(/bed|mattress/.test(n))return '\uD83D\uDECF\uFE0F';
+      if(/diamond|ring|jewel/.test(n))return '\uD83D\uDC8E';
+      if(/trip|vacation|cruise/.test(n))return '\uD83C\uDFD6\uFE0F';
+      if(/guitar/.test(n))return '\uD83C\uDFB8';
+      if(/camera/.test(n))return '\uD83D\uDCF7';
+      return '\uD83C\uDF81';
     }
     function showcase(){
-      var its=items.slice(1,4),total=its.reduce(function(a,x){return a+x.price;},0);
-      c.innerHTML='<h2>🌟 The Showcase</h2><div class="card">'+its.map(function(x){return '<div>🎁 '+esc(x.name)+'</div>';}).join('')+'<div class="muted">Bid the total value — closest without going over wins!</div><input id="b" type="number" placeholder="Showcase bid $"><button class="btn" id="go">Bid</button><div id="res"></div></div>';
-      c.querySelector('#go').onclick=function(){
-        var pb=Math.max(1,Math.round(+c.querySelector('#b').value||0));Sound.click();
-        var bb=Math.max(1,Math.round(total*(0.7+Math.random()*0.5)));
-        var pd=pb<=total?total-pb:Infinity,bd=bb<=total?total-bb:Infinity,youWin=pd<=bd;
-        var h='<div class="msg">Showcase value: <b>'+g1Money(total)+'</b><br>You: '+g1Money(pb)+'<br>'+esc(bots[0])+': '+g1Money(bb)+'</div>';
-        if(youWin){Sound.win();h+='<div class="ok">🏆 YOU WIN THE SHOWCASE! You bank '+g1Money(winnings+total)+'!</div>';}
-        else{Sound.lose();h+='<div class="err">😞 '+esc(bots[0])+' wins the showcase.</div>';}
-        c.querySelector('#res').innerHTML=h;
-        if(youWin)(async function(){await Wallet.recordWin('price');})();
-      };
+      var its=draw(3),total=its.reduce(function(a,x){return a+x.price;},0),opened=0;
+      c.innerHTML='<h2 style="text-align:center;color:#eab676;margin:6px 0">\uD83C\uDF1F THE SHOWCASE</h2>'
+        +'<div style="max-width:420px;margin:0 auto">'
+        +'<div style="background:linear-gradient(180deg,#8e1f1f,#5e1414);border:3px solid #cf8f3f;border-radius:12px;padding:12px;text-align:center">'
+        +'<div style="color:#eab676;font-weight:800;letter-spacing:2px;margin-bottom:8px">\u2728 SHOWCASE \u2728</div>'
+        +'<div class="row" style="gap:8px">'+its.map(function(x,i){
+          return '<div class="grow card" id="door'+i+'" style="text-align:center;padding:16px 4px;cursor:pointer;margin:0"><div style="font-size:36px">\uD83D\uDEAA</div><div class="muted" style="font-size:11px">Tap to reveal</div></div>';
+        }).join('')+'</div></div>'
+        +'<div id="bidui" style="margin-top:10px"></div></div>';
+      its.forEach(function(x,i){
+        c.querySelector('#door'+i).onclick=function(){
+          Sound.click();
+          var d=c.querySelector('#door'+i);
+          d.innerHTML='<div style="font-size:40px">'+prizeEmoji(x.name)+'</div><div style="font-weight:700">'+esc(x.name)+'</div>';
+          d.style.cursor='default';d.onclick=null;opened++;
+          if(opened>=3)bidUI();
+        };
+      });
+      function bidUI(){
+        c.querySelector('#bidui').innerHTML='<div class="card center"><div class="muted">Bid the total value &mdash; closest without going over wins!</div><input id="b" type="number" placeholder="Showcase bid $" style="margin:8px 0"><button class="btn" id="go">Bid</button><div id="res"></div></div>';
+        c.querySelector('#go').onclick=function(){
+          var pb=Math.max(1,Math.round(+c.querySelector('#b').value||0));Sound.click();
+          var bb=Math.max(1,Math.round(total*(0.7+Math.random()*0.5)));
+          var pd=pb<=total?total-pb:Infinity,bd=bb<=total?total-bb:Infinity,youWin=pd<=bd;
+          var h='<div class="msg">Showcase value: <b>'+g1Money(total)+'</b><br>You: '+g1Money(pb)+'<br>'+esc(bots[0])+': '+g1Money(bb)+'</div>';
+          if(youWin){Sound.win();h+='<div class="ok">\uD83C\uDF86 YOU WIN THE SHOWCASE! You bank '+g1Money(winnings+total)+'!</div>';}
+          else{Sound.lose();h+='<div class="err">\uD83D\uDE1E '+esc(bots[0])+' wins the showcase.</div>';}
+          c.querySelector('#res').innerHTML=h;
+          if(youWin)(async function(){await Wallet.recordWin('price');})();
+        };
+      }
     }
   }
-}});
+}
+});
 
 /* ================= FAMILY FEUD ================= */
 regGame('feud',{name:'Family Feud',icon:'👪',tags:'Game Show',pvp:true,seats:2,
