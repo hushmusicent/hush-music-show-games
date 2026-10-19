@@ -3542,6 +3542,1033 @@ render:function(c,ctx){
   }
 }});
 
+/* ============ PRICE IS RIGHT: pricing games (show-style panels) ============ */
+var PG=PG||{};
+
+/* ================= PLINKO ================= */
+PG.plinko=function(c,items,done){
+  var over=false;
+  function finish(v){if(over)return;over=true;done(v);}
+  var SLOTS=[100,500,1000,0,10000,0,1000,500,100];
+  var quiz=items.slice(0,4),qi=0,chips=1,total=0;
+  function wrongPrice(p){
+    var w;
+    if(p<=5){w=p+1+Math.floor(Math.random()*3);}
+    else{w=Math.round(p*(Math.random()<0.5?0.72:1.38)*100)/100;}
+    if(w<=0||Math.abs(w-p)<0.01)w=Math.round((p+1.5)*100)/100;
+    return w;
+  }
+  function askItem(){
+    if(!c.isConnected)return;
+    if(qi>=quiz.length){dropPhase();return;}
+    var it=quiz[qi],wp=wrongPrice(it.price);
+    var opts=Math.random()<0.5?[it.price,wp]:[wp,it.price];
+    c.innerHTML='<h2 style="text-align:center;color:#29a3e8;margin:6px 0">🔴 PLINKO</h2>'
+      +'<div style="max-width:420px;margin:0 auto;text-align:center">'
+      +'<div class="card"><div class="big" style="font-size:20px">'+esc(it.name)+'</div>'
+      +'<div class="muted" style="margin:6px 0">Pick the right price to win a chip! (Chips: '+chips+')</div>'
+      +'<div style="display:flex;gap:10px;justify-content:center">'
+      +'<button class="btn" id="p0" style="flex:1;min-height:56px;font-size:20px">'+g1Money(opts[0])+'</button>'
+      +'<button class="btn" id="p1" style="flex:1;min-height:56px;font-size:20px">'+g1Money(opts[1])+'</button>'
+      +'</div><div id="pr" style="margin-top:8px;min-height:24px"></div></div></div>';
+    c.querySelector('#p0').onclick=function(){pick(opts[0]);};
+    c.querySelector('#p1').onclick=function(){pick(opts[1]);};
+    function pick(v){
+      Sound.click();
+      var ok=Math.abs(v-it.price)<0.01;
+      if(ok){chips++;Sound.win();c.querySelector('#pr').innerHTML='<div class="ok" style="font-size:18px">🎉 Correct! +1 chip (now '+chips+')</div>';}
+      else{Sound.lose();c.querySelector('#pr').innerHTML='<div class="err" style="font-size:18px">Miss — it was '+g1Money(it.price)+'</div>';}
+      qi++;
+      setTimeout(function(){if(!c.isConnected)return;askItem();},1400);
+    }
+  }
+  function dropPhase(){
+    if(!c.isConnected)return;
+    c.innerHTML='<h2 style="text-align:center;color:#29a3e8;margin:6px 0">🔴 PLINKO</h2>'
+      +'<div style="max-width:420px;margin:0 auto;text-align:center">'
+      +'<canvas id="pb" width="360" height="540" style="width:100%;max-width:360px;border-radius:12px"></canvas>'
+      +'<div class="status" id="pst" style="margin:6px 0;font-size:18px">Chips: '+chips+' &nbsp;•&nbsp; Total: '+g1Money(total)+'</div>'
+      +'<button class="btn" id="drop" style="min-height:56px;font-size:20px;width:100%">⬇ Drop chip</button>'
+      +'</div>';
+    var cv=c.querySelector('#pb'),g=cv.getContext('2d');
+    var W=360,H=540,ROWS=12,startY=86,rowH=32;
+    function pegs(r){
+      var arr=[],even=r%2===0;
+      if(even){for(var i=0;i<11;i++)arr.push(30+i*30);}
+      else{for(var j=0;j<10;j++)arr.push(45+j*30);}
+      return arr;
+    }
+    function drawBoard(chx,chy,hi){
+      g.clearRect(0,0,W,H);
+      g.fillStyle='#f7f0dc';g.fillRect(0,0,W,H);
+      // zigzag side stripes
+      var cols=['#e63946','#ffd60a','#4cc9f0'];
+      for(var s=0;s<22;s++){
+        var y0=48+s*22;
+        g.fillStyle=cols[s%3];
+        g.beginPath();g.moveTo(0,y0);g.lineTo(18,y0+11);g.lineTo(0,y0+22);g.closePath();g.fill();
+        g.beginPath();g.moveTo(W,y0);g.lineTo(W-18,y0+11);g.lineTo(W,y0+22);g.closePath();g.fill();
+      }
+      // title
+      g.fillStyle='#29a3e8';g.font='bold 34px sans-serif';g.textAlign='center';
+      g.fillText('PLINKO',W/2,38);
+      // pegs
+      for(var r=0;r<ROWS;r++){
+        var y=startY+r*rowH;
+        pegs(r).forEach(function(x){
+          g.beginPath();g.arc(x,y,4.5,0,Math.PI*2);
+          g.fillStyle='rgba(0,0,0,0.12)';g.fill();
+          g.beginPath();g.arc(x,y-1.5,4.5,0,Math.PI*2);
+          g.fillStyle='#ffffff';g.fill();
+          g.strokeStyle='#d8d2bd';g.lineWidth=1;g.stroke();
+        });
+      }
+      // slots
+      var sw=W/9;
+      for(var i=0;i<9;i++){
+        g.fillStyle=(i===hi)?'#ffd60a':(i%2===0?'#7a1f3d':'#3d9db8');
+        g.fillRect(i*sw+1,H-52,sw-2,48);
+        g.fillStyle='#fff';g.font='bold '+(SLOTS[i]>=10000?15:18)+'px sans-serif';
+        g.fillText(SLOTS[i]>=1000?(SLOTS[i]/1000)+'k':''+SLOTS[i],i*sw+sw/2,H-22);
+      }
+      // chip
+      if(chx!==null){
+        g.beginPath();g.arc(chx,chy,12,0,Math.PI*2);
+        g.fillStyle='#ef476f';g.fill();
+        g.lineWidth=3;g.strokeStyle='#b5179e';g.stroke();
+        g.fillStyle='#fff';g.font='bold 11px sans-serif';g.fillText('$',chx,chy+4);
+      }
+    }
+    drawBoard(null,null,-1);
+    var btn=c.querySelector('#drop');
+    btn.onclick=function(){
+      if(chips<=0)return;
+      Sound.click();btn.disabled=true;
+      chips--;
+      // precompute path
+      var pts=[],x=W/2,y=56;
+      pts.push([x,y]);
+      for(var r=0;r<ROWS;r++){
+        y=startY+r*rowH;
+        x+=(Math.random()<0.5?-1:1)*(10+Math.random()*12);
+        x=Math.max(24,Math.min(W-24,x));
+        pts.push([x,y]);
+      }
+      var slot=Math.max(0,Math.min(8,Math.floor(x/(W/9))));
+      pts.push([slot*(W/9)+(W/9)/2,H-64]);
+      var si=0;
+      (function step(){
+        if(!c.isConnected)return;
+        if(si<pts.length){
+          drawBoard(pts[si][0],pts[si][1],-1);
+          Sound.beep(420+si*38,0.05);
+          si++;
+          setTimeout(step,110);
+        }else{
+          var win=SLOTS[slot];
+          total+=win;
+          drawBoard(pts[pts.length-1][0],pts[pts.length-1][1],slot);
+          if(win>0)Sound.win();else Sound.lose();
+          var st=c.querySelector('#pst');
+          if(st)st.innerHTML='Chips: '+chips+' &nbsp;•&nbsp; Total: <b>'+g1Money(total)+'</b>'
+            +(win>0?' — landed <b>'+g1Money(win)+'</b>!':' — landed $0');
+          if(chips>0){
+            btn.disabled=false;
+          }else{
+            setTimeout(function(){
+              if(!c.isConnected)return;
+              c.innerHTML='<div style="max-width:420px;margin:0 auto;text-align:center"><div class="card center">'
+                +'<div class="big">🔴 Plinko total</div>'
+                +'<div class="status" style="font-size:26px"><b>'+g1Money(total)+'</b></div>'
+                +'</div></div>';
+              finish(total);
+            },1400);
+          }
+        }
+      })();
+    };
+  }
+  askItem();
+};
+
+/* ================= CLIFF HANGERS ================= */
+PG.cliff=function(c,items,done){
+  var over=false;
+  function finish(v){if(over)return;over=true;done(v);}
+  var quiz=items.slice(0,3),qi=0,steps=0;
+  var STEPS=25;
+  function stepPos(i){
+    return {left:(5+i*3.55),bottom:(6+i*2.85)};
+  }
+  function sceneHTML(){
+    var h='<div style="position:relative;height:290px;border-radius:12px;overflow:hidden;'
+      +'background:linear-gradient(#aee2ff 0%,#cdeffd 55%,#b8e6b8 100%);'
+      +'border:10px solid #9a9a9a;outline:4px solid #6b6b6b">';
+    // mountain
+    h+='<div style="position:absolute;right:-6%;bottom:6%;width:78%;height:88%;'
+      +'background:linear-gradient(135deg,#8e7cc3,#5b4b8a);'
+      +'clip-path:polygon(50% 0,100% 100%,0 100%)"></div>';
+    h+='<div style="position:absolute;right:24.5%;bottom:70.5%;width:17%;height:24%;background:#fff;'
+      +'clip-path:polygon(50% 0,100% 100%,0 100%)"></div>';
+    // clouds
+    h+='<div style="position:absolute;left:8%;top:10%;font-size:30px">☁️</div>';
+    h+='<div style="position:absolute;left:32%;top:4%;font-size:24px">☁️</div>';
+    // flowers + rocks
+    h+='<div style="position:absolute;left:12%;bottom:6%;font-size:22px">🌼 🌸 🌼</div>';
+    h+='<div style="position:absolute;right:8%;bottom:4%;font-size:22px">🪨</div>';
+    // path steps
+    for(var i=0;i<STEPS;i++){
+      var p=stepPos(i);
+      h+='<div class="chst" data-i="'+i+'" style="position:absolute;left:'+p.left+'%;bottom:'+p.bottom+'%;'
+        +'width:26px;height:12px;background:#ffd60a;border:1px solid #a07d00;border-radius:3px;'
+        +'transform:translate(-50%,50%) rotate(-38deg);font-size:8px;color:#5b4300;text-align:center;line-height:12px">'+(i+1)+'</div>';
+    }
+    // climber
+    h+='<div id="climb" style="position:absolute;font-size:30px;transform:translate(-50%,30%);transition:left .5s,bottom .5s">🧗</div>';
+    h+='</div>';
+    return h;
+  }
+  function placeClimber(){
+    var el=c.querySelector('#climb');
+    if(!el)return;
+    if(steps>STEPS){
+      el.style.left='96%';el.style.bottom='-4%';
+      el.innerHTML='💥';
+      return;
+    }
+    var p=stepPos(Math.min(steps,STEPS-1));
+    el.style.left=p.left+'%';el.style.bottom=p.bottom+'%';
+  }
+  function render(){
+    if(!c.isConnected)return;
+    var h='<h2 style="text-align:center;margin:6px 0"><span style="background:#8b5a2b;color:#ffe9c4;'
+      +'padding:4px 14px;border-radius:8px;letter-spacing:2px">CLIFF HANGERS</span></h2>'
+      +'<div style="max-width:420px;margin:0 auto">'+sceneHTML()
+      +'<div class="card" style="margin-top:8px"><div class="status" style="font-size:17px">Yodeler at step <b>'+steps+'</b> / '+STEPS+'</div><div id="cres"></div></div>'
+      +'</div>';
+    c.innerHTML=h;
+    placeClimber();
+    nextItem();
+  }
+  function nextItem(){
+    if(!c.isConnected)return;
+    if(qi>=quiz.length){
+      // survived!
+      Sound.win();
+      var r=c.querySelector('#cres');
+      if(r)r.innerHTML='<div class="ok" style="font-size:19px">🏆 He made it! You win <b>$5,000</b>!</div>';
+      setTimeout(function(){if(!c.isConnected)return;finish(5000);},1600);
+      return;
+    }
+    var it=quiz[qi];
+    var card=document.createElement('div');
+    card.className='card';card.style.marginTop='8px';
+    card.innerHTML='<div class="big" style="font-size:19px">🛒 '+esc(it.name)+'</div>'
+      +'<div class="muted" style="margin:6px 0">Guess the price! (Error in whole $ = steps climbed)</div>'
+      +'<div style="display:flex;gap:8px"><input id="cg" type="number" step="0.01" min="0" inputmode="decimal" placeholder="$" '
+      +'style="flex:1;min-height:52px;font-size:20px;border-radius:10px;border:2px solid var(--line);padding:0 12px;background:var(--card2);color:inherit">'
+      +'<button class="btn" id="cgo" style="min-height:52px;font-size:18px">Guess</button></div>';
+    c.querySelector('.card').appendChild(card);
+    var go=function(){
+      Sound.click();
+      var gv=parseFloat(card.querySelector('#cg').value);
+      if(isNaN(gv)||gv<0){return;}
+      var err=Math.round(Math.abs(gv-it.price));
+      steps+=err;
+      qi++;
+      card.innerHTML='<div>Your guess: <b>'+g1Money(gv)+'</b> — actual: <b>'+g1Money(it.price)+'</b></div>'
+        +'<div class="status">Off by <b>$'+err+'</b> → climber moves to step <b>'+Math.min(steps,STEPS)+'</b></div>';
+      placeClimber();
+      if(steps>STEPS){
+        Sound.lose();
+        setTimeout(function(){
+          if(!c.isConnected)return;
+          var r=c.querySelector('#cres');
+          if(r)r.innerHTML='<div class="err" style="font-size:19px">😱 He fell off the cliff! You win <b>$0</b></div>';
+          setTimeout(function(){if(!c.isConnected)return;finish(0);},1600);
+        },700);
+      }else{
+        if(err===0)Sound.win();else Sound.beep(300+err*20,0.15);
+        setTimeout(function(){if(!c.isConnected)return;nextItem();},1500);
+      }
+    };
+    card.querySelector('#cgo').onclick=go;
+  }
+  render();
+};
+
+/* ================= ANY NUMBER ================= */
+PG.anyNumber=function(c,items,done){
+  var over=false;
+  function finish(v){if(over)return;over=true;done(v);}
+  var PRIZES=['CONSOLE','TRIP','TV SET','WATCH'];
+  var pname=PRIZES[Math.floor(Math.random()*PRIZES.length)];
+  var car=20000+Math.floor(Math.random()*10000);        // 5 digits
+  var prz=1000+Math.floor(Math.random()*9000);          // 4 digits
+  var pig=100+Math.floor(Math.random()*900);            // cents -> d.cc
+  var rows=[
+    {label:'CAR',digits:String(car).split(''),rev:[false,false,false,false,false],val:25000,kind:'car'},
+    {label:pname,digits:String(prz).split(''),rev:[false,false,false,false],val:prz,kind:'prize'},
+    {label:'🐷',digits:[String(Math.floor(pig/100)),String(Math.floor((pig%100)/10)),String(pig%10)],rev:[false,false,false],val:pig/100,kind:'piggy',piggy:true}
+  ];
+  var used={};
+  function boardHTML(){
+    var h='<div style="max-width:430px;margin:0 auto;text-align:center">'
+      +'<div style="background:#5b2a86;border-radius:24px;padding:10px">'
+      +'<div style="border-radius:50%;background:radial-gradient(ellipse at 32% 28%,#ffe98a 0%,#eec53f 55%,#b8860b 100%);'
+      +'border:5px solid #7a5c00;padding:18px 14px">'
+      +'<div style="font-size:30px;font-weight:900;color:#111;letter-spacing:1px;margin-bottom:10px">any number</div>';
+    rows.forEach(function(r,ri){
+      h+='<div style="background:#e63946;border-radius:8px;margin:8px 0;padding:8px;display:flex;align-items:center;gap:8px">'
+        +'<div style="color:#fff;font-weight:900;font-size:'+(r.label.length>5?17:22)+'px;flex:1;text-align:center">'+esc(r.label)+'</div>'
+        +'<div style="display:flex;gap:4px;justify-content:center">';
+      r.digits.forEach(function(d,di){
+        var shown=r.rev[di];
+        if(r.piggy&&di===1)h+='<div style="color:#111;font-weight:900;font-size:20px;align-self:center">.</div>';
+        h+='<div id="an'+ri+'_'+di+'" style="width:34px;height:44px;background:#111;color:#fff;'
+          +'border:2px solid #555;border-radius:4px;font-size:26px;font-weight:700;line-height:42px;text-align:center;font-family:monospace">'
+          +(shown?d:'')+'</div>';
+      });
+      h+='</div></div>';
+    });
+    h+='</div></div>'
+      +'<div class="muted" id="anmsg" style="margin:8px 0;color:#fff;font-size:16px">Pick a digit — first prize fully revealed wins it!</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:4px">';
+    for(var d=0;d<10;d++){
+      h+='<button class="btn" data-d="'+d+'" style="min-height:56px;font-size:22px'+(used[d]?';opacity:.35':'')+'"'+(used[d]?' disabled':'')+'>'+d+'</button>';
+    }
+    h+='</div></div>';
+    return h;
+  }
+  function render(){
+    if(!c.isConnected)return;
+    c.innerHTML='<h2 style="text-align:center;color:#eec53f;margin:6px 0">🔢 Any Number</h2>'+boardHTML();
+    var btns=c.querySelectorAll('[data-d]');
+    for(var i=0;i<btns.length;i++){
+      (function(b){
+        b.onclick=function(){pickDigit(b.getAttribute('data-d'));};
+      })(btns[i]);
+    }
+  }
+  function pickDigit(ds){
+    if(used[ds]||over)return;
+    used[ds]=true;Sound.click();
+    var hit=false;
+    rows.forEach(function(r){
+      r.digits.forEach(function(d,di){
+        if(d===ds&&!r.rev[di]){r.rev[di]=true;hit=true;}
+      });
+    });
+    if(hit)Sound.beep(700,0.12);else Sound.beep(220,0.15);
+    render();
+    // check wins: car, then prize, then piggy
+    for(var i=0;i<rows.length;i++){
+      var r=rows[i];
+      if(r.rev.every(function(x){return x;})){
+        var msg,amt;
+        if(r.kind==='car'){msg='🚗 YOU WIN THE CAR!';amt=r.val;}
+        else if(r.kind==='prize'){msg='🎉 YOU WIN THE '+esc(r.label)+' ('+g1Money(r.val)+')!';amt=r.val;}
+        else{msg='🐷 PIGGY BANK! You win '+g1Money(r.val)+'!';amt=r.val;}
+        Sound.win();
+        setTimeout(function(){
+          if(!c.isConnected)return;
+          c.innerHTML='<div style="max-width:430px;margin:0 auto;text-align:center"><div class="card center">'
+            +'<div class="big">'+msg+'</div>'
+            +'<div class="status" style="font-size:24px"><b>'+g1Money(amt)+'</b></div></div></div>';
+          finish(amt);
+        },900);
+        return;
+      }
+    }
+    var m=c.querySelector('#anmsg');
+    if(m)m.textContent=hit?('Digit '+ds+' revealed!') :('No '+ds+' anywhere — keep going!');
+  }
+  render();
+};
+
+var PG=PG||{};
+
+/* Shared helpers for the pricing games */
+PG._util={
+  pick:function(items,n){var a=items.slice(),o=[];while(o.length<n&&a.length)o.push(a.splice(Math.floor(Math.random()*a.length),1)[0]);return o;},
+  shuffle:function(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;},
+  /* two price options: the real price + a plausible decoy, shuffled */
+  priceOpts:function(it){
+    var dec=Math.max(0.5,Math.round(it.price*(Math.random()<0.5?0.62:1.38)*100)/100);
+    if(dec===it.price)dec=Math.round((it.price+1.25)*100)/100;
+    var opts=PG._util.shuffle([{p:it.price,ok:true},{p:dec,ok:false}]);
+    return opts;
+  },
+  btn:function(label,bg){return 'display:inline-block;margin:6px 4px;padding:14px 20px;font-size:17px;font-weight:800;border:none;border-radius:12px;cursor:pointer;min-width:120px;background:'+(bg||'#cf8f3f')+';color:#14100a;';},
+  itemCard:function(it){
+    return '<div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:14px;margin:10px 0;">'
+      +'<div style="font-size:20px;font-weight:800;">'+esc(it.name)+'</div>'
+      +'<div style="opacity:.75;margin:4px 0 8px;">What is the price?</div><div>';
+  }
+};
+
+/* ================= 3 STRIKES =================
+   Dark green board, yellow title, $ tile, 5 digit slots, 3 strike lights.
+   Bag: the 5 car-price digits + 3 STRIKE chips. */
+PG.strikes=function(c,items,done){
+  var ended=false;
+  function finish(v){if(ended)return;ended=true;done(v);}
+  var price=20000+Math.floor(Math.random()*10000); /* 20000-29999 */
+  var digits=String(price).split('');
+  var slots=[null,null,null,null,null];
+  var bag=PG._util.shuffle(digits.concat(['X','X','X'])); /* X = strike chip */
+  var strikes=0,placed=0;
+
+  function slotHtml(){
+    var h='<div style="display:flex;gap:6px;justify-content:center;margin:12px 0;">';
+    h+='<div style="width:52px;height:64px;line-height:64px;text-align:center;font-size:34px;font-weight:900;border-radius:8px;background:#0f5132;color:#7CFC90;border:2px solid #1d7a4f;">$</div>';
+    slots.forEach(function(d){
+      h+='<div style="width:52px;height:64px;line-height:64px;text-align:center;font-size:34px;font-weight:900;border-radius:8px;background:#101418;color:#fff;border:2px solid '+(d===null?'#3a4350':'#ffd23f')+';">'
+        +(d===null?'&nbsp;':esc(d))+'</div>';
+    });
+    return h+'</div>';
+  }
+  function strikeHtml(){
+    var h='<div style="display:flex;gap:10px;justify-content:center;margin:10px 0;">';
+    for(var i=0;i<3;i++){
+      h+='<div style="width:56px;height:56px;line-height:56px;text-align:center;font-size:30px;border-radius:10px;background:'+(i<strikes?'#7a1010':'#1c222b')+';border:2px solid '+(i<strikes?'#ff5a5a':'#3a4350')+';">'
+        +(i<strikes?'&#10060;':'<span style="opacity:.35">X</span>')+'</div>';
+    }
+    return h+'</div>';
+  }
+  function render(msg){
+    c.innerHTML='<div style="max-width:100%;background:#0b3d2e;border:4px solid #14664b;border-radius:16px;padding:16px 12px;text-align:center;color:#fff;">'
+      +'<div style="font-size:34px;font-weight:900;color:#ffd23f;letter-spacing:2px;text-shadow:2px 2px 0 #7a5c00;margin-bottom:4px;">3 STRIKES</div>'
+      +'<div style="opacity:.8;font-size:13px;margin-bottom:6px;">Draw chips — place all 5 digits before 3 strikes!</div>'
+      +slotHtml()+strikeHtml()
+      +'<div style="margin:8px 0;font-size:15px;min-height:22px;">'+(msg||'&nbsp;')+'</div>'
+      +'<div style="font-size:40px;">&#128717;&#65039;</div><div style="opacity:.7;font-size:13px;">'+bag.length+' chips left in the bag</div>'
+      +'<div><button id="pgb-draw" style="'+PG._util.btn()+'">Draw chip</button></div>'
+      +'</div>';
+    c.querySelector('#pgb-draw').onclick=function(){Sound.click();draw();};
+  }
+  function draw(){
+    if(!bag.length)return;
+    var chip=bag.splice(Math.floor(Math.random()*bag.length),1)[0];
+    if(chip==='X'){
+      strikes++;Sound.lose();Sound.beep(140,.4);
+      if(strikes>=3){
+        setTimeout(function(){if(!c.isConnected)return;
+          c.innerHTML='<div style="max-width:100%;background:#0b3d2e;border:4px solid #14664b;border-radius:16px;padding:24px 12px;text-align:center;color:#fff;">'
+            +'<div style="font-size:34px;font-weight:900;color:#ffd23f;">3 STRIKES</div>'
+            +'<div style="font-size:60px;margin:10px 0;">&#10060;&#10060;&#10060;</div>'
+            +'<div style="font-size:20px;font-weight:800;">STRIKE THREE — you\'re out!</div>'
+            +'<div style="opacity:.8;margin-top:8px;">The car was <b>'+g1Money(price)+'</b></div></div>';
+          finish(0);
+        },900);
+        render('<b style="color:#ff7a7a;">STRIKE 3!</b>');
+        c.querySelector('#pgb-draw').disabled=true;
+        return;
+      }
+      render('<b style="color:#ff7a7a;">STRIKE '+strikes+'!</b> Careful…');
+    }else{
+      var idx=-1;
+      for(var i=0;i<5;i++){if(slots[i]===null&&digits[i]===chip){idx=i;break;}}
+      if(idx<0){for(var j=0;j<5;j++){if(slots[j]===null){idx=j;break;}}}
+      slots[idx]=chip;placed++;Sound.beep(500+idx*120,.15);
+      if(placed>=5){
+        render('You drew a <b>'+esc(chip)+'</b> — that\'s the last digit!');
+        setTimeout(function(){if(!c.isConnected)return;
+          c.innerHTML='<div style="max-width:100%;background:#0b3d2e;border:4px solid #14664b;border-radius:16px;padding:24px 12px;text-align:center;color:#fff;">'
+            +'<div style="font-size:34px;font-weight:900;color:#ffd23f;">3 STRIKES</div>'
+            +'<div style="font-size:56px;margin:10px 0;">&#127881;</div>'
+            +'<div style="font-size:22px;font-weight:900;">YOU WIN THE CAR!</div>'
+            +'<div style="opacity:.85;margin-top:6px;">'+g1Money(price)+' — all 5 digits placed!</div></div>';
+          Sound.win();finish(25000);
+        },900);
+        return;
+      }
+      render('You drew a <b>'+esc(chip)+'</b> — it goes in the price!');
+    }
+  }
+  render();
+};
+
+/* ================= PUNCH-A-BUNCH =================
+   Blue board, colorful title, 5x10 grid of 50 gold $ circles.
+   Earn up to 5 punches (1 free + 4 from pricing items). */
+PG.punch=function(c,items,done){
+  var ended=false;
+  function finish(v){if(ended)return;ended=true;done(v);}
+  var punches=1;
+  var its=PG._util.pick(items,4);
+  var qi=0;
+
+  var dist=[[25000,1],[10000,2],[5000,4],[2500,8],[1000,10],[500,10],[250,10],[100,5]];
+  var board=[];
+  dist.forEach(function(d){for(var i=0;i<d[1];i++)board.push(d[0]);});
+  board=PG._util.shuffle(board);
+  var revealed=new Array(50).fill(false);
+
+  function askItem(){
+    if(qi>=its.length){showBoard('You earned <b>'+punches+'</b> punch'+(punches===1?'':'es')+'!');return;}
+    var it=its[qi],opts=PG._util.priceOpts(it);
+    c.innerHTML='<div style="max-width:100%;background:#1d3fae;border:4px solid #2f5fe0;border-radius:16px;padding:16px 12px;text-align:center;color:#fff;">'
+      +'<div style="font-size:26px;font-weight:900;margin-bottom:4px;"><span style="color:#ffd23f;">PUNCH</span><span style="color:#7CFC90;">-A-</span><span style="color:#ff7a7a;">BUNCH</span></div>'
+      +'<div style="opacity:.85;font-size:14px;">Item '+(qi+1)+' of '+its.length+' — price it right to earn a punch! (You have '+punches+')</div>'
+      +PG._util.itemCard(it)
+      +opts.map(function(o,i){return '<button data-i="'+i+'" style="'+PG._util.btn()+'">'+g1Money(o.p)+'</button>';}).join('')
+      +'</div></div>';
+    Array.prototype.forEach.call(c.querySelectorAll('button[data-i]'),function(b){
+      b.onclick=function(){
+        Sound.click();
+        var o=opts[+b.getAttribute('data-i')];
+        if(o.ok){punches=Math.min(5,punches+1);Sound.win();}
+        else{Sound.lose();}
+        qi++;
+        setTimeout(function(){if(!c.isConnected)return;askItem();},700);
+      };
+    });
+  }
+  function circleHtml(i){
+    if(revealed[i])return '<div style="width:100%;aspect-ratio:1;border-radius:50%;background:#3a2410;color:#ffd23f;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;border:2px solid #6b4a1f;box-sizing:border-box;">'+g1Money(board[i])+'</div>';
+    return '<button data-c="'+i+'" style="width:100%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe27a,#f5b301 70%);border:2px solid #a86e00;color:#7a5200;font-size:15px;font-weight:900;cursor:pointer;padding:0;">$</button>';
+  }
+  function showBoard(msg){
+    var h='<div style="max-width:100%;background:#1d3fae;border:4px solid #2f5fe0;border-radius:16px;padding:14px 10px;text-align:center;color:#fff;">'
+      +'<div style="font-size:30px;font-weight:900;letter-spacing:1px;margin-bottom:2px;"><span style="color:#ffd23f;">PUNCH</span><span style="color:#7CFC90;">-A-</span><span style="color:#ff7a7a;">BUNCH</span></div>'
+      +'<div style="font-size:14px;opacity:.9;margin-bottom:8px;">Punches left: <b>'+punches+'</b> — tap a circle!</div>'
+      +'<div style="font-size:13px;min-height:20px;margin-bottom:8px;">'+(msg||'&nbsp;')+'</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;">';
+    for(var i=0;i<50;i++)h+=circleHtml(i);
+    h+='</div>'
+      +'<div style="font-size:11px;opacity:.75;margin-top:8px;">1&times;$25,000&nbsp;&nbsp;2&times;$10,000&nbsp;&nbsp;4&times;$5,000&nbsp;&nbsp;8&times;$2,500&nbsp;&nbsp;10&times;$1,000&nbsp;&nbsp;10&times;$500&nbsp;&nbsp;10&times;$250&nbsp;&nbsp;5&times;$100</div>'
+      +'</div>';
+    c.innerHTML=h;
+    Array.prototype.forEach.call(c.querySelectorAll('button[data-c]'),function(b){
+      b.onclick=function(){Sound.click();punchAt(+b.getAttribute('data-c'));};
+    });
+  }
+  function punchAt(i){
+    revealed[i]=true;punches--;
+    var val=board[i];
+    if(val>0)Sound.win();else Sound.lose();
+    var canAgain=punches>0;
+    var h='<div style="max-width:100%;background:#1d3fae;border:4px solid #2f5fe0;border-radius:16px;padding:24px 12px;text-align:center;color:#fff;">'
+      +'<div style="font-size:30px;font-weight:900;margin-bottom:6px;"><span style="color:#ffd23f;">PUNCH</span><span style="color:#7CFC90;">-A-</span><span style="color:#ff7a7a;">BUNCH</span></div>'
+      +'<div style="width:110px;height:110px;margin:6px auto;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe27a,#f5b301 70%);border:3px solid #a86e00;display:flex;align-items:center;justify-content:center;color:#5a3c00;font-size:17px;font-weight:900;">'+g1Money(val)+'</div>'
+      +'<div style="font-size:19px;font-weight:800;margin:8px 0;">You punched '+g1Money(val)+'!</div>'
+      +'<div style="opacity:.85;font-size:14px;margin-bottom:10px;">'+(canAgain?('You have '+punches+' punch'+(punches===1?'':'es')+' left.'):'No punches left.')+'</div>'
+      +'<div><button id="pgb-keep" style="'+PG._util.btn('#37c871')+'">KEEP IT</button>'
+      +(canAgain?'<button id="pgb-again" style="'+PG._util.btn()+'">PUNCH AGAIN</button>':'')
+      +'</div></div>';
+    c.innerHTML=h;
+    c.querySelector('#pgb-keep').onclick=function(){
+      Sound.click();
+      c.innerHTML='<div style="max-width:100%;background:#1d3fae;border:4px solid #2f5fe0;border-radius:16px;padding:24px 12px;text-align:center;color:#fff;">'
+        +'<div style="font-size:52px;">&#127881;</div>'
+        +'<div style="font-size:22px;font-weight:900;">You keep '+g1Money(val)+'!</div></div>';
+      Sound.win();finish(val);
+    };
+    if(canAgain)c.querySelector('#pgb-again').onclick=function(){Sound.click();showBoard();};
+  }
+  askItem();
+};
+
+/* ================= MASTER KEY =================
+   Green/red sign, two gold locks (CAR $25,000 / TRIP $5,000), keys.
+   Price 2 items for up to 2 keys; one key is secretly the MASTER. */
+PG.masterkey=function(c,items,done){
+  var ended=false;
+  function finish(v){if(ended)return;ended=true;done(v);}
+  var its=PG._util.pick(items,2);
+  var qi=0,keysWon=0;
+
+  function signHtml(){
+    return '<div style="display:inline-block;background:#0f5132;border:5px solid #c0392b;border-radius:18px;padding:10px 26px;margin-bottom:10px;box-shadow:0 4px 0 #7a1f14;">'
+      +'<div style="font-family:Georgia,serif;font-size:38px;font-weight:900;color:#e8c15a;letter-spacing:1px;text-shadow:2px 2px 0 #5a3c00;">Master<br>Key</div></div>';
+  }
+  function askItem(){
+    if(qi>=its.length){tryLocks();return;}
+    var it=its[qi],opts=PG._util.priceOpts(it);
+    c.innerHTML='<div style="max-width:100%;background:#12241c;border:4px solid #0f5132;border-radius:16px;padding:16px 12px;text-align:center;color:#fff;">'
+      +signHtml()
+      +'<div style="opacity:.85;font-size:14px;">Item '+(qi+1)+' of '+its.length+' — price it right to win a key! (Keys: '+keysWon+')</div>'
+      +PG._util.itemCard(it)
+      +opts.map(function(o,i){return '<button data-i="'+i+'" style="'+PG._util.btn()+'">'+g1Money(o.p)+'</button>';}).join('')
+      +'</div></div>';
+    Array.prototype.forEach.call(c.querySelectorAll('button[data-i]'),function(b){
+      b.onclick=function(){
+        Sound.click();
+        var o=opts[+b.getAttribute('data-i')];
+        if(o.ok){keysWon++;Sound.win();}
+        else{Sound.lose();}
+        qi++;
+        setTimeout(function(){if(!c.isConnected)return;askItem();},700);
+      };
+    });
+  }
+  function tryLocks(){
+    if(keysWon===0){
+      c.innerHTML='<div style="max-width:100%;background:#12241c;border:4px solid #0f5132;border-radius:16px;padding:24px 12px;text-align:center;color:#fff;">'
+        +signHtml()+'<div style="font-size:19px;font-weight:800;">No keys won — game over.</div></div>';
+      Sound.lose();finish(0);return;
+    }
+    var keys=[];
+    for(var k=0;k<keysWon;k++)keys.push({id:k+1,master:false,used:false});
+    keys[Math.floor(Math.random()*keys.length)].master=true; /* one is the MASTER */
+    var won=0,tripOpen=false;
+    var locks=[
+      {name:'CAR',prize:25000},
+      {name:'TRIP',prize:5000}
+    ];
+    var selKey=null;
+
+    function lockHtml(L,idx){
+      var gone=(L.name==='TRIP'&&tripOpen);
+      return '<div style="flex:1;min-width:130px;background:'+(gone?'#1a2a22':'#3d2c10')+';border:3px solid '+(gone?'#2c3e35':'#e8c15a')+';border-radius:14px;padding:12px 6px;opacity:'+(gone?'.45':'1')+';">'
+        +'<div style="font-size:52px;">'+(gone?'&#128275;':'&#128274;')+'</div>'
+        +'<div style="font-weight:900;font-size:18px;color:#e8c15a;">'+L.name+'</div>'
+        +'<div style="font-size:14px;color:#fff;">'+g1Money(L.prize)+'</div>'
+        +(gone?'':'<button data-lock="'+idx+'" style="'+PG._util.btn('#e8c15a')+'padding:10px 12px;font-size:15px;min-width:90px;">Try key</button>')
+        +'</div>';
+    }
+    function render(msg){
+      var h='<div style="max-width:100%;background:#12241c;border:4px solid #0f5132;border-radius:16px;padding:16px 12px;text-align:center;color:#fff;">'
+        +signHtml()
+        +'<div style="font-size:15px;margin-bottom:8px;">Step 1: pick a key, Step 2: pick a lock</div>'
+        +'<div style="margin:8px 0;">'
+        +keys.map(function(ky){
+          var dis=ky.used?'opacity:.35;':'';
+          var sel=(selKey===ky)?'outline:3px solid #37c871;':'';
+          return '<button data-key="'+ky.id+'" '+(ky.used?'disabled':'')+' style="'+PG._util.btn('#8a6d1f')+dis+sel+'font-size:34px;min-width:80px;padding:10px;">&#128273;</button>';
+        }).join('')
+        +'</div><div style="font-size:12px;opacity:.7;margin-bottom:8px;">Key '+keys.map(function(ky){return ky.id;}).join(' &amp; ')+' — one is the MASTER key!</div>'
+        +'<div style="display:flex;gap:10px;justify-content:center;">'
+        +locks.map(function(L,i){return lockHtml(L,i);}).join('')
+        +'</div>'
+        +'<div style="font-size:15px;min-height:24px;margin:10px 0 4px;">'+(msg||'&nbsp;')+'</div>'
+        +'<div style="font-size:14px;">Won so far: <b>'+g1Money(won)+'</b></div>'
+        +'</div>';
+      c.innerHTML=h;
+      Array.prototype.forEach.call(c.querySelectorAll('button[data-key]'),function(b){
+        b.onclick=function(){
+          Sound.click();
+          var id=+b.getAttribute('data-key');
+          selKey=keys.filter(function(ky){return ky.id===id;})[0];
+          render('Key '+id+' selected — now pick a lock!');
+        };
+      });
+      Array.prototype.forEach.call(c.querySelectorAll('button[data-lock]'),function(b){
+        b.onclick=function(){
+          if(!selKey){render('Pick a key first!');return;}
+          Sound.click();useKey(selKey,locks[+b.getAttribute('data-lock')]);
+        };
+      });
+    }
+    function useKey(ky,L){
+      ky.used=true;
+      var msg='';
+      if(L.name==='CAR'&&ky.master){
+        won+=30000;tripOpen=true;
+        msg='&#127881; <b>MASTER KEY opens the CAR!</b> You win BOTH — '+g1Money(30000)+'!';
+        Sound.win();
+        render(msg);
+        setTimeout(function(){if(!c.isConnected)return;finish(won);},1600);
+        return;
+      }
+      if(L.name==='CAR'){
+        msg='&#128274; Key '+ky.id+' doesn\'t fit the car lock…';
+        Sound.lose();
+      }else if(ky.master){
+        won+=5000;tripOpen=true;
+        msg='&#128273; MASTER KEY was spent on the trip — '+g1Money(5000)+'. The car stays locked!';
+        Sound.win();
+        render(msg);
+        setTimeout(function(){if(!c.isConnected)return;finish(won);},1600);
+        return;
+      }else{
+        won+=5000;tripOpen=true;
+        msg='&#9989; Key '+ky.id+' opens the TRIP — '+g1Money(5000)+'!';
+        Sound.win();
+      }
+      var left=keys.filter(function(ky2){return !ky2.used;}).length;
+      selKey=null;
+      if(left===0||won>=30000){
+        render(msg+'<br><b>Game over!</b>');
+        setTimeout(function(){if(!c.isConnected)return;finish(won);},1600);
+      }else{
+        render(msg);
+      }
+    }
+    render();
+  }
+  askItem();
+};
+
+var PG=PG||{};
+/* ============ GAME 1 — HOLE IN ONE ============ */
+PG.holeinone=function(c,items,done){
+  var over=false;
+  function finish(d){if(over)return;over=true;done(d);}
+  var its=items.slice(0,6);
+  var disp=its.map(function(x,i){return i;});
+  for(var i=disp.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=disp[i];disp[i]=disp[j];disp[j]=t;}
+  var picks=[],phase='pick',score=0,trueOrder=[];
+  function render(){
+    var h='<h2>⛳ Hole in One</h2>';
+    if(phase==='pick'){
+      h+='<div class="muted">Tap the items from <b>CHEAPEST</b> to <b>MOST EXPENSIVE</b>.</div>';
+      h+='<div style="display:grid;gap:8px;margin-top:8px">';
+      disp.forEach(function(di,k){
+        var pk=picks.indexOf(k);
+        h+='<button class="btn" data-k="'+k+'"'+(pk>=0?' disabled style="opacity:.55"':'')+'>'
+          +(pk>=0?'<b>('+(pk+1)+')</b> ':'')+esc(its[di].name)+'</button>';
+      });
+      h+='</div>';
+      c.innerHTML=h;
+      Array.prototype.forEach.call(c.querySelectorAll('[data-k]'),function(b){
+        b.onclick=function(){
+          Sound.click();
+          picks.push(+b.getAttribute('data-k'));
+          if(picks.length>=6){reveal();}else{render();}
+        };
+      });
+    }else if(phase==='reveal'){
+      h+='<div class="muted">True order (cheapest → priciest):</div><div class="card">';
+      trueOrder.forEach(function(k,r){
+        var ok=picks[r]===k;
+        h+='<div class="row" style="padding:4px 0;border-bottom:1px solid var(--line)">'
+          +'<div class="grow">'+(r+1)+'. '+esc(its[disp[k]].name)+' <span class="muted">'+g1Money(its[disp[k]].price)+'</span></div>'
+          +'<div>'+(ok?'✅':'❌')+'</div></div>';
+      });
+      h+='</div><div class="status">You got <b>'+score+'/6</b> in the right spot!</div>';
+      h+='<button class="btn" id="pgputtbtn">⛳ Putt for the car!</button>';
+      c.innerHTML=h;
+      c.querySelector('#pgputtbtn').onclick=function(){Sound.click();putt();};
+    }
+  }
+  function reveal(){
+    trueOrder=disp.map(function(di,k){return k;}).sort(function(a,b){return its[disp[a]].price-its[disp[b]].price;});
+    score=0;
+    for(var r=0;r<6;r++){if(picks[r]===trueOrder[r])score++;}
+    phase='reveal';
+    Sound.beep(500,.15);
+    render();
+  }
+  function putt(){
+    var p=0.15+score*0.13;
+    var win=Math.random()<p;
+    c.innerHTML='<h2>⛳ The Putt</h2><div class="card center">'
+      +'<div class="muted">Win chance: <b>'+Math.round(p*100)+'%</b></div>'
+      +'<canvas id="pgputt" width="320" height="140" style="max-width:100%"></canvas>'
+      +'<div class="status" id="pgmsg"></div></div>';
+    var cv=c.querySelector('#pgputt'),g=cv.getContext('2d');
+    var bx=24,hx=268,frames=26,f=0;
+    var target=win?hx:hx-46-Math.random()*36;
+    function draw(){
+      g.clearRect(0,0,320,140);
+      g.fillStyle='#2e8b57';g.fillRect(0,40,320,60);
+      g.fillStyle='#1f6b43';g.fillRect(0,40,320,8);
+      g.font='30px serif';g.fillText('⛳',hx-46,70);
+      g.beginPath();g.arc(hx,70,12,0,Math.PI*2);g.fillStyle='#101010';g.fill();
+      g.strokeStyle='#cf8f3f';g.lineWidth=2;g.stroke();
+      g.beginPath();g.arc(bx,70,8,0,Math.PI*2);g.fillStyle='#fff';g.fill();
+      g.strokeStyle='#888';g.lineWidth=1;g.stroke();
+    }
+    draw();
+    var iv=setInterval(function(){
+      if(!c.isConnected){clearInterval(iv);return;}
+      f++;bx=24+(target-24)*(f/frames);draw();Sound.beep(300+f*22,.05);
+      if(f>=frames){
+        clearInterval(iv);
+        var m=c.querySelector('#pgmsg');if(!m)return;
+        if(win){Sound.win();m.innerHTML='<div class="ok big">🏆 IT\'S IN! You win the car — $25,000!</div>';}
+        else{Sound.lose();m.innerHTML='<div class="err big">😅 So close!</div>';}
+        setTimeout(function(){if(!c.isConnected)return;finish(win?25000:0);},1700);
+      }
+    },70);
+  }
+  render();
+};
+/* ============ GAME 2 — TEN CHANCES ============ */
+PG.tenchances=function(c,items,done){
+  var over=false;
+  function finish(d){if(over)return;over=true;done(d);}
+  function ri(a,b){return a+Math.floor(Math.random()*(b-a+1));}
+  var prizes=[
+    {name:'RADIO',emoji:'📻',price:ri(80,999)},
+    {name:'REFRIGERATOR',emoji:'🧊',price:ri(1000,9999)},
+    {name:'CAR',emoji:'🚗',price:ri(10000,29999)}
+  ];
+  prizes.forEach(function(p,pi){
+    var s=String(p.price);
+    if(pi===0)s=s.length<3?('00'+s).slice(-3):s;
+    p.digits=s.split('');
+    p.rev=p.digits.map(function(){return false;});
+    p.won=false;
+  });
+  var chances=10,sel=0,entry='',msg='';
+  function banked(){return prizes.reduce(function(a,p){return a+(p.won?p.price:0);},0);}
+  function padHTML(){
+    var h='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px">';
+    ['1','2','3','4','5','6','7','8','9','0'].forEach(function(d){
+      h+='<button class="btn" data-d="'+d+'">'+d+'</button>';
+    });
+    h+='<button class="btn secondary" data-d="clr">⌫</button>';
+    h+='<button class="btn" data-d="go" style="grid-column:span 2">SUBMIT</button>';
+    return h+'</div>';
+  }
+  function render(){
+    var h='<div style="background:#2fa84f;border:4px solid #1d7a37;border-radius:10px;padding:10px;max-width:100%">';
+    h+='<div style="text-align:center;color:#e23b3b;font-weight:900;font-size:30px;letter-spacing:3px;'
+      +'text-shadow:2px 2px 0 #fff,-2px 2px 0 #fff,2px -2px 0 #fff,-2px -2px 0 #fff">TEN CHANCES</div>';
+    prizes.forEach(function(p,i){
+      h+='<div style="display:flex;align-items:center;gap:6px;margin:8px 0">';
+      h+='<div style="background:#e23b3b;color:#fff;font-weight:800;font-size:11px;padding:6px 2px;border-radius:4px;width:88px;text-align:center">'+p.emoji+' '+p.name+'</div>';
+      h+='<div style="display:flex;gap:3px;flex:1">';
+      p.digits.forEach(function(d,k){
+        var shown=p.rev[k]||p.won;
+        h+='<div style="flex:1;min-width:0;background:'+(p.won?'#ffe08a':'#fff')+';border:2px solid #14532d;'
+          +'border-radius:4px;text-align:center;font-weight:900;font-size:20px;padding:4px 0;color:#111">'
+          +(shown?d:'&nbsp;')+'</div>';
+      });
+      h+='</div>'+(p.won?'<div style="color:#fff;font-weight:800;font-size:12px">WON</div>':'')+'</div>';
+    });
+    h+='<div style="display:flex;gap:4px;justify-content:center;margin-top:6px;flex-wrap:wrap">';
+    for(var i=0;i<10;i++){
+      var used=i>=(10-chances);
+      h+='<div style="width:30px;height:30px;border-radius:50%;background:'+(used?'#555':'#e23b3b')+';'
+        +'color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px">'+(i+1)+'</div>';
+    }
+    h+='</div></div>';
+    h+='<div class="muted" style="margin-top:8px">Chances left: <b>'+chances+'</b> — pick a prize, then type its FULL price.</div>';
+    h+='<div style="display:flex;gap:6px;margin:6px 0">';
+    prizes.forEach(function(p,i){
+      h+='<button class="btn small" data-p="'+i+'"'+(p.won?' disabled style="opacity:.5"':'')
+        +' style="'+(sel===i&&!p.won?'outline:3px solid var(--gold);':'')+'">'+p.emoji+' '+p.name+'</button>';
+    });
+    h+='</div>';
+    var nd=prizes[sel].digits.length;
+    h+='<div class="card center"><div class="big" style="letter-spacing:6px">'
+      +esc(entry)+'<span style="opacity:.35">'+'_'.repeat(Math.max(0,nd-entry.length))+'</span></div>'
+      +'<div class="muted">'+esc(msg)+'</div>'+padHTML()+'</div>';
+    c.innerHTML=h;
+    Array.prototype.forEach.call(c.querySelectorAll('[data-p]'),function(b){
+      b.onclick=function(){Sound.click();sel=+b.getAttribute('data-p');entry='';msg='';render();};
+    });
+    Array.prototype.forEach.call(c.querySelectorAll('[data-d]'),function(b){
+      b.onclick=function(){
+        var d=b.getAttribute('data-d');
+        if(d==='clr'){entry=entry.slice(0,-1);Sound.click();}
+        else if(d==='go'){submit();return;}
+        else if(entry.length<prizes[sel].digits.length){entry+=d;Sound.beep(600,.05);}
+        render();
+      };
+    });
+  }
+  function submit(){
+    var p=prizes[sel],nd=p.digits.length;
+    if(entry.length<nd){msg='Type all '+nd+' digits!';render();return;}
+    chances--;
+    var hit=0,k;
+    for(k=0;k<nd;k++){if(entry[k]===p.digits[k]&&!p.rev[k]){p.rev[k]=true;hit++;}}
+    if(p.rev.every(function(x){return x;})){
+      p.won=true;Sound.win();msg='🎉 You won the '+p.name+' ('+g1Money(p.price)+')!';
+      for(k=0;k<prizes.length;k++){if(!prizes[k].won){sel=k;break;}}
+    }else{
+      msg=hit?hit+' digit'+(hit>1?'s':'')+' revealed — keep going!':'No new digits. Try again!';
+      Sound.lose();
+    }
+    entry='';
+    if(prizes.every(function(x){return x.won;})){render();return endAll('🏆 You won ALL THREE prizes!');}
+    if(chances<=0){render();return endAll('⏰ Out of chances!');}
+    render();
+  }
+  function endAll(t){
+    var s=banked();
+    c.innerHTML='<div class="card center"><div class="big">'+t+'</div>'
+      +'<div class="status">You banked <b>'+g1Money(s)+'</b></div></div>';
+    setTimeout(function(){if(!c.isConnected)return;finish(s);},1700);
+  }
+  render();
+};
+/* ============ GAME 3 — GOLDEN ROAD ============ */
+PG.goldenroad=function(c,items,done){
+  var over=false;
+  function finish(d){if(over)return;over=true;done(d);}
+  function ri(a,b){return a+Math.floor(Math.random()*(b-a+1));}
+  var prizes=[
+    {name:'4K TV',emoji:'📺',price:ri(500,999)},
+    {name:'JET SKI',emoji:'🛥️',price:ri(1000,9999)},
+    {name:'LUXURY CAR',emoji:'🚗',price:ri(20000,29999)}
+  ];
+  prizes.forEach(function(p){
+    var s=String(p.price),n=s.length;
+    var i1=Math.floor(Math.random()*n),i2;
+    do{i2=Math.floor(Math.random()*n);}while(i2===i1);
+    p.blank=[i1,i2].sort(function(a,b){return a-b;});
+    p.digits=s.split('');
+  });
+  var step=0,entry='',msg='',banked=0;
+  function padHTML(){
+    var h='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px">';
+    ['1','2','3','4','5','6','7','8','9','0'].forEach(function(d){
+      h+='<button class="btn" data-d="'+d+'">'+d+'</button>';
+    });
+    h+='<button class="btn secondary" data-d="clr">⌫</button>';
+    h+='<button class="btn" data-d="go" style="grid-column:span 2">SUBMIT</button>';
+    return h+'</div>';
+  }
+  function render(){
+    var h='<h2>🛣️ Golden Road</h2>';
+    h+='<div style="display:flex;gap:4px;margin:8px 0">';
+    prizes.forEach(function(p,i){
+      var st=i<step?'won':(i===step?'cur':'todo');
+      h+='<div style="flex:1;text-align:center;padding:10px 4px;border-radius:10px;'
+        +'background:'+(st==='won'?'#ffd75e':st==='cur'?'#fff3c4':'#e8e0c8')+';border:2px solid #b8860b">'
+        +'<div style="font-size:30px">'+p.emoji+'</div>'
+        +'<div style="font-size:11px;font-weight:800;color:#111">'+p.name+'</div>'
+        +(st==='won'?'<div style="font-weight:800;color:#7a5c00;font-size:12px">'+g1Money(p.price)+'</div>':'')
+        +'</div>';
+    });
+    h+='</div>';
+    var p=prizes[step];
+    var disp=p.digits.map(function(d,k){
+      return p.blank.indexOf(k)>=0?'<u>&nbsp;&nbsp;</u>':d;
+    }).join('');
+    h+='<div class="card center"><div class="muted">Guess the 2 missing digits of the '+esc(p.name)+' price!</div>'
+      +'<div class="big" style="letter-spacing:6px;color:#b8860b">$'+disp+'</div>'
+      +'<div class="big" style="letter-spacing:8px;margin-top:4px">'+esc(entry)
+      +'<span style="opacity:.35">'+'_'.repeat(Math.max(0,2-entry.length))+'</span></div>'
+      +'<div class="muted">'+esc(msg)+'</div>'+padHTML()+'</div>';
+    c.innerHTML=h;
+    Array.prototype.forEach.call(c.querySelectorAll('[data-d]'),function(b){
+      b.onclick=function(){
+        var d=b.getAttribute('data-d');
+        if(d==='clr'){entry=entry.slice(0,-1);Sound.click();}
+        else if(d==='go'){submit();return;}
+        else if(entry.length<2){entry+=d;Sound.beep(600,.05);}
+        render();
+      };
+    });
+  }
+  function submit(){
+    if(entry.length<2){msg='Enter 2 digits!';render();return;}
+    var p=prizes[step];
+    var ok=entry[0]===p.digits[p.blank[0]]&&entry[1]===p.digits[p.blank[1]];
+    if(ok){
+      banked+=p.price;step++;Sound.win();
+      if(step>=3){winAll();return;}
+      msg='✅ Correct! Step up to the '+prizes[step].name+'!';
+      entry='';render();
+    }else{
+      Sound.lose();loseAll();
+    }
+  }
+  function winAll(){
+    c.innerHTML='<div class="card center"><div class="big">🏆 You conquered the Golden Road!</div>'
+      +'<div class="status">You banked <b>'+g1Money(banked)+'</b></div></div>';
+    setTimeout(function(){if(!c.isConnected)return;finish(banked);},1800);
+  }
+  function loseAll(){
+    c.innerHTML='<div class="card center"><div class="big">❌ Wrong digits!</div>'
+      +'<div class="status">The '+esc(prizes[step].name)+' was '+g1Money(prizes[step].price)+'.<br>'
+      +'You keep <b>'+g1Money(banked)+'</b></div></div>';
+    setTimeout(function(){if(!c.isConnected)return;finish(banked);},1800);
+  }
+  render();
+};
+/* ============ GAME 4 — CLOCK GAME ============ */
+PG.clockgame=function(c,items,done){
+  var over=false;
+  function finish(d){if(over)return;over=true;done(d);}
+  var its=items.slice(0,2),idx=0,entry='',msg='',t=30,iv=null;
+  function drawClock(){
+    var cv=c.querySelector('#pgclock');if(!cv)return;
+    var g=cv.getContext('2d'),cx=60,cy=60,R=52,m;
+    g.clearRect(0,0,120,120);
+    g.beginPath();g.arc(cx,cy,R,0,Math.PI*2);g.fillStyle='#ffe14d';g.fill();
+    g.lineWidth=4;g.strokeStyle='#333';g.stroke();
+    for(m=0;m<30;m+=5){
+      var a=-Math.PI/2+m/30*Math.PI*2;
+      g.beginPath();
+      g.moveTo(cx+Math.cos(a)*(R-9),cy+Math.sin(a)*(R-9));
+      g.lineTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R);
+      g.lineWidth=3;g.strokeStyle='#333';g.stroke();
+      g.fillStyle='#333';g.font='9px sans-serif';g.textAlign='center';
+      g.fillText(String(m),cx+Math.cos(a)*(R-18),cy+Math.sin(a)*(R-18)+3);
+    }
+    var ha=-Math.PI/2+(t/30)*Math.PI*2;
+    g.beginPath();g.moveTo(cx,cy);
+    g.lineTo(cx+Math.cos(ha)*(R-15),cy+Math.sin(ha)*(R-15));
+    g.lineWidth=4;g.strokeStyle=t<10?'#e23b3b':'#111';g.stroke();
+    g.beginPath();g.arc(cx,cy,5,0,Math.PI*2);g.fillStyle='#111';g.fill();
+  }
+  function render(){
+    var it=its[idx];
+    var h='<div style="border:6px solid #1a56db;border-radius:14px;padding:10px;max-width:100%;background:#0d1420">';
+    h+='<div style="display:flex;gap:8px;align-items:center;justify-content:center">';
+    h+='<div style="background:#22c55e;border-radius:8px;width:92px;height:92px;display:flex;align-items:center;justify-content:center;font-size:44px">🛒</div>';
+    h+='<div style="background:#e23b3b;border-radius:8px;padding:6px"><canvas id="pgclock" width="120" height="120" style="width:96px;height:96px"></canvas></div>';
+    h+='</div>';
+    h+='<div style="background:#f97316;border-radius:8px;margin-top:8px;padding:6px;text-align:center;'
+      +'color:#111;font-weight:900;font-size:24px;letter-spacing:2px">CLOCK GAME</div>';
+    h+='<div id="pgtime" style="text-align:center;color:'+(t<10?'#e23b3b':'#fff')+';font-size:34px;font-weight:900;margin-top:4px">'
+      +t.toFixed(1)+'</div>';
+    h+='<div class="card center" style="margin-top:6px"><div class="muted">Item '+(idx+1)+' of 2 — guess the EXACT price!</div>'
+      +'<div class="big">'+esc(it.name)+'</div>'
+      +'<div class="big" style="letter-spacing:2px">$'+esc(entry||'—')+'</div>'
+      +'<div class="muted" style="min-height:20px;font-weight:800">'+esc(msg)+'</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px">';
+    ['1','2','3','4','5','6','7','8','9','.','0'].forEach(function(d){
+      h+='<button class="btn" data-d="'+d+'">'+d+'</button>';
+    });
+    h+='<button class="btn secondary" data-d="clr">⌫</button>';
+    h+='<button class="btn" data-d="go" style="grid-column:span 2">⏎ GUESS</button>';
+    h+='</div></div></div>';
+    c.innerHTML=h;
+    drawClock();
+    Array.prototype.forEach.call(c.querySelectorAll('[data-d]'),function(b){
+      b.onclick=function(){
+        var d=b.getAttribute('data-d');
+        if(d==='clr'){entry=entry.slice(0,-1);Sound.click();}
+        else if(d==='go'){submit();return;}
+        else if(entry.length<7){entry+=d;Sound.beep(600,.05);}
+        render();
+      };
+    });
+  }
+  function tick(){
+    if(!c.isConnected){clearInterval(iv);return;}
+    t=Math.max(0,Math.round((t-0.1)*10)/10);
+    var te=c.querySelector('#pgtime');
+    if(te){te.textContent=t.toFixed(1);te.style.color=t<10?'#e23b3b':'#fff';}
+    drawClock();
+    if(t<=0){clearInterval(iv);iv=null;lose();}
+  }
+  function submit(){
+    var it=its[idx],g=parseFloat(entry);
+    if(isNaN(g)){msg='Type a price first!';render();return;}
+    if(Math.abs(g-it.price)<0.005){
+      Sound.win();idx++;entry='';
+      if(idx>=2){clearInterval(iv);iv=null;win();return;}
+      msg='✅ Nailed it! Next item:';render();return;
+    }
+    msg=g<it.price?'⬆️ HIGHER':'⬇️ LOWER';
+    Sound.beep(g<it.price?750:420,.08);
+    render();
+  }
+  function win(){
+    c.innerHTML='<div class="card center"><div class="big">🏆 Both prices nailed with '+t.toFixed(1)+'s left!</div>'
+      +'<div class="ok">You win $5,000!</div></div>';
+    setTimeout(function(){if(!c.isConnected)return;finish(5000);},1700);
+  }
+  function lose(){
+    c.innerHTML='<div class="card center"><div class="big">⏰ Time\'s up!</div><div class="muted">'
+      +its.map(function(x){return esc(x.name)+': <b>'+g1Money(x.price)+'</b>';}).join('<br>')
+      +'</div></div>';
+    setTimeout(function(){if(!c.isConnected)return;finish(0);},1700);
+  }
+  render();
+  iv=setInterval(tick,100);
+};
+
 /* ================= THE PRICE IS RIGHT ================= */
 regGame('price',{name:'The Price Is Right',icon:'🏷️',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
@@ -3567,52 +4594,36 @@ render:function(c,ctx){
   }
   function cpuPlay(items){
     var bots=g1Bots(3),winnings=0;
+    var PGAMES=[
+      ['Plinko','🔴',PG.plinko],['Cliff Hangers','🧗',PG.cliff],['Any Number','🔢',PG.anyNumber],
+      ['3 Strikes','🎯',PG.strikes],['Punch-a-Bunch','👊',PG.punch],['Master Key','🗝',PG.masterkey],
+      ['Hole in One','⛳',PG.holeinone],['Ten Chances','🎰',PG.tenchances],['Golden Road','🛣',PG.goldenroad],
+      ['Clock Game','⏱',PG.clockgame]
+    ];
+    var lineup=g1PickN(PGAMES,3),played=0;
+    function draw(n){return JSON.parse(JSON.stringify(g1PickN(BANKS1.priceItems,n)));}
     row();
     function row(){
-      var it=items[0];
-      c.innerHTML='<h2>🏷️ Contestant\'s Row</h2><div class="card"><div class="big">'+esc(it.name)+'</div><div class="muted">Closest bid without going over wins the item!</div><input id="b" type="number" placeholder="Your bid $"><button class="btn" id="go">Bid</button><div id="res"></div></div>';
+      var it=draw(1)[0];
+      c.innerHTML='<h2>\uD83C\uDFF7\uFE0F Contestant\'s Row</h2><div class="card"><div class="big">'+esc(it.name)+'</div><div class="muted">Closest bid without going over wins the item!</div><input id="b" type="number" placeholder="Your bid $"><button class="btn" id="go">Bid</button><div id="res"></div></div>';
       c.querySelector('#go').onclick=function(){
         var pb=Math.max(1,Math.round(+c.querySelector('#b').value||0));Sound.click();
         var bids=[pb].concat(bots.map(function(){return Math.max(1,Math.round(it.price*(0.55+Math.random()*0.8)));}));
         var w=SHG.priceBidWinner(bids,it.price);
         var h='<div class="msg">Actual price: <b>'+g1Money(it.price)+'</b><br>You: '+g1Money(pb)+'<br>'+bots.map(function(b2,i2){return esc(b2)+': '+g1Money(bids[i2+1]);}).join('<br>')+'</div>';
-        if(w===0){winnings+=it.price;Sound.win();h+='<div class="ok">🎉 You win the '+esc(it.name)+'! (+'+g1Money(it.price)+')</div>';}
+        if(w===0){winnings+=it.price;Sound.win();h+='<div class="ok">\uD83C\uDF89 You win the '+esc(it.name)+'! (+'+g1Money(it.price)+')</div>';}
         else{Sound.lose();h+='<div class="err">'+esc(bots[w-1])+' wins the bid.</div>';}
-        h+='<button class="btn" id="nx">Play Plinko →</button>';
+        h+='<button class="btn" id="nx">'+lineup[played][1]+' Play '+esc(lineup[played][0])+' \u2192</button>';
         c.querySelector('#res').innerHTML=h;
-        c.querySelector('#nx').onclick=function(){Sound.click();plinko();};
+        c.querySelector('#nx').onclick=function(){Sound.click();playGame(lineup[played]);};
       };
     }
-    function plinko(){
-      var slots=[0,100,500,10000,500,100,0],ci=0;
-      c.innerHTML='<h2>🔴 Plinko</h2><div class="card"><div class="muted">3 chips — drop each one!</div><div id="bd" class="center"></div><div class="status" id="st"></div><button class="btn" id="drop">Drop chip</button></div>';
-      function drawBoard(pos){
-        var h='<div style="font-size:24px;letter-spacing:2px">';
-        for(var i=0;i<7;i++)h+=(i===pos?'🔴':'⚪');
-        h+='</div><div class="row" style="margin-top:6px">';
-        slots.forEach(function(s){h+='<div class="grow center" style="background:var(--card2);border:1px solid var(--line);border-radius:6px;padding:4px 0;font-size:11px;font-weight:700">'+(s>=1000?(s/1000)+'k':s)+'</div>';});
-        h+='</div>';
-        c.querySelector('#bd').innerHTML=h;
-      }
-      drawBoard(-1);
-      c.querySelector('#drop').onclick=function(){
-        var btn=this;btn.disabled=true;Sound.click();
-        var pos=3,s=0;
-        (function step(){
-          if(s>=7){
-            var win=slots[pos];winnings+=win;
-            c.querySelector('#st').innerHTML+='<div>Chip '+(ci+1)+': <b>'+g1Money(win)+'</b></div>';
-            if(win>0)Sound.win();else Sound.lose();
-            ci++;
-            if(ci<3){btn.disabled=false;}
-            else{btn.outerHTML='<button class="btn" id="nx">Showcase Showdown →</button>';c.querySelector('#nx').onclick=function(){Sound.click();showdown();};}
-            return;
-          }
-          pos=Math.max(0,Math.min(6,pos+(Math.random()<0.5?-1:1)));
-          drawBoard(pos);Sound.beep(300+s*70,.06);s++;
-          setTimeout(function(){if(c.isConnected)step();},200);
-        })();
-      };
+    function playGame(g){
+      g[2](c,draw(8),function(won){
+        if(!c.isConnected)return;
+        winnings+=Math.max(0,Math.round(won||0));played++;
+        if(played>=3)showdown();else row();
+      });
     }
     function showdown(){
       var bot=bots[0],spins=[];
