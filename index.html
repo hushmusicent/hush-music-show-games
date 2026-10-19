@@ -2707,8 +2707,8 @@ if (typeof module!=='undefined' && module.exports) module.exports = BANKS2;
 /* ===== GAMES1 (injected) ===== */
 /*__PURE_START__*/
 var SHG = (typeof SHG!=='undefined')?SHG:{};
-var Games = (typeof Games!=='undefined')?Games:(window.Games=window.Games||{});
-var regGame = (typeof regGame!=='undefined')?regGame:(window.regGame=function(id, def){ (window.Games||Games)[id]=Object.assign({id:id}, def); });
+var Games = (typeof Games!=='undefined')?Games:((typeof window!=='undefined')?(window.Games=window.Games||{}):{});
+var regGame = (typeof regGame!=='undefined')?regGame:((typeof window!=='undefined')?(window.regGame=function(id, def){ (window.Games||Games)[id]=Object.assign({id:id}, def); }):function(){});
 /* BANKS1 guard — real banks inject before this part in shell.html. */
 var BANKS1 = (typeof BANKS1!=='undefined')?BANKS1:{jeopardy:{sets:[]},wheel:[],millionaire:[],priceItems:[]};
 /* --- shared pure text utils (jeopardy-family) --- */
@@ -2915,17 +2915,109 @@ render:function(c,ctx){
     var tot={You:0};bots.forEach(function(b){tot[b]=0;});
     var ri=0,revealed,guessed,bank,bbank,turn,misses=0,puz;
     var VOW='aeiou';
+    var wheelRot=0,spinning=false;
+    /* ---- Wheel of Fortune visuals: canvas spinner + classic tile board ---- */
+    var WHEEL_PAL=['#e84a7f','#f2c230','#8e6fc0','#e23b3b','#3fae8a','#ef7d2a','#2aa198','#d63384'];
+    var WHEEL_CSS='.wheelwrap{display:flex;justify-content:center;margin:4px 0}'
+      +'.wboard{background:#081426;border:3px solid #1e3a5f;border-radius:10px;padding:10px 4px;margin:8px 0}'
+      +'.wrow{display:flex;justify-content:center;gap:1.2%;margin:1% 0}'
+      +'.wtile{width:6.1%;aspect-ratio:3/4;border-radius:3px;background:linear-gradient(135deg,#27ab83,#0e6b51),repeating-linear-gradient(45deg,rgba(255,255,255,.07) 0 3px,rgba(255,255,255,0) 3px 6px);border:1px solid #073c2f;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:clamp(11px,4.2vw,20px);color:#08131f}'
+      +'.wtile.lit{background:#f2f5f7;border-color:#9fb3c8}'
+      +'.wtile.gap{background:none;border:none}';
+    function paintWheel(){
+      var cv=c.querySelector('#wheelcv');if(!cv)return;
+      var g=cv.getContext('2d'),W=cv.width,cx=W/2,cy=W/2,R=W/2-8;
+      var segs=SHG.wheelSegments(),n=segs.length,arc=Math.PI*2/n,i,a0;
+      g.clearRect(0,0,W,W);
+      for(i=0;i<n;i++){
+        a0=wheelRot+i*arc;
+        g.beginPath();g.moveTo(cx,cy);g.arc(cx,cy,R,a0,a0+arc);g.closePath();
+        var s=segs[i];
+        g.fillStyle=s==='BANKRUPT'?'#141414':(s==='LOSE A TURN'?'#eef0f2':WHEEL_PAL[i%WHEEL_PAL.length]);
+        g.fill();g.lineWidth=2;g.strokeStyle='#0d1420';g.stroke();
+        g.save();g.translate(cx,cy);g.rotate(a0+arc/2);
+        g.textAlign='right';g.textBaseline='middle';
+        var label=(typeof s==='number')?'$'+s:String(s);
+        g.font='bold '+(label.length>9?W/30:W/24)+'px Arial,sans-serif';
+        g.fillStyle=s==='BANKRUPT'?'#ffffff':'#101010';
+        g.fillText(label,R-8,0);
+        g.restore();
+      }
+      g.beginPath();g.arc(cx,cy,R*0.16,0,Math.PI*2);g.fillStyle='#0d1420';g.fill();
+      g.lineWidth=3;g.strokeStyle='#cf8f3f';g.stroke();
+      g.beginPath();g.moveTo(cx-10,2);g.lineTo(cx+10,2);g.lineTo(cx,R*0.16+14);g.closePath();
+      g.fillStyle='#cf8f3f';g.fill();g.lineWidth=2;g.strokeStyle='#0d1420';g.stroke();
+    }
+    function animateWheel(seg,done){
+      var segs=SHG.wheelSegments(),n=segs.length,arc=Math.PI*2/n,i,cands=[];
+      for(i=0;i<n;i++)if(segs[i]===seg)cands.push(i);
+      var t=cands[Math.floor(Math.random()*cands.length)];
+      var jitter=(Math.random()*0.7-0.35)*arc;
+      var target=-Math.PI/2-(t+0.5)*arc+jitter;
+      var TAU=Math.PI*2,delta=((target-wheelRot)%TAU+TAU)%TAU+(5+Math.floor(Math.random()*2))*TAU;
+      var start=wheelRot,dur=2600+Math.random()*700,t0=performance.now(),lastTick=-1;
+      spinning=true;
+      function frame(now){
+        if(!c.isConnected)return;
+        var p=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-p,3);
+        wheelRot=start+delta*e;paintWheel();
+        var under=Math.floor((((-Math.PI/2-wheelRot)/arc)%n+n)%n);
+        if(under!==lastTick){lastTick=under;Sound.beep(880,.03,'square');}
+        if(p<1)requestAnimationFrame(frame);
+        else{spinning=false;done();}
+      }
+      requestAnimationFrame(frame);
+    }
+    function doSpin(who){
+      if(spinning)return;
+      var seg=SHG.wheelSpin();
+      var el=c.querySelector('#ctl');
+      if(el&&who===0)el.innerHTML='<div class="status">🌀 Spinning…</div>';
+      animateWheel(seg,function(){if(c.isConnected)resolveSpin(who,seg);});
+    }
+    function layoutRows(p){
+      var widths=[12,14,14,12],words=String(p).toUpperCase().split(' '),lines=[],line='';
+      words.forEach(function(w){
+        var wd=widths[Math.min(lines.length,3)];
+        if(w.length>wd){
+          if(line){lines.push(line);line='';}
+          while(w.length>wd){lines.push(w.slice(0,wd));w=w.slice(wd);}
+          line=w;return;
+        }
+        if(((line?line.length+1:0)+w.length)<=wd)line=line?line+' '+w:w;
+        else{lines.push(line);line=w;}
+      });
+      if(line)lines.push(line);
+      while(lines.length>4){var ex=lines.pop();lines[3]=(lines[3]+' '+ex).slice(0,widths[3]);}
+      return lines.map(function(ln,i){
+        var wd=widths[i],s=String(ln||'');
+        if(s.length>wd)s=s.slice(0,wd);
+        var pad=wd-s.length,left=Math.floor(pad/2);
+        return new Array(left+1).join(' ')+s+new Array(pad-left+1).join(' ');
+      });
+    }
+    function boardHTML(){
+      var rows=layoutRows(puz.puzzle),h='';
+      rows.forEach(function(row){
+        h+='<div class="wrow">';
+        for(var i=0;i<row.length;i++){
+          var ch=row[i];
+          if(ch===' ')h+='<div class="wtile gap"></div>';
+          else if(/[A-Z]/.test(ch)){var l=ch.toLowerCase(),rv=revealed[l];h+='<div class="wtile'+(rv?' lit':'')+'">'+(rv?ch:'')+'</div>';}
+          else h+='<div class="wtile lit">'+esc(ch)+'</div>';
+        }
+        h+='</div>';
+      });
+      return h;
+    }
     function newRound(){
       if(ri>=puzs.length){endGame();return;}
-      puz=puzs[ri];revealed={};guessed={};bank=0;bbank=[0,0];turn=0;
-      c.innerHTML='<h2>🎡 Round '+(ri+1)+' of '+puzs.length+' — '+esc(puz.cat)+'</h2><div class="card" id="bd"></div><div id="ctl"></div>';
+      puz=puzs[ri];revealed={};guessed={};bank=0;bbank=[0,0];turn=0;spinning=false;
+      c.innerHTML='<h2>🎡 Round '+(ri+1)+' of '+puzs.length+' — '+esc(puz.cat)+'</h2><style>'+WHEEL_CSS+'</style>'
+        +'<div class="wheelwrap"><canvas id="wheelcv" width="320" height="320"></canvas></div>'
+        +'<div class="wboard" id="bd"></div><div id="ctl"></div>';
+      paintWheel();
       takeTurn();
-    }
-    function puzzleDisp(){
-      var d='';
-      for(var i=0;i<puz.puzzle.length;i++){var ch=puz.puzzle[i],l=ch.toLowerCase();
-        d+=(/[a-z]/.test(l)?(revealed[l]?' '+ch.toUpperCase():' ▢'):ch);}
-      return d;
     }
     function scoreLine(){
       var s='<b>You:</b> '+g1Money(tot.You)+' <span class="muted">(round '+g1Money(bank)+')</span>';
@@ -2935,7 +3027,7 @@ render:function(c,ctx){
     function msg(t){var e=c.querySelector('#wmsg');if(e)e.innerHTML=t;}
     function draw(){
       var bd=c.querySelector('#bd');if(!bd)return;
-      bd.innerHTML='<div class="big" style="letter-spacing:1px;line-height:1.7;font-size:22px">'+puzzleDisp()+'</div><div class="status">'+scoreLine()+'</div><div class="muted" id="wmsg"></div>';
+      bd.innerHTML=boardHTML()+'<div class="status" style="padding:2px 8px 0">'+scoreLine()+'</div><div class="muted" id="wmsg" style="padding:0 8px 4px"></div>';
     }
     function solved(){var pl=puz.puzzle.toLowerCase();for(var i=0;i<pl.length;i++){var l=pl[i];if(/[a-z]/.test(l)&&!revealed[l])return false;}return true;}
     function takeTurn(){draw();if(turn===0)playerCtl();else botCtl(bots[turn-1],turn-1);}
@@ -2943,7 +3035,7 @@ render:function(c,ctx){
     function playerCtl(){
       var el=c.querySelector('#ctl');
       el.innerHTML='<div class="row"><button class="btn small grow" id="sp">🌀 SPIN</button><button class="btn small grow" id="vw">Buy vowel $250</button><button class="btn small grow" id="sv">Solve</button></div><div id="inp"></div>';
-      el.querySelector('#sp').onclick=function(){Sound.click();spinRes(0,SHG.wheelSpin());};
+      el.querySelector('#sp').onclick=function(){Sound.click();doSpin(0);};
       el.querySelector('#vw').onclick=function(){
         Sound.click();
         if(bank<250){toast('Need $250 in the round bank');return;}
@@ -2969,7 +3061,7 @@ render:function(c,ctx){
         };
       };
     }
-    function spinRes(who,seg){
+    function resolveSpin(who,seg){
       var name=who===0?'You':bots[who-1];
       if(seg==='BANKRUPT'){if(who===0)bank=0;else bbank[who-1]=0;Sound.lose();msg('💥 '+esc(name)+' hit BANKRUPT!');setTimeout(nextTurn,1300);return;}
       if(seg==='LOSE A TURN'){Sound.beep(300,.2);msg('⏭ '+esc(name)+' loses a turn.');setTimeout(nextTurn,1300);return;}
@@ -3013,7 +3105,7 @@ render:function(c,ctx){
           if(Math.random()<0.6){solveRound(bi+1);return;}
           msg('🤖 '+esc(name)+' tries to solve… wrong!');setTimeout(nextTurn,1100);return;
         }
-        spinRes(bi+1,SHG.wheelSpin());
+        doSpin(bi+1);
       });
     }
     function botCont(who){
@@ -3607,8 +3699,6 @@ render:function(c,ctx){
 /*__PURE_START__*/
 /* Hush Music Show Games — part 2: 8 game-show games (pure helpers, DOM-free). */
 var SHG = (typeof SHG!=='undefined')?SHG:{};
-var Games = (typeof Games!=='undefined')?Games:(window.Games=window.Games||{});
-var regGame = (typeof regGame!=='undefined')?regGame:(window.regGame=function(id, def){ (window.Games||Games)[id]=Object.assign({id:id}, def); });
 /* Question banks load from a separate part file; guard so this part works standalone. */
 var BANKS2 = (typeof BANKS2!=='undefined')?BANKS2:{chase:[],weakestlink:[],v100:[],fifthgrader:[],hollywood:{celebClues:[],wordBank:[],quickFire:[]},pyramid:[],whatsmline:{questions:[],occupations:[]}};
 
@@ -5035,9 +5125,8 @@ const GAME_META={
 };
 
 /* ---------------- game registry ---------------- */
-var Games = window.Games = window.Games || {};
-function regGame(id, def){ (window.Games||Games)[id]=Object.assign({id}, def); }
-window.regGame = regGame;
+const Games = {};
+function regGame(id, def){ Games[id]=Object.assign({id}, def); }
 
 /* ---------------- bet widget ---------------- */
 function betWidget(container, onBet){
