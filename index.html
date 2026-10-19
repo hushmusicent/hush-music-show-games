@@ -6645,6 +6645,17 @@ const QuizPVP = {
 let cleanup=null;
 function setCleanup(fn){ if(cleanup){ try{cleanup();}catch(e){} } cleanup=fn; }
 function goHome(){ setCleanup(null); Net.leave(true); Voice.leave(); show('home'); }
+function confirmQuitGame(){
+  Sound.click();
+  const r=$('#modalRoot');
+  r.innerHTML='<div class="modal"><div class="card center"><div class="big">🚪 Quit this game?</div>'
+    +'<div class="muted" style="margin:8px 0">Your progress in this round will be lost.</div>'
+    +'<div class="row" style="gap:8px"><button class="btn grow" id="qy">Yes, quit</button>'
+    +'<button class="btn secondary grow" id="qn">Keep playing</button></div></div></div>';
+  r.querySelector('#qy').onclick=()=>{ r.innerHTML=''; goHome(); };
+  r.querySelector('#qn').onclick=()=>{ Sound.click(); r.innerHTML=''; };
+  r.querySelector('.modal').onclick=(e)=>{ if(e.target.classList.contains('modal')) r.innerHTML=''; };
+}
 
 /* ---------- AUTH ---------- */
 function showAuth(){
@@ -6689,7 +6700,7 @@ function showHome(){
 function showGame(id){
   const g=Games[id]||{}; const v=$('#view');
   v.innerHTML='<button class="btn small secondary" id="back">← All games</button><div id="stage"></div>';
-  v.querySelector('#back').onclick=()=>goHome();
+  v.querySelector('#back').onclick=()=>confirmQuitGame();
   setCleanup(()=>{ Net.leave(); });
   const meta=GAME_META[id]||{};
   const stage=v.querySelector('#stage');
