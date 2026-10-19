@@ -3399,7 +3399,7 @@ function g1Choices(c,q,onPick){
 }
 
 /* ================= JEOPARDY ================= */
-regGame('jeopardy',{name:'Jeopardy!',icon:'🧠',tags:'Game Show',pvp:true,seats:2,
+regGame('jeopardy',{howto:"Pick a clue from the board. You get 12 seconds to type your answer - close spelling counts! A right answer adds the clue value, a wrong one subtracts it. Watch for Daily Doubles where you wager, and the Final Jeopardy wager at the end. Highest score wins.",name:'Jeopardy!',icon:'🧠',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS1.jeopardy.sets.length))return;
@@ -3498,7 +3498,7 @@ render:function(c,ctx){
 }});
 
 /* ================= WHEEL OF FORTUNE ================= */
-regGame('wheel',{name:'Wheel of Fortune',icon:'🎡',tags:'Game Show',pvp:true,seats:2,
+regGame('wheel',{howto:"Tap SPIN, then guess a consonant - you win the wedge value for every one in the puzzle. Buy vowels for $250, or solve the puzzle anytime. BANKRUPT wipes your round bank, LOSE A TURN skips you, and FREE SPIN tokens save you from a miss. Most cash at the end wins.",name:'Wheel of Fortune',icon:'🎡',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS1.wheel.length))return;
@@ -3759,7 +3759,7 @@ render:function(c,ctx){
 }});
 
 /* ================= MILLIONAIRE ================= */
-regGame('millionaire',{name:'Millionaire',icon:'💰',tags:'Game Show',pvp:true,seats:2,
+regGame('millionaire',{howto:"Climb 15 questions up the money ladder. You have 3 lifelines: 50:50, Phone a Friend, and Ask the Audience. Walk away anytime to keep what you have banked - a wrong answer drops you back to the last safe haven.",name:'Millionaire',icon:'💰',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS1.millionaire.length>=15))return;
@@ -4863,7 +4863,7 @@ PG.clockgame=function(c,items,done){
 };
 
 /* ================= THE PRICE IS RIGHT ================= */
-regGame('price',{name:'The Price Is Right',icon:'🏷️',tags:'Game Show',pvp:true,seats:2,
+regGame('price',{howto:"Bid closest without going over in Contestant's Row, then play 3 pricing games to win cash and prizes. Spin the Showdown wheel (closest to $1.00 without going over wins), then bid the total of your Showcase - closest without going over takes it all.",name:'The Price Is Right',icon:'🏷️',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS1.priceItems.length>=6))return;
@@ -5061,7 +5061,7 @@ render:function(c,ctx){
 });
 
 /* ================= FAMILY FEUD ================= */
-regGame('feud',{name:'Family Feud',icon:'👪',tags:'Game Show',pvp:true,seats:2,
+regGame('feud',{howto:"Guess the top survey answers - each is worth its points. 3 strikes and the other family can steal the round. Clear the board to bank the points. After 3 rounds comes Fast Money: 5 rapid questions, 15 seconds each - reach 120 points to win!",name:'Family Feud',icon:'👪',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS2.feud.length>=8))return;
@@ -5225,7 +5225,7 @@ render:function(c,ctx){
 }});
 
 /* ================= THE CHASE ================= */
-regGame('chase',{name:'The Chase',icon:'🏃',tags:'Game Show',pvp:true,seats:2,
+regGame('chase',{howto:"60-second Cash Builder: every right answer banks $1,000. Then the Final Chase - answer questions to move down the board and escape while the Chaser hunts you. Reach the bank before the Chaser catches you!",name:'The Chase',icon:'🏃',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS2.chase.length>=10))return;
@@ -5338,7 +5338,7 @@ render:function(c,ctx){
 }});
 
 /* ================= MATCH GAME ================= */
-regGame('matchgame',{name:'Match Game',icon:'✏️',tags:'Game Show',pvp:true,seats:2,
+regGame('matchgame',{howto:"Fill in the blank with the funniest answer you can think of, then see if the celebrity panel matched you. 2 rounds - most matches wins.",name:'Match Game',icon:'✏️',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS2.matchgame.length>=2))return;
@@ -5396,7 +5396,7 @@ render:function(c,ctx){
 }});
 
 /* ================= PASSWORD ================= */
-regGame('password',{name:'Password',icon:'🔑',tags:'Game Show',pvp:true,seats:2,
+regGame('password',{howto:"Guess the secret password from one-word clues. You get up to 3 clues per word across 5 words - fewer clues used means more points. Guess right to score!",name:'Password',icon:'🔑',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS2.password.length>=5))return;
@@ -5762,7 +5762,7 @@ function shgQBtn(label,fn,cls){
 }
 
 /* ================= DEAL OR NO DEAL ================= */
-regGame('deal',{name:'Deal or No Deal',icon:'💼',tags:'Game Show',pvp:true,seats:2,
+regGame('deal',{howto:"Pick your case, then open the rest one round at a time. After each round the banker calls with an offer - take the DEAL or say NO DEAL and keep opening. Down to two cases? Swap or stick. Walk away with the banker's money or whatever is in your case!",name:'Deal or No Deal',icon:'💼',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   var S=null, pvpCtl=null, dz;
@@ -5895,7 +5895,7 @@ render(c,ctx){
 }});
 
 /* ================= PRESS YOUR LUCK ================= */
-regGame('pressluck',{name:'Press Your Luck',icon:'🍀',tags:'Game Show',pvp:true,seats:2,
+regGame('pressluck',{howto:"Answer trivia to earn spins, then spin the board for cash and prizes - but dodge the WHAMMY! 4 Whammies and you are out. You can pass spins to put the pressure on. Biggest bank at the end wins.",name:'Press Your Luck',icon:'🍀',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   if(shgGuard(BANKS2.chase&&BANKS2.chase.length>=3,'Press Your Luck questions are still loading')) return;
@@ -6027,7 +6027,7 @@ render(c,ctx){
 }});
 
 /* ================= THE $100,000 PYRAMID ================= */
-regGame('pyramid',{name:'The $100,000 Pyramid',icon:'🔺',tags:'Game Show',pvp:true,seats:2,
+regGame('pyramid',{howto:"Winner's Circle: guess all 7 words in 60 seconds from the clues given. Get all 7 to take the $100,000!",name:'The $100,000 Pyramid',icon:'🔺',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   if(shgGuard(BANKS2.pyramid&&BANKS2.pyramid.length>=3,'Pyramid word lists are still loading')) return;
@@ -6138,7 +6138,7 @@ render(c,ctx){
 }});
 
 /* ================= WEAKEST LINK ================= */
-regGame('weakestlink',{name:'Weakest Link',icon:'🔗',tags:'Game Show',pvp:true,seats:2,
+regGame('weakestlink',{howto:"Chain correct answers to climb the money ladder - hit BANK before you miss to lock it in. A wrong answer breaks the chain. Each round ends with a vote: the team votes off the weakest link. Survive to the final head-to-head and win!",name:'Weakest Link',icon:'🔗',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   if(shgGuard(BANKS2.weakestlink&&BANKS2.weakestlink.length>=12,'Weakest Link questions are still loading')) return;
@@ -6347,7 +6347,7 @@ render(c,ctx){
 }});
 
 /* ================= 1 VS 100 ================= */
-regGame('1v100',{name:'1 vs 100',icon:'💯',tags:'Game Show',pvp:true,seats:2,
+regGame('1v100',{howto:"You against a mob of 100. Every question knocks out the mob members who miss - each one is cash for you. You get 3 helps: Poll the Mob, Ask the Mob, and Double. One wrong answer and the mob takes it all!",name:'1 vs 100',icon:'💯',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   if(shgGuard(BANKS2.v100&&BANKS2.v100.length>=10,'1 vs 100 questions are still loading')) return;
@@ -6461,7 +6461,7 @@ render(c,ctx){
 }});
 
 /* ================= ARE YOU SMARTER THAN A 5TH GRADER ================= */
-regGame('fifthgrader',{name:'Are You Smarter Than a 5th Grader',icon:'🎒',tags:'Game Show',pvp:true,seats:2,
+regGame('fifthgrader',{howto:"Climb grades 1 through 5, picking a subject each grade. You get 3 cheats: Peek, Copy, and Save. Drop out anytime to keep your winnings - miss a question and you flunk out with nothing!",name:'Are You Smarter Than a 5th Grader',icon:'🎒',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   if(shgGuard(BANKS2.fifthgrader&&BANKS2.fifthgrader.length>=5,'5th Grader questions are still loading')) return;
@@ -6614,7 +6614,7 @@ render(c,ctx){
 }});
 
 /* ================= WHAT'S MY LINE ================= */
-regGame('whatsmline',{name:"What's My Line?",icon:'🕵️',tags:'Game Show',pvp:true,seats:2,
+regGame('whatsmline',{howto:"A mystery occupation is hiding. Ask up to 10 yes/no questions to narrow it down, then guess the occupation. Fewer questions asked means more points!",name:"What's My Line?",icon:'🕵️',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   var occs=(BANKS2.whatsmline.occupations||[]).map(SHG.wmlNormOcc).filter(function(o){ return o.name; });
@@ -6720,7 +6720,7 @@ render(c,ctx){
 }});
 
 /* ================= HOLLYWOOD GAME NIGHT ================= */
-regGame('hollywood',{name:'Hollywood Game Night',icon:'🎬',tags:'Game Show',pvp:true,seats:2,
+regGame('hollywood',{howto:"3 party games, one total score. 1) Celebrity Clues - guess the star from the clues (fewer clues = more points). 2) In Other Words - 60 seconds of word guessing. 3) Quick Fire - 60 seconds of rapid trivia. Beat the target score to win!",name:'Hollywood Game Night',icon:'🎬',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   var hw=BANKS2.hollywood||{};
@@ -7037,7 +7037,15 @@ function showGame(id){
   setCleanup(()=>{ Net.leave(); });
   const meta=GAME_META[id]||{};
   const stage=v.querySelector('#stage');
-  stage.innerHTML='<h2>'+(g.icon||meta.icon||'🎲')+' '+esc(g.name||meta.name||id)+'</h2><div id="modes">'+gameModesHTML(g)+'</div><div id="play"></div>';
+  stage.innerHTML='<h2>'+(g.icon||meta.icon||'🎲')+' '+esc(g.name||meta.name||id)+'</h2><div id="modes">'+gameModesHTML(g)+'<button class="btn small secondary" id="howto" style="margin-top:8px">📖 How to play</button></div><div id="play"></div>';
+  stage.querySelector('#howto').onclick=function(){
+    Sound.click();
+    var r=$('#modalRoot');
+    var txt=(g&&g.howto)||'Have fun and good luck!';
+    r.innerHTML='<div class="modal"><div class="card"><h2>📖 How to play</h2><div style="line-height:1.65">'+esc(txt)+'</div><button class="btn" id="hx" style="margin-top:12px">Got it!</button></div></div>';
+    r.querySelector('#hx').onclick=function(){Sound.click();r.innerHTML='';};
+    r.querySelector('.modal').onclick=function(e){if(e.target.classList.contains('modal'))r.innerHTML='';};
+  };
   wireModes(stage.querySelector('#modes'), id, (ctx)=>{
     stage.querySelector('#modes').classList.add('hidden');
     const play=stage.querySelector('#play');
