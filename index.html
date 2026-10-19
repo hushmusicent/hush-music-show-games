@@ -3533,8 +3533,9 @@ render:function(c,ctx){
         Sound.win();(async function(){var p=await Wallet.recordWin('millionaire');toast('+'+p+' ⭐ banked!');})();
       }else{
         var safe=lvl>9?32000:(lvl>4?1000:0);
-        c.innerHTML='<div class="card center"><div class="big">💰 Game over</div><div class="status">'+(walked?'You walk away with ':'Wrong answer — you leave with ')+'<b>'+g1Money(walked?banked:safe)+'</b></div></div>';
+        c.innerHTML='<div class="card center"><div class="big">💰 Game over</div><div class="status">'+(walked?'You walk away with ':'Wrong answer — you leave with ')+'<b>'+g1Money(walked?banked:safe)+'</b></div><button class="btn" id="again" style="margin-top:10px">🔄 Start over</button></div>';
         Sound.lose();
+        c.querySelector('#again').onclick=function(){Sound.click();playM(share(),null);};
       }
     }
     ask();
