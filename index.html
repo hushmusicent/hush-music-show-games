@@ -71,6 +71,12 @@ table.lb tr.me td{color:var(--gold); font-weight:800;}
 .ff-slot .pts{color:#ffe14d;font-family:"Courier New",monospace;font-size:19px;text-shadow:0 0 9px rgba(255,225,77,.9);}
 .ff-strikes{min-height:30px;text-align:center;font-size:24px;margin-top:8px;letter-spacing:6px;}
 .ff-count{text-align:center;color:#ffe14d;font-weight:800;letter-spacing:3px;font-size:13px;margin:0 0 8px;text-shadow:0 0 8px rgba(255,225,77,.6);}
+.ff-podium{display:flex;align-items:stretch;gap:8px;margin:0 0 10px;background:linear-gradient(#33333c,#17171c);border:3px solid #c98a2b;border-radius:12px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.6);}
+.ff-fam{flex:1;background:linear-gradient(#2f6fd0,#143a80);border:2px solid #e2e2e2;border-radius:8px;color:#fff;font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;padding:10px 6px;text-align:center;text-shadow:0 2px 4px #000;letter-spacing:1px;}
+.ff-vs{align-self:center;color:#ffe14d;font-weight:900;}
+.ff-xov{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;gap:12px;background:rgba(0,0,0,.45);border-radius:180px 180px 10px 10px;animation:ffxpop .25s;}
+@keyframes ffxpop{from{transform:scale(.6);opacity:0;}}
+.ff-x{width:86px;height:86px;border-radius:16px;background:linear-gradient(#f04438,#8f130d);border:4px solid #ffc9c2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:56px;font-weight:900;text-shadow:0 3px 8px #000;box-shadow:0 6px 20px rgba(0,0,0,.7);}
 </style>
 </head>
 <body>
@@ -5074,11 +5080,19 @@ render:function(c,ctx){
       +'<div class="ff-score">'+rp+'</div>'
       +'<div class="ff-count">'+nA+' ANSWERS</div>'
       +'<div class="ff-grid"><div>'+left+'</div><div>'+right+'</div></div>'
-      +'<div class="ff-strikes">'+('❌'.repeat(strikes)||'&nbsp;')+'</div></div>';
+      +'<div class="ff-strikes">'+('❌'.repeat(strikes)||'&nbsp;')+'</div>'
+      +(strikes>=3?'<div class="ff-xov"><div class="ff-x">✕</div><div class="ff-x">✕</div><div class="ff-x">✕</div></div>':'')
+      +'</div>';
   }
+  /* family podium: player family vs opponent family, like the show's contestant desk */
+  var famBar='';
+  function podiumHTML(a,b){
+    return '<div class="ff-podium"><div class="ff-fam">👪 THE '+esc(String(a).toUpperCase())+' FAMILY</div><div class="ff-vs">VS</div><div class="ff-fam">🤖 THE '+esc(String(b).toUpperCase())+' FAMILY</div></div>';
+  }
+  var playerFam=(typeof Auth!=='undefined'&&Auth.user&&Auth.user.username)||'You';
   /* board + guess row; onGuess(text) on submit */
   function askRound(title,s,revealed,strikes,rp,extra,onGuess){
-    var h='<h2>'+title+'</h2><div class="card">'+boardHTML(s,revealed,strikes,rp)+(extra||'')
+    var h='<h2>'+title+'</h2><div class="card">'+famBar+boardHTML(s,revealed,strikes,rp)+(extra||'')
       +'<div class="row"><input id="g" class="grow" placeholder="Your guess…" autocomplete="off"><button class="btn small" id="go">Guess</button></div></div>';
     c.innerHTML=h;
     var inp=c.querySelector('#g');
@@ -5096,6 +5110,7 @@ render:function(c,ctx){
   }
   function cpuPlay(survs){
     var bot=g1Bots(1)[0],ri=0,myTot=0,botTot=0;
+    famBar=podiumHTML(playerFam,bot);
     round();
     function round(){
       if(ri>=3){fastMoney();return;}
@@ -5113,7 +5128,13 @@ render:function(c,ctx){
           ask('✅ "'+esc(s.answers[idx].t)+'" — '+s.answers[idx].pts+' pts!');
         }else{
           strikes++;Sound.lose();
-          if(strikes>=3){steal();return;}
+          if(strikes>=3){
+            ask('💥 STRIKE 3!');
+            var gi=c.querySelector('#g'),gb=c.querySelector('#go');
+            if(gi)gi.disabled=true;if(gb)gb.disabled=true;
+            setTimeout(function(){if(c.isConnected)steal();},1700);
+            return;
+          }
           ask('❌ Strike '+strikes+'!');
         }
       }
@@ -5159,6 +5180,7 @@ render:function(c,ctx){
   }
   function pvpPlay(survs,fin){
     var ri=0,total=0;
+    famBar=podiumHTML(playerFam,'Rival');
     round();
     function round(){
       if(ri>=3){
@@ -5178,7 +5200,14 @@ render:function(c,ctx){
           ask('✅ +'+s.answers[idx].pts);
         }else{
           strikes++;Sound.lose();
-          if(strikes>=3){total+=rp;ri++;c.innerHTML='<div class="card"><div class="muted">3 strikes — you bank '+rp+' pts.</div></div>';setTimeout(function(){if(c.isConnected)round();},1300);return;}
+          if(strikes>=3){
+            total+=rp;ri++;
+            ask('💥 STRIKE 3 — you bank '+rp+' pts.');
+            var gi2=c.querySelector('#g'),gb2=c.querySelector('#go');
+            if(gi2)gi2.disabled=true;if(gb2)gb2.disabled=true;
+            setTimeout(function(){if(c.isConnected)round();},1700);
+            return;
+          }
           ask('❌ Strike '+strikes);
         }
       }
