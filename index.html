@@ -5064,12 +5064,13 @@ render:function(c,ctx){
 regGame('feud',{howto:"Two families of five face off. We surveyed 100 people - come up with the top answers!\n\nFACE-OFF: One player from each family faces off on each question. Buzz in first with the higher-ranked answer to win control. If it's the #1 answer your family plays automatically - otherwise your family chooses to PLAY or PASS.\n\nTHE ROUND: The playing family names answers one at a time. Every correct answer is revealed and its points go into the round bank. A miss is a STRIKE - three strikes and the other family gets one chance to STEAL. Name a remaining answer and they steal the whole bank; miss and the playing family keeps it.\n\nPOINTS: Round 1 is single points, Round 2 is DOUBLE, Round 3 and on is TRIPLE. First family to 300 points wins the game!\n\nFAST MONEY: Two players, 5 questions. Player 1 gets 20 seconds; Player 2 gets 25 seconds and can't repeat Player 1's answers. Score 200 points combined to win the grand prize!",name:'Family Feud',icon:'👪',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
-  if(g1Guard(c,BANKS2.feud.length>=8))return;
-  var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS2.feud,8)));};
+  if(g1Guard(c,BANKS2.feud.length>=14))return;
+  var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS2.feud,14)));};
+  var playerFam=(typeof Auth!=='undefined'&&Auth.user&&Auth.user.username)||'You';
   if(net)g1Pvp(net,share,function(d,fin){pvpPlay(d.slice(0,3),fin);},function(iw,sc){g1Settle(c,iw,sc,'Family Feud');});
   else cpuPlay(share());
   function boardHTML(s,revealed,strikes,rp){
-    /* show-style board: arched bulb frame, LED score, blue answer panels (all answers, count shown) */
+    /* show-style board: arched frame, LED score, blue answer panels (all answers, count shown) */
     var nA=s.answers.length,half=Math.ceil(nA/2);
     function slot(a,i){
       var r=revealed.indexOf(i)>=0;
@@ -5098,7 +5099,6 @@ render:function(c,ctx){
     }
     return '<div class="ff-pds">'+one(podiumScores.a,'👪')+one(podiumScores.b,'🤖')+'</div>';
   }
-  var playerFam=(typeof Auth!=='undefined'&&Auth.user&&Auth.user.username)||'You';
   /* board + guess row; onGuess(text) on submit */
   function askRound(title,s,revealed,strikes,rp,extra,onGuess){
     var h='<h2>'+title+'</h2><div class="card">'+boardHTML(s,revealed,strikes,rp)+famPodiums()+(extra||'')
@@ -5117,24 +5117,132 @@ render:function(c,ctx){
     });
     return idx;
   }
+  function botRoundGuess(s,revealed){
+    var rem=[];
+    s.answers.forEach(function(a,i){if(revealed.indexOf(i)<0)rem.push(i);});
+    if(!rem.length||Math.random()>0.7)return -1;
+    return rem[Math.floor(Math.random()*rem.length)];
+  }
+  /* ================= CPU: official format ================= */
   function cpuPlay(survs){
-    var bot=g1Bots(1)[0],ri=0,myTot=0,botTot=0;
-    round();
-    function round(){
-      if(ri>=3){fastMoney();return;}
-      var s=survs[ri],revealed=[],strikes=0,rp=0;
+    var botNames=g1Bots(9);
+    var myFam={name:famName(playerFam),members:[playerFam].concat(botNames.slice(0,4)),score:0,champ:0};
+    var botFam={name:famName(botNames[4]),members:botNames.slice(4,9),score:0,champ:0};
+    var ri=0;
+    faceoff();
+    function mult(){return ri===0?1:(ri===1?2:3);}
+    function multLabel(){return ri===0?'SINGLE':(ri===1?'DOUBLE':'TRIPLE');}
+    function podiumWrap(){
+      podiumScores={a:{name:myFam.name,score:myFam.score},b:{name:botFam.name,score:botFam.score}};
+      return famPodiums();
+    }
+    /* ----- face-off ----- */
+    function faceoff(){
+      var s=survs[ri%survs.length];
+      var myChamp=myFam.members[myFam.champ%5],botChamp=botFam.members[botFam.champ%5];
+      myFam.champ++;botFam.champ++;
+      c.innerHTML='<h2>⚡ FACE-OFF — Round '+(ri+1)+' <span class="muted">('+multLabel()+' points)</span></h2><div class="card">'
+        +'<div class="ff-q">'+esc(s.q)+'</div>'
+        +'<div class="center muted">👪 Your champion: <b>'+esc(myChamp)+'</b> &nbsp;vs&nbsp; 🤖 Their champion: <b>'+esc(botChamp)+'</b></div>'
+        +'<div class="center" style="margin:10px 0"><button class="btn" id="buzz">🔔 BUZZ IN</button></div><div id="bz"></div>'
+        +podiumWrap()+'</div>';
+      var over=false;
+      var botT=setTimeout(function(){if(!over){over=true;botBuzzed();}},1500+Math.random()*2500);
+      c.querySelector('#buzz').onclick=function(){
+        if(over)return;over=true;clearTimeout(botT);Sound.click();playerBuzzed();
+      };
+      function note(h){var z=c.querySelector('#bz');if(z)z.innerHTML=h;}
+      function playerBuzzed(){
+        note('<div class="row"><input id="fa" class="grow" placeholder="Your answer…" autocomplete="off"><button class="btn small" id="fag">Answer</button></div>');
+        var inp=c.querySelector('#fa');
+        function go2(){var v=inp.value.trim();if(!v)return;var pr=findMatch(v,s,null,true);
+          note('<div class="status">You answered '+(pr>=0?'"'+esc(s.answers[pr].t)+'" (#'+(pr+1)+')':'nothing on the board')+'…</div>');
+          setTimeout(function(){if(c.isConnected)botAnswers(pr);},1100);}
+        c.querySelector('#fag').onclick=go2;
+        inp.addEventListener('keydown',function(e){if(e.key==='Enter')go2();});
+      }
+      function botBuzzed(){
+        note('<div class="status">🤖 '+esc(botChamp)+' buzzed in first!</div>');
+        setTimeout(function(){if(!c.isConnected)return;
+          var br=botFaceAnswer(s);
+          note('<div class="status">🤖 '+esc(botChamp)+' answered '+(br>=0?'"'+esc(s.answers[br].t)+'" (#'+(br+1)+')':'nothing on the board')+'. Your answer:</div>'
+            +'<div class="row"><input id="fa" class="grow" placeholder="Your answer…" autocomplete="off"><button class="btn small" id="fag">Answer</button></div>');
+          var inp=c.querySelector('#fa');
+          function go3(){var v=inp.value.trim();if(!v)return;var pr=findMatch(v,s,null,true);decide(pr,br);}
+          c.querySelector('#fag').onclick=go3;
+          inp.addEventListener('keydown',function(e){if(e.key==='Enter')go3();});
+        },1100);
+      }
+      function botAnswers(pr){
+        var br=botFaceAnswer(s);
+        note('<div class="status">🤖 '+esc(botChamp)+' answered '+(br>=0?'"'+esc(s.answers[br].t)+'" (#'+(br+1)+')':'nothing on the board')+'.</div>');
+        setTimeout(function(){if(c.isConnected)decide(pr,br);},1100);
+      }
+      function decide(pRank,bRank){
+        var pw=pRank>=0,bw=bRank>=0,winner,wrank;
+        if(pw&&(!bw||pRank<=bRank)){winner='me';wrank=pRank;}
+        else if(bw&&(!pw||bRank<pRank)){winner='bot';wrank=bRank;}
+        else{
+          note('<div class="status">Both missed — buzz again!</div><div class="center" style="margin-top:8px"><button class="btn" id="bz2">🔔 BUZZ IN</button></div>');
+          var o2=false;
+          var t2=setTimeout(function(){if(!o2){o2=true;botBuzzed();}},1500+Math.random()*2500);
+          c.querySelector('#bz2').onclick=function(){if(o2)return;o2=true;clearTimeout(t2);Sound.click();playerBuzzed();};
+          return;
+        }
+        var wName=winner==='me'?myChamp:botChamp;
+        if(wrank===0){
+          note('<div class="ok">🏆 '+esc(wName)+' hit the #1 answer — '+(winner==='me'?'your':'their')+' family PLAYS!</div>');
+          setTimeout(function(){if(c.isConnected)playRound(s,winner==='me'?myFam:botFam,winner==='me'?botFam:myFam);},1600);
+        }else if(winner==='me'){
+          note('<div class="ok">You won the face-off with #'+(wrank+1)+'!</div><div class="row" style="margin-top:8px"><button class="btn grow" id="pPlay">▶ PLAY</button><button class="btn secondary grow" id="pPass">⏭ PASS</button></div>');
+          c.querySelector('#pPlay').onclick=function(){Sound.click();playRound(s,myFam,botFam);};
+          c.querySelector('#pPass').onclick=function(){Sound.click();note('<div class="muted">You pass — the '+esc(botFam.name)+' plays.</div>');setTimeout(function(){if(c.isConnected)playRound(s,botFam,myFam);},1200);};
+        }else{
+          var plays=Math.random()<0.85;
+          note('<div class="status">🤖 '+esc(botChamp)+' won with #'+(wrank+1)+' — the '+esc(botFam.name)+' '+(plays?'will PLAY.':'PASSES! Your family plays.')+'</div>');
+          setTimeout(function(){if(c.isConnected)playRound(s,plays?botFam:myFam,plays?myFam:botFam);},1600);
+        }
+      }
+    }
+    function botFaceAnswer(s){
+      var r=Math.random();
+      if(r<0.45)return 0;
+      if(r<0.75)return 1+Math.floor(Math.random()*Math.min(2,s.answers.length-1));
+      return -1;
+    }
+    /* ----- main round ----- */
+    function playRound(s,playing,other){
+      var revealed=[],strikes=0,bank=0,mi=0,m=mult();
       ask();
       function ask(msg){
-        podiumScores={a:{name:famName(playerFam),score:myTot},b:{name:famName(bot),score:botTot}};
-        askRound('👪 Round '+(ri+1)+' of 3',s,revealed,strikes,rp,
-          (msg?'<div class="msg">'+msg+'</div>':'')+'<div class="muted">You: '+myTot+' · '+esc(bot)+': '+botTot+'</div>',onGuess);
+        podiumScores={a:{name:myFam.name,score:myFam.score},b:{name:botFam.name,score:botFam.score}};
+        var isMe=playing===myFam;
+        var who=playing.members[mi%playing.members.length];mi++;
+        var head='<h2>👪 Round '+(ri+1)+' — '+esc(playing.name)+' <span class="muted">('+multLabel()+' pts)</span></h2>';
+        if(isMe){
+          c.innerHTML=head+'<div class="card">'+boardHTML(s,revealed,strikes,bank)+famPodiums()
+            +'<div class="muted">'+esc(who)+' answers for the family:</div>'
+            +(msg?'<div class="msg">'+msg+'</div>':'')
+            +'<div class="row"><input id="g" class="grow" placeholder="Your guess…" autocomplete="off"><button class="btn small" id="go">Guess</button></div></div>';
+          var inp=c.querySelector('#g');
+          function go(){var v=inp.value.trim();if(!v)return;Sound.click();onGuess(v);}
+          c.querySelector('#go').onclick=go;
+          inp.addEventListener('keydown',function(e){if(e.key==='Enter')go();});
+        }else{
+          c.innerHTML=head+'<div class="card">'+boardHTML(s,revealed,strikes,bank)+famPodiums()
+            +'<div class="muted">🤖 '+esc(who)+' is thinking…</div>'+(msg?'<div class="msg">'+msg+'</div>':'')+'</div>';
+          setTimeout(function(){if(!c.isConnected)return;
+            var bi=botRoundGuess(s,revealed);
+            onGuess(bi>=0?s.answers[bi].t:'zzz-no-match-zzz');
+          },1200);
+        }
       }
       function onGuess(v){
         var idx=findMatch(v,s,revealed,false);
         if(idx>=0){
-          revealed.push(idx);rp+=s.answers[idx].pts;Sound.win();
-          if(revealed.length>=s.answers.length){myTot+=rp;ask('🎉 Board cleared! +'+rp+' pts');setTimeout(function(){if(c.isConnected){ri++;round();}},1500);return;}
-          ask('✅ "'+esc(s.answers[idx].t)+'" — '+s.answers[idx].pts+' pts!');
+          revealed.push(idx);var pts=s.answers[idx].pts*m;bank+=pts;Sound.win();
+          if(revealed.length>=s.answers.length){endRound();return;}
+          ask('✅ "'+esc(s.answers[idx].t)+'" — '+pts+' pts!');
         }else{
           strikes++;Sound.lose();
           if(strikes>=3){
@@ -5148,45 +5256,139 @@ render:function(c,ctx){
         }
       }
       function steal(){
-        var unrev=s.answers.filter(function(a,i){return revealed.indexOf(i)<0;});
-        var ok=Math.random()<Math.min(0.9,0.25+0.12*unrev.length);
-        if(ok)botTot+=rp;else myTot+=rp;
-        c.innerHTML='<div class="card"><div class="'+(ok?'err':'ok')+'">'+(ok?'😈 '+esc(bot)+' steals the round! +'+rp+' pts to them.':'🛡️ Steal failed! You bank '+rp+' pts.')+'</div><button class="btn" id="nx">Next round</button></div>';
-        if(ok)Sound.lose();else Sound.win();
-        c.querySelector('#nx').onclick=function(){Sound.click();ri++;round();};
+        var isMe=other===myFam;
+        var h='<h2>🥷 STEAL ATTEMPT — '+esc(other.name)+'</h2><div class="card">'+boardHTML(s,revealed,strikes,bank)+famPodiums()
+          +'<div class="muted">One answer to steal the '+bank+'-pt bank!</div>';
+        if(isMe){
+          c.innerHTML=h+'<div class="row"><input id="sg" class="grow" placeholder="Steal answer…" autocomplete="off"><button class="btn small" id="sgo">Steal!</button></div></div>';
+          var inp=c.querySelector('#sg');
+          function goS(){var v=inp.value.trim();if(!v)return;var mi2=findMatch(v,s,revealed,false);doSteal(mi2>=0,mi2>=0?s.answers[mi2].t:null);}
+          c.querySelector('#sgo').onclick=goS;
+          inp.addEventListener('keydown',function(e){if(e.key==='Enter')goS();});
+        }else{
+          c.innerHTML=h+'<div class="muted">🤖 '+esc(other.members[0])+' is thinking…</div></div>';
+          setTimeout(function(){if(!c.isConnected)return;
+            var bi=botRoundGuess(s,revealed);
+            doSteal(bi>=0,bi>=0?s.answers[bi].t:null);
+          },1400);
+        }
+        function doSteal(ok,what){
+          if(ok){other.score+=bank;Sound.win();msg2('🥷 STOLEN! '+esc(other.name)+' takes '+bank+' pts'+(what?' with "'+esc(what)+'"':'')+'!');}
+          else{playing.score+=bank;Sound.lose();msg2('🛡️ Steal failed! '+esc(playing.name)+' keeps '+bank+' pts.');}
+        }
+        function msg2(t){
+          c.innerHTML='<div class="card center"><div class="big">'+t+'</div><div class="muted">'+esc(myFam.name)+': '+myFam.score+' · '+esc(botFam.name)+': '+botFam.score+'</div></div>';
+          setTimeout(nextRound,1800);
+        }
       }
-    }
-    function fastMoney(){
-      var qs=survs.slice(3,8),qi=0,fm=0;
-      c.innerHTML='<h2>⚡ Fast Money</h2><div class="card"><div class="muted">5 rapid questions, 15 seconds each.<br>Top answers score big — reach <b>120 pts</b> to win!</div><button class="btn" id="go">Start</button></div>';
-      c.querySelector('#go').onclick=function(){Sound.click();fq();};
-      function fq(){
-        if(qi>=5){
-          var win=fm>=120;
-          c.innerHTML='<div class="card center"><div class="big">Fast Money: '+fm+' pts</div>'+(win?'<div class="ok">🏆 YOU WIN FAMILY FEUD!</div>':'<div class="err">Needed 120 — got '+fm+'.</div>')+'</div>';
-          if(win){Sound.win();(async function(){await Wallet.recordWin('feud');})();}
-          else Sound.lose();
+      function endRound(){
+        playing.score+=bank;
+        c.innerHTML='<div class="card center"><div class="big">🎉 '+esc(playing.name)+' cleared the board! +'+bank+' pts</div><div class="muted">'+esc(myFam.name)+': '+myFam.score+' · '+esc(botFam.name)+': '+botFam.score+'</div></div>';
+        setTimeout(nextRound,1800);
+      }
+      function nextRound(){
+        if(!c.isConnected)return;
+        if(myFam.score>=300||botFam.score>=300){
+          if(myFam.score>=botFam.score)fastMoney();
+          else botWins();
           return;
         }
-        var q=qs[qi],over=false;
-        c.innerHTML='<h2>⚡ Fast Money '+(qi+1)+'/5 ⏱ <span id="tmr">15s</span></h2><div class="card"><div class="big" style="font-size:18px">'+esc(q.q)+'</div><div class="row"><input id="g" class="grow" placeholder="Top answer…" autocomplete="off"><button class="btn small" id="go2">Answer</button></div><div class="status">Fast Money: '+fm+' pts</div></div>';
-        var inp=c.querySelector('#g');
-        var timer=g1Timer(c,15,c.querySelector('#tmr'),function(){if(!over){over=true;next(0,null);}});
-        function ans(){
-          if(over)return;over=true;clearInterval(timer);
-          var idx=findMatch(inp.value.trim(),q,null,true);
-          if(idx>=0){Sound.win();next(q.answers[idx].pts,q.answers[idx].t);}else{Sound.lose();next(0,null);}
+        ri++;faceoff();
+      }
+    }
+    function botWins(){
+      Sound.lose();
+      c.innerHTML='<div class="card center"><div class="big">🤖 '+esc(botFam.name)+' reached 300 first!</div><div class="err">Your family loses this one.</div><div class="muted">'+esc(myFam.name)+': '+myFam.score+' · '+esc(botFam.name)+': '+botFam.score+'</div></div>';
+    }
+    /* ----- fast money: 2 players, 20s + 25s, 200 to win ----- */
+    function fastMoney(){
+      var qs=survs.slice(-5),pts1=0,pts2=0,answers1=[];
+      c.innerHTML='<h2>⚡ FAST MONEY</h2><div class="card center"><div class="muted">Your family hit 300! Two players, 5 questions.<br>You go first — <b>20 seconds</b> on the clock. No repeats for player 2!</div><button class="btn" id="fmgo" style="margin-top:10px">Start the clock</button></div>';
+      c.querySelector('#fmgo').onclick=function(){Sound.click();p1();};
+      function p1(){
+        var qi=0,timeLeft=20,over=false,done1=false;
+        var timer=setInterval(function(){
+          timeLeft--;
+          var t=c.querySelector('#ft');if(t)t.textContent=Math.max(0,timeLeft)+'s';
+          if(timeLeft<=0){clearInterval(timer);p1Done();}
+        },1000);
+        pq();
+        function pq(){
+          if(over||!c.isConnected)return;
+          if(qi>=5){clearInterval(timer);p1Done();return;}
+          var q=qs[qi];
+          c.innerHTML='<h2>⚡ Fast Money '+(qi+1)+'/5 — ⏱ <span id="ft">'+Math.max(0,timeLeft)+'s</span></h2><div class="card">'
+            +'<div class="big" style="font-size:18px">'+esc(q.q)+'</div>'
+            +'<div class="row"><input id="fg" class="grow" placeholder="Top answer…" autocomplete="off"><button class="btn small" id="fgo">Answer</button><button class="btn small secondary" id="fsk">Skip ⏭</button></div>'
+            +'<div class="status">Fast Money: '+pts1+' pts</div></div>';
+          var inp=c.querySelector('#fg');
+          function fin(skip){
+            if(over)return;
+            if(!skip){
+              var idx=findMatch(inp.value.trim(),q,null,true);
+              if(idx>=0){pts1+=q.answers[idx].pts;answers1.push(q.answers[idx].t);Sound.win();}
+              else{answers1.push(null);Sound.lose();}
+            }else{answers1.push(null);Sound.click();}
+            qi++;pq();
+          }
+          c.querySelector('#fgo').onclick=function(){fin(false);};
+          c.querySelector('#fsk').onclick=function(){fin(true);};
+          inp.addEventListener('keydown',function(e){if(e.key==='Enter')fin(false);});
         }
-        c.querySelector('#go2').onclick=ans;
-        inp.addEventListener('keydown',function(e){if(e.key==='Enter')ans();});
-        function next(pts,matched){
-          fm+=pts;qi++;
-          c.innerHTML='<div class="card"><div class="status">'+(matched?'✅ "'+esc(matched)+'" — '+pts+' pts':'❌ No match — 0 pts')+'</div><button class="btn" id="nx">Next</button></div>';
-          c.querySelector('#nx').onclick=function(){Sound.click();fq();};
+        function p1Done(){
+          if(done1)return;done1=true;over=true;
+          var h='<h2>⚡ Fast Money</h2><div class="card center"><div class="muted">Your 5 answers: <b>'+pts1+' pts</b></div>'
+            +'<div class="muted" style="margin-top:8px">Now '+esc(myFam.members[1])+' gets <b>25 seconds</b> — and can\'t repeat your answers!</div>'
+            +'<button class="btn" id="p2go" style="margin-top:10px">Start Player 2</button></div>';
+          c.innerHTML=h;
+          c.querySelector('#p2go').onclick=function(){Sound.click();p2();};
+        }
+      }
+      function p2(){
+        var p2i=0,p2t=25,p2log=[],fmDone=false;
+        var mate=myFam.members[1];
+        var timer=setInterval(function(){
+          p2t--;
+          var t=c.querySelector('#ft2');if(t)t.textContent=Math.max(0,p2t)+'s';
+          if(p2t<=0){clearInterval(timer);fmEnd();}
+        },1000);
+        next();
+        function next(){
+          if(!c.isConnected)return;
+          if(p2i>=5){clearInterval(timer);fmEnd();return;}
+          var q=qs[p2i];
+          c.innerHTML='<h2>⚡ '+esc(mate)+' '+(p2i+1)+'/5 — ⏱ <span id="ft2">'+Math.max(0,p2t)+'s</span></h2><div class="card">'
+            +'<div class="big" style="font-size:18px">'+esc(q.q)+'</div>'
+            +p2log.map(function(l){return '<div class="status">'+l+'</div>';}).join('')
+            +'<div class="muted">🤖 '+esc(mate)+' is thinking…</div><div class="status">Fast Money: '+(pts1+pts2)+' pts</div></div>';
+          setTimeout(function(){
+            if(!c.isConnected)return;
+            var used={};
+            answers1.forEach(function(a){if(a)used[a.toLowerCase()]=1;});
+            var cands=q.answers.filter(function(a){return !used[a.t.toLowerCase()];});
+            var pick=null,r=Math.random();
+            if(cands.length&&r<0.8)pick=cands[0];
+            else if(cands.length&&r<0.9)pick=cands[Math.floor(Math.random()*cands.length)];
+            if(pick){pts2+=pick.pts;Sound.win();p2log.push('✅ "'+esc(pick.t)+'" — '+pick.pts+' pts');}
+            else{Sound.lose();p2log.push('❌ no match — 0 pts');}
+            p2i++;next();
+          },1300+Math.random()*1200);
+        }
+        function fmEnd(){
+          if(fmDone)return;fmDone=true;
+          clearInterval(timer);
+          var total=pts1+pts2,win=total>=200;
+          c.innerHTML='<div class="card center"><div class="big">⚡ FAST MONEY: '+total+' pts</div>'
+            +'<div class="muted">You: '+pts1+' · '+esc(mate)+': '+pts2+'</div>'
+            +(win?'<div class="ok">🏆 200+ POINTS — GRAND PRIZE! '+esc(myFam.name)+' WINS!</div>':'<div class="err">Needed 200 — got '+total+'.</div>')
+            +'</div>';
+          if(win){Sound.win();(async function(){await Wallet.recordWin('feud');})();}
+          else Sound.lose();
         }
       }
     }
   }
+  /* ================= PVP: solo rounds, higher total wins ================= */
   function pvpPlay(survs,fin){
     var ri=0,total=0;
     round();
@@ -5196,9 +5398,9 @@ render:function(c,ctx){
         fin(total);return;
       }
       var s=survs[ri],revealed=[],strikes=0,rp=0;
+      podiumScores={a:{name:famName(playerFam),score:total},b:{name:famName('Rival'),score:'?'}};
       ask();
       function ask(msg){
-        podiumScores={a:{name:famName(playerFam),score:total},b:{name:famName('Rival'),score:'?'}};
         askRound('👪 Round '+(ri+1)+' of 3',s,revealed,strikes,rp,(msg?'<div class="msg">'+msg+'</div>':'')+'<div class="muted">Total: '+total+'</div>',onGuess);
       }
       function onGuess(v){
@@ -6891,7 +7093,8 @@ const GAME_META={
 };
 
 /* ---------------- game registry ---------------- */
-const Games = {};
+/* Games/registry shim lives in the injected games part (window.Games); reuse it — var re-declare is safe, const would throw. */
+var Games = (typeof Games!=='undefined')?Games:((typeof window!=='undefined')?(window.Games=window.Games||{}):{});
 function regGame(id, def){ Games[id]=Object.assign({id}, def); }
 
 /* ---------------- bet widget ---------------- */
