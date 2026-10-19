@@ -71,9 +71,12 @@ table.lb tr.me td{color:var(--gold); font-weight:800;}
 .ff-slot .pts{color:#ffe14d;font-family:"Courier New",monospace;font-size:19px;text-shadow:0 0 9px rgba(255,225,77,.9);}
 .ff-strikes{min-height:30px;text-align:center;font-size:24px;margin-top:8px;letter-spacing:6px;}
 .ff-count{text-align:center;color:#ffe14d;font-weight:800;letter-spacing:3px;font-size:13px;margin:0 0 8px;text-shadow:0 0 8px rgba(255,225,77,.6);}
-.ff-podium{display:flex;align-items:stretch;gap:8px;margin:0 0 10px;background:linear-gradient(#33333c,#17171c);border:3px solid #c98a2b;border-radius:12px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.6);}
-.ff-fam{flex:1;background:linear-gradient(#2f6fd0,#143a80);border:2px solid #e2e2e2;border-radius:8px;color:#fff;font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;padding:10px 6px;text-align:center;text-shadow:0 2px 4px #000;letter-spacing:1px;}
-.ff-vs{align-self:center;color:#ffe14d;font-weight:900;}
+.ff-pds{display:flex;gap:10px;margin:10px 0 4px;}
+.ff-pd{flex:1;background:linear-gradient(#f5c542,#d99a1f);border:4px solid #3a2c10;border-radius:14px;padding:8px;box-shadow:0 4px 12px rgba(0,0,0,.5);}
+.ff-buzzer{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ff8a80,#d32f2f 70%);border:3px solid #5d1010;box-shadow:0 2px 5px rgba(0,0,0,.5);margin:0 auto 6px;}
+.ff-pd-screen{background:#0a0a0a;border:3px solid #3a2c10;border-radius:8px;padding:8px 4px;text-align:center;}
+.ff-pd-fam{color:#4dd0ff;font-weight:900;font-size:12px;letter-spacing:1px;margin-bottom:3px;}
+.ff-pd-score{color:#ff9d2e;font-family:"Courier New",monospace;font-weight:900;font-size:19px;}
 .ff-xov{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;gap:12px;background:rgba(0,0,0,.45);border-radius:180px 180px 10px 10px;animation:ffxpop .25s;}
 @keyframes ffxpop{from{transform:scale(.6);opacity:0;}}
 .ff-x{width:86px;height:86px;border-radius:16px;background:linear-gradient(#f04438,#8f130d);border:4px solid #ffc9c2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:56px;font-weight:900;text-shadow:0 3px 8px #000;box-shadow:0 6px 20px rgba(0,0,0,.7);}
@@ -5084,15 +5087,21 @@ render:function(c,ctx){
       +(strikes>=3?'<div class="ff-xov"><div class="ff-x">✕</div><div class="ff-x">✕</div><div class="ff-x">✕</div></div>':'')
       +'</div>';
   }
-  /* family podium: player family vs opponent family, like the show's contestant desk */
-  var famBar='';
-  function podiumHTML(a,b){
-    return '<div class="ff-podium"><div class="ff-fam">👪 THE '+esc(String(a).toUpperCase())+' FAMILY</div><div class="ff-vs">VS</div><div class="ff-fam">🤖 THE '+esc(String(b).toUpperCase())+' FAMILY</div></div>';
+  /* family podiums: one cartoon podium per family under the board, name + score */
+  var podiumScores=null;
+  function famName(n){return 'THE '+String(n).toUpperCase()+' FAMILY';}
+  function famPodiums(){
+    if(!podiumScores)return '';
+    function one(f,emoji){
+      return '<div class="ff-pd"><div class="ff-buzzer"></div>'
+        +'<div class="ff-pd-screen"><div class="ff-pd-fam">'+emoji+' '+esc(f.name)+'</div><div class="ff-pd-score">SCORE: '+f.score+'</div></div></div>';
+    }
+    return '<div class="ff-pds">'+one(podiumScores.a,'👪')+one(podiumScores.b,'🤖')+'</div>';
   }
   var playerFam=(typeof Auth!=='undefined'&&Auth.user&&Auth.user.username)||'You';
   /* board + guess row; onGuess(text) on submit */
   function askRound(title,s,revealed,strikes,rp,extra,onGuess){
-    var h='<h2>'+title+'</h2><div class="card">'+famBar+boardHTML(s,revealed,strikes,rp)+(extra||'')
+    var h='<h2>'+title+'</h2><div class="card">'+boardHTML(s,revealed,strikes,rp)+famPodiums()+(extra||'')
       +'<div class="row"><input id="g" class="grow" placeholder="Your guess…" autocomplete="off"><button class="btn small" id="go">Guess</button></div></div>';
     c.innerHTML=h;
     var inp=c.querySelector('#g');
@@ -5110,13 +5119,13 @@ render:function(c,ctx){
   }
   function cpuPlay(survs){
     var bot=g1Bots(1)[0],ri=0,myTot=0,botTot=0;
-    famBar=podiumHTML(playerFam,bot);
     round();
     function round(){
       if(ri>=3){fastMoney();return;}
       var s=survs[ri],revealed=[],strikes=0,rp=0;
       ask();
       function ask(msg){
+        podiumScores={a:{name:famName(playerFam),score:myTot},b:{name:famName(bot),score:botTot}};
         askRound('👪 Round '+(ri+1)+' of 3',s,revealed,strikes,rp,
           (msg?'<div class="msg">'+msg+'</div>':'')+'<div class="muted">You: '+myTot+' · '+esc(bot)+': '+botTot+'</div>',onGuess);
       }
@@ -5180,7 +5189,6 @@ render:function(c,ctx){
   }
   function pvpPlay(survs,fin){
     var ri=0,total=0;
-    famBar=podiumHTML(playerFam,'Rival');
     round();
     function round(){
       if(ri>=3){
@@ -5190,6 +5198,7 @@ render:function(c,ctx){
       var s=survs[ri],revealed=[],strikes=0,rp=0;
       ask();
       function ask(msg){
+        podiumScores={a:{name:famName(playerFam),score:total},b:{name:famName('Rival'),score:'?'}};
         askRound('👪 Round '+(ri+1)+' of 3',s,revealed,strikes,rp,(msg?'<div class="msg">'+msg+'</div>':'')+'<div class="muted">Total: '+total+'</div>',onGuess);
       }
       function onGuess(v){
