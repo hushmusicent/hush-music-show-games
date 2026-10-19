@@ -2730,8 +2730,18 @@ SHG.jeopardyGrade=function(pa,ca){
   if(Math.min(g.length,a.length)<=10&&SHG.jeopardyLev(g,a)<=2)return true;
   return false;
 };
-/* --- WHEEL --- */
-SHG.wheelSegments=function(){return [100,150,200,250,300,400,500,600,700,800,900,1000,1500,2000,2500,5000,300,600,900,1000,'BANKRUPT','LOSE A TURN','BANKRUPT','LOSE A TURN'];};
+/* --- WHEEL (official layout, clockwise from top) --- */
+SHG.wheelLayout=function(){return [
+ {v:'LOSE A TURN',c:'#eef0f2'},
+ {v:800,c:'#e23b3b'},{v:350,c:'#8e6fc0'},{v:450,c:'#f2a4c0'},{v:700,c:'#2aa198'},
+ {v:300,c:'#ef7d2a'},{v:600,c:'#8e6fc0'},{v:5000,c:'#c9ccd4'},{v:600,c:'#f2e13c'},
+ {v:900,c:'#e23b3b'},{v:300,c:'#f2e13c'},{v:500,c:'#2aa198'},{v:800,c:'#ef7d2a'},
+ {v:550,c:'#8e6fc0'},{v:400,c:'#f2e13c'},{v:300,c:'#f2a4c0'},{v:900,c:'#e23b3b'},
+ {v:500,c:'#f2e13c'},{v:'FREE SPIN',cash:500,c:'#2aa198'},{v:900,c:'#ef7d2a'},
+ {v:'BANKRUPT',c:'#141414'},
+ {v:600,c:'#8e6fc0'},{v:400,c:'#f2e13c'},{v:300,c:'#f2a4c0'}
+];};
+SHG.wheelSegments=function(){return SHG.wheelLayout().map(function(w){return w.v;});};
 SHG.wheelSpin=function(rng){rng=rng||Math.random;var s=SHG.wheelSegments();return s[Math.floor(rng()*s.length)];};
 /* --- MILLIONAIRE --- */
 SHG.millionaireLadder=function(){return [100,200,300,500,1000,2000,4000,8000,16000,32000,64000,125000,250000,500000,1000000];};
@@ -2915,9 +2925,8 @@ render:function(c,ctx){
     var tot={You:0};bots.forEach(function(b){tot[b]=0;});
     var ri=0,revealed,guessed,bank,bbank,turn,misses=0,puz;
     var VOW='aeiou';
-    var wheelRot=0,spinning=false;
+    var wheelRot=0,spinning=false,ftok=[0,0,0];
     /* ---- Wheel of Fortune visuals: canvas spinner + classic tile board ---- */
-    var WHEEL_PAL=['#e84a7f','#f2c230','#8e6fc0','#e23b3b','#3fae8a','#ef7d2a','#2aa198','#d63384'];
     var WHEEL_CSS='.wheelwrap{display:flex;justify-content:center;margin:4px 0}'
       +'.wboard{background:#081426;border:3px solid #1e3a5f;border-radius:10px;padding:10px 4px;margin:8px 0}'
       +'.wrow{display:flex;justify-content:center;gap:1.2%;margin:1% 0}'
@@ -2927,20 +2936,21 @@ render:function(c,ctx){
     function paintWheel(){
       var cv=c.querySelector('#wheelcv');if(!cv)return;
       var g=cv.getContext('2d'),W=cv.width,cx=W/2,cy=W/2,R=W/2-8;
-      var segs=SHG.wheelSegments(),n=segs.length,arc=Math.PI*2/n,i,a0;
+      var layout=SHG.wheelLayout(),n=layout.length,arc=Math.PI*2/n,i,a0;
       g.clearRect(0,0,W,W);
       for(i=0;i<n;i++){
         a0=wheelRot+i*arc;
         g.beginPath();g.moveTo(cx,cy);g.arc(cx,cy,R,a0,a0+arc);g.closePath();
-        var s=segs[i];
-        g.fillStyle=s==='BANKRUPT'?'#141414':(s==='LOSE A TURN'?'#eef0f2':WHEEL_PAL[i%WHEEL_PAL.length]);
+        var wdg=layout[i],s=wdg.v;
+        g.fillStyle=wdg.c;
         g.fill();g.lineWidth=2;g.strokeStyle='#0d1420';g.stroke();
         g.save();g.translate(cx,cy);g.rotate(a0+arc/2);
         g.textAlign='right';g.textBaseline='middle';
-        var label=(typeof s==='number')?'$'+s:String(s);
+        var label=(typeof s==='number')?'$'+s:(s==='FREE SPIN'?'$'+wdg.cash:s);
         g.font='bold '+(label.length>9?W/30:W/24)+'px Arial,sans-serif';
         g.fillStyle=s==='BANKRUPT'?'#ffffff':'#101010';
         g.fillText(label,R-8,0);
+        if(s==='FREE SPIN'){g.font='bold '+Math.max(8,W/44)+'px Arial,sans-serif';g.fillStyle='#083f31';g.fillText('FREE SPIN',R-8,16);}
         g.restore();
       }
       g.beginPath();g.arc(cx,cy,R*0.16,0,Math.PI*2);g.fillStyle='#0d1420';g.fill();
@@ -3012,7 +3022,7 @@ render:function(c,ctx){
     }
     function newRound(){
       if(ri>=puzs.length){endGame();return;}
-      puz=puzs[ri];revealed={};guessed={};bank=0;bbank=[0,0];turn=0;spinning=false;
+      puz=puzs[ri];revealed={};guessed={};bank=0;bbank=[0,0];turn=0;spinning=false;ftok=[0,0,0];
       c.innerHTML='<h2>🎡 Round '+(ri+1)+' of '+puzs.length+' — '+esc(puz.cat)+'</h2><style>'+WHEEL_CSS+'</style>'
         +'<div class="wheelwrap"><canvas id="wheelcv" width="320" height="320"></canvas></div>'
         +'<div class="wboard" id="bd"></div><div id="ctl"></div>';
@@ -3020,8 +3030,8 @@ render:function(c,ctx){
       takeTurn();
     }
     function scoreLine(){
-      var s='<b>You:</b> '+g1Money(tot.You)+' <span class="muted">(round '+g1Money(bank)+')</span>';
-      bots.forEach(function(b,i){s+='<br><b>'+esc(b)+':</b> '+g1Money(tot[b])+' <span class="muted">('+g1Money(bbank[i])+')</span>';});
+      var s='<b>You:</b> '+g1Money(tot.You)+' <span class="muted">(round '+g1Money(bank)+')</span>'+(ftok[0]?' 🆓×'+ftok[0]:'');
+      bots.forEach(function(b,i){s+='<br><b>'+esc(b)+':</b> '+g1Money(tot[b])+' <span class="muted">('+g1Money(bbank[i])+')</span>'+(ftok[i+1]?' 🆓×'+ftok[i+1]:'');});
       return s;
     }
     function msg(t){var e=c.querySelector('#wmsg');if(e)e.innerHTML=t;}
@@ -3057,17 +3067,20 @@ render:function(c,ctx){
         inp.querySelector('#sg').onclick=function(){
           var s=inp.querySelector('#sl').value;
           if(SHG.jeopardyGrade(s,puz.puzzle))solveRound(0);
+          else if(ftok[0]>0){ftok[0]--;Sound.win();msg('🆓 FREE SPIN saves your turn!');setTimeout(takeTurn,1100);}
           else{misses++;Sound.lose();msg('❌ Not quite!');setTimeout(nextTurn,1100);}
         };
       };
     }
     function resolveSpin(who,seg){
       var name=who===0?'You':bots[who-1];
-      if(seg==='BANKRUPT'){if(who===0)bank=0;else bbank[who-1]=0;Sound.lose();msg('💥 '+esc(name)+' hit BANKRUPT!');setTimeout(nextTurn,1300);return;}
+      var fsNote='';
+      if(seg==='FREE SPIN'){ftok[who]++;seg=500;fsNote='🆓 FREE SPIN token banked! ';}
+      if(seg==='BANKRUPT'){if(who===0)bank=0;else bbank[who-1]=0;ftok[who]=0;Sound.lose();msg('💥 '+esc(name)+' hit BANKRUPT!');setTimeout(nextTurn,1300);return;}
       if(seg==='LOSE A TURN'){Sound.beep(300,.2);msg('⏭ '+esc(name)+' loses a turn.');setTimeout(nextTurn,1300);return;}
       if(who===0){
         var el=c.querySelector('#ctl');
-        el.innerHTML='<div class="status">'+g1Money(seg)+' per consonant</div><div class="row"><input id="cl" maxlength="1" class="grow" placeholder="Consonant"><button class="btn small" id="cg">Guess</button></div>';
+        el.innerHTML='<div class="status">'+fsNote+g1Money(seg)+' per consonant</div><div class="row"><input id="cl" maxlength="1" class="grow" placeholder="Consonant"><button class="btn small" id="cg">Guess</button></div>';
         el.querySelector('#cg').onclick=function(){
           var l=el.querySelector('#cl').value.toLowerCase();Sound.click();
           if(!/[a-z]/.test(l)||VOW.indexOf(l)>=0||guessed[l]){msg('Enter an uncalled consonant.');return;}
@@ -3075,7 +3088,7 @@ render:function(c,ctx){
         };
       }else{
         var l=botCons();
-        msg('🌀 '+esc(name)+' spins '+g1Money(seg)+' and calls <b>'+l.toUpperCase()+'</b>…');
+        msg(fsNote+'🌀 '+esc(name)+' spins '+g1Money(seg)+' and calls <b>'+l.toUpperCase()+'</b>…');
         g1Delay(900).then(function(){if(c.isConnected)guessLetter(who,l,seg);});
       }
     }
@@ -3091,6 +3104,7 @@ render:function(c,ctx){
         if(solved()){solveRound(who);return;}
         if(who===0)setTimeout(takeTurn,1100);else botCont(who);
       }else{
+        if(ftok[who]>0){ftok[who]--;Sound.win();msg('🆓 '+esc(name)+' uses a FREE SPIN — turn saved!');setTimeout(takeTurn,1100);return;}
         if(who===0)misses++;
         Sound.lose();msg('❌ No '+l.toUpperCase()+'.');setTimeout(nextTurn,1100);
       }
@@ -3103,6 +3117,7 @@ render:function(c,ctx){
         if(!c.isConnected)return;
         if(revFrac()>0.55&&Math.random()<0.5){
           if(Math.random()<0.6){solveRound(bi+1);return;}
+          if(ftok[bi+1]>0){ftok[bi+1]--;msg('🆓 '+esc(name)+' uses a FREE SPIN — turn saved!');setTimeout(takeTurn,1100);return;}
           msg('🤖 '+esc(name)+' tries to solve… wrong!');setTimeout(nextTurn,1100);return;
         }
         doSpin(bi+1);
