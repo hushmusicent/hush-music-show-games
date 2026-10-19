@@ -236,6 +236,41 @@ const Auth = {
     email=email.trim().toLowerCase();
     if(Backend.mode==='firebase'){ await Backend.auth.sendPasswordResetEmail(email); return 'reset-email'; }
     throw new Error('Password reset emails need Firebase. In demo mode, ask the device owner to reset it in Profile.');
+  },
+  onAuth(cb){
+    if(Backend.mode==='firebase' && Backend.auth){
+      Backend.auth.onAuthStateChanged(async u=>{
+        if(u){
+          try{
+            const s=await Backend.db.ref('shg_users/'+u.uid).get();
+            const d=s.val()||{};
+            let code=d.code||'';
+            if(!code){
+              code=genCode();
+              await Backend.db.ref('shg_users/'+u.uid+'/code').set(code);
+              await Backend.db.ref('shg_codes/'+code).set(u.uid);
+            }
+            this.user={uid:u.uid, username:d.username||(u.email?u.email.split('@')[0]:'Player'), email:u.email||'', code};
+            cb(this.user);
+          }catch(e){
+            this.user={uid:u.uid, username:(u.email?u.email.split('@')[0]:'Player'), email:u.email||'', code:''};
+            cb(this.user);
+          }
+        } else {
+          this.user=null;
+          cb(null);
+        }
+      });
+    } else {
+      const sess=store.get('session',null);
+      if(sess && sess.uid){
+        this.user=sess;
+        cb(sess);
+      } else {
+        this.user=null;
+        cb(null);
+      }
+    }
   }
 };
 
@@ -2672,6 +2707,8 @@ if (typeof module!=='undefined' && module.exports) module.exports = BANKS2;
 /* ===== GAMES1 (injected) ===== */
 /*__PURE_START__*/
 var SHG = (typeof SHG!=='undefined')?SHG:{};
+var Games = (typeof Games!=='undefined')?Games:(window.Games=window.Games||{});
+var regGame = (typeof regGame!=='undefined')?regGame:(window.regGame=function(id, def){ (window.Games||Games)[id]=Object.assign({id:id}, def); });
 /* BANKS1 guard — real banks inject before this part in shell.html. */
 var BANKS1 = (typeof BANKS1!=='undefined')?BANKS1:{jeopardy:{sets:[]},wheel:[],millionaire:[],priceItems:[]};
 /* --- shared pure text utils (jeopardy-family) --- */
@@ -3570,6 +3607,8 @@ render:function(c,ctx){
 /*__PURE_START__*/
 /* Hush Music Show Games — part 2: 8 game-show games (pure helpers, DOM-free). */
 var SHG = (typeof SHG!=='undefined')?SHG:{};
+var Games = (typeof Games!=='undefined')?Games:(window.Games=window.Games||{});
+var regGame = (typeof regGame!=='undefined')?regGame:(window.regGame=function(id, def){ (window.Games||Games)[id]=Object.assign({id:id}, def); });
 /* Question banks load from a separate part file; guard so this part works standalone. */
 var BANKS2 = (typeof BANKS2!=='undefined')?BANKS2:{chase:[],weakestlink:[],v100:[],fifthgrader:[],hollywood:{celebClues:[],wordBank:[],quickFire:[]},pyramid:[],whatsmline:{questions:[],occupations:[]}};
 
@@ -4996,8 +5035,9 @@ const GAME_META={
 };
 
 /* ---------------- game registry ---------------- */
-const Games = {};
-function regGame(id, def){ Games[id]=Object.assign({id}, def); }
+var Games = window.Games = window.Games || {};
+function regGame(id, def){ (window.Games||Games)[id]=Object.assign({id}, def); }
+window.regGame = regGame;
 
 /* ---------------- bet widget ---------------- */
 function betWidget(container, onBet){
