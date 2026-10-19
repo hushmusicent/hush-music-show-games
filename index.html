@@ -72,6 +72,7 @@ table.lb tr.me td{color:var(--gold); font-weight:800;}
 .ff-slot{background:linear-gradient(#3373d4,#17408c);border:3px solid #dcdcdc;outline:1px solid #6f6f6f;border-radius:4px;min-height:46px;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:6px 10px;color:#fff;font-weight:800;font-size:14px;box-shadow:inset 0 0 14px rgba(0,0,0,.6);text-shadow:0 1px 3px #000;}
 .ff-slot .pts{color:#ffe14d;font-family:"Courier New",monospace;font-size:19px;text-shadow:0 0 9px rgba(255,225,77,.9);}
 .ff-strikes{min-height:30px;text-align:center;font-size:24px;margin-top:8px;letter-spacing:6px;}
+.ff-count{text-align:center;color:#ffe14d;font-weight:800;letter-spacing:3px;font-size:13px;margin:0 0 8px;text-shadow:0 0 8px rgba(255,225,77,.6);}
 </style>
 </head>
 <body>
@@ -5061,17 +5062,15 @@ render:function(c,ctx){
   if(net)g1Pvp(net,share,function(d,fin){pvpPlay(d.slice(0,3),fin);},function(iw,sc){g1Settle(c,iw,sc,'Family Feud');});
   else cpuPlay(share());
   function boardHTML(s,revealed,strikes,rp){
-    /* show-style board: arched bulb frame, LED score, 8 blue answer panels */
-    var slots=s.answers.slice(0,8);
-    while(slots.length<8)slots.push(null);
+    /* show-style board: arched bulb frame, LED score, blue answer panels (all answers, count shown) */
+    var nA=s.answers.length,half=Math.ceil(nA/2);
     function slot(a,i){
-      if(!a)return '<div class="ff-slot"></div>';
       var r=revealed.indexOf(i)>=0;
       return '<div class="ff-slot"><span>'+(r?esc(a.t):'')+'</span><span class="pts">'+(r?a.pts:'')+'</span></div>';
     }
     var left='',right='',i,j;
-    for(i=0;i<4;i++)left+=slot(slots[i],i);
-    for(j=4;j<8;j++)right+=slot(slots[j],j);
+    for(i=0;i<half;i++)left+=slot(s.answers[i],i);
+    for(j=half;j<nA;j++)right+=slot(s.answers[j],j);
     var bulbs='',n=26,b,t;
     for(b=0;b<n;b++){t=Math.PI-Math.PI*b/(n-1);
       bulbs+='<span class="ff-bulb" style="left:'+(50+45*Math.cos(t)).toFixed(1)+'%;top:'+(92-80*Math.sin(t)).toFixed(1)+'%;animation-delay:'+(b*0.07).toFixed(2)+'s"></span>';}
@@ -5081,6 +5080,7 @@ render:function(c,ctx){
     return '<div class="ff-q">'+esc(s.q)+'</div>'
       +'<div class="ff-board">'+bulbs
       +'<div class="ff-score">'+rp+'</div>'
+      +'<div class="ff-count">'+nA+' ANSWERS</div>'
       +'<div class="ff-grid"><div>'+left+'</div><div>'+right+'</div></div>'
       +'<div class="ff-strikes">'+('❌'.repeat(strikes)||'&nbsp;')+'</div></div>';
   }
