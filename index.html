@@ -2718,8 +2718,9 @@ SHG.chaseBotCorrect=function(diff,rng){rng=rng||Math.random;var p=diff==='easy'?
 /*__PURE_END__*/
 
 /* ================= shared internals (part 1) ================= */
-var G1_BOTS=['BuzzerBetty','SpinQueen','LuckyLucy','BigBucks','ShowtimeSam','GoldRushGus'];
+var G1_BOTS=['BuzzerBetty','SpinQueen','LuckyLucy','BigBucks','ShowtimeSam','GoldRushGus','TriviaTitan','QuizWhiz','CashDash','PrizePilot','StageStar','GameGuru','BuzzerBeater','JackpotJoy','WinStreak','LuckyLarry','DazzlingDee','RapidRex','SmartyMarty','BrainyBelle','WhizKidWalt','TriviaTina','QuizMasterQ','CashCarmen','VegasVic','NeonNina','SpotlightSue','EncoreEddie','ApplauseAl','CurtainCal','HighRollerHal','PennyPam','DollarDan','MillionMoe','GrandGertie','SilverSal','StarStan','QuizKid','TriviaTom','BuzzerBob','LuckyLou','CashCathy','PrizePat','WinnieWager','DoubleDownDeb','SpinDoctor','WagerWendy','BankrollBen','ShowcaseShay','FinalFiona'];
 function g1Bots(n){var a=G1_BOTS.slice(),i,j,t;for(i=a.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=a[i];a[i]=a[j];a[j]=t;}return a.slice(0,Math.min(n,a.length));}
+SHG.botNames=function(n){try{return g1Bots(n||4);}catch(e){var fb=['Roxanne','Marcus','Priya','Dez'];return fb.slice(0,Math.min(n||4,fb.length));}};
 function g1PickN(a,n){a=(a||[]).slice();var i,j,t;for(i=a.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=a[i];a[i]=a[j];a[j]=t;}return a.slice(0,Math.min(n,a.length));}
 function g1Money(v){return '$'+Math.round(v).toLocaleString('en-US');}
 function g1Delay(ms){return new Promise(function(r){setTimeout(r,ms);});}
@@ -3673,7 +3674,7 @@ SHG.weakestLinkBank=function(chain){
   chain=Math.max(0,Math.min(chain|0,L.length-1));
   return L[chain];
 };
-SHG.weakestLinkBots=function(){ return ['Roxanne','Marcus','Priya','Dez']; };
+SHG.weakestLinkBots=function(){ return (typeof SHG.botNames==='function')?SHG.botNames(8):['Roxanne','Marcus','Priya','Dez']; };
 SHG.weakestLinkBotSkill=function(rng){ rng=rng||Math.random; return 0.55+rng()*0.25; };
 SHG.weakestLinkBotVote=function(team,rng){
   rng=rng||Math.random;
@@ -3746,7 +3747,7 @@ SHG.wmlQuestions=function(){ return [
   ['q17','Is your job dangerous?'],['q18','Do you work in an office?'],
   ['q19','Do people recognize you for your job?'],['q20','Do you make things?']
 ]; };
-SHG.wmlPanel=function(){ return ['Arlene','Bennett','Dorothy','Fred']; };
+SHG.wmlPanel=function(){ return (typeof SHG.botNames==='function')?SHG.botNames(4):['Arlene','Bennett','Dorothy','Fred']; };
 SHG.wmlNormOcc=function(o){
   o=o||{};
   var name=o.occupation||o.name||o.job||'';
