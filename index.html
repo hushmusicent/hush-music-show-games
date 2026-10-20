@@ -11379,10 +11379,21 @@ render(c,ctx){
       },1100);
     }
   }
-  function hintFor(word,stage){
-    if(stage===0)return '💬 Starts with "'+word.charAt(0).toUpperCase()+'" · '+word.length+' letters';
-    if(stage===1)return '💬 '+word.split('').map(function(ch,i){ return ch===' '?' ':(i%2===0?ch:'_'); }).join(' ')+'';
-    return '💬 Ends with "'+word.charAt(word.length-1).toUpperCase()+'" · '+word.length+' letters';
+  function hintFor(word,stage,wordNo){
+    if(stage===2){
+      return '🗣️ Almost there: '+word.split('').map(function(ch,i){ return ch===' '?' ':(i>=word.length-2&&word.length>3?'_':ch); }).join(' ');
+    }
+    if(stage===1){
+      return '🗣️ '+word.split('').map(function(ch){ return ch===' '?' ':('aeiouAEIOU'.indexOf(ch)>=0?'_':ch); }).join(' ')+' (vowels hidden)';
+    }
+    var kind=(wordNo||0)%4;
+    if(kind===0)return '🗣️ Starts with "'+word.charAt(0).toUpperCase()+'" · '+word.length+' letters';
+    if(kind===1)return '🗣️ Ends with "'+word.charAt(word.length-1).toUpperCase()+'" · '+word.length+' letters';
+    if(kind===2)return '🗣️ '+word.split('').map(function(ch,i){ return ch===' '?' ':(i%2===0?ch:'_'); }).join(' ');
+    var letters=word.replace(/ /g,'').split('');
+    var mix=letters.slice().sort(function(){ return Math.random()-0.5; }).join('').toUpperCase();
+    if(mix.toLowerCase()===word.replace(/ /g,'').toLowerCase())mix=letters.slice().reverse().join('').toUpperCase();
+    return '🗣️ Letters all mixed up: '+mix+' · '+word.length+' letters';
   }
   function playCategory(team,idx){
     stopTimers();
@@ -11400,7 +11411,7 @@ render(c,ctx){
     }
     S.cat={L:L,val:val,isHidden:isHidden};
     S.queue=L.items.map(function(it){ return it.answer; });
-    S.got=0; S.time=30; S.lastStage=0;
+    S.got=0; S.time=30; S.lastStage=0; S.wordNo=0; S.curWordNo=0;
     drawCatQ();
     timer=setInterval(function(){
       if(!py.isConnected){ stopTimers(); return; }
@@ -11410,7 +11421,7 @@ render(c,ctx){
       if(st!==S.lastStage&&S.queue.length){
         S.lastStage=st;
         var hintEl=py.querySelector('#catHint');
-        if(hintEl)hintEl.textContent=S.partner+' hints: '+hintFor(S.queue[0],st);
+        if(hintEl)hintEl.textContent=S.partner+' hints: '+hintFor(S.queue[0],st,S.curWordNo);
       }
       if(S.time<=0){ stopTimers(); endCategory(); }
     },1000);
@@ -11418,11 +11429,12 @@ render(c,ctx){
   function drawCatQ(){
     if(!S.queue.length){ stopTimers(); endCategory(); return; }
     var word=S.queue[0];
+    S.wordNo=(S.wordNo||0)+1; S.curWordNo=S.wordNo;
     var stage=S.time>20?0:(S.time>10?1:2);
     py.innerHTML='<div class="muted center">Round '+S.round+' · ⏱ <b id="tLeft">'+S.time+'</b>s · ✅ '+S.got+'/7</div>'+scoreHTML()
       +'<div class="card"><div class="muted center">'+(S.cat.isHidden?(S.round===1?'❓ MYSTERY 7 category! Sweep it for a $250 prize!':'🎰 7-11 category! Sweep it for $1,100!'):'Category')+'</div>'
       +'<h3 class="center" style="margin:4px 0">'+esc(S.cat.L.title)+'</h3>'
-      +'<div class="center" style="margin:8px 0;font-size:15px" id="catHint">'+esc(S.partner)+' hints: '+hintFor(word,stage)+'</div>'
+      +'<div class="center" style="margin:8px 0;font-size:15px" id="catHint">'+esc(S.partner)+' hints: '+hintFor(word,stage,S.curWordNo)+'</div>'
       +'<div class="row"><input id="pAns" class="grow" placeholder="The word is…" autocomplete="off" autocapitalize="off">'
       +'<button class="btn" id="pGo">Guess</button><button class="btn secondary" id="pSkip">Pass</button></div>'
       +'<div class="status" id="pMsg"></div></div>';
