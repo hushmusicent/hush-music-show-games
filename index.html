@@ -128,6 +128,24 @@ button.pyr-box{cursor:pointer;}
 /* ===== Weakest Link studio ===== */
 /* ===== 1 vs 100 mob wall ===== */
 .v100-stage{background:linear-gradient(#101d42,#050a1e);border:3px solid #3f66b8;border-radius:12px;padding:10px;margin-bottom:10px;color:#dbe7ff;}
+/* ===== 5th Grader classroom ===== */
+.fg-board{background:linear-gradient(#265c40,#173d29);border:6px solid #8a5a2b;border-radius:8px;padding:10px;margin-bottom:10px;color:#f4f7e8;box-shadow:inset 0 0 30px rgba(0,0,0,.35);}
+.fg-title{text-align:center;font-weight:900;letter-spacing:1px;font-size:14px;color:#fff;margin-bottom:6px;text-shadow:1px 1px 0 rgba(255,255,255,.25);}
+.fg-ladder{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin-top:6px;}
+.fg-rung{border:1px dashed rgba(255,255,255,.45);color:#cfe3cf;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;}
+.fg-rung.hit{background:#ffd873;color:#4a3200;border-color:#ffd873;}
+.fg-rung.haven{border-color:#7fd4ff;color:#bfe9ff;}
+.fg-grid{background:linear-gradient(#265c40,#173d29);border:6px solid #8a5a2b;border-radius:8px;padding:10px;}
+.fg-grow{display:flex;gap:6px;align-items:stretch;margin:4px 0;}
+.fg-glabel{flex:0 0 62px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;color:#ffe9a8;text-align:center;}
+.fg-cell{flex:1;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.55);color:#fff;border-radius:6px;padding:10px 4px;font-weight:800;font-size:13px;font-family:inherit;}
+.fg-cell.done{background:rgba(255,216,115,.2);border-color:#ffd873;color:#ffd873;text-align:center;}
+.fg-kids{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;}
+.fg-kid{flex:1 1 30%;max-width:150px;background:linear-gradient(#7a4d21,#5a3715);border:2px solid #a4743a;border-radius:6px;padding:7px;text-align:center;color:#ffe9c9;cursor:pointer;}
+.fg-kid.on{border-color:#ffd873;box-shadow:0 0 0 2px #ffd873,0 0 14px rgba(255,210,60,.6);}
+.fg-kname{font-weight:900;font-size:13px;}
+.fg-kstrong{font-size:10px;color:#e8cf9f;}
+.fg-kon{font-size:10px;color:#ffd873;font-weight:700;}
 .mob-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;margin:8px 0;}
 .mob-tile{background:linear-gradient(#4d7dd6,#274b96);border:1px solid #9db9ec;color:#fff;border-radius:4px;font-size:9px;font-weight:700;text-align:center;padding:4px 0;}
 .mob-tile.out{background:#1a0d14;color:#8a4455;border-color:#4d2432;}
@@ -5355,56 +5373,506 @@ var BANKS2 = {
     {q:"Black Panther is set largely in which fictional African nation?", choices:["Zamunda", "Wakanda", "Genovia"], correct:1, tier:3}
   ],
   fifthgrader: [
-    {q:"What is 2 + 3?", choices:["5","4","6","7"], correct:0, grade:1, subject:"Math"},
-    {q:"Which word rhymes with CAT?", choices:["dog","run","hat","big"], correct:2, grade:1, subject:"English"},
-    {q:"How many legs does a dog have?", choices:["2","5","4","3"], correct:2, grade:1, subject:"Science"},
-    {q:"Who was the first president of the United States?", choices:["Abraham Lincoln","George Washington","Thomas Jefferson","John Adams"], correct:1, grade:1, subject:"History"},
-    {q:"What color is the sky?", choices:["purple","blue","green","red"], correct:1, grade:1, subject:"Geography"},
-    {q:"What do you use to draw a picture?", choices:["shoe","crayon","cup","spoon"], correct:1, grade:1, subject:"Art"},
-    {q:"What is 7 - 2?", choices:["3","4","6","5"], correct:3, grade:1, subject:"Math"},
-    {q:"Which letter comes after B?", choices:["D","A","C","E"], correct:2, grade:1, subject:"English"},
-    {q:"What do plants need to grow?", choices:["sunlight","toys","music","candy"], correct:0, grade:1, subject:"Science"},
-    {q:"On which holiday do we celebrate America's birthday?", choices:["Thanksgiving","Halloween","Fourth of July","Christmas"], correct:2, grade:1, subject:"History"},
-    {q:"What is 6 + 7?", choices:["12","13","14","11"], correct:1, grade:2, subject:"Math"},
-    {q:"What is the opposite of BIG?", choices:["small","huge","wide","tall"], correct:0, grade:2, subject:"English"},
-    {q:"What do we call water when it freezes?", choices:["steam","fog","rain","ice"], correct:3, grade:2, subject:"Science"},
-    {q:"The Pilgrims sailed to America on which ship?", choices:["Santa Maria","Nina","Titanic","Mayflower"], correct:3, grade:2, subject:"History"},
-    {q:"Which is the largest ocean?", choices:["Arctic","Indian","Pacific","Atlantic"], correct:2, grade:2, subject:"Geography"},
-    {q:"What colors make green?", choices:["red and yellow","red and blue","blue and yellow","black and white"], correct:2, grade:2, subject:"Art"},
-    {q:"What is 15 - 8?", choices:["6","8","5","7"], correct:3, grade:2, subject:"Math"},
-    {q:"Which word is a noun?", choices:["quickly","run","dog","happy"], correct:2, grade:2, subject:"English"},
-    {q:"Which animal is a mammal?", choices:["shark","snake","whale","frog"], correct:2, grade:2, subject:"Science"},
-    {q:"Who wrote the Star-Spangled Banner?", choices:["Paul Revere","George Washington","Betsy Ross","Francis Scott Key"], correct:3, grade:2, subject:"History"},
-    {q:"What is 4 x 5?", choices:["25","18","20","15"], correct:2, grade:3, subject:"Math"},
-    {q:"Which sentence ends with a question mark?", choices:["What time is it?","She is kind.","I like apples.","Run fast!"], correct:0, grade:3, subject:"English"},
-    {q:"What is the center of our solar system?", choices:["Sun","Mars","Earth","Moon"], correct:0, grade:3, subject:"Science"},
-    {q:"Which continent is the United States on?", choices:["Europe","South America","Africa","North America"], correct:3, grade:3, subject:"Geography"},
-    {q:"What do we call a picture of a person?", choices:["mural","portrait","still life","landscape"], correct:1, grade:3, subject:"Art"},
-    {q:"What is 36 divided by 4?", choices:["10","8","9","12"], correct:2, grade:3, subject:"Math"},
-    {q:"Which word is a verb?", choices:["blue","happy","jump","quickly"], correct:2, grade:3, subject:"English"},
-    {q:"What gas do plants take in from the air?", choices:["nitrogen","helium","carbon dioxide","oxygen"], correct:2, grade:3, subject:"Science"},
-    {q:"The first Thanksgiving was celebrated by the Pilgrims and who?", choices:["British soldiers","Native Americans","Spanish explorers","French traders"], correct:1, grade:3, subject:"History"},
-    {q:"What is the capital of the United States?", choices:["Chicago","Washington DC","Los Angeles","New York"], correct:1, grade:3, subject:"Geography"},
-    {q:"What is 7 x 8?", choices:["57","54","55","56"], correct:3, grade:4, subject:"Math"},
-    {q:"Which is the correct plural of CHILD?", choices:["children","childen","childs","childes"], correct:0, grade:4, subject:"English"},
-    {q:"What is the hardest natural substance on Earth?", choices:["gold","diamond","iron","quartz"], correct:1, grade:4, subject:"Science"},
-    {q:"Who was president during the Civil War?", choices:["Abraham Lincoln","Ulysses Grant","Andrew Jackson","George Washington"], correct:0, grade:4, subject:"History"},
-    {q:"Which is the longest river in the world?", choices:["Amazon","Nile","Mississippi","Yangtze"], correct:1, grade:4, subject:"Geography"},
-    {q:"What are the three primary colors?", choices:["red, blue, yellow","red, green, blue","black, white, gray","orange, purple, green"], correct:0, grade:4, subject:"Art"},
-    {q:"What is 144 divided by 12?", choices:["10","13","11","12"], correct:3, grade:4, subject:"Math"},
-    {q:"Which word is an adjective?", choices:["run","quickly","beautiful","dog"], correct:2, grade:4, subject:"English"},
-    {q:"What is H2O?", choices:["water","salt","oxygen","sugar"], correct:0, grade:4, subject:"Science"},
-    {q:"In what year did America declare independence?", choices:["1789","1620","1776","1492"], correct:2, grade:4, subject:"History"},
-    {q:"What is 3/4 as a decimal?", choices:["0.43","0.75","0.7","0.34"], correct:1, grade:5, subject:"Math"},
-    {q:"What do we call a word that sounds the same but has different meanings, like BAT?", choices:["homonym","adjective","antonym","synonym"], correct:0, grade:5, subject:"English"},
-    {q:"Which planet is known as the Red Planet?", choices:["Jupiter","Venus","Mars","Saturn"], correct:2, grade:5, subject:"Science"},
-    {q:"Who was the first man to walk on the moon?", choices:["Yuri Gagarin","Buzz Aldrin","Neil Armstrong","Michael Collins"], correct:2, grade:5, subject:"History"},
-    {q:"What is the capital of Japan?", choices:["Hiroshima","Kyoto","Osaka","Tokyo"], correct:3, grade:5, subject:"Geography"},
-    {q:"What technique uses small dots of color to make a painting?", choices:["sketching","collage","fresco","pointillism"], correct:3, grade:5, subject:"Art"},
-    {q:"What is the area of a rectangle that is 6 by 9?", choices:["63","54","15","30"], correct:1, grade:5, subject:"Math"},
-    {q:"Which sentence uses a comma correctly?", choices:["I like apples oranges and bananas.","I like, apples oranges and bananas.","I like apples, oranges, and bananas.","I, like apples oranges and bananas."], correct:2, grade:5, subject:"English"},
-    {q:"What force pulls objects toward Earth?", choices:["gravity","magnetism","friction","electricity"], correct:0, grade:5, subject:"Science"},
-    {q:"The ancient pyramids were built in which country?", choices:["Mexico","Greece","Italy","Egypt"], correct:3, grade:5, subject:"History"}
+    {q:"What is 2 + 3?", choices:["5", "4", "6", "7"], correct:0, grade:1, subject:"Math"},
+    {q:"Which word rhymes with CAT?", choices:["dog", "run", "hat", "big"], correct:2, grade:1, subject:"English"},
+    {q:"How many legs does a dog have?", choices:["2", "5", "4", "3"], correct:2, grade:1, subject:"Science"},
+    {q:"Who was the first president of the United States?", choices:["Abraham Lincoln", "George Washington", "Thomas Jefferson", "John Adams"], correct:1, grade:1, subject:"History"},
+    {q:"What color is the sky?", choices:["purple", "blue", "green", "red"], correct:1, grade:1, subject:"Geography"},
+    {q:"What do you use to draw a picture?", choices:["shoe", "crayon", "cup", "spoon"], correct:1, grade:1, subject:"Art"},
+    {q:"What is 7 - 2?", choices:["3", "4", "6", "5"], correct:3, grade:1, subject:"Math"},
+    {q:"Which letter comes after B?", choices:["D", "A", "C", "E"], correct:2, grade:1, subject:"English"},
+    {q:"What do plants need to grow?", choices:["sunlight", "toys", "music", "candy"], correct:0, grade:1, subject:"Science"},
+    {q:"On which holiday do we celebrate America's birthday?", choices:["Thanksgiving", "Halloween", "Fourth of July", "Christmas"], correct:2, grade:1, subject:"History"},
+    {q:"What is 6 + 7?", choices:["12", "13", "14", "11"], correct:1, grade:2, subject:"Math"},
+    {q:"What is the opposite of BIG?", choices:["small", "huge", "wide", "tall"], correct:0, grade:2, subject:"English"},
+    {q:"What do we call water when it freezes?", choices:["steam", "fog", "rain", "ice"], correct:3, grade:2, subject:"Science"},
+    {q:"The Pilgrims sailed to America on which ship?", choices:["Santa Maria", "Nina", "Titanic", "Mayflower"], correct:3, grade:2, subject:"History"},
+    {q:"Which is the largest ocean?", choices:["Arctic", "Indian", "Pacific", "Atlantic"], correct:2, grade:2, subject:"Geography"},
+    {q:"What colors make green?", choices:["red and yellow", "red and blue", "blue and yellow", "black and white"], correct:2, grade:2, subject:"Art"},
+    {q:"What is 15 - 8?", choices:["6", "8", "5", "7"], correct:3, grade:2, subject:"Math"},
+    {q:"Which word is a noun?", choices:["quickly", "run", "dog", "happy"], correct:2, grade:2, subject:"English"},
+    {q:"Which animal is a mammal?", choices:["shark", "snake", "whale", "frog"], correct:2, grade:2, subject:"Science"},
+    {q:"Who wrote the Star-Spangled Banner?", choices:["Paul Revere", "George Washington", "Betsy Ross", "Francis Scott Key"], correct:3, grade:2, subject:"History"},
+    {q:"What is 4 x 5?", choices:["25", "18", "20", "15"], correct:2, grade:3, subject:"Math"},
+    {q:"Which sentence ends with a question mark?", choices:["What time is it?", "She is kind.", "I like apples.", "Run fast!"], correct:0, grade:3, subject:"English"},
+    {q:"What is the center of our solar system?", choices:["Sun", "Mars", "Earth", "Moon"], correct:0, grade:3, subject:"Science"},
+    {q:"Which continent is the United States on?", choices:["Europe", "South America", "Africa", "North America"], correct:3, grade:3, subject:"Geography"},
+    {q:"What do we call a picture of a person?", choices:["mural", "portrait", "still life", "landscape"], correct:1, grade:3, subject:"Art"},
+    {q:"What is 36 divided by 4?", choices:["10", "8", "9", "12"], correct:2, grade:3, subject:"Math"},
+    {q:"Which word is a verb?", choices:["blue", "happy", "jump", "quickly"], correct:2, grade:3, subject:"English"},
+    {q:"What gas do plants take in from the air?", choices:["nitrogen", "helium", "carbon dioxide", "oxygen"], correct:2, grade:3, subject:"Science"},
+    {q:"The first Thanksgiving was celebrated by the Pilgrims and who?", choices:["British soldiers", "Native Americans", "Spanish explorers", "French traders"], correct:1, grade:3, subject:"History"},
+    {q:"What is the capital of the United States?", choices:["Chicago", "Washington DC", "Los Angeles", "New York"], correct:1, grade:3, subject:"Geography"},
+    {q:"What is 7 x 8?", choices:["57", "54", "55", "56"], correct:3, grade:4, subject:"Math"},
+    {q:"Which is the correct plural of CHILD?", choices:["children", "childen", "childs", "childes"], correct:0, grade:4, subject:"English"},
+    {q:"What is the hardest natural substance on Earth?", choices:["gold", "diamond", "iron", "quartz"], correct:1, grade:4, subject:"Science"},
+    {q:"Who was president during the Civil War?", choices:["Abraham Lincoln", "Ulysses Grant", "Andrew Jackson", "George Washington"], correct:0, grade:4, subject:"History"},
+    {q:"Which is the longest river in the world?", choices:["Amazon", "Nile", "Mississippi", "Yangtze"], correct:1, grade:4, subject:"Geography"},
+    {q:"What are the three primary colors?", choices:["red, blue, yellow", "red, green, blue", "black, white, gray", "orange, purple, green"], correct:0, grade:4, subject:"Art"},
+    {q:"What is 144 divided by 12?", choices:["10", "13", "11", "12"], correct:3, grade:4, subject:"Math"},
+    {q:"Which word is an adjective?", choices:["run", "quickly", "beautiful", "dog"], correct:2, grade:4, subject:"English"},
+    {q:"What is H2O?", choices:["water", "salt", "oxygen", "sugar"], correct:0, grade:4, subject:"Science"},
+    {q:"In what year did America declare independence?", choices:["1789", "1620", "1776", "1492"], correct:2, grade:4, subject:"History"},
+    {q:"What is 3/4 as a decimal?", choices:["0.43", "0.75", "0.7", "0.34"], correct:1, grade:5, subject:"Math"},
+    {q:"What do we call a word that sounds the same but has different meanings, like BAT?", choices:["homonym", "adjective", "antonym", "synonym"], correct:0, grade:5, subject:"English"},
+    {q:"Which planet is known as the Red Planet?", choices:["Jupiter", "Venus", "Mars", "Saturn"], correct:2, grade:5, subject:"Science"},
+    {q:"Who was the first man to walk on the moon?", choices:["Yuri Gagarin", "Buzz Aldrin", "Neil Armstrong", "Michael Collins"], correct:2, grade:5, subject:"History"},
+    {q:"What is the capital of Japan?", choices:["Hiroshima", "Kyoto", "Osaka", "Tokyo"], correct:3, grade:5, subject:"Geography"},
+    {q:"What technique uses small dots of color to make a painting?", choices:["sketching", "collage", "fresco", "pointillism"], correct:3, grade:5, subject:"Art"},
+    {q:"What is the area of a rectangle that is 6 by 9?", choices:["63", "54", "15", "30"], correct:1, grade:5, subject:"Math"},
+    {q:"Which sentence uses a comma correctly?", choices:["I like apples oranges and bananas.", "I like, apples oranges and bananas.", "I like apples, oranges, and bananas.", "I, like apples oranges and bananas."], correct:2, grade:5, subject:"English"},
+    {q:"What force pulls objects toward Earth?", choices:["gravity", "magnetism", "friction", "electricity"], correct:0, grade:5, subject:"Science"},
+    {q:"The ancient pyramids were built in which country?", choices:["Mexico", "Greece", "Italy", "Egypt"], correct:3, grade:5, subject:"History"},
+    {q:"What is 4 + 2?", choices:["5", "6", "7", "8"], correct:1, grade:1, subject:"Math"},
+    {q:"What is 9 - 4?", choices:["4", "5", "6", "3"], correct:1, grade:1, subject:"Math"},
+    {q:"How many sides does a square have?", choices:["3", "4", "5", "6"], correct:1, grade:1, subject:"Math"},
+    {q:"What number comes right after 19?", choices:["18", "20", "21", "29"], correct:1, grade:1, subject:"Math"},
+    {q:"What is 5 + 5?", choices:["8", "9", "10", "11"], correct:2, grade:1, subject:"Math"},
+    {q:"How many cents are in a dime?", choices:["1", "5", "10", "25"], correct:2, grade:1, subject:"Math"},
+    {q:"Which shape has exactly 3 sides?", choices:["Square", "Circle", "Triangle", "Rectangle"], correct:2, grade:1, subject:"Math"},
+    {q:"What is 10 - 3?", choices:["6", "7", "8", "5"], correct:1, grade:1, subject:"Math"},
+    {q:"Which number is the biggest?", choices:["7", "12", "9", "5"], correct:1, grade:1, subject:"Math"},
+    {q:"What is 3 + 6?", choices:["8", "9", "10", "7"], correct:1, grade:1, subject:"Math"},
+    {q:"How many wheels does a bicycle have?", choices:["1", "2", "3", "4"], correct:1, grade:1, subject:"Math"},
+    {q:"If the hour hand points at 3 and the minute hand points at 12, what time is it?", choices:["3 o'clock", "12 o'clock", "6 o'clock", "9 o'clock"], correct:0, grade:1, subject:"Math"},
+    {q:"What is half of 10?", choices:["2", "4", "5", "20"], correct:2, grade:1, subject:"Math"},
+    {q:"Which word names a person, place, or thing?", choices:["Run", "Happy", "Dog", "Quickly"], correct:2, grade:1, subject:"English"},
+    {q:"What letter does the word 'apple' begin with?", choices:["B", "A", "E", "I"], correct:1, grade:1, subject:"English"},
+    {q:"Which sentence is written correctly?", choices:["i like pizza.", "I like pizza.", "I like Pizza", "like I pizza."], correct:1, grade:1, subject:"English"},
+    {q:"What do we call a person who writes a book?", choices:["Reader", "Author", "Singer", "Teacher"], correct:1, grade:1, subject:"English"},
+    {q:"Which word means the opposite of 'hot'?", choices:["Warm", "Cold", "Big", "Fast"], correct:1, grade:1, subject:"English"},
+    {q:"How many words are in this sentence: 'The cat sat.'?", choices:["2", "3", "4", "5"], correct:1, grade:1, subject:"English"},
+    {q:"Which sentence asks a question?", choices:["I have a dog.", "Where is my dog?", "Dogs are fun.", "My dog is big."], correct:1, grade:1, subject:"English"},
+    {q:"What sound does the word 'sun' begin with?", choices:["Mmm", "Sss", "Tuh", "Puh"], correct:1, grade:1, subject:"English"},
+    {q:"Which word rhymes with 'pig'?", choices:["Dog", "Big", "Pen", "Cup"], correct:1, grade:1, subject:"English"},
+    {q:"What mark goes at the end of a telling sentence?", choices:["A period", "A comma", "A question mark", "A star"], correct:0, grade:1, subject:"English"},
+    {q:"Which word is an action word?", choices:["Table", "Jump", "Blue", "Happy"], correct:1, grade:1, subject:"English"},
+    {q:"What is the first letter of the word 'zebra'?", choices:["Y", "Z", "A", "S"], correct:1, grade:1, subject:"English"},
+    {q:"How do you spell the number that comes after one?", choices:["Too", "Two", "Tow", "Toe"], correct:1, grade:1, subject:"Spelling"},
+    {q:"How do you spell the animal that says 'meow'?", choices:["Kat", "Cat", "Cet", "Katt"], correct:1, grade:1, subject:"Spelling"},
+    {q:"How many letters are in the word 'dog'?", choices:["2", "3", "4", "5"], correct:1, grade:1, subject:"Spelling"},
+    {q:"How do you spell the place where a family lives?", choices:["Hous", "Howse", "House", "Houce"], correct:2, grade:1, subject:"Spelling"},
+    {q:"What letter is missing from the word B_D, something you sleep on?", choices:["A", "E", "I", "O"], correct:1, grade:1, subject:"Spelling"},
+    {q:"Which word spells the color of grass?", choices:["Grene", "Green", "Grean", "Creen"], correct:1, grade:1, subject:"Spelling"},
+    {q:"How do you spell the word for a baby dog?", choices:["Puppy", "Pupy", "Puppe", "Puppie"], correct:0, grade:1, subject:"Spelling"},
+    {q:"Which two letters make the first sound in 'ship'?", choices:["Sh", "Ch", "Th", "Wh"], correct:0, grade:1, subject:"Spelling"},
+    {q:"What letter is missing from _UN, the big bright light in the daytime sky?", choices:["S", "M", "R", "T"], correct:0, grade:1, subject:"Spelling"},
+    {q:"How many vowel letters are in the word 'cake'?", choices:["1", "2", "3", "0"], correct:1, grade:1, subject:"Spelling"},
+    {q:"How do you spell the word for someone you like to play with?", choices:["Frend", "Friend", "Freind", "Friende"], correct:1, grade:1, subject:"Spelling"},
+    {q:"What is the correct plural of 'cat'?", choices:["Cates", "Cats", "Caties", "Cat"], correct:1, grade:1, subject:"Spelling"},
+    {q:"Which animal says 'moo'?", choices:["Pig", "Cow", "Duck", "Horse"], correct:1, grade:1, subject:"Science"},
+    {q:"How many legs does a spider have?", choices:["6", "8", "4", "10"], correct:1, grade:1, subject:"Science"},
+    {q:"What does a caterpillar turn into?", choices:["A bee", "A butterfly", "An ant", "A bird"], correct:1, grade:1, subject:"Science"},
+    {q:"Which season is the coldest?", choices:["Summer", "Fall", "Winter", "Spring"], correct:2, grade:1, subject:"Science"},
+    {q:"What do bees make?", choices:["Milk", "Honey", "Silk", "Wool"], correct:1, grade:1, subject:"Science"},
+    {q:"Which of these animals can fly?", choices:["Fish", "Bird", "Worm", "Snake"], correct:1, grade:1, subject:"Science"},
+    {q:"What is a baby frog called?", choices:["A cub", "A tadpole", "A pup", "A kitten"], correct:1, grade:1, subject:"Science"},
+    {q:"Which sense do you use to smell flowers?", choices:["Your eyes", "Your ears", "Your nose", "Your hands"], correct:2, grade:1, subject:"Science"},
+    {q:"What falls from the clouds when it rains?", choices:["Raindrops", "Feathers", "Rocks", "Dust"], correct:0, grade:1, subject:"Science"},
+    {q:"Which animal lives in the ocean?", choices:["Bear", "Whale", "Lion", "Elephant"], correct:1, grade:1, subject:"Science"},
+    {q:"What does the sun give us?", choices:["Rain", "Light and heat", "Snow", "Wind"], correct:1, grade:1, subject:"Science"},
+    {q:"Which part of a plant grows under the ground?", choices:["Leaf", "Flower", "Root", "Fruit"], correct:2, grade:1, subject:"Science"},
+    {q:"Which animal sleeps through the whole winter?", choices:["Squirrel", "Bear", "Rabbit", "Deer"], correct:1, grade:1, subject:"Science"},
+    {q:"On which planet do we live?", choices:["Mars", "Earth", "The Moon", "Jupiter"], correct:1, grade:1, subject:"Geography"},
+    {q:"What is the name of our country?", choices:["Mexico", "Canada", "The United States of America", "Texas"], correct:2, grade:1, subject:"Geography"},
+    {q:"The sun rises in which direction?", choices:["East", "West", "North", "South"], correct:0, grade:1, subject:"Geography"},
+    {q:"What do we call the very big, salty water that covers most of Earth?", choices:["A lake", "A river", "An ocean", "A pond"], correct:2, grade:1, subject:"Geography"},
+    {q:"Which of these is a continent?", choices:["Texas", "North America", "The Pacific", "New York City"], correct:1, grade:1, subject:"Geography"},
+    {q:"What is the capital city of the United States?", choices:["New York City", "Washington, D.C.", "Chicago", "Los Angeles"], correct:1, grade:1, subject:"Geography"},
+    {q:"What tool helps you find north, south, east, and west?", choices:["A compass", "A spoon", "A crayon", "A shoe"], correct:0, grade:1, subject:"Geography"},
+    {q:"Which of these is the tallest kind of land?", choices:["A hill", "A mountain", "A valley", "A plain"], correct:1, grade:1, subject:"Geography"},
+    {q:"What do we call land with water all around it?", choices:["A desert", "An island", "A forest", "A cave"], correct:1, grade:1, subject:"Geography"},
+    {q:"The Statue of Liberty is in which state?", choices:["California", "New York", "Florida", "Texas"], correct:1, grade:1, subject:"Geography"},
+    {q:"What is the weather like at the North Pole?", choices:["Hot", "Warm", "Very cold", "Rainy"], correct:2, grade:1, subject:"Geography"},
+    {q:"Which of these is a state in our country?", choices:["London", "Paris", "Ohio", "Canada"], correct:2, grade:1, subject:"Geography"},
+    {q:"Who is pictured on the one-dollar bill?", choices:["Abraham Lincoln", "George Washington", "Thomas Jefferson", "Benjamin Franklin"], correct:1, grade:1, subject:"History"},
+    {q:"What do Americans celebrate on Thanksgiving?", choices:["Being thankful and sharing a meal", "The first day of school", "The end of winter", "The New Year"], correct:0, grade:1, subject:"History"},
+    {q:"Which president is known for freeing the slaves?", choices:["George Washington", "Abraham Lincoln", "Thomas Jefferson", "John Adams"], correct:1, grade:1, subject:"History"},
+    {q:"What ship brought the Pilgrims to America?", choices:["The Mayflower", "The Titanic", "The Queen Mary", "The Santa Maria"], correct:0, grade:1, subject:"History"},
+    {q:"What do we remember on Martin Luther King Jr. Day?", choices:["His dream that everyone is treated fairly", "The start of summer", "Harvest time", "Fireworks"], correct:0, grade:1, subject:"History"},
+    {q:"Who were the first people to live in America?", choices:["Native Americans", "The Pilgrims", "The Vikings", "Cowboys"], correct:0, grade:1, subject:"History"},
+    {q:"Who wrote the Declaration of Independence?", choices:["George Washington", "Thomas Jefferson", "Abraham Lincoln", "Paul Revere"], correct:1, grade:1, subject:"History"},
+    {q:"Which holiday celebrates the New Year on December 31?", choices:["New Year's Eve", "Christmas", "Easter", "Halloween"], correct:0, grade:1, subject:"History"},
+    {q:"How many stars are on the American flag?", choices:["13", "50", "25", "48"], correct:1, grade:1, subject:"History"},
+    {q:"What do the 13 stripes on the American flag stand for?", choices:["The 50 states", "The first 13 colonies", "The presidents", "The rivers"], correct:1, grade:1, subject:"History"},
+    {q:"Who was the first person to walk on the Moon?", choices:["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin", "John Glenn"], correct:1, grade:1, subject:"History"},
+    {q:"Where does the President of the United States live?", choices:["The Capitol", "The White House", "The Pentagon", "The Library"], correct:1, grade:1, subject:"History"},
+    {q:"What color do you get when you mix red and blue?", choices:["Green", "Purple", "Orange", "Brown"], correct:1, grade:1, subject:"Art"},
+    {q:"What color do you get when you mix red and yellow?", choices:["Orange", "Pink", "Gray", "Purple"], correct:0, grade:1, subject:"Art"},
+    {q:"Which of these colors is in a rainbow?", choices:["Pink", "Red", "Brown", "Black"], correct:1, grade:1, subject:"Art"},
+    {q:"What do you use to paint a picture?", choices:["A hammer", "A paintbrush", "A spoon", "A shoe"], correct:1, grade:1, subject:"Art"},
+    {q:"What can you make with clay?", choices:["Pots and bowls", "Songs", "Books", "Shoes"], correct:0, grade:1, subject:"Art"},
+    {q:"Which shape is round like a ball?", choices:["Square", "Circle", "Triangle", "Star"], correct:1, grade:1, subject:"Art"},
+    {q:"Red, yellow, and blue are called the...", choices:["Rainbow colors", "Primary colors", "Dark colors", "Night colors"], correct:1, grade:1, subject:"Art"},
+    {q:"What color do you get when you mix black and white?", choices:["Gray", "Pink", "Tan", "Purple"], correct:0, grade:1, subject:"Art"},
+    {q:"Which of these is a warm color?", choices:["Blue", "Green", "Red", "Silver"], correct:2, grade:1, subject:"Art"},
+    {q:"What do you call art made by cutting and gluing paper?", choices:["Drawing", "Collage", "Painting", "Sketching"], correct:1, grade:1, subject:"Art"},
+    {q:"How is a statue usually made?", choices:["By carving or shaping material", "By singing", "By writing", "By dancing"], correct:0, grade:1, subject:"Art"},
+    {q:"Where does a painter put paint while working?", choices:["On a palette", "In a book", "On the floor", "In a shoe"], correct:0, grade:1, subject:"Art"},
+    {q:"Which instrument do you hit with sticks?", choices:["Piano", "Drum", "Violin", "Flute"], correct:1, grade:1, subject:"Music"},
+    {q:"How many strings does a guitar usually have?", choices:["4", "5", "6", "8"], correct:2, grade:1, subject:"Music"},
+    {q:"Which instrument has black and white keys?", choices:["Drum", "Piano", "Trumpet", "Harp"], correct:1, grade:1, subject:"Music"},
+    {q:"What does a singer use on stage to make the voice louder?", choices:["A microphone", "A flashlight", "A hat", "A book"], correct:0, grade:1, subject:"Music"},
+    {q:"What is 34 + 25?", choices:["49", "59", "69", "58"], correct:1, grade:2, subject:"Math"},
+    {q:"What is 47 + 38?", choices:["75", "95", "84", "85"], correct:3, grade:2, subject:"Math"},
+    {q:"What is 63 - 27?", choices:["46", "36", "26", "33"], correct:1, grade:2, subject:"Math"},
+    {q:"What is 92 - 58?", choices:["44", "24", "34", "33"], correct:2, grade:2, subject:"Math"},
+    {q:"How many cents is a quarter worth?", choices:["10", "5", "50", "25"], correct:3, grade:2, subject:"Math"},
+    {q:"Two dimes and one nickel are worth how many cents?", choices:["25", "20", "30", "15"], correct:0, grade:2, subject:"Math"},
+    {q:"A dime is worth as much as how many pennies?", choices:["5", "25", "10", "2"], correct:2, grade:2, subject:"Math"},
+    {q:"How many days are in two weeks?", choices:["7", "10", "21", "14"], correct:3, grade:2, subject:"Math"},
+    {q:"What number comes right after 59?", choices:["60", "58", "70", "61"], correct:0, grade:2, subject:"Math"},
+    {q:"Which of these numbers is even?", choices:["7", "9", "14", "15"], correct:2, grade:2, subject:"Math"},
+    {q:"What is 26 + 26?", choices:["42", "62", "46", "52"], correct:3, grade:2, subject:"Math"},
+    {q:"How many inches are in one foot?", choices:["10", "12", "6", "24"], correct:1, grade:2, subject:"Math"},
+    {q:"What is half of 20?", choices:["5", "15", "10", "4"], correct:2, grade:2, subject:"Math"},
+    {q:"What mark goes at the end of a question?", choices:[".", "!", ",", "?"], correct:3, grade:2, subject:"English"},
+    {q:"What is the opposite of HOT?", choices:["Warm", "Cold", "Sunny", "Wet"], correct:1, grade:2, subject:"English"},
+    {q:"Which word means more than one cat?", choices:["Cats", "Cat", "Catz", "Cat's"], correct:0, grade:2, subject:"English"},
+    {q:"Which word means the same as HAPPY?", choices:["Sad", "Mad", "Tired", "Glad"], correct:3, grade:2, subject:"English"},
+    {q:"Which word names a place?", choices:["Run", "Quickly", "School", "Blue"], correct:2, grade:2, subject:"English"},
+    {q:"Which pair of words rhymes?", choices:["Cat and Dog", "Sun and Moon", "Cat and Hat", "Pig and Cow"], correct:2, grade:2, subject:"English"},
+    {q:"Which word fits best? She ___ to school.", choices:["go", "goes", "gone", "going to went"], correct:1, grade:2, subject:"English"},
+    {q:"Which word should start with a capital letter?", choices:["dog", "cat", "maria", "run"], correct:2, grade:2, subject:"English"},
+    {q:"The word don't is a short way to say what?", choices:["Do", "Done", "Do not", "Does"], correct:2, grade:2, subject:"English"},
+    {q:"Which word describes a noun, like in 'the fluffy dog'?", choices:["Run", "Fluffy", "Jump", "Sing"], correct:1, grade:2, subject:"English"},
+    {q:"Which choice spells the word 'because' correctly?", choices:["Becaus", "Becuse", "Bekause", "Because"], correct:3, grade:2, subject:"Spelling"},
+    {q:"Which choice spells the word 'friend' correctly?", choices:["Friend", "Frend", "Freind", "Frien"], correct:0, grade:2, subject:"Spelling"},
+    {q:"Which choice spells the word 'school' correctly?", choices:["Scooll", "School", "Scool", "Shcool"], correct:1, grade:2, subject:"Spelling"},
+    {q:"Which choice spells the word 'which' correctly?", choices:["Wich", "Whitch", "Which", "Whish"], correct:2, grade:2, subject:"Spelling"},
+    {q:"Which choice spells the word 'animal' correctly?", choices:["Anamal", "Animel", "Anmil", "Animal"], correct:3, grade:2, subject:"Spelling"},
+    {q:"Which choice spells the word 'happy' correctly?", choices:["Happy", "Hapy", "Happee", "Happi"], correct:0, grade:2, subject:"Spelling"},
+    {q:"Which choice spells the word 'little' correctly?", choices:["Littel", "Litlle", "Little", "Littl"], correct:2, grade:2, subject:"Spelling"},
+    {q:"Which choice spells the word 'winter' correctly?", choices:["Wintar", "Winetr", "Wynter", "Winter"], correct:3, grade:2, subject:"Spelling"},
+    {q:"Which choice spells the word 'please' correctly?", choices:["Please", "Plese", "Pleeze", "Pleese"], correct:0, grade:2, subject:"Spelling"},
+    {q:"Which choice spells the word 'yellow' correctly?", choices:["Yello", "Yelow", "Yellow", "Yellew"], correct:2, grade:2, subject:"Spelling"},
+    {q:"Which choice spells the word 'garden' correctly?", choices:["Gardin", "Gardun", "Garden", "Gardan"], correct:2, grade:2, subject:"Spelling"},
+    {q:"Which choice spells the word 'monkey' correctly?", choices:["Monkee", "Monkey", "Monky", "Munkey"], correct:1, grade:2, subject:"Spelling"},
+    {q:"A tadpole grows into which animal?", choices:["Fish", "Snake", "Frog", "Duck"], correct:2, grade:2, subject:"Science"},
+    {q:"Which animal lives in a hive?", choices:["Ant", "Spider", "Worm", "Bee"], correct:3, grade:2, subject:"Science"},
+    {q:"Which of these helps a plant grow?", choices:["Sunlight", "Rocks", "Plastic", "Paper"], correct:0, grade:2, subject:"Science"},
+    {q:"Which of these is a solid?", choices:["Water", "Steam", "Ice cube", "Air"], correct:2, grade:2, subject:"Science"},
+    {q:"A magnet will stick to which object?", choices:["Wood stick", "Iron nail", "Paper", "Rubber band"], correct:1, grade:2, subject:"Science"},
+    {q:"Which season comes right after winter?", choices:["Summer", "Fall", "Spring", "Winter again"], correct:2, grade:2, subject:"Science"},
+    {q:"Which part of a plant holds it in the ground?", choices:["Leaves", "Flower", "Stem", "Roots"], correct:3, grade:2, subject:"Science"},
+    {q:"What is a baby cow called?", choices:["Cub", "Puppy", "Calf", "Kitten"], correct:2, grade:2, subject:"Science"},
+    {q:"Which animal sleeps through the winter?", choices:["Bear", "Horse", "Chicken", "Goat"], correct:0, grade:2, subject:"Science"},
+    {q:"How many continents are there on Earth?", choices:["5", "6", "7", "8"], correct:2, grade:2, subject:"Geography"},
+    {q:"Which continent do people in the United States live on?", choices:["Africa", "Asia", "Europe", "North America"], correct:3, grade:2, subject:"Geography"},
+    {q:"Which ocean touches the California coast?", choices:["Atlantic", "Pacific", "Indian", "Arctic"], correct:1, grade:2, subject:"Geography"},
+    {q:"Which is the biggest state in the United States?", choices:["Texas", "Alaska", "California", "Florida"], correct:1, grade:2, subject:"Geography"},
+    {q:"Which state is made of islands?", choices:["Texas", "Ohio", "Kansas", "Hawaii"], correct:3, grade:2, subject:"Geography"},
+    {q:"On most maps, which direction is at the top?", choices:["North", "South", "East", "West"], correct:0, grade:2, subject:"Geography"},
+    {q:"Which is the largest continent?", choices:["Africa", "Europe", "Asia", "Australia"], correct:2, grade:2, subject:"Geography"},
+    {q:"Which ocean touches the East Coast of the United States?", choices:["Pacific", "Atlantic", "Indian", "Arctic"], correct:1, grade:2, subject:"Geography"},
+    {q:"Which country is just south of the United States?", choices:["Canada", "Brazil", "Spain", "Mexico"], correct:3, grade:2, subject:"Geography"},
+    {q:"Mount Everest is the tallest what in the world?", choices:["Building", "Tree", "Mountain", "River"], correct:2, grade:2, subject:"Geography"},
+    {q:"A piece of land with water all around it is called what?", choices:["Island", "Desert", "Valley", "Mountain"], correct:0, grade:2, subject:"Geography"},
+    {q:"The White House is the home of which leader?", choices:["The King of England", "The President", "The Mayor of New York", "A movie star"], correct:1, grade:2, subject:"History"},
+    {q:"The Statue of Liberty was a gift from which country?", choices:["England", "Spain", "France", "Italy"], correct:2, grade:2, subject:"History"},
+    {q:"Whose face is on the penny?", choices:["George Washington", "Abraham Lincoln", "Thomas Jefferson", "Benjamin Franklin"], correct:1, grade:2, subject:"History"},
+    {q:"Independence Day is celebrated on which date?", choices:["December 25", "January 1", "July 4", "October 31"], correct:2, grade:2, subject:"History"},
+    {q:"Who flew the first airplane?", choices:["The Wright brothers", "The Smith brothers", "Thomas Edison", "Henry Ford"], correct:0, grade:2, subject:"History"},
+    {q:"Thanksgiving is celebrated in which month?", choices:["December", "November", "September", "June"], correct:1, grade:2, subject:"History"},
+    {q:"The 13 stripes on the flag stand for the first how many colonies?", choices:["13", "10", "50", "7"], correct:0, grade:2, subject:"History"},
+    {q:"The Liberty Bell is in which city?", choices:["New York City", "Boston", "Philadelphia", "Washington, D.C."], correct:2, grade:2, subject:"History"},
+    {q:"Columbus first sailed to America in which year?", choices:["1776", "1492", "1620", "1900"], correct:1, grade:2, subject:"History"},
+    {q:"George Washington's face is on which coin?", choices:["Penny", "Nickel", "Dime", "Quarter"], correct:3, grade:2, subject:"History"},
+    {q:"Mixing red and white paint makes which color?", choices:["Pink", "Purple", "Brown", "Gray"], correct:0, grade:2, subject:"Art"},
+    {q:"Mixing blue and red paint makes which color?", choices:["Orange", "Green", "Purple", "Pink"], correct:2, grade:2, subject:"Art"},
+    {q:"Which tool is used to paint a picture?", choices:["Hammer", "Brush", "Spoon", "Ruler"], correct:1, grade:2, subject:"Art"},
+    {q:"A painting of a person's face is called what?", choices:["Landscape", "Portrait", "Cartoon", "Map"], correct:1, grade:2, subject:"Art"},
+    {q:"What can you make by shaping clay and baking it?", choices:["Pottery", "A sandwich", "A song", "A puzzle"], correct:0, grade:2, subject:"Art"},
+    {q:"Which of these colors is a primary color?", choices:["Pink", "Purple", "Red", "Orange"], correct:2, grade:2, subject:"Art"},
+    {q:"What do we call a person who makes art?", choices:["Artist", "Author", "Singer", "Builder"], correct:0, grade:2, subject:"Art"},
+    {q:"Which of these is used for drawing?", choices:["Spoon", "Hammer", "Comb", "Pencil"], correct:3, grade:2, subject:"Art"},
+    {q:"How many colors are in a rainbow?", choices:["5", "6", "7", "8"], correct:2, grade:2, subject:"Art"},
+    {q:"A statue carved from stone is an example of what?", choices:["A painting", "A sculpture", "A drawing", "A photograph"], correct:1, grade:2, subject:"Art"},
+    {q:"Mixing black and white makes which color?", choices:["Brown", "Blue", "Gray", "Tan"], correct:2, grade:2, subject:"Art"},
+    {q:"Cutting pictures from paper and gluing them together makes a what?", choices:["Collage", "Statue", "Sketch", "Frame"], correct:0, grade:2, subject:"Art"},
+    {q:"A drum is played by hitting it with what?", choices:["A bow", "Drumsticks", "A pick", "Your breath"], correct:1, grade:2, subject:"Music"},
+    {q:"Which instrument has strings?", choices:["Drum", "Flute", "Guitar", "Trumpet"], correct:2, grade:2, subject:"Music"},
+    {q:"How many colors of keys does a piano have?", choices:["One", "Three", "Four", "Two"], correct:3, grade:2, subject:"Music"},
+    {q:"Which instrument do you blow into to play?", choices:["Violin", "Flute", "Drum", "Piano"], correct:1, grade:2, subject:"Music"},
+    {q:"When you sing, the music comes from your what?", choices:["Hands", "Voice", "Feet", "Ears"], correct:1, grade:2, subject:"Music"},
+    {q:"The words of a song are called what?", choices:["Notes", "Lyrics", "Beats", "Verses only"], correct:1, grade:2, subject:"Music"},
+    {q:"Which of these is a musical instrument?", choices:["Violin", "Telephone", "Toaster", "Bicycle"], correct:0, grade:2, subject:"Music"},
+    {q:"A lullaby is a song meant to help who sleep?", choices:["Dogs", "Babies", "Teachers", "Farmers"], correct:1, grade:2, subject:"Music"},
+    {q:"In the song 'Twinkle, Twinkle,' what is twinkling?", choices:["The moon", "A lamp", "A star", "A firefly"], correct:2, grade:2, subject:"Music"},
+    {q:"What do we call a group of people who sing together?", choices:["Band of drums", "Choir", "Orchestra pit", "Audience"], correct:1, grade:2, subject:"Music"},
+    {q:"The Star-Spangled Banner is the national what of the United States?", choices:["Pledge", "Poem", "Story", "Anthem"], correct:3, grade:2, subject:"Music"},
+    {q:"About how many hours of sleep should a kid get each night?", choices:["2 hours", "5 hours", "10 hours", "20 hours"], correct:2, grade:2, subject:"Health"},
+    {q:"Which drink helps build strong bones?", choices:["Soda", "Milk", "Juice boxes", "Coffee"], correct:1, grade:2, subject:"Health"},
+    {q:"What is 6 times 7?", choices:["42", "48", "40", "36"], correct:0, grade:3, subject:"Math"},
+    {q:"What is 8 times 3?", choices:["24", "32", "21", "27"], correct:0, grade:3, subject:"Math"},
+    {q:"What is 45 + 38?", choices:["73", "93", "78", "83"], correct:3, grade:3, subject:"Math"},
+    {q:"What is 92 - 47?", choices:["45", "35", "65", "55"], correct:0, grade:3, subject:"Math"},
+    {q:"What is 47 rounded to the nearest ten?", choices:["40", "45", "60", "50"], correct:3, grade:3, subject:"Math"},
+    {q:"A pizza is cut into 4 equal slices. You eat 1 slice. What fraction of the pizza did you eat?", choices:["1/4", "2/4", "1/2", "1/3"], correct:0, grade:3, subject:"Math"},
+    {q:"What is 7 times 7?", choices:["49", "42", "56", "47"], correct:0, grade:3, subject:"Math"},
+    {q:"What is 100 - 63?", choices:["37", "33", "47", "43"], correct:0, grade:3, subject:"Math"},
+    {q:"What is the value of the 5 in the number 352?", choices:["5", "500", "5,000", "50"], correct:3, grade:3, subject:"Math"},
+    {q:"A square has sides that are each 4 inches long. What is its perimeter?", choices:["16 inches", "20 inches", "8 inches", "12 inches"], correct:0, grade:3, subject:"Math"},
+    {q:"What is 9 times 4?", choices:["36", "45", "28", "32"], correct:0, grade:3, subject:"Math"},
+    {q:"Sara has 3 bags with 6 marbles in each bag. How many marbles does she have in all?", choices:["9", "12", "24", "18"], correct:3, grade:3, subject:"Math"},
+    {q:"What is 5 times 8?", choices:["40", "45", "48", "35"], correct:0, grade:3, subject:"Math"},
+    {q:"Which word is a pronoun?", choices:["she", "table", "run", "happy"], correct:0, grade:3, subject:"English"},
+    {q:"What is the past tense of the word go?", choices:["goed", "gone", "goes", "went"], correct:3, grade:3, subject:"English"},
+    {q:"What is the plural of child?", choices:["children", "childes", "childrens", "childs"], correct:0, grade:3, subject:"English"},
+    {q:"In the sentence 'The big dog barked,' which word is an adjective?", choices:["big", "the", "dog", "barked"], correct:0, grade:3, subject:"English"},
+    {q:"What does the contraction don't stand for?", choices:["do not", "does not", "did not", "done not"], correct:0, grade:3, subject:"English"},
+    {q:"Choose the correct word: I want to go ___ the park.", choices:["to", "toe", "too", "two"], correct:0, grade:3, subject:"English"},
+    {q:"Which of these words is a noun?", choices:["park", "sing", "blue", "quickly"], correct:0, grade:3, subject:"English"},
+    {q:"Which word is the opposite of hot?", choices:["warm", "cold", "dry", "big"], correct:1, grade:3, subject:"English"},
+    {q:"What is the subject of the sentence 'The birds sing loudly'?", choices:["The birds", "sing", "loudly", "The"], correct:0, grade:3, subject:"English"},
+    {q:"Which sentence is in the past tense?", choices:["She walks home.", "She will walk home.", "She is walking home.", "She walked home."], correct:3, grade:3, subject:"English"},
+    {q:"Which word is an adverb?", choices:["slower", "slowly", "slowness", "slow"], correct:1, grade:3, subject:"English"},
+    {q:"Which is the correct spelling of the word in this sentence: We left early ___ of the rain.", choices:["becaus", "because", "becouse", "becuz"], correct:1, grade:3, subject:"Spelling"},
+    {q:"How do you spell the word for a person you like and trust?", choices:["frend", "freind", "friende", "friend"], correct:3, grade:3, subject:"Spelling"},
+    {q:"Which is the correct spelling of the word in this sentence: ___ one do you want?", choices:["whihc", "which", "whitch", "wich"], correct:1, grade:3, subject:"Spelling"},
+    {q:"How do you spell the number that comes after seven?", choices:["eight", "eihgt", "ate", "eigt"], correct:0, grade:3, subject:"Spelling"},
+    {q:"How do you spell the place where children go to learn?", choices:["scool", "school", "schol", "skool"], correct:1, grade:3, subject:"Spelling"},
+    {q:"Which is the correct spelling of the word that means as much as you need?", choices:["enuf", "enugh", "inough", "enough"], correct:3, grade:3, subject:"Spelling"},
+    {q:"How do you spell the day that comes after today?", choices:["tommorrow", "tomorrow", "tomorow", "tomarrow"], correct:1, grade:3, subject:"Spelling"},
+    {q:"Which is the correct spelling of the word that means to divide into parts?", choices:["seprate", "separate", "separete", "seperate"], correct:1, grade:3, subject:"Spelling"},
+    {q:"How do you spell the place where you can borrow books?", choices:["liberry", "library", "lybrary", "libary"], correct:1, grade:3, subject:"Spelling"},
+    {q:"How do you spell the day that comes after Tuesday?", choices:["wensday", "Wednesday", "wendsday", "wednsday"], correct:1, grade:3, subject:"Spelling"},
+    {q:"Which is the correct spelling of the word for the group of people who lead a country?", choices:["goverment", "govrnment", "govverment", "government"], correct:3, grade:3, subject:"Spelling"},
+    {q:"Which is the correct spelling of the word that means to think something is true?", choices:["beleeve", "believe", "belive", "beleive"], correct:1, grade:3, subject:"Spelling"},
+    {q:"Which of these is a gas?", choices:["ice", "water", "rock", "steam"], correct:3, grade:3, subject:"Science"},
+    {q:"Which planet is closest to the Sun?", choices:["Venus", "Mercury", "Earth", "Mars"], correct:1, grade:3, subject:"Science"},
+    {q:"In the water cycle, what is it called when water vapor cools and forms clouds?", choices:["evaporation", "condensation", "precipitation", "freezing"], correct:1, grade:3, subject:"Science"},
+    {q:"Which of these is a simple machine?", choices:["lever", "computer", "television", "car engine"], correct:0, grade:3, subject:"Science"},
+    {q:"A ramp used to lift heavy objects is which simple machine?", choices:["pulley", "wheel and axle", "inclined plane", "screw"], correct:2, grade:3, subject:"Science"},
+    {q:"What do plants need most to make their own food?", choices:["moonlight", "sunlight", "darkness", "snow"], correct:1, grade:3, subject:"Science"},
+    {q:"Which part of a plant takes in water from the soil?", choices:["leaf", "flower", "stem", "roots"], correct:3, grade:3, subject:"Science"},
+    {q:"What is it called when a caterpillar changes into a butterfly?", choices:["hibernation", "migration", "camouflage", "metamorphosis"], correct:3, grade:3, subject:"Science"},
+    {q:"How long does it take Earth to spin around once on its axis?", choices:["24 hours", "7 days", "30 days", "365 days"], correct:0, grade:3, subject:"Science"},
+    {q:"What is the capital of Texas?", choices:["Houston", "Dallas", "Austin", "Denver"], correct:2, grade:3, subject:"Geography"},
+    {q:"What is the capital of California?", choices:["Los Angeles", "Sacramento", "San Diego", "San Francisco"], correct:1, grade:3, subject:"Geography"},
+    {q:"Which ocean is on the East Coast of the United States?", choices:["Pacific", "Indian", "Atlantic", "Arctic"], correct:2, grade:3, subject:"Geography"},
+    {q:"Which ocean is on the West Coast of the United States?", choices:["Arctic", "Atlantic", "Indian", "Pacific"], correct:3, grade:3, subject:"Geography"},
+    {q:"On a compass, which direction is opposite of north?", choices:["east", "west", "south", "northeast"], correct:2, grade:3, subject:"Geography"},
+    {q:"Which is the largest state in the United States by land area?", choices:["Texas", "California", "Montana", "Alaska"], correct:3, grade:3, subject:"Geography"},
+    {q:"Which river flows through the Grand Canyon?", choices:["Mississippi River", "Colorado River", "Rio Grande", "Hudson River"], correct:1, grade:3, subject:"Geography"},
+    {q:"What country is north of the United States?", choices:["Mexico", "Cuba", "Canada", "Russia"], correct:2, grade:3, subject:"Geography"},
+    {q:"What country is directly south of the United States?", choices:["Canada", "Brazil", "Spain", "Mexico"], correct:3, grade:3, subject:"Geography"},
+    {q:"The country of Egypt is on which continent?", choices:["Asia", "Europe", "South America", "Africa"], correct:3, grade:3, subject:"Geography"},
+    {q:"What is the capital of Florida?", choices:["Miami", "Orlando", "Tallahassee", "Tampa"], correct:2, grade:3, subject:"Geography"},
+    {q:"A drawing that shows where places are on Earth is called a what?", choices:["globe", "map", "poster", "chart"], correct:1, grade:3, subject:"Geography"},
+    {q:"In what year did the United States declare its independence?", choices:["1776", "1876", "1676", "1976"], correct:0, grade:3, subject:"History"},
+    {q:"What holiday celebrates the signing of the Declaration of Independence?", choices:["Thanksgiving", "Independence Day", "Memorial Day", "Flag Day"], correct:1, grade:3, subject:"History"},
+    {q:"Which president's face is on the penny?", choices:["George Washington", "Thomas Jefferson", "Abraham Lincoln", "Theodore Roosevelt"], correct:2, grade:3, subject:"History"},
+    {q:"What ship brought the Pilgrims to America in 1620?", choices:["Santa Maria", "Mayflower", "Titanic", "Queen Mary"], correct:1, grade:3, subject:"History"},
+    {q:"Martin Luther King Jr. Day is celebrated in which month?", choices:["February", "March", "January", "November"], correct:2, grade:3, subject:"History"},
+    {q:"Which explorer sailed to America in 1492?", choices:["Marco Polo", "Christopher Columbus", "Ferdinand Magellan", "Ponce de Leon"], correct:1, grade:3, subject:"History"},
+    {q:"How many stripes are on the American flag?", choices:["12", "50", "15", "13"], correct:3, grade:3, subject:"History"},
+    {q:"What do the 50 stars on the American flag stand for?", choices:["50 presidents", "50 states", "50 cities", "50 years"], correct:1, grade:3, subject:"History"},
+    {q:"Mixing blue and yellow paint makes what color?", choices:["purple", "green", "orange", "brown"], correct:1, grade:3, subject:"Art"},
+    {q:"Who painted the Mona Lisa?", choices:["Vincent van Gogh", "Pablo Picasso", "Claude Monet", "Leonardo da Vinci"], correct:3, grade:3, subject:"Art"},
+    {q:"An artist mixes and holds paints on a what?", choices:["canvas", "palette", "easel", "frame"], correct:1, grade:3, subject:"Art"},
+    {q:"What is a picture made by gluing pieces of paper and other materials called?", choices:["sketch", "portrait", "collage", "mural"], correct:2, grade:3, subject:"Art"},
+    {q:"A very large painting on a wall is called a what?", choices:["mural", "sketch", "doodle", "statue"], correct:0, grade:3, subject:"Art"},
+    {q:"What do you call a work of art made from clay, wood, or stone that stands up?", choices:["painting", "drawing", "photo", "sculpture"], correct:3, grade:3, subject:"Art"},
+    {q:"Mixing red and white paint makes what color?", choices:["pink", "purple", "orange", "gray"], correct:0, grade:3, subject:"Art"},
+    {q:"Lines that go straight up and down are called what?", choices:["horizontal", "diagonal", "curved", "vertical"], correct:3, grade:3, subject:"Art"},
+    {q:"Which artist painted The Starry Night?", choices:["Leonardo da Vinci", "Vincent van Gogh", "Pablo Picasso", "Rembrandt"], correct:1, grade:3, subject:"Art"},
+    {q:"Blue, green, and purple are known as what kind of colors?", choices:["warm colors", "bright colors", "cool colors", "dark colors"], correct:2, grade:3, subject:"Art"},
+    {q:"How many beats does a whole note get?", choices:["1", "2", "3", "4"], correct:3, grade:3, subject:"Music"},
+    {q:"Which instrument do you play by pressing keys?", choices:["drum", "piano", "flute", "violin"], correct:1, grade:3, subject:"Music"},
+    {q:"The flute belongs to which instrument family?", choices:["strings", "brass", "woodwinds", "percussion"], correct:2, grade:3, subject:"Music"},
+    {q:"A violin is played with a what?", choices:["bow", "drumstick", "reed", "valve"], correct:0, grade:3, subject:"Music"},
+    {q:"Which of these is a percussion instrument?", choices:["violin", "trumpet", "flute", "drum"], correct:3, grade:3, subject:"Music"},
+    {q:"What do we call a group of people singing together?", choices:["band", "choir", "orchestra", "duet"], correct:1, grade:3, subject:"Music"},
+    {q:"How many lines are on a music staff?", choices:["4", "6", "5", "3"], correct:2, grade:3, subject:"Music"},
+    {q:"A song sung by exactly two people is called a what?", choices:["solo", "trio", "chorus", "duet"], correct:3, grade:3, subject:"Music"},
+    {q:"The speed of a piece of music is called its what?", choices:["pitch", "tempo", "volume", "rhythm"], correct:1, grade:3, subject:"Music"},
+    {q:"Trumpets and trombones belong to which instrument family?", choices:["woodwinds", "strings", "brass", "percussion"], correct:2, grade:3, subject:"Music"},
+    {q:"Which instrument makes sound when you shake it?", choices:["guitar", "piano", "cello", "maracas"], correct:3, grade:3, subject:"Music"},
+    {q:"Apples belong to which food group?", choices:["grains", "dairy", "fruits", "protein"], correct:2, grade:3, subject:"Health"},
+    {q:"What should you always do before eating to get rid of germs?", choices:["wash your hands", "brush your teeth", "comb your hair", "take a nap"], correct:0, grade:3, subject:"Health"},
+    {q:"Which drink is the healthiest choice?", choices:["soda", "water", "juice", "sports drink"], correct:1, grade:3, subject:"Health"},
+    {q:"What does your body get from milk to build strong bones?", choices:["vitamin C", "iron", "calcium", "sugar"], correct:2, grade:3, subject:"Health"},
+    {q:"What is 96 / 8?", choices:["11", "12", "13", "14"], correct:1, grade:4, subject:"Math"},
+    {q:"What is 235 / 5?", choices:["45", "46", "47", "48"], correct:2, grade:4, subject:"Math"},
+    {q:"What is the remainder when 50 is divided by 7?", choices:["0", "1", "2", "3"], correct:1, grade:4, subject:"Math"},
+    {q:"Which decimal is equal to 3/10?", choices:["0.03", "0.3", "3.0", "30.0"], correct:1, grade:4, subject:"Math"},
+    {q:"What is 0.5 + 0.25?", choices:["0.30", "0.55", "0.75", "1.0"], correct:2, grade:4, subject:"Math"},
+    {q:"An angle that measures exactly 90 degrees is called what?", choices:["An acute angle", "A straight angle", "An obtuse angle", "A right angle"], correct:3, grade:4, subject:"Math"},
+    {q:"An angle smaller than 90 degrees is called what?", choices:["An acute angle", "A right angle", "An obtuse angle", "A reflex angle"], correct:0, grade:4, subject:"Math"},
+    {q:"Which fraction is equal to 1/2?", choices:["1/3", "2/4", "2/5", "3/5"], correct:1, grade:4, subject:"Math"},
+    {q:"What is 6 x 40?", choices:["200", "220", "240", "260"], correct:2, grade:4, subject:"Math"},
+    {q:"In the number 7,532, what is the value of the digit 5?", choices:["5", "50", "500", "5,000"], correct:2, grade:4, subject:"Math"},
+    {q:"A rectangle is 5 units long and 3 units wide. What is its perimeter?", choices:["8 units", "15 units", "16 units", "30 units"], correct:2, grade:4, subject:"Math"},
+    {q:"What is 1,000 - 457?", choices:["443", "533", "543", "643"], correct:2, grade:4, subject:"Math"},
+    {q:"Which number is a multiple of 9?", choices:["28", "37", "46", "54"], correct:3, grade:4, subject:"Math"},
+    {q:"Which sentence uses the word 'too' correctly?", choices:["I want to go too the park.", "I have too many books.", "She walked too school.", "He is going too swim."], correct:1, grade:4, subject:"English"},
+    {q:"What is the past tense of 'teach'?", choices:["Teached", "Taught", "Teaching", "Teaches"], correct:1, grade:4, subject:"English"},
+    {q:"Which word is a synonym for 'happy'?", choices:["Sad", "Joyful", "Tired", "Angry"], correct:1, grade:4, subject:"English"},
+    {q:"Which word is an antonym for 'ancient'?", choices:["Old", "Antique", "Modern", "Elderly"], correct:2, grade:4, subject:"English"},
+    {q:"A group of lines in a poem is called what?", choices:["A chapter", "A stanza", "A paragraph", "A scene"], correct:1, grade:4, subject:"English"},
+    {q:"The person who tells a story is called what?", choices:["The author", "The illustrator", "The narrator", "The editor"], correct:2, grade:4, subject:"English"},
+    {q:"Which of these is a proper noun?", choices:["city", "river", "New York", "mountain"], correct:2, grade:4, subject:"English"},
+    {q:"Which sentence uses 'it's' correctly?", choices:["The dog wagged it's tail.", "It's raining outside today.", "Its a long way home.", "The bird built it's nest."], correct:1, grade:4, subject:"English"},
+    {q:"What is the subject of this sentence: 'The brown dog barked loudly'?", choices:["Barked loudly", "Loudly", "Dog barked", "The brown dog"], correct:3, grade:4, subject:"English"},
+    {q:"Words that sound the same but have different meanings, like 'there' and 'their', are called what?", choices:["Synonyms", "Antonyms", "Homophones", "Adjectives"], correct:2, grade:4, subject:"English"},
+    {q:"Which is the correct spelling of the word that means 'needed and required'?", choices:["Necesary", "Necessary", "Neccessary", "Necesery"], correct:1, grade:4, subject:"Spelling"},
+    {q:"Which is the correct spelling of the word that means 'to divide or keep apart'?", choices:["Seperate", "Separete", "Separate", "Seprate"], correct:2, grade:4, subject:"Spelling"},
+    {q:"What is the correct plural of 'box'?", choices:["Boxs", "Boxies", "Boxes", "Boxen"], correct:2, grade:4, subject:"Spelling"},
+    {q:"What is the correct plural of 'butterfly'?", choices:["Butterflys", "Butterflies", "Butterflyes", "Butterfliez"], correct:1, grade:4, subject:"Spelling"},
+    {q:"Which is the correct spelling of the word for the day after today?", choices:["Tommorrow", "Tomorrow", "Tommorow", "Tomorow"], correct:1, grade:4, subject:"Spelling"},
+    {q:"Which is the correct spelling of the word for a person you like and spend time with?", choices:["Freind", "Frend", "Friend", "Frieend"], correct:2, grade:4, subject:"Spelling"},
+    {q:"Which is the correct spelling of the word for the day that comes after Tuesday?", choices:["Wensday", "Wednsday", "Wednesday", "Wendesday"], correct:2, grade:4, subject:"Spelling"},
+    {q:"Which is the correct spelling of the word for a place where you can borrow books?", choices:["Libary", "Librery", "Library", "Lybrary"], correct:2, grade:4, subject:"Spelling"},
+    {q:"Which is the correct spelling of the word that means 'not the same'?", choices:["Diffrent", "Different", "Diferrent", "Diffarent"], correct:1, grade:4, subject:"Spelling"},
+    {q:"Which is the correct spelling of the word that means 'very pretty to look at'?", choices:["Beautiful", "Beautifull", "Butiful", "Beautifel"], correct:0, grade:4, subject:"Spelling"},
+    {q:"Which is the correct spelling of the word for something unexpected that happens?", choices:["Suprise", "Surprize", "Surprise", "Serprise"], correct:2, grade:4, subject:"Spelling"},
+    {q:"Animals that eat only plants are called what?", choices:["Carnivores", "Herbivores", "Omnivores", "Producers"], correct:1, grade:4, subject:"Science"},
+    {q:"Where does the energy in a food chain begin?", choices:["The Moon", "The soil", "Plants", "The Sun"], correct:3, grade:4, subject:"Science"},
+    {q:"Which material lets electricity flow through it easily?", choices:["Steel", "Rubber", "Copper", "Plastic"], correct:2, grade:4, subject:"Science"},
+    {q:"Which of these is an insulator?", choices:["Copper wire", "A rubber glove", "An aluminum pan", "A steel nail"], correct:1, grade:4, subject:"Science"},
+    {q:"For electricity to flow, a circuit must be what?", choices:["Broken", "Open", "Closed", "Loose"], correct:2, grade:4, subject:"Science"},
+    {q:"What force slows down a rolling ball?", choices:["Gravity", "Magnetism", "Friction", "Inertia"], correct:2, grade:4, subject:"Science"},
+    {q:"What gas do plants absorb from the air to make food?", choices:["Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen"], correct:1, grade:4, subject:"Science"},
+    {q:"What is the process plants use to make their own food called?", choices:["Condensation", "Evaporation", "Photosynthesis", "Pollination"], correct:2, grade:4, subject:"Science"},
+    {q:"Which habitat is very dry with very little rain?", choices:["Rainforest", "Tundra", "Ocean", "Desert"], correct:3, grade:4, subject:"Science"},
+    {q:"An animal that is active at night is called what?", choices:["Nocturnal", "Diurnal", "Amphibian", "Carnivore"], correct:0, grade:4, subject:"Science"},
+    {q:"What gas do humans need to breathe to live?", choices:["Carbon dioxide", "Oxygen", "Helium", "Smoke"], correct:1, grade:4, subject:"Science"},
+    {q:"An animal that hunts other animals for food is called what?", choices:["Prey", "Predator", "Producer", "Scavenger"], correct:1, grade:4, subject:"Science"},
+    {q:"Which of these states is in the Northeast region of the United States?", choices:["Maine", "Texas", "Nevada", "Arizona"], correct:0, grade:4, subject:"Geography"},
+    {q:"The Grand Canyon is located in which state?", choices:["Utah", "Arizona", "Colorado", "Nevada"], correct:1, grade:4, subject:"Geography"},
+    {q:"Which ocean borders California?", choices:["Atlantic Ocean", "Pacific Ocean", "Indian Ocean", "Arctic Ocean"], correct:1, grade:4, subject:"Geography"},
+    {q:"What is the capital of New York state?", choices:["New York City", "Buffalo", "Albany", "Rochester"], correct:2, grade:4, subject:"Geography"},
+    {q:"The Mississippi River flows into which body of water?", choices:["Atlantic Ocean", "Pacific Ocean", "Lake Michigan", "Gulf of Mexico"], correct:3, grade:4, subject:"Geography"},
+    {q:"Which state is the largest by land area?", choices:["Texas", "California", "Alaska", "Montana"], correct:2, grade:4, subject:"Geography"},
+    {q:"Mount Rushmore is located in which state?", choices:["North Dakota", "South Dakota", "Nebraska", "Wyoming"], correct:1, grade:4, subject:"Geography"},
+    {q:"What is the capital of Colorado?", choices:["Boulder", "Colorado Springs", "Denver", "Aspen"], correct:2, grade:4, subject:"Geography"},
+    {q:"Which direction is the opposite of southeast?", choices:["Southwest", "Northeast", "Southeast", "Northwest"], correct:3, grade:4, subject:"Geography"},
+    {q:"The American colonists fought the Revolutionary War against which country?", choices:["France", "Spain", "Great Britain", "Germany"], correct:2, grade:4, subject:"History"},
+    {q:"Who was the main author of the Declaration of Independence?", choices:["George Washington", "Thomas Jefferson", "Benjamin Franklin", "John Hancock"], correct:1, grade:4, subject:"History"},
+    {q:"In which city was the Declaration of Independence signed?", choices:["New York City", "Boston", "Philadelphia", "Washington, D.C."], correct:2, grade:4, subject:"History"},
+    {q:"Who made a famous midnight ride to warn the colonists that British soldiers were coming?", choices:["Paul Revere", "George Washington", "Samuel Adams", "Patrick Henry"], correct:0, grade:4, subject:"History"},
+    {q:"The first battles of the Revolutionary War were fought at Lexington and where?", choices:["Concord", "Saratoga", "Yorktown", "Bunker Hill"], correct:0, grade:4, subject:"History"},
+    {q:"Which famous document begins with the words 'We the People'?", choices:["The Declaration of Independence", "The Constitution", "The Bill of Rights", "The Articles of Confederation"], correct:1, grade:4, subject:"History"},
+    {q:"Betsy Ross is best known for doing what?", choices:["Writing the Constitution", "Making the first American flag", "Riding to warn the colonists", "Signing the Declaration of Independence"], correct:1, grade:4, subject:"History"},
+    {q:"During the Boston Tea Party, colonists protested a tax on what?", choices:["Sugar", "Tea", "Paper", "Cloth"], correct:1, grade:4, subject:"History"},
+    {q:"The Revolutionary War ended after the British surrender at which battle?", choices:["Lexington", "Saratoga", "Yorktown", "Bunker Hill"], correct:2, grade:4, subject:"History"},
+    {q:"Who was the king of England during the American Revolution?", choices:["King George III", "King Henry VIII", "King James I", "King Louis XVI"], correct:0, grade:4, subject:"History"},
+    {q:"What are the first ten amendments to the Constitution called?", choices:["The Preamble", "The Bill of Rights", "The Amendments", "The Articles"], correct:1, grade:4, subject:"History"},
+    {q:"What color do you make by mixing blue and yellow paint?", choices:["Purple", "Green", "Orange", "Brown"], correct:1, grade:4, subject:"Art"},
+    {q:"What color do you make by mixing red and yellow paint?", choices:["Orange", "Green", "Purple", "Pink"], correct:0, grade:4, subject:"Art"},
+    {q:"Colors that sit opposite each other on the color wheel are called what?", choices:["Primary colors", "Warm colors", "Complementary colors", "Neutral colors"], correct:2, grade:4, subject:"Art"},
+    {q:"A picture that shows a person's face is called what?", choices:["A landscape", "A portrait", "A still life", "A mural"], correct:1, grade:4, subject:"Art"},
+    {q:"A painting of outdoor nature, like mountains and trees, is called what?", choices:["A portrait", "A cartoon", "A landscape", "A blueprint"], correct:2, grade:4, subject:"Art"},
+    {q:"Art made by gluing pieces of paper, photos, and fabric onto a surface is called what?", choices:["A sketch", "A collage", "A sculpture", "A mural"], correct:1, grade:4, subject:"Art"},
+    {q:"A statue carved from stone is an example of what kind of art?", choices:["A painting", "A drawing", "A photograph", "A sculpture"], correct:3, grade:4, subject:"Art"},
+    {q:"In art, adding white to a color creates what?", choices:["A shade", "A tint", "A shadow", "A tone"], correct:1, grade:4, subject:"Art"},
+    {q:"Who painted 'The Starry Night'?", choices:["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Rembrandt"], correct:0, grade:4, subject:"Art"},
+    {q:"A quick, light drawing used to plan a finished artwork is called what?", choices:["A frame", "A sketch", "A print", "A stencil"], correct:1, grade:4, subject:"Art"},
+    {q:"In 4/4 time, how many beats does a whole note get?", choices:["1", "2", "3", "4"], correct:3, grade:4, subject:"Music"},
+    {q:"How many beats does a quarter note usually get?", choices:["1", "2", "3", "4"], correct:0, grade:4, subject:"Music"},
+    {q:"Which of these is a woodwind instrument?", choices:["Trumpet", "Flute", "Violin", "Drum"], correct:1, grade:4, subject:"Music"},
+    {q:"Which instrument has 88 keys?", choices:["Guitar", "Piano", "Harp", "Accordion"], correct:1, grade:4, subject:"Music"},
+    {q:"A large group of people singing together is called what?", choices:["A band", "An orchestra", "A choir", "A duet"], correct:2, grade:4, subject:"Music"},
+    {q:"The speed of a song is called its what?", choices:["Tempo", "Volume", "Pitch", "Rhythm section"], correct:0, grade:4, subject:"Music"},
+    {q:"High notes on sheet music are usually written in which clef?", choices:["Bass clef", "Alto clef", "Treble clef", "Tenor clef"], correct:2, grade:4, subject:"Music"},
+    {q:"Three musicians playing or singing together are called what?", choices:["A solo", "A duet", "A trio", "A quartet"], correct:2, grade:4, subject:"Music"},
+    {q:"Who leads an orchestra during a performance?", choices:["The composer", "The conductor", "The soloist", "The manager"], correct:1, grade:4, subject:"Music"},
+    {q:"A song performed by two people is called what?", choices:["A solo", "A duet", "A trio", "A chorus"], correct:1, grade:4, subject:"Music"},
+    {q:"About how many minutes of exercise should kids get every day?", choices:["10 minutes", "30 minutes", "60 minutes", "120 minutes"], correct:2, grade:4, subject:"Health"},
+    {q:"Milk, cheese, and yogurt belong to which food group?", choices:["Grains", "Protein", "Dairy", "Fruits"], correct:2, grade:4, subject:"Health"},
+    {q:"The heart is what kind of body part?", choices:["A bone", "A muscle", "A joint", "A nerve"], correct:1, grade:4, subject:"Health"},
+    {q:"Sunlight helps your body make which vitamin?", choices:["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], correct:3, grade:4, subject:"Health"},
+    {q:"Using the order of operations, what is 6 + 4 x 3?", choices:["18", "30", "22", "12"], correct:0, grade:5, subject:"Math"},
+    {q:"What is the volume of a box that is 3 units long, 4 units wide, and 5 units high?", choices:["12 cubic units", "35 cubic units", "47 cubic units", "60 cubic units"], correct:3, grade:5, subject:"Math"},
+    {q:"What is 5 cubed (5 to the third power)?", choices:["15", "25", "75", "125"], correct:3, grade:5, subject:"Math"},
+    {q:"What is (8 - 3) x 2 + 4?", choices:["14", "6", "18", "24"], correct:0, grade:5, subject:"Math"},
+    {q:"Which fraction is equivalent to 2/3?", choices:["8/12", "3/4", "6/12", "4/9"], correct:0, grade:5, subject:"Math"},
+    {q:"What is 0.75 written as a percent?", choices:["7.5%", "0.75%", "750%", "75%"], correct:3, grade:5, subject:"Math"},
+    {q:"Round 47.86 to the nearest tenth.", choices:["47.8", "48", "47.86", "47.9"], correct:3, grade:5, subject:"Math"},
+    {q:"Which number is a prime number?", choices:["21", "27", "33", "29"], correct:3, grade:5, subject:"Math"},
+    {q:"What is the least common multiple (LCM) of 4 and 6?", choices:["24", "2", "6", "12"], correct:3, grade:5, subject:"Math"},
+    {q:"What is the greatest common factor (GCF) of 18 and 24?", choices:["6", "3", "9", "12"], correct:0, grade:5, subject:"Math"},
+    {q:"An angle that measures 135 degrees is called what?", choices:["Acute", "Right", "Straight", "Obtuse"], correct:3, grade:5, subject:"Math"},
+    {q:"A square has sides of 7.5 cm. What is its perimeter?", choices:["30 cm", "15 cm", "56.25 cm", "22.5 cm"], correct:0, grade:5, subject:"Math"},
+    {q:"What is the mean (average) of 4, 6, 8, and 10?", choices:["6", "8", "28", "7"], correct:3, grade:5, subject:"Math"},
+    {q:"Which phrase is an example of a simile?", choices:["As brave as a lion", "The classroom was a zoo", "Time is money", "The wind whispered"], correct:0, grade:5, subject:"English"},
+    {q:"Which phrase is an example of personification?", choices:["The wind whispered through the trees", "Fast as lightning", "He is a shining star", "Busy as a bee"], correct:0, grade:5, subject:"English"},
+    {q:"What does the idiom 'break the ice' mean?", choices:["To start a conversation", "To actually crack frozen water", "To end a friendship", "To cool down a drink"], correct:0, grade:5, subject:"English"},
+    {q:"The suffix '-less' in the word 'fearless' means what?", choices:["Without", "Full of", "Before", "Again"], correct:0, grade:5, subject:"English"},
+    {q:"Choose the correct word: '_____ going to the park later.'", choices:["There", "Their", "Theyre", "They're"], correct:3, grade:5, subject:"English"},
+    {q:"A story told with the words 'I' and 'me' by a character in the story is written in what point of view?", choices:["Third person", "Second person", "Omniscient", "First person"], correct:3, grade:5, subject:"English"},
+    {q:"Which sentence is an example of hyperbole?", choices:["I'm so hungry I could eat a horse", "The cake is sweet", "She runs fast", "It rained today"], correct:0, grade:5, subject:"English"},
+    {q:"Which phrase is an example of alliteration?", choices:["Sally sells seashells by the seashore", "The cat sat", "A big red balloon", "The sun is hot"], correct:0, grade:5, subject:"English"},
+    {q:"Choose the correct verb: 'Each of the students _____ a book.'", choices:["has", "have", "are", "were"], correct:0, grade:5, subject:"English"},
+    {q:"Which phrase is an example of a metaphor?", choices:["The classroom was a zoo", "She sings like an angel", "Cold as ice", "He ran to school"], correct:0, grade:5, subject:"English"},
+    {q:"The prefix 'un-' in the word 'unhappy' means what?", choices:["Again", "Very", "Before", "Not"], correct:3, grade:5, subject:"English"},
+    {q:"Which sentence best states a main idea, not a detail?", choices:["Dogs need food and water", "My dog is brown", "The dog barked at noon", "Dogs make loyal pets for many reasons"], correct:3, grade:5, subject:"English"},
+    {q:"Choose the correct spelling: 'It is _____ to bring a pencil to class.'", choices:["neccessary", "necesary", "neccessery", "necessary"], correct:3, grade:5, subject:"Spelling"},
+    {q:"Choose the correct spelling: 'They live in _____ houses.'", choices:["separate", "seperate", "separete", "separte"], correct:0, grade:5, subject:"Spelling"},
+    {q:"Choose the correct spelling: 'I will _____ be at the game.'", choices:["definately", "definitly", "definetely", "definitely"], correct:3, grade:5, subject:"Spelling"},
+    {q:"Choose the correct spelling: 'He did not want to _____ himself in front of the class.'", choices:["embarass", "embaras", "embaress", "embarrass"], correct:3, grade:5, subject:"Spelling"},
+    {q:"Choose the correct spelling: 'She circled the date on the _____.'", choices:["calender", "calandar", "calindar", "calendar"], correct:3, grade:5, subject:"Spelling"},
+    {q:"Choose the correct spelling: 'We borrowed books from the _____.'", choices:["libary", "librery", "liberry", "library"], correct:3, grade:5, subject:"Spelling"},
+    {q:"Choose the correct spelling: 'The _____ makes laws for the country.'", choices:["government", "goverment", "governmant", "govrnment"], correct:0, grade:5, subject:"Spelling"},
+    {q:"Choose the correct spelling: 'At the _____ of the story, the hero is a child.'", choices:["begining", "beggining", "beginning", "beginining"], correct:2, grade:5, subject:"Spelling"},
+    {q:"Choose the correct spelling: 'We will go to the zoo _____.'", choices:["tommorrow", "tomorow", "tomarrow", "tomorrow"], correct:3, grade:5, subject:"Spelling"},
+    {q:"Choose the correct spelling: 'Our new neighbor is very _____.'", choices:["friendly", "freindly", "friendley", "freindley"], correct:0, grade:5, subject:"Spelling"},
+    {q:"Choose the correct spelling: 'I _____ you can do it.'", choices:["beleive", "belive", "believe", "beleeve"], correct:2, grade:5, subject:"Spelling"},
+    {q:"Choose the correct spelling: 'We ate dinner at a new _____.'", choices:["restarant", "restaraunt", "restraunt", "restaurant"], correct:3, grade:5, subject:"Spelling"},
+    {q:"Which gas do plants release into the air during photosynthesis?", choices:["Oxygen", "Carbon dioxide", "Nitrogen", "Helium"], correct:0, grade:5, subject:"Science"},
+    {q:"What is the chemical symbol for gold?", choices:["Go", "Gd", "Au", "Ag"], correct:2, grade:5, subject:"Science"},
+    {q:"What is the chemical symbol for sodium?", choices:["So", "Sd", "Na", "S"], correct:2, grade:5, subject:"Science"},
+    {q:"What is the chemical symbol for iron?", choices:["Fe", "Ir", "In", "Io"], correct:0, grade:5, subject:"Science"},
+    {q:"What is the process called when a liquid changes into a gas?", choices:["Condensation", "Freezing", "Melting", "Evaporation"], correct:3, grade:5, subject:"Science"},
+    {q:"In a food web, which organism is a producer?", choices:["A green plant", "A rabbit", "A fox", "A mushroom"], correct:0, grade:5, subject:"Science"},
+    {q:"Which planet is famous for having the largest ring system?", choices:["Jupiter", "Neptune", "Uranus", "Saturn"], correct:3, grade:5, subject:"Science"},
+    {q:"What causes the seasons on Earth?", choices:["Earth getting closer to the Sun", "Earth spinning faster in summer", "The Moon's gravity", "The tilt of Earth's axis"], correct:3, grade:5, subject:"Science"},
+    {q:"A ramp is an example of which simple machine?", choices:["Lever", "Pulley", "Inclined plane", "Wheel and axle"], correct:2, grade:5, subject:"Science"},
+    {q:"Which material is a good conductor of electricity?", choices:["Rubber", "Wood", "Plastic", "Copper"], correct:3, grade:5, subject:"Science"},
+    {q:"The heart is part of which body system?", choices:["Digestive system", "Circulatory system", "Nervous system", "Skeletal system"], correct:1, grade:5, subject:"Science"},
+    {q:"What type of rock forms when lava cools and hardens?", choices:["Sedimentary", "Metamorphic", "Igneous", "Sandstone"], correct:2, grade:5, subject:"Science"},
+    {q:"During which moon phase is the Moon between Earth and the Sun?", choices:["Full moon", "New moon", "First quarter", "Last quarter"], correct:1, grade:5, subject:"Science"},
+    {q:"The Prime Meridian passes through which city in England?", choices:["Paris", "Greenwich, London", "Rome", "Madrid"], correct:1, grade:5, subject:"Geography"},
+    {q:"Australia is located in which two hemispheres?", choices:["Northern and Western", "Northern and Eastern", "Southern and Western", "Southern and Eastern"], correct:3, grade:5, subject:"Geography"},
+    {q:"The Equator divides Earth into which two hemispheres?", choices:["Eastern and Western", "Northern and Southern", "Upper and Lower", "Land and Ocean"], correct:1, grade:5, subject:"Geography"},
+    {q:"Which river is generally considered the longest in the world?", choices:["Amazon", "Nile", "Mississippi", "Yangtze"], correct:1, grade:5, subject:"Geography"},
+    {q:"What is the capital of Canada?", choices:["Toronto", "Vancouver", "Ottawa", "Montreal"], correct:2, grade:5, subject:"Geography"},
+    {q:"The Sahara is the world's largest hot desert. On which continent is it?", choices:["Asia", "Australia", "Africa", "South America"], correct:2, grade:5, subject:"Geography"},
+    {q:"Mount Everest sits on the border of Nepal and which other country?", choices:["India", "China", "Pakistan", "Bhutan"], correct:1, grade:5, subject:"Geography"},
+    {q:"Which of the Great Lakes is the largest by surface area?", choices:["Lake Michigan", "Lake Erie", "Lake Ontario", "Lake Superior"], correct:3, grade:5, subject:"Geography"},
+    {q:"The Tropic of Cancer is located in which position relative to the Equator?", choices:["North of it", "South of it", "Exactly on it", "It is another name for it"], correct:0, grade:5, subject:"Geography"},
+    {q:"The Grand Canyon is located in which U.S. state?", choices:["Utah", "Nevada", "Arizona", "Colorado"], correct:2, grade:5, subject:"Geography"},
+    {q:"What is the capital of Australia?", choices:["Sydney", "Canberra", "Melbourne", "Perth"], correct:1, grade:5, subject:"Geography"},
+    {q:"Which country is also a continent?", choices:["Brazil", "Canada", "Australia", "Russia"], correct:2, grade:5, subject:"Geography"},
+    {q:"The Bill of Rights is made up of how many amendments to the Constitution?", choices:["The first 5", "The first 10", "The first 12", "The first 27"], correct:1, grade:5, subject:"History"},
+    {q:"What are the first three words of the U.S. Constitution?", choices:["We the People", "In order to", "Four score and", "Give me liberty"], correct:0, grade:5, subject:"History"},
+    {q:"In which year was the U.S. Constitution written at the convention in Philadelphia?", choices:["1776", "1787", "1791", "1800"], correct:1, grade:5, subject:"History"},
+    {q:"Which explorer's expedition was the first to sail all the way around the world?", choices:["Christopher Columbus", "Ferdinand Magellan", "Vasco da Gama", "Marco Polo"], correct:1, grade:5, subject:"History"},
+    {q:"Christopher Columbus sailed on his 1492 voyage for which country?", choices:["England", "France", "Portugal", "Spain"], correct:3, grade:5, subject:"History"},
+    {q:"The explorer Marco Polo is famous for traveling to which country?", choices:["India", "China", "Japan", "Egypt"], correct:1, grade:5, subject:"History"},
+    {q:"Lewis and Clark explored land the United States gained in which purchase?", choices:["Alaska Purchase", "Louisiana Purchase", "Gadsden Purchase", "Florida Purchase"], correct:1, grade:5, subject:"History"},
+    {q:"Vasco da Gama was the first European to sail from Europe to which country?", choices:["China", "India", "Brazil", "Australia"], correct:1, grade:5, subject:"History"},
+    {q:"Which president issued the Emancipation Proclamation?", choices:["George Washington", "Thomas Jefferson", "Abraham Lincoln", "Andrew Jackson"], correct:2, grade:5, subject:"History"},
+    {q:"Which branch of the U.S. government interprets the laws?", choices:["Legislative", "Executive", "Judicial", "Military"], correct:2, grade:5, subject:"History"},
+    {q:"The First Amendment mainly protects which freedom among these choices?", choices:["Freedom of speech", "The right to vote at 18", "Freedom from taxes", "The right to drive"], correct:0, grade:5, subject:"History"},
+    {q:"The Boston Tea Party was a protest against a British tax on what?", choices:["Paper", "Tea", "Sugar", "Stamps"], correct:1, grade:5, subject:"History"},
+    {q:"In traditional art, which three colors are the primary colors?", choices:["Red, blue, and yellow", "Red, green, and blue", "Orange, green, and purple", "Black, white, and gray"], correct:0, grade:5, subject:"Art"},
+    {q:"Mixing blue and yellow paint makes which secondary color?", choices:["Purple", "Orange", "Green", "Brown"], correct:2, grade:5, subject:"Art"},
+    {q:"What is the complementary color of red on a traditional color wheel?", choices:["Blue", "Green", "Yellow", "Purple"], correct:1, grade:5, subject:"Art"},
+    {q:"Which artist painted the ceiling of the Sistine Chapel?", choices:["Leonardo da Vinci", "Pablo Picasso", "Michelangelo", "Claude Monet"], correct:2, grade:5, subject:"Art"},
+    {q:"Which group is made of warm colors?", choices:["Blue, green, purple", "Red, orange, yellow", "Black, white, gray", "Pink, silver, gold"], correct:1, grade:5, subject:"Art"},
+    {q:"What do we call a work of art that is three-dimensional, like a statue?", choices:["Sketch", "Mural", "Sculpture", "Collage"], correct:2, grade:5, subject:"Art"},
+    {q:"Which art technique makes objects look near or far to show depth?", choices:["Perspective", "Pointillism", "Shading only", "Tracing"], correct:0, grade:5, subject:"Art"},
+    {q:"Pablo Picasso helped create which art style?", choices:["Impressionism", "Cubism", "Realism", "Romanticism"], correct:1, grade:5, subject:"Art"},
+    {q:"Watercolor paint is mixed mainly with what?", choices:["Oil", "Water", "Sand", "Glue"], correct:1, grade:5, subject:"Art"},
+    {q:"A picture or pattern made from many small pieces of tile, glass, or stone is called what?", choices:["Fresco", "Portrait", "Mosaic", "Sketch"], correct:2, grade:5, subject:"Art"},
+    {q:"A painting of arranged objects, such as fruit in a bowl, is called what?", choices:["Landscape", "Still life", "Self-portrait", "Abstract"], correct:1, grade:5, subject:"Art"},
+    {q:"In the treble clef, the spaces from bottom to top spell which word?", choices:["FACE", "BASS", "NOTE", "SONG"], correct:0, grade:5, subject:"Music"},
+    {q:"Which famous composer kept composing music after becoming deaf?", choices:["Mozart", "Beethoven", "Bach", "Chopin"], correct:1, grade:5, subject:"Music"},
+    {q:"The violin belongs to which instrument family?", choices:["Brass", "Woodwind", "String", "Percussion"], correct:2, grade:5, subject:"Music"},
+    {q:"In music, what does 'tempo' mean?", choices:["How loud the music is", "The speed of the music", "The key of the music", "How many singers there are"], correct:1, grade:5, subject:"Music"},
+    {q:"The Italian word 'forte' in music means to play how?", choices:["Softly", "Loudly", "Slowly", "Quickly"], correct:1, grade:5, subject:"Music"}
   ],
   hollywood: {
     celebClues: [
@@ -12493,7 +12961,7 @@ SHG.v100MobSplit=function(tier,rng){
 };
 
 /* ---------- 5TH GRADER ---------- */
-SHG.fifthGraderLadder=function(){ return [1000,2000,5000,10000,25000]; };
+SHG.fifthGraderLadder=function(){ return [1000,2000,5000,10000,25000,50000,100000,175000,300000,500000]; };
 SHG.fifthGraderNorm=function(bank){
   var out=[];
   (bank||[]).forEach(function(e){
@@ -14105,155 +14573,295 @@ render(c,ctx){
 }});
 
 /* ================= ARE YOU SMARTER THAN A 5TH GRADER ================= */
-regGame('fifthgrader',{howto:"Climb grades 1 through 5, picking a subject each grade. You get 3 cheats: Peek, Copy, and Save. Drop out anytime to keep your winnings - miss a question and you flunk out with nothing!",name:'Are You Smarter Than a 5th Grader',icon:'🎒',tags:'Game Show',pvp:true,seats:2,
+regGame('fifthgrader',{howto:"Official rules - Are You Smarter Than a 5th Grader?\n\nThe chalkboard holds 10 subjects - two for each grade, 1st through 5th. Pick them in ANY order. Each correct answer climbs the ladder: $1,000, $2,000, $5,000, $10,000, $25,000, $50,000, $100,000, $175,000, $300,000, $500,000. Get 5 right and $25,000 is GUARANTEED whatever happens.\n\nYou are not alone: pick a 5th-grade CLASSMATE to help. A classmate stays with you for 2 questions, then you pick another. Every kid has favorite subjects on their nameplate - they're sharper on those!\n\nThree cheats, once each:\n👀 PEEK - see your classmate's answer, then decide for yourself.\n📋 COPY - your answer becomes your classmate's, like it or not.\n💾 SAVE - miss a question and if your classmate had it right, you're saved.\n\nYou can DROP OUT after seeing any question and keep your money. Flunk out and you fall to your guaranteed $25,000 (or nothing)... and you must say it: \"I am NOT smarter than a 5th grader.\"\n\nClear all 10 subjects and you face the MILLION DOLLAR QUESTION - one 5th-grade question. Take the $500,000... or risk it all. Get it right: $1,000,000 and you ARE smarter than a 5th grader!",name:'Are You Smarter Than a 5th Grader?',icon:'🎒',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
-  if(shgGuard(BANKS2.fifthgrader&&BANKS2.fifthgrader.length>=5,'5th Grader questions are still loading')) return;
+  var ALLQ=SHG.fifthGraderNorm(BANKS2.fifthgrader);
+  if(shgGuard(ALLQ.length>=50,'5th Grader questions are still loading')) return;
   var S=null, pvpCtl=null, fg;
-  c.innerHTML='<h2>🎒 Are You Smarter Than a 5th Grader?</h2><div class="muted">Climb grades 1–5. Drop out anytime and keep your winnings!</div><div id="fg"></div>';
+  c.innerHTML='<h2>🎒 Are You Smarter Than a 5th Grader?</h2><div id="fg"></div>';
   fg=c.querySelector('#fg');
   var LAD=SHG.fifthGraderLadder();
-  function normQs(){ return SHG.fifthGraderNorm(BANKS2.fifthgrader); }
+  var SUBJECTS=['Math','English','Spelling','Science','Geography','History','Art','Music','Health'];
+  function money(n){ return '$'+n.toLocaleString('en-US'); }
+  function gradeWord(g){ return ['','1st','2nd','3rd','4th','5th'][g]; }
+  function buildClass(){
+    var names=SHG.botNames?SHG.botNames(5):['Alex','Sam','Jo','Kim','Pat'];
+    return names.map(function(nm){
+      var pool=SUBJECTS.slice();
+      var s1=pool.splice(Math.floor(Math.random()*pool.length),1)[0];
+      var s2=pool.splice(Math.floor(Math.random()*pool.length),1)[0];
+      return {n:nm,strong:[s1,s2]};
+    });
+  }
+  function buildBoard(pool){
+    /* 2 subjects per grade with available questions */
+    var board=[];
+    for(var g=1;g<=5;g++){
+      var subs=[];
+      SUBJECTS.forEach(function(s){
+        if(pool.some(function(q){ return q.grade===g&&q.subject===s; })) subs.push(s);
+      });
+      for(var i=subs.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var x=subs[i]; subs[i]=subs[j]; subs[j]=x; }
+      subs.slice(0,2).forEach(function(s){ board.push({grade:g,subject:s,done:false}); });
+    }
+    return board;
+  }
   function start(shared){
-    S={qs:shared.qs,grade:1,win:0,cheats:{peek:1,copy:1,save:1},phase:'subject',cur:null,done:false,dropped:false,peeked:false};
+    var pool=shared.pool||ALLQ;
+    S={board:shared.board||buildBoard(pool),pool:pool,kids:buildClass(),kid:null,kidLeft:0,
+      correct:0,win:0,guaranteed:0,cheats:{peek:1,copy:1,save:1},cur:null,kidPick:-1,kidRight:false,
+      phase:'pickkid',done:false,dropped:false,flunked:false,millionQ:shared.millionQ||null,millionMode:false,usedQ:{}};
     draw();
   }
-  function hud(){
-    return '<div class="row"><div class="grow center">Grade <b>'+S.grade+'</b>/5</div>'
-      +'<div class="grow center">💰 Winnings: <b style="color:#eab676">$'+S.win.toLocaleString('en-US')+'</b></div></div>'
-      +'<div class="center muted" style="font-size:12px">Ladder: '+LAD.map(function(v,i){ return '<span style="color:'+(S.win>=v?'#eab676':'#555')+'">$'+(v/1000)+'k</span>'; }).join(' · ')+'</div>'
-      +'<div class="center muted" style="font-size:12px">Cheats: 👀 Peek('+(S.cheats.peek)+') 📋 Copy('+(S.cheats.copy)+') 💾 Save('+(S.cheats.save)+')</div>';
+  function kidAccuracy(kid,q){
+    var base=[0,0.93,0.90,0.86,0.81,0.75][q.grade]||0.85;
+    if(kid.strong.indexOf(q.subject)>=0)base+=0.13;
+    return Math.min(0.97,base);
+  }
+  function rollKid(q){
+    var kid=S.kid;
+    S.kidRight=Math.random()<kidAccuracy(kid,q);
+    if(S.kidRight)S.kidPick=q.correct;
+    else {
+      var wrongs=[0,1,2,3].filter(function(i){ return i!==q.correct; });
+      S.kidPick=wrongs[Math.floor(Math.random()*wrongs.length)];
+    }
+  }
+  function ladderHTML(){
+    return '<div class="fg-ladder">'+LAD.map(function(v,i){
+      var cls=i<S.correct?' hit':(i===4?' haven':'');
+      return '<span class="fg-rung'+cls+'">'+money(v)+(i===4?' 🛟':'')+'</span>';
+    }).join('')+'</div>';
+  }
+  function stageHTML(){
+    return '<div class="fg-board"><div class="fg-title">✏️ ARE YOU SMARTER THAN A 5TH GRADER?</div>'
+      +'<div class="row"><div class="grow center">✅ <b>'+S.correct+'</b>/10</div>'
+      +'<div class="grow center">💰 <b style="color:#ffd873">'+money(S.win)+'</b></div>'
+      +'<div class="grow center">🛟 Guaranteed: <b>'+money(S.guaranteed)+'</b></div></div>'
+      +ladderHTML()+'</div>';
+  }
+  function boardHTML(){
+    var h='<div class="fg-grid">';
+    for(var g=1;g<=5;g++){
+      h+='<div class="fg-grow"><div class="fg-glabel">'+gradeWord(g)+' GRADE</div>'+S.board.filter(function(b){ return b.grade===g; }).map(function(b){
+        var idx=S.board.indexOf(b);
+        return b.done
+          ? '<div class="fg-cell done">⭐ '+esc(b.subject)+'</div>'
+          : '<button class="fg-cell" data-cell="'+idx+'">'+esc(b.subject)+'</button>';
+      }).join('')+'</div>';
+    }
+    return h+'</div>';
+  }
+  function kidsHTML(){
+    return '<div class="fg-kids">'+S.kids.map(function(k,i){
+      var active=S.kid===k;
+      return '<div class="fg-kid'+(active?' on':'')+'" data-kid="'+i+'"><div class="fg-kname">🎒 '+esc(k.n)+'</div>'
+        +'<div class="fg-kstrong">best: '+k.strong.map(esc).join(' · ')+'</div>'
+        +(active?'<div class="fg-kon">helping you ('+S.kidLeft+' left)</div>':'')+'</div>';
+    }).join('')+'</div>';
   }
   function draw(){
     if(S.done){ drawDone(); return; }
-    var h=hud();
-    if(S.phase==='subject'){
-      var subs={};
-      S.qs.forEach(function(q){ if(q.grade===S.grade) subs[q.subject]=1; });
-      var list=Object.keys(subs);
-      h+='<div class="card center"><div class="muted">Pick your '+S.grade+(S.grade===1?'st':S.grade===2?'nd':S.grade===3?'rd':'th')+'-grade subject:</div><div id="subs"></div></div>';
-      fg.innerHTML=h;
-      var sb=fg.querySelector('#subs');
-      if(!list.length){ fg.innerHTML=h+'<div class="err center">No questions for this grade.</div>'; S.done=true; return; }
-      list.forEach(function(su){
-        sb.appendChild(shgQBtn('📚 '+esc(su),function(){ pickQ(su); }));
-      });
-    } else if(S.phase==='question'){
-      var q=S.cur;
-      h+='<div class="card"><div class="muted center">'+esc(q.subject)+' — Grade '+S.grade+' ($'+LAD[S.grade-1].toLocaleString('en-US')+')</div>'
-        +'<h3>'+esc(q.q)+'</h3><div id="ch"></div>'
-        +'<div class="row" style="margin-top:6px">'
-        +'<button class="btn small secondary grow" id="cPeek" '+(S.cheats.peek?'':'disabled')+'>👀 Peek</button>'
-        +'<button class="btn small secondary grow" id="cCopy" '+(S.cheats.copy?'':'disabled')+'>📋 Copy</button>'
-        +'</div></div>';
-      fg.innerHTML=h;
-      var ch=fg.querySelector('#ch');
-      q.choices.forEach(function(t,i){
-        var b=shgQBtn(esc(t),function(){ answer(i); });
-        b.id='ch'+i;
-        if(S.peeked&&i===q.correct){ b.style.border='2px solid #eab676'; b.style.boxShadow='0 0 8px #eab676'; }
-        ch.appendChild(b);
-      });
-      fg.querySelector('#cPeek').onclick=function(){
-        if(!S.cheats.peek) return;
-        S.cheats.peek=0; S.peeked=true; Sound.win();
-        toast('👀 Peek: the correct answer is glowing!');
-        draw();
+    if(S.phase==='pickkid')return drawPickKid();
+    if(S.phase==='board')return drawBoardPhase();
+    if(S.phase==='question')return drawQuestion();
+    if(S.phase==='million')return drawMillionOffer();
+    if(S.phase==='millionq')return drawMillionQ();
+  }
+  function drawPickKid(){
+    fg.innerHTML=stageHTML()
+      +'<div class="card center"><b>Pick your classmate</b><div class="muted">They help for 2 questions. Check their best subjects!</div></div>'
+      +kidsHTML();
+    fg.querySelectorAll('[data-kid]').forEach(function(el){
+      el.onclick=function(){
+        S.kid=S.kids[+el.getAttribute('data-kid')]; S.kidLeft=2; Sound.click();
+        S.phase=S.correct>=10?'million':'board'; draw();
       };
-      fg.querySelector('#cCopy').onclick=function(){
-        if(!S.cheats.copy) return;
-        S.cheats.copy=0; Sound.win();
-        toast('📋 You copied the classmate — auto-correct!');
-        correct();
-      };
-    } else if(S.phase==='decide'){
-      h+='<div class="card center"><div class="ok" style="font-size:16px">✅ Correct! You have $'+S.win.toLocaleString('en-US')+'</div>'
-        +'<div class="muted">'+(S.grade>=5?'That was 5th grade!':'Drop out and keep it, or risk it all on grade '+(S.grade+1)+' ($'+LAD[S.grade].toLocaleString('en-US')+')?')+'</div>'
-        +'<div class="row" style="margin-top:10px"><button class="btn secondary grow" id="gDrop">💰 DROP OUT</button>'
-        +(S.grade>=5?'':'<button class="btn grow" id="gGo">▶ CONTINUE</button>')+'</div></div>';
-      fg.innerHTML=h;
-      fg.querySelector('#gDrop').onclick=function(){ Sound.click(); S.dropped=true; S.done=true; draw(); };
-      var gg=fg.querySelector('#gGo');
-      if(gg) gg.onclick=function(){ Sound.click(); S.grade++; S.phase='subject'; S.peeked=false; draw(); };
-    }
+    });
   }
-  function pickQ(subject){
-    var pool=S.qs.filter(function(q){ return q.grade===S.grade&&q.subject===subject; });
-    if(!pool.length) pool=S.qs.filter(function(q){ return q.grade===S.grade; });
-    S.cur=pool[Math.floor(Math.random()*pool.length)];
-    S.phase='question'; S.peeked=false;
-    Sound.click(); draw();
+  function drawBoardPhase(){
+    fg.innerHTML=stageHTML()
+      +'<div class="card center" style="margin-bottom:8px"><b>Pick a subject from the board</b> <span class="muted">— any order you like. Next correct answer pays <b style="color:#ffd873">'+money(LAD[S.correct])+'</b>.</span></div>'
+      +boardHTML()
+      +'<div class="card" style="margin-top:8px"><div class="muted center">Your classmate</div>'+kidsHTML()+'</div>';
+    fg.querySelectorAll('[data-cell]').forEach(function(el){
+      el.onclick=function(){ Sound.click(); pickCell(+el.getAttribute('data-cell')); };
+    });
   }
-  function correct(){
-    S.win=LAD[S.grade-1];
-    Sound.win();
-    if(S.grade>=5){ S.done=true; draw(); }
-    else { S.phase='decide'; draw(); }
+  function pickCell(idx){
+    var cell=S.board[idx];
+    var pool=S.pool.filter(function(q){ return q.grade===cell.grade&&q.subject===cell.subject&&!S.usedQ[q.q]; });
+    if(!pool.length)pool=S.pool.filter(function(q){ return q.grade===cell.grade&&!S.usedQ[q.q]; });
+    if(!pool.length)pool=S.pool.filter(function(q){ return !S.usedQ[q.q]; });
+    var q=pool[Math.floor(Math.random()*pool.length)];
+    S.usedQ[q.q]=1; S.cur=q; S.curCell=idx; S.peeked=false;
+    rollKid(q);
+    S.phase='question'; draw();
   }
-  function answer(i){
+  function cheatsHTML(){
+    return '<div class="row" style="margin-top:8px">'
+      +'<button class="btn small secondary grow" id="cPeek" '+(S.cheats.peek?'':'disabled')+'>👀 Peek</button>'
+      +'<button class="btn small secondary grow" id="cCopy" '+(S.cheats.copy?'':'disabled')+'>📋 Copy</button>'
+      +'<button class="btn small secondary grow" '+(S.cheats.save?'':'disabled')+'>💾 Save '+(S.cheats.save?'(armed)':'(used)')+'</button></div>'
+      +'<div class="status" id="cMsg"></div>';
+  }
+  function drawQuestion(){
     var q=S.cur;
-    if(i===q.correct){ correct(); return; }
+    fg.innerHTML=stageHTML()
+      +'<div class="card"><div class="muted center">'+gradeWord(q.grade)+' Grade '+esc(q.subject)+' — for <b style="color:#ffd873">'+money(LAD[S.correct])+'</b> · 🎒 '+esc(S.kid.n)+' is writing…</div>'
+      +'<h3>'+esc(q.q)+'</h3><div id="ch">'
+      +q.choices.map(function(ch,i){ return '<button class="btn qbtn" data-a="'+i+'">'+esc(ch)+'</button>'; }).join('')
+      +'</div>'+cheatsHTML()
+      +'<div class="row" style="margin-top:6px"><button class="btn small secondary grow" id="cDrop">🚪 Drop out and keep '+money(S.win)+'</button></div></div>';
+    fg.querySelectorAll('[data-a]').forEach(function(b){
+      b.onclick=function(){ answer(+b.getAttribute('data-a'),'own'); };
+    });
+    wireCheats();
+    fg.querySelector('#cDrop').onclick=function(){ Sound.click(); S.dropped=true; S.done=true; draw(); };
+  }
+  function wireCheats(qObj,ansFn){
+    qObj=qObj||S.cur; ansFn=ansFn||answer;
+    var hm=fg.querySelector('#cMsg');
+    var bp=fg.querySelector('#cPeek');
+    if(bp)bp.onclick=function(){
+      S.cheats.peek=0; S.peeked=true; Sound.click();
+      hm.innerHTML='👀 You peek at '+esc(S.kid.n)+'\'s paper: they wrote "<b>'+esc(qObj.choices[S.kidPick])+'</b>". Your call!';
+      bp.disabled=true;
+    };
+    var bc=fg.querySelector('#cCopy');
+    if(bc)bc.onclick=function(){
+      S.cheats.copy=0; Sound.click();
+      toast('📋 You copy '+S.kid.n+'\'s answer: '+qObj.choices[S.kidPick]);
+      ansFn(S.kidPick,'copy');
+    };
+  }
+  function afterCorrect(){
+    S.correct++;
+    S.win=LAD[S.correct-1];
+    if(S.correct>=5)S.guaranteed=25000;
+    S.kidLeft--;
+    if(S.correct>=10){ S.phase='million'; draw(); return; }
+    if(S.kidLeft<=0){ S.phase='pickkid'; }
+    else S.phase='board';
+    draw();
+  }
+  function answer(i,how){
+    var q=S.cur;
+    if(i===q.correct){
+      Sound.win();
+      if(how==='copy')toast('📋 Copy pays off — '+S.kid.n+' nailed it!');
+      afterCorrect();
+      return;
+    }
+    /* wrong — SAVE check */
     if(S.cheats.save>0){
       S.cheats.save=0;
-      Sound.win();
-      toast('💾 SAVED! That wrong answer is forgiven.');
-      correct(); return;
+      if(S.kidRight){
+        Sound.win();
+        toast('💾 SAVED! '+S.kid.n+' had "'+q.choices[q.correct]+'" — you survive!');
+        afterCorrect();
+        return;
+      }
+      toast('💾 Your classmate missed it too…');
     }
     Sound.lose();
-    toast('Wrong! The answer was: '+q.choices[q.correct]);
-    S.win=0; S.done=true; draw();
+    S.flunked=true; S.done=true; draw();
+  }
+  function drawMillionOffer(){
+    fg.innerHTML=stageHTML()
+      +'<div class="card center"><div style="font-size:19px;font-weight:900">🎓 TEN FOR TEN!</div>'
+      +'<div style="margin:8px 0">You have <b style="color:#ffd873">$500,000</b>. One more question — a 5th-grade question — for <b style="color:#ffd873">$1,000,000</b>.<br>Miss it and you fall to your guaranteed $25,000.</div>'
+      +'<div class="row"><button class="btn grow" id="mTake">💰 TAKE $500,000</button>'
+      +'<button class="btn secondary grow" id="mGo">🎲 GO FOR $1,000,000</button></div></div>';
+    fg.querySelector('#mTake').onclick=function(){ Sound.win(); S.dropped=true; S.done=true; draw(); };
+    fg.querySelector('#mGo').onclick=function(){
+      Sound.click();
+      var pool=S.pool.filter(function(q){ return q.grade===5&&!S.usedQ[q.q]; });
+      if(!pool.length)pool=S.pool.filter(function(q){ return q.grade===5; });
+      S.millionQ=pool[Math.floor(Math.random()*pool.length)];
+      S.usedQ[S.millionQ.q]=1;
+      rollKid(S.millionQ);
+      S.phase='millionq'; draw();
+    };
+  }
+  function drawMillionQ(){
+    var q=S.millionQ;
+    fg.innerHTML=stageHTML()
+      +'<div class="card"><div class="muted center">⭐ THE MILLION DOLLAR QUESTION ⭐<br>'+gradeWord(q.grade)+' Grade '+esc(q.subject)+' · 🎒 '+esc(S.kid.n)+' is writing… (no drop out now!)</div>'
+      +'<h3>'+esc(q.q)+'</h3><div id="ch">'
+      +q.choices.map(function(ch,i){ return '<button class="btn qbtn" data-a="'+i+'">'+esc(ch)+'</button>'; }).join('')
+      +'</div>'+cheatsHTML()+'</div>';
+    fg.querySelectorAll('[data-a]').forEach(function(b){
+      b.onclick=function(){ millionAnswer(+b.getAttribute('data-a')); };
+    });
+    wireCheats(S.millionQ,millionAnswer);
+  }
+  function millionAnswer(i){
+    var q=S.millionQ;
+    if(i===q.correct){ S.millionMode=true; S.win=1000000; S.done=true; Sound.win(); draw(); return; }
+    if(S.cheats.save>0){
+      S.cheats.save=0;
+      if(S.kidRight){ S.millionMode=true; S.win=1000000; S.done=true; toast('💾 SAVED at the million! '+S.kid.n+' had it!'); draw(); return; }
+    }
+    S.flunked=true; S.win=25000; S.done=true; Sound.lose(); draw();
   }
   async function drawDone(){
-    var h='<div class="card center">';
-    if(S.grade>=5&&!S.dropped&&S.win>0){
-      h+='<div class="big">🎓</div><div class="ok" style="font-size:18px">You ARE smarter than a 5th grader!</div>';
-    } else if(S.dropped){
-      h+='<div class="muted">You dropped out with</div>';
+    var h='<div class="fg-board"><div class="fg-title">✏️ CLASS DISMISSED</div></div><div class="card center">';
+    var pts=Math.max(0,Math.round(S.win/1000));
+    if(S.millionMode){
+      h+='<div class="big">🎓🏆</div><div class="ok" style="font-size:19px">"I AM smarter than a 5th grader!"</div>'
+        +'<div class="big" style="color:#ffd873">$1,000,000</div>';
+    } else if(S.flunked){
+      h+='<div style="font-size:17px">📚 Say it with the class…</div>'
+        +'<div class="err" style="font-size:19px;font-weight:900">"I am NOT smarter than a 5th grader."</div>'
+        +'<div class="muted">You flunked out on a '+gradeWord(S.cur?S.cur.grade:5)+' grade question. You keep your guaranteed money.</div>'
+        +'<div class="big" style="color:#ffd873">'+money(S.win===1000000?25000:(S.correct>=5?25000:0))+'</div>';
+      S.win=(S.correct>=5||S.win===25000)?25000:0;
+      pts=Math.round(S.win/1000);
     } else {
-      h+='<div class="err" style="font-size:18px">📚 Sent back to grade school!</div><div class="muted">Wrong answer with no Save left.</div>';
+      h+='<div class="muted">You dropped out like a smart cookie with</div>'
+        +'<div class="big" style="color:#ffd873">'+money(S.win)+'</div>'
+        +'<div class="muted">'+S.correct+' of 10 subjects cleared.</div>';
     }
-    h+='<div class="big" style="color:#eab676">$'+S.win.toLocaleString('en-US')+'</div><div id="fRes"></div></div>';
+    h+='<div id="fRes"></div></div>';
     fg.innerHTML=h;
     var res=fg.querySelector('#fRes');
     if(isNet){
       res.innerHTML='<div class="muted">Waiting for opponent...</div>';
       pvpCtl.submit();
     } else {
-      var pts=Math.max(1,Math.round(S.win/1000));
-      if(S.win>0){ await Wallet.add(pts,'fifthgrader'); }
-      if(S.grade>=5&&S.win>0){
-        res.innerHTML='<div class="status"><span class="ok">🎉 Graduation bonus! (+'+pts+' pts)</span></div>';
+      if(S.win>0)await Wallet.add(Math.max(1,pts),'fifthgrader');
+      if(S.millionMode||S.win>=500000){
         await Wallet.recordWin('fifthgrader');
-      } else if(S.dropped){
-        res.innerHTML='<div class="status"><span class="muted">Smart move — you keep '+pts+' pts.</span></div>';
+        res.innerHTML='<div class="status"><span class="ok">🎉 Top of the class! (+'+Math.max(1,pts)+' pts)</span></div>';
+      } else if(S.flunked){
+        res.innerHTML='<div class="status"><span class="err">😞 Flunked out — '+(S.win>0?'but the $25,000 guarantee softens it.':'and nothing to show.')+'</span></div>';
+      } else {
+        res.innerHTML='<div class="status"><span class="ok">🎉 You keep '+money(S.win)+' (+'+Math.max(1,pts)+' pts)</span></div>';
       }
     }
   }
   if(isNet){
     pvpCtl=shgPvp(net,{
       share:function(){
-        var nq=normQs(), qs=[];
-        for(var g=1;g<=5;g++){ var q=SHG.fifthGraderForGrade(nq,g); if(q) qs.push(q); }
-        return {qs:qs};
+        var pool=ALLQ.slice();
+        for(var i=pool.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var x=pool[i]; pool[i]=pool[j]; pool[j]=x; }
+        return {pool:pool.slice(0,220),board:buildBoard(pool)};
       },
-      onData:function(d){
-        if(shgGuard(d.qs&&d.qs.length>=5,'Question sync failed — rejoin the room')) return;
-        start(d);
-      },
+      onData:function(d){ start(d); },
       submitPayload:function(){ return shgPayLoad(S.win); },
       onSettle:function(iWon,room,w){
         var res=fg.querySelector('#fRes');
         shgResultBanner(res,iWon,w,
-          '🎉 You out-grade your opponent with $'+S.win.toLocaleString('en-US')+'!',
-          '😞 Opponent climbed higher. You had $'+S.win.toLocaleString('en-US')+'.');
+          '🎉 You out-grade your opponent with '+money(S.win)+'!',
+          '😞 Opponent climbed higher. You had '+money(S.win)+'.');
         Sound[iWon?'win':'lose']();
         shgAward(iWon);
       }
     });
   } else {
-    var nq0=normQs();
-    if(shgGuard([1,2,3,4,5].every(function(g){ return nq0.some(function(q){ return q.grade===g; }); }),'Need questions for all 5 grades')) return;
-    start({qs:nq0});
+    start({});
   }
 }});
 
