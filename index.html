@@ -94,6 +94,24 @@ table.lb tr.me td{color:var(--gold); font-weight:800;}
 .ch-tag{font-size:11px;font-weight:900;padding:3px 8px;border-radius:6px;}
 .ch-tag.c{background:#f7c948;color:#111;}
 .ch-tag.p{background:#e0342b;color:#fff;}
+/* ===== Match Game 70s ===== */
+.mg-wrap{background:linear-gradient(160deg,#7a1608,#b02e0c 55%,#7a1608);border:3px solid #f0a24a;border-radius:14px;padding:12px;}
+.mg-qcard{background:#f5d98d;border:4px solid #2b4f9e;border-radius:8px;padding:14px 12px;color:#141414;font-weight:900;font-size:18px;text-align:center;line-height:1.5;}
+.mg-blank{display:inline-block;min-width:84px;border-bottom:5px solid #141414;height:1em;vertical-align:bottom;}
+.mg-panel{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
+button.mg-seat{cursor:pointer;font-family:inherit;text-align:center;}
+.mg-seat{background:#12306e;border:2px solid #f0a24a;border-radius:8px;padding:8px 6px;color:#ffd98a;}
+.mg-seat .nm{font-weight:900;font-size:12px;color:#fff;}
+.mg-seat .ans{font-size:13px;font-weight:700;color:#ffe9b0;min-height:18px;margin-top:2px;}
+.mg-seat.hit{border-color:#39ff7a;box-shadow:0 0 12px rgba(57,255,122,.55);}
+.mg-seat:disabled{opacity:.75;}
+.mg-am{margin-top:12px;}
+.mg-row{display:flex;gap:8px;margin:8px 0;align-items:stretch;}
+.mg-money{flex:0 0 72px;background:#12306e;color:#ffd23e;border:2px solid #f0a24a;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;}
+.mg-slot{flex:1;min-height:44px;border-radius:6px;border:3px solid #2b4f9e;display:flex;align-items:center;justify-content:center;background-color:#f5d98d;}
+.mg-slot.shown,.mg-slot.hit{background-image:none;background:#f5d98d;color:#141414;font-weight:900;font-size:17px;}
+.mg-slot.hit{border-color:#39ff7a;box-shadow:0 0 12px rgba(57,255,122,.6);}
+.mg-slot:not(.shown):not(.hit){background-image:radial-gradient(ellipse 26px 15px at 50% 50%, #f5d98d 96%, transparent),linear-gradient(100deg, transparent 38%, #e8632a 39%, #e8632a 61%, transparent 62%),linear-gradient(-100deg, transparent 38%, #e8632a 39%, #e8632a 61%, transparent 62%);}
 .ff-xov{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;gap:12px;background:rgba(0,0,0,.45);border-radius:180px 180px 10px 10px;animation:ffxpop .25s;}
 @keyframes ffxpop{from{transform:scale(.6);opacity:0;}}
 .ff-x{width:86px;height:86px;border-radius:16px;background:linear-gradient(#f04438,#8f130d);border:4px solid #ffc9c2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:56px;font-weight:900;text-shadow:0 3px 8px #000;box-shadow:0 6px 20px rgba(0,0,0,.7);}
@@ -3512,66 +3530,406 @@ var BANKS2 = {
     {subject:"Things that glow", clues:["Light bulb","Firefly","Stars","Neon sign","Candle","Moon","Glow stick"]}
   ],
   matchgame: [
-    {prompt:"Dumb Dora is so dumb, she thought a ___ was a sandwich", answers:["hot dog","taco","shoe","brick","pillow","remote control","football"]},
-    {prompt:"The plumber said the only way to fix the sink was with a ___", answers:["banana","toothbrush","live chicken","marshmallow","tennis racket","bubble gum","magic wand"]},
-    {prompt:"My grandma's secret recipe calls for one cup of ___", answers:["love","pickles","hot sauce","glitter","mashed potatoes","socks","regret"]},
-    {prompt:"The weatherman predicted a 90% chance of ___ tomorrow", answers:["meatballs","confetti","leftovers","naps","pigeons","spaghetti","drama"]},
-    {prompt:"At the talent show, little Timmy juggled three ___", answers:["bowling balls","hamsters","watermelons","rubber ducks","tacos","alarm clocks","grandmas"]},
-    {prompt:"The pirate's treasure map led straight to a ___", answers:["vending machine","laundromat","giant sandwich","petting zoo","lost sock drawer","drive-thru","mattress store"]},
-    {prompt:"My dog ate my homework, my lunch, and my ___", answers:["shoes","phone charger","left sneaker","birthday cake","video game","couch cushion","brother's toy"]},
-    {prompt:"The genie said I could wish for anything except a ___", answers:["million dollars","flying carpet","talking parrot","bottomless pizza","time machine","pet dragon","new genie"]},
-    {prompt:"For Halloween, the skeleton dressed up as a ___", answers:["ghost","pirate","taco","superhero","disco dancer","mailman","houseplant"]},
-    {prompt:"The teacher was shocked when the frog jumped out of the ___", answers:["desk drawer","pencil box","lunch bag","trombone case","fish tank","backpack","piano"]},
-    {prompt:"My neighbor's lawn is covered in pink plastic ___", answers:["flamingos","unicorns","giraffes","lawnmowers","toilet bowls","dinosaurs","mailboxes"]},
-    {prompt:"The astronaut packed a ___ for the trip to the moon", answers:["peanut butter sandwich","rubber duck","lucky sock","karaoke machine","bag of chips","pillow pet","yo-yo"]},
-    {prompt:"At the zoo, the penguins escaped using a ___", answers:["trampoline","submarine","pogo stick","ice slide","helicopter","shopping cart","secret tunnel"]},
-    {prompt:"The baby's first word was ___", answers:["mama","pizza","no","dada","cookie","doggy","mine"]},
-    {prompt:"The magician pulled a ___ out of his hat", answers:["rabbit","sandwich","parking ticket","goldfish","cell phone","pair of socks","tiny elephant"]},
-    {prompt:"My car's GPS keeps telling me to turn at the giant ___", answers:["rubber duck","taco stand","disco ball","garden gnome","inflatable gorilla","pink elephant","water tower"]},
-    {prompt:"The chef's special today is ___ soup", answers:["tomato","chicken noodle","mystery","alphabet","leftover","pickle","bubble gum"]},
-    {prompt:"The vampire opened a ___ instead of biting necks", answers:["blood bank","juice bar","dentist office","tomato farm","spaghetti restaurant","ketchup factory","smoothie shop"]},
-    {prompt:"In gym class, we had to climb the ___", answers:["rope","wall","stairs","mountain of laundry","jungle gym","bleachers","ladder to nowhere"]},
-    {prompt:"The robot's favorite hobby is ___", answers:["ironing","counting","vacuuming","playing chess","watching paint dry","recharging","doing taxes"]},
-    {prompt:"My cat knocked the ___ off the table again", answers:["vase","glass of water","remote","plant","candle","fish bowl","entire dinner"]},
-    {prompt:"The knight's armor was made entirely of ___", answers:["tin cans","spoons","aluminum foil","bottle caps","cookie sheets","hubcaps","lunch trays"]},
-    {prompt:"For show and tell, Jenny brought her pet ___", answers:["tarantula","rock","goldfish","stick bug","invisible friend","potato","lizard"]},
-    {prompt:"The detective found a clue hidden inside the ___", answers:["couch cushion","cookie jar","shoebox","freezer","doghouse","lamp shade","cereal box"]},
-    {prompt:"The alien's spaceship runs on ___", answers:["pickle juice","old batteries","leftover pizza","soda","banana peels","static electricity","moon rocks"]},
-    {prompt:"My dad's dance moves look like a ___", answers:["washing machine","scarecrow","flopping fish","broken robot","lawn sprinkler","penguin","drunk octopus"]},
-    {prompt:"The library's quietest corner smells like ___", answers:["old books","dust","mothballs","grandma's perfume","forgotten sandwiches","lemon cleaner","mystery"]},
-    {prompt:"The superhero's weakness is ___", answers:["kryptonite","spicy food","loud noises","pigeons","mondays","wet socks","glitter"]},
-    {prompt:"At summer camp, we roasted ___ over the fire", answers:["marshmallows","hot dogs","corn","our socks","mystery meat","pinecones","popcorn"]},
-    {prompt:"The ghost haunting the attic only says ___", answers:["boo","hello","oops","where's my keys","shhh","taco","goodnight"]},
-    {prompt:"My little brother thinks the moon is made of ___", answers:["cheese","marshmallows","glow sticks","mashed potatoes","silver dollars","popcorn","night lights"]},
-    {prompt:"The cowboy rode into town on a ___", answers:["horse","donkey","pogo stick","unicycle","skateboard","giant tortoise","shopping cart"]},
-    {prompt:"The princess kissed the frog and it turned into a ___", answers:["prince","bigger frog","taco","limo driver","accountant","pizza delivery guy","statue"]},
-    {prompt:"The dentist gives out ___ instead of candy", answers:["toothbrushes","stickers","floss","sugar-free gum","brave certificates","tiny toys","lectures"]},
-    {prompt:"My alarm clock sounds like a ___", answers:["rooster","fire alarm","screaming goat","car horn","foghorn","angry bee","drum solo"]},
-    {prompt:"The wizard's spell backfired and turned him into a ___", answers:["frog","teapot","garden gnome","rubber duck","houseplant","toaster","sock"]},
-    {prompt:"At the beach, the seagulls stole our ___", answers:["sandwiches","french fries","towels","sunscreen","snacks","flip-flops","whole picnic"]},
-    {prompt:"The snowman came to life and asked for a ___", answers:["carrot nose","top hat","warm hug","cup of cocoa","pair of mittens","sled ride","suntan"]},
-    {prompt:"My gym teacher can bench press a ___", answers:["car","refrigerator","piano","school bus","whale","house","mountain"]},
-    {prompt:"The leprechaun hid his gold under a ___", answers:["rainbow","toadstool","sock drawer","park bench","pancake","traffic cone","welcome mat"]},
-    {prompt:"The time traveler warned us never to invent the ___", answers:["selfie stick","snuggie","pet rock","fidget spinner","electric scooter","crock pot","doorbell camera"]},
-    {prompt:"In the school cafeteria, mystery meat is actually ___", answers:["turkey","tofu","cardboard","old pizza","dog food","play-doh","nobody knows"]},
-    {prompt:"The dragon's breath smells like ___", answers:["garlic","burnt toast","rotten eggs","barbecue","cinnamon","old socks","smoke"]},
-    {prompt:"My grandpa's false teeth ended up in the ___", answers:["soup","dog's mouth","fish tank","mailbox","toilet","sandwich","lost and found"]},
-    {prompt:"The mummy's tomb was guarded by a giant ___", answers:["scarab","sphinx","sandwich","cactus","rubber chicken","statue","tumbleweed"]},
-    {prompt:"The circus clown's car fits twenty ___", answers:["clowns","balloons","poodles","kids","trunks","pizzas","seats"]},
-    {prompt:"At the North Pole, the elves' favorite snack is ___", answers:["candy canes","cookies","hot cocoa","snow cones","gingerbread","peppermints","popcorn"]},
-    {prompt:"The talking parrot only repeats the word ___", answers:["hello","polly","taco","nope","pretty bird","shut up","cracker"]},
-    {prompt:"My sister's diary is locked with a ___", answers:["tiny padlock","secret code","booby trap","password","laser grid","guard dog","diary lock"]},
-    {prompt:"The giant's favorite bedtime story is ___", answers:["Jack and the Beanstalk","Goldilocks","The Three Bears","a lullaby","a fairy tale","a bedtime song","a good book"]},
-    {prompt:"The lifeguard blew the whistle because someone brought a ___ into the pool", answers:["noodle","beach ball","rubber duck","inflatable flamingo","water gun","sandwich","pet fish"]},
-    {prompt:"The haunted house's scariest room is full of ___", answers:["spiders","bats","cobwebs","ghosts","clowns","mirrors","tax forms"]},
-    {prompt:"The inventor's greatest creation was the self-folding ___", answers:["laundry","pancake","map","lawn chair","pizza box","newspaper","origami crane"]},
-    {prompt:"My phone autocorrected 'dinner' to ___", answers:["donkey","divorce","dinosaur","doughnut","diaper","dungeon","dodo"]},
-    {prompt:"The band's new hit single is called '___'", answers:["My Broken Heart","Dance All Night","Stuck in Traffic","Laundry Day","Ode to Pizza","The WiFi Is Down","Snore"]},
-    {prompt:"The farmer's rooster crows every morning at ___", answers:["dawn","5 AM","sunrise","way too early","the crack of dawn","4:30","o'clock"]},
-    {prompt:"The secret ingredient in the witch's potion is ___", answers:["eye of newt","bat wings","frog legs","unicorn tears","pickle juice","toe of frog","mystery spice"]},
-    {prompt:"The marathon runner hit the wall at mile ___", answers:["20","13","26","10","18","25","3"]},
-    {prompt:"My imaginary friend lives in the ___", answers:["closet","attic","treehouse","under my bed","basement","garage","couch cushions"]},
-    {prompt:"The king's crown is decorated with ___", answers:["jewels","rubies","diamonds","gold","emeralds","sapphires","velvet"]}
+    {prompt:"Dumb Dora is so dumb, she thought a ___ was a sandwich", answers:["hot dog", "taco", "shoe", "brick", "pillow", "remote control", "football"]},
+    {prompt:"The plumber said the only way to fix the sink was with a ___", answers:["banana", "toothbrush", "live chicken", "marshmallow", "tennis racket", "bubble gum", "magic wand"]},
+    {prompt:"My grandma's secret recipe calls for one cup of ___", answers:["love", "pickles", "hot sauce", "glitter", "mashed potatoes", "socks", "regret"]},
+    {prompt:"The weatherman predicted a 90% chance of ___ tomorrow", answers:["meatballs", "confetti", "leftovers", "naps", "pigeons", "spaghetti", "drama"]},
+    {prompt:"At the talent show, little Timmy juggled three ___", answers:["bowling balls", "hamsters", "watermelons", "rubber ducks", "tacos", "alarm clocks", "grandmas"]},
+    {prompt:"The pirate's treasure map led straight to a ___", answers:["vending machine", "laundromat", "giant sandwich", "petting zoo", "lost sock drawer", "drive-thru", "mattress store"]},
+    {prompt:"My dog ate my homework, my lunch, and my ___", answers:["shoes", "phone charger", "left sneaker", "birthday cake", "video game", "couch cushion", "brother's toy"]},
+    {prompt:"The genie said I could wish for anything except a ___", answers:["million dollars", "flying carpet", "talking parrot", "bottomless pizza", "time machine", "pet dragon", "new genie"]},
+    {prompt:"For Halloween, the skeleton dressed up as a ___", answers:["ghost", "pirate", "taco", "superhero", "disco dancer", "mailman", "houseplant"]},
+    {prompt:"The teacher was shocked when the frog jumped out of the ___", answers:["desk drawer", "pencil box", "lunch bag", "trombone case", "fish tank", "backpack", "piano"]},
+    {prompt:"My neighbor's lawn is covered in pink plastic ___", answers:["flamingos", "unicorns", "giraffes", "lawnmowers", "toilet bowls", "dinosaurs", "mailboxes"]},
+    {prompt:"The astronaut packed a ___ for the trip to the moon", answers:["peanut butter sandwich", "rubber duck", "lucky sock", "karaoke machine", "bag of chips", "pillow pet", "yo-yo"]},
+    {prompt:"At the zoo, the penguins escaped using a ___", answers:["trampoline", "submarine", "pogo stick", "ice slide", "helicopter", "shopping cart", "secret tunnel"]},
+    {prompt:"The baby's first word was ___", answers:["mama", "pizza", "no", "dada", "cookie", "doggy", "mine"]},
+    {prompt:"The magician pulled a ___ out of his hat", answers:["rabbit", "sandwich", "parking ticket", "goldfish", "cell phone", "pair of socks", "tiny elephant"]},
+    {prompt:"My car's GPS keeps telling me to turn at the giant ___", answers:["rubber duck", "taco stand", "disco ball", "garden gnome", "inflatable gorilla", "pink elephant", "water tower"]},
+    {prompt:"The chef's special today is ___ soup", answers:["tomato", "chicken noodle", "mystery", "alphabet", "leftover", "pickle", "bubble gum"]},
+    {prompt:"The vampire opened a ___ instead of biting necks", answers:["blood bank", "juice bar", "dentist office", "tomato farm", "spaghetti restaurant", "ketchup factory", "smoothie shop"]},
+    {prompt:"In gym class, we had to climb the ___", answers:["rope", "wall", "stairs", "mountain of laundry", "jungle gym", "bleachers", "ladder to nowhere"]},
+    {prompt:"The robot's favorite hobby is ___", answers:["ironing", "counting", "vacuuming", "playing chess", "watching paint dry", "recharging", "doing taxes"]},
+    {prompt:"My cat knocked the ___ off the table again", answers:["vase", "glass of water", "remote", "plant", "candle", "fish bowl", "entire dinner"]},
+    {prompt:"The knight's armor was made entirely of ___", answers:["tin cans", "spoons", "aluminum foil", "bottle caps", "cookie sheets", "hubcaps", "lunch trays"]},
+    {prompt:"For show and tell, Jenny brought her pet ___", answers:["tarantula", "rock", "goldfish", "stick bug", "invisible friend", "potato", "lizard"]},
+    {prompt:"The detective found a clue hidden inside the ___", answers:["couch cushion", "cookie jar", "shoebox", "freezer", "doghouse", "lamp shade", "cereal box"]},
+    {prompt:"The alien's spaceship runs on ___", answers:["pickle juice", "old batteries", "leftover pizza", "soda", "banana peels", "static electricity", "moon rocks"]},
+    {prompt:"My dad's dance moves look like a ___", answers:["washing machine", "scarecrow", "flopping fish", "broken robot", "lawn sprinkler", "penguin", "drunk octopus"]},
+    {prompt:"The library's quietest corner smells like ___", answers:["old books", "dust", "mothballs", "grandma's perfume", "forgotten sandwiches", "lemon cleaner", "mystery"]},
+    {prompt:"The superhero's weakness is ___", answers:["kryptonite", "spicy food", "loud noises", "pigeons", "mondays", "wet socks", "glitter"]},
+    {prompt:"At summer camp, we roasted ___ over the fire", answers:["marshmallows", "hot dogs", "corn", "our socks", "mystery meat", "pinecones", "popcorn"]},
+    {prompt:"The ghost haunting the attic only says ___", answers:["boo", "hello", "oops", "where's my keys", "shhh", "taco", "goodnight"]},
+    {prompt:"My little brother thinks the moon is made of ___", answers:["cheese", "marshmallows", "glow sticks", "mashed potatoes", "silver dollars", "popcorn", "night lights"]},
+    {prompt:"The cowboy rode into town on a ___", answers:["horse", "donkey", "pogo stick", "unicycle", "skateboard", "giant tortoise", "shopping cart"]},
+    {prompt:"The princess kissed the frog and it turned into a ___", answers:["prince", "bigger frog", "taco", "limo driver", "accountant", "pizza delivery guy", "statue"]},
+    {prompt:"The dentist gives out ___ instead of candy", answers:["toothbrushes", "stickers", "floss", "sugar-free gum", "brave certificates", "tiny toys", "lectures"]},
+    {prompt:"My alarm clock sounds like a ___", answers:["rooster", "fire alarm", "screaming goat", "car horn", "foghorn", "angry bee", "drum solo"]},
+    {prompt:"The wizard's spell backfired and turned him into a ___", answers:["frog", "teapot", "garden gnome", "rubber duck", "houseplant", "toaster", "sock"]},
+    {prompt:"At the beach, the seagulls stole our ___", answers:["sandwiches", "french fries", "towels", "sunscreen", "snacks", "flip-flops", "whole picnic"]},
+    {prompt:"The snowman came to life and asked for a ___", answers:["carrot nose", "top hat", "warm hug", "cup of cocoa", "pair of mittens", "sled ride", "suntan"]},
+    {prompt:"My gym teacher can bench press a ___", answers:["car", "refrigerator", "piano", "school bus", "whale", "house", "mountain"]},
+    {prompt:"The leprechaun hid his gold under a ___", answers:["rainbow", "toadstool", "sock drawer", "park bench", "pancake", "traffic cone", "welcome mat"]},
+    {prompt:"The time traveler warned us never to invent the ___", answers:["selfie stick", "snuggie", "pet rock", "fidget spinner", "electric scooter", "crock pot", "doorbell camera"]},
+    {prompt:"In the school cafeteria, mystery meat is actually ___", answers:["turkey", "tofu", "cardboard", "old pizza", "dog food", "play-doh", "nobody knows"]},
+    {prompt:"The dragon's breath smells like ___", answers:["garlic", "burnt toast", "rotten eggs", "barbecue", "cinnamon", "old socks", "smoke"]},
+    {prompt:"My grandpa's false teeth ended up in the ___", answers:["soup", "dog's mouth", "fish tank", "mailbox", "toilet", "sandwich", "lost and found"]},
+    {prompt:"The mummy's tomb was guarded by a giant ___", answers:["scarab", "sphinx", "sandwich", "cactus", "rubber chicken", "statue", "tumbleweed"]},
+    {prompt:"The circus clown's car fits twenty ___", answers:["clowns", "balloons", "poodles", "kids", "trunks", "pizzas", "seats"]},
+    {prompt:"At the North Pole, the elves' favorite snack is ___", answers:["candy canes", "cookies", "hot cocoa", "snow cones", "gingerbread", "peppermints", "popcorn"]},
+    {prompt:"The talking parrot only repeats the word ___", answers:["hello", "polly", "taco", "nope", "pretty bird", "shut up", "cracker"]},
+    {prompt:"My sister's diary is locked with a ___", answers:["tiny padlock", "secret code", "booby trap", "password", "laser grid", "guard dog", "diary lock"]},
+    {prompt:"The giant's favorite bedtime story is ___", answers:["Jack and the Beanstalk", "Goldilocks", "The Three Bears", "a lullaby", "a fairy tale", "a bedtime song", "a good book"]},
+    {prompt:"The lifeguard blew the whistle because someone brought a ___ into the pool", answers:["noodle", "beach ball", "rubber duck", "inflatable flamingo", "water gun", "sandwich", "pet fish"]},
+    {prompt:"The haunted house's scariest room is full of ___", answers:["spiders", "bats", "cobwebs", "ghosts", "clowns", "mirrors", "tax forms"]},
+    {prompt:"The inventor's greatest creation was the self-folding ___", answers:["laundry", "pancake", "map", "lawn chair", "pizza box", "newspaper", "origami crane"]},
+    {prompt:"My phone autocorrected 'dinner' to ___", answers:["donkey", "divorce", "dinosaur", "doughnut", "diaper", "dungeon", "dodo"]},
+    {prompt:"The band's new hit single is called '___'", answers:["My Broken Heart", "Dance All Night", "Stuck in Traffic", "Laundry Day", "Ode to Pizza", "The WiFi Is Down", "Snore"]},
+    {prompt:"The farmer's rooster crows every morning at ___", answers:["dawn", "5 AM", "sunrise", "way too early", "the crack of dawn", "4:30", "o'clock"]},
+    {prompt:"The secret ingredient in the witch's potion is ___", answers:["eye of newt", "bat wings", "frog legs", "unicorn tears", "pickle juice", "toe of frog", "mystery spice"]},
+    {prompt:"The marathon runner hit the wall at mile ___", answers:["20", "13", "26", "10", "18", "25", "3"]},
+    {prompt:"My imaginary friend lives in the ___", answers:["closet", "attic", "treehouse", "under my bed", "basement", "garage", "couch cushions"]},
+    {prompt:"The king's crown is decorated with ___", answers:["jewels", "rubies", "diamonds", "gold", "emeralds", "sapphires", "velvet"]},
+    {prompt:"My Uncle Elmer is so cheap, for his wife's birthday he gave her a ___", answers:["coupon", "dollar-store card", "IOU", "used candle", "hug", "lottery ticket", "expired gift card", "firm handshake"]},
+    {prompt:"Dumb Donald is so dumb, he tried to unlock his car with a ___", answers:["banana", "spoon", "TV remote", "credit card", "pretzel", "paper clip", "his finger", "shoe"]},
+    {prompt:"The nervous groom was so sweaty at the altar, the bride slipped him a ___", answers:["towel", "handkerchief", "fan", "deodorant", "ice cube", "napkin", "umbrella", "mop"]},
+    {prompt:"Old Man Periwinkle is so old, his birth certificate is written on a ___", answers:["stone tablet", "cave wall", "scroll", "papyrus", "tree bark", "clay tablet", "dinosaur", "post-it note"]},
+    {prompt:"The fancy restaurant was so snooty, they wouldn't let you in unless you wore a ___", answers:["tie", "jacket", "bow tie", "monocle", "top hat", "ascot", "cummerbund", "smile"]},
+    {prompt:"My wife's cooking is so bad, even the ___ won't eat it", answers:["dog", "garbage disposal", "rats", "raccoons", "flies", "cat", "neighbors", "cockroaches"]},
+    {prompt:"The used car salesman was so slick, he could sell a ___ to a fish", answers:["swimsuit", "umbrella", "life jacket", "boat", "sunglasses", "speedo", "ice", "car"]},
+    {prompt:"When the movie star took off her sunglasses, everybody gasped because she had a ___ underneath", answers:["black eye", "monocle", "eye patch", "second pair", "wig", "bruise", "sticker", "tattoo"]},
+    {prompt:"The orchestra conductor got so mad at the tuba player, he hit him with his ___", answers:["baton", "shoe", "music stand", "violin", "sandwich", "hat", "glove", "program"]},
+    {prompt:"Betty's new diet is working so well, she can finally fit into her ___ again", answers:["wedding dress", "high school jeans", "bathing suit", "prom dress", "skinny jeans", "old uniform", "shoes", "car"]},
+    {prompt:"The bank robber demanded all the money be put in a ___", answers:["bag", "sack", "pillowcase", "briefcase", "shopping cart", "backpack", "hat", "sock"]},
+    {prompt:"My mother-in-law's visit lasted so long, I started calling her ___", answers:["roommate", "tenant", "Grandma", "landlord", "the squatter", "family", "boss", "wifey"]},
+    {prompt:"The fortune teller looked into her crystal ball and saw a giant ___", answers:["dollar sign", "wedding ring", "baby", "storm cloud", "question mark", "heart", "skull", "pizza"]},
+    {prompt:"Farmer Brown's cows are so spoiled, he feeds them ___ every morning", answers:["champagne", "chocolate", "caviar", "ice cream", "pancakes", "steak", "cereal", "popcorn"]},
+    {prompt:"The beauty pageant contestant's talent was juggling ___", answers:["chainsaws", "flaming torches", "bowling pins", "eggs", "kitchen knives", "babies", "watermelons", "cell phones"]},
+    {prompt:"When the power went out at the wedding, the band played by the light of a ___", answers:["candle", "cell phone", "flashlight", "lighter", "glow stick", "firefly", "match", "sparkler"]},
+    {prompt:"The absent-minded professor forgot his lecture notes, so he lectured about ___ instead", answers:["his lunch", "the weather", "his cat", "nothing", "his socks", "golf", "his wife", "television"]},
+    {prompt:"Little Susie's lemonade stand was shut down by the health inspector because she was selling ___ too", answers:["cookies", "brownies", "kisses", "cigars", "hot dogs", "used toys", "worms", "advice"]},
+    {prompt:"The movie was so scary, I hid behind my ___ the whole time", answers:["popcorn", "boyfriend", "hands", "seat", "blanket", "girlfriend", "hat", "date"]},
+    {prompt:"Grandpa fell asleep at Thanksgiving dinner and landed face-first in the ___", answers:["mashed potatoes", "pumpkin pie", "gravy", "turkey", "cranberry sauce", "stuffing", "soup", "salad"]},
+    {prompt:"The traffic cop was so hungry, he gave me a ticket and a ___", answers:["menu", "sandwich", "donut", "recipe", "napkin", "bib", "coupon", "fork"]},
+    {prompt:"My hairdresser made a mistake and accidentally gave me a ___", answers:["mohawk", "mullet", "perm", "bald spot", "bowl cut", "beehive", "ponytail", "buzz cut"]},
+    {prompt:"The champion boxer's secret weapon is his ___", answers:["left hook", "mother", "lucky socks", "dentist", "wife", "kiss", "tickle", "sneeze"]},
+    {prompt:"At the family reunion, Aunt Mabel shocked everyone by showing up with a ___", answers:["new husband", "tattoo", "motorcycle", "pierced nose", "green hair", "boa constrictor", "date half her age", "belly ring"]},
+    {prompt:"The hotel was so cheap, instead of a mint on the pillow they left a ___", answers:["roach", "note", "breath mint wrapper", "penny", "crumb", "used soap", "bill", "spider"]},
+    {prompt:"The opera singer's voice was so high, she shattered the ___", answers:["chandelier", "windows", "wine glasses", "mirror", "audience's glasses", "light bulbs", "eardrums", "crystal ball"]},
+    {prompt:"My teenager's bedroom is so messy, I found a ___ growing in there", answers:["mushroom", "plant", "mold", "science experiment", "tree", "pizza", "sock monster", "fungus garden"]},
+    {prompt:"The wedding was so fancy, even the ___ wore a tuxedo", answers:["dog", "waiters", "cake", "ring bearer", "bartender", "chairs", "cat", "limousine"]},
+    {prompt:"Dumb Dora is so dumb, when the doctor told her to take two aspirins, she took two ___", answers:["bottles", "handfuls", "boxes", "pills the size of plates", "of everything", "aspirin sandwiches", "hours", "naps"]},
+    {prompt:"The politician promised every voter a free ___", answers:["car", "chicken", "television", "beer", "kiss", "hug", "donut", "smile"]},
+    {prompt:"My mechanic said my car needs a new ___ and it's going to cost me a fortune", answers:["transmission", "engine", "everything", "flux capacitor", "muffler", "carburetor", "battery", "brake light"]},
+    {prompt:"The sleepy fireman accidentally slid down the ___ instead of the pole", answers:["banister", "laundry chute", "slide", "stairs", "elevator shaft", "rope", "ladder", "water hose"]},
+    {prompt:"For their anniversary, cheap Charlie took his wife to the fanciest ___ in town", answers:["fast food place", "dollar store", "gas station", "all-you-can-eat buffet", "car wash", "laundromat", "food court", "drive-in"]},
+    {prompt:"The drill sergeant was so tough, he made the recruits sleep on a bed of ___", answers:["nails", "rocks", "broken glass", "cactus", "pinecones", "Legos", "ice", "gravel"]},
+    {prompt:"When the stripper retired, she donated her ___ to the museum", answers:["pole", "feather boa", "pasties", "shoes", "costumes", "fan", "glitter", "tiara"]},
+    {prompt:"The little old lady beat up the mugger with her ___", answers:["purse", "umbrella", "cane", "shoe", "frying pan", "knitting needle", "handbag", "bible"]},
+    {prompt:"My husband snores so loud, the neighbors thought it was a ___", answers:["chainsaw", "freight train", "earthquake", "foghorn", "jackhammer", "motorcycle gang", "thunderstorm", "bear"]},
+    {prompt:"The game show host was having a bad day, so instead of a prize he gave the contestant a ___", answers:["kick in the pants", "hug", "lecture", "banana", "parting gift", "wet willy", "handshake", "coupon"]},
+    {prompt:"Sally sold seashells by the seashore, but her real money came from selling ___", answers:["suntan lotion", "hot dogs", "parking spots", "towels", "ice cream", "sunglasses", "sand", "kisses"]},
+    {prompt:"The dentist's office was so scary, even the ___ were shaking", answers:["drills", "tooth fairies", "dentures", "chairs", "nurses", "mirrors", "patients in the waiting room", "fish tank"]},
+    {prompt:"My goldfish is so smart, he does ___ every time I walk by", answers:["tricks", "backflips", "the wave", "math", "a dance", "loops", "magic", "karate"]},
+    {prompt:"The fancy chef refused to cook unless he had his lucky ___", answers:["spatula", "hat", "apron", "spoon", "mother", "mustache", "ladle", "wine"]},
+    {prompt:"When the elevator broke down, the office workers entertained themselves by playing ___", answers:["charades", "poker", "spin the bottle", "truth or dare", "hopscotch", "bingo", "twister", "strip poker"]},
+    {prompt:"My grandmother's purse is so big, she keeps a ___ in it just in case", answers:["sandwich", "flashlight", "hammer", "snack", "umbrella", "first aid kit", "bible", "frying pan"]},
+    {prompt:"The clumsy waiter dropped an entire tray of ___ on the mayor", answers:["spaghetti", "soup", "wine", "oysters", "drinks", "desserts", "salads", "meatballs"]},
+    {prompt:"The substitute teacher was so boring, half the class fell asleep and the other half ___", answers:["left", "played cards", "did homework", "texted", "drew pictures", "sneaked out", "studied", "daydreamed"]},
+    {prompt:"Old sailors say the best cure for seasickness is a big plate of ___", answers:["greasy pork", "spaghetti", "ice cream", "oysters", "scrambled eggs", "sardines", "pudding", "fried chicken"]},
+    {prompt:"The bride was so nervous, she threw the bouquet and hit the ___", answers:["priest", "groom", "chandelier", "cake", "best man", "photographer", "flower girl", "ceiling fan"]},
+    {prompt:"My neighbor mows his lawn at 6 AM wearing nothing but a ___", answers:["bathrobe", "smile", "hat", "towel", "apron", "pair of slippers", "bow tie", "speedo"]},
+    {prompt:"The magician's rabbit quit, so now he pulls a ___ out of his hat", answers:["squirrel", "chicken", "bill", "hamster", "snake", "ferret", "pigeon", "turtle"]},
+    {prompt:"At the church picnic, Reverend Brown won the ___ contest three years in a row", answers:["pie-eating", "watermelon seed spitting", "three-legged race", "bible quiz", "dunk tank", "hot dog eating", "egg toss", "sack race"]},
+    {prompt:"The airline lost my luggage, so I had to wear the same ___ for a week", answers:["underwear", "socks", "shirt", "pajamas", "outfit", "suit", "sweater", "pair of pants"]},
+    {prompt:"Ditsy Debbie is so ditzy, she put her ___ in the refrigerator to keep it fresh", answers:["husband", "car keys", "purse", "money", "dentures", "flowers", "shoes", "wig"]},
+    {prompt:"The strongman at the carnival bent a ___ with his bare hands", answers:["frying pan", "horseshoe", "steel bar", "crowbar", "license plate", "spoon", "pipe", "wrench"]},
+    {prompt:"My doctor told me to cut back on ___ if I want to live to be 100", answers:["everything", "bacon", "fun", "cigars", "wine", "women", "television", "work"]},
+    {prompt:"The kindergartener got sent home for trading his lunch for a ___", answers:["baseball card", "kiss", "frog", "marble", "shiny rock", "sticker", "yo-yo", "pocket knife"]},
+    {prompt:"When the choir director retired, the choir gave him a golden ___", answers:["baton", "pitch pipe", "microphone", "robe", "hymnal", "throat lozenge", "tuning fork", "earplug"]},
+    {prompt:"The hotel bellhop carried my bags, my coat, and my ___ up to the room", answers:["mother-in-law", "dog", "husband", "groceries", "bowling ball", "kids", "lawn mower", "souvenirs"]},
+    {prompt:"My wife talks in her sleep, and last night she kept saying the name ___", answers:["George", "the mailman", "her ex", "Brad Pitt", "the pool boy", "Fred", "the pizza guy", "nobody in particular"]},
+    {prompt:"The science fair winner built a robot that does ___", answers:["homework", "the dishes", "laundry", "dances", "everything", "cooking", "massages", "taxes"]},
+    {prompt:"Uncle Louie is so hairy, when he goes to the beach people mistake him for a ___", answers:["bear", "gorilla", "rug", "sasquatch", "wookiee", "caveman", "yeti", "mop"]},
+    {prompt:"The weightlifter was showing off and accidentally lifted the ___", answers:["refrigerator", "car", "judge", "his mother", "piano", "cow", "announcer's table", "whole gym"]},
+    {prompt:"My secretary is so efficient, she finished all her work and spent the afternoon ___", answers:["napping", "painting her nails", "shopping", "reading a novel", "doing the boss's work", "planning her vacation", "texting", "playing solitaire"]},
+    {prompt:"The nervous bank teller accidentally gave me an extra ___", answers:["hundred dollars", "thousand dollars", "lollipop", "pen", "smile", "account", "hug", "zero"]},
+    {prompt:"At the drive-in movie, my date was more interested in the ___ than the film", answers:["popcorn", "back seat", "guy in the next car", "snack bar", "radio", "stars", "concession stand", "mirror"]},
+    {prompt:"The plumber charged me $200 just to look at my ___", answers:["pipes", "sink", "toilet", "water heater", "basement", "bill", "face", "shower"]},
+    {prompt:"Grandma's knitting is famous all over town; this winter she's knitting a ___ for the mayor", answers:["sweater", "muffler", "hat", "pair of long johns", "tea cozy", "car cover", "wig", "bikini"]},
+    {prompt:"The movie star's autobiography is called 'How I Became a ___'", answers:["legend", "star", "millionaire", "household name", "diva", "housewife", "nobody", "icon"]},
+    {prompt:"When the orchestra played at the old folks' home, the audience threw ___ at the stage", answers:["dentures", "hearing aids", "flowers", "tomatoes", "canes", "pillows", "money", "shoes"]},
+    {prompt:"My fishing trip was a disaster; all I caught was a ___", answers:["cold", "boot", "tire", "shopping cart", "cold sore", "sunburn", "buzz", "old shoe"]},
+    {prompt:"The substitute bus driver got lost and ended up driving the kids to ___", answers:["the zoo", "Canada", "the beach", "his house", "the mall", "another school", "the airport", "Disneyland"]},
+    {prompt:"Cheapskate Charlie is so cheap, he reuses his ___", answers:["tea bags", "coffee grounds", "dental floss", "gift wrap", "birthday candles", "napkins", "toilet paper", "greeting cards"]},
+    {prompt:"The beauty contest judge was bribed with a ___", answers:["kiss", "car", "thousand dollars", "date", "cake", "smile", "fur coat", "bottle of wine"]},
+    {prompt:"My cat is so lazy, he makes the ___ do all his hunting for him", answers:["dog", "neighbor's cat", "kids", "robot vacuum", "birds", "raccoons", "squirrels", "spiders"]},
+    {prompt:"When the power drill broke, handyman Hank fixed the fence with a ___", answers:["butter knife", "shoe", "duct tape", "hammer", "spoon", "rock", "fork", "belt"]},
+    {prompt:"The fifth-grader's science project was a volcano made out of ___", answers:["papier-mache", "mashed potatoes", "jelly", "cake", "clay", "cardboard", "ice cream", "play-doh"]},
+    {prompt:"My roommate is so sloppy, he irons his ___", answers:["underwear", "jeans", "bed sheets", "towels", "t-shirts", "socks", "tablecloth", "nothing, ever"]},
+    {prompt:"The night watchman fell asleep on the job and woke up covered in ___", answers:["pigeons", "cobwebs", "graffiti", "dew", "blankets", "newspapers", "cats", "confetti"]},
+    {prompt:"For the talent portion, Miss Ohio played the national anthem on her ___", answers:["kazoo", "armpits", "nose", "teeth", "comb", "jugs", "saw", "spoons"]},
+    {prompt:"The traveling salesman knocked on my door and tried to sell me a ___", answers:["vacuum cleaner", "encyclopedia", "brush", "miracle tonic", "used car", "bridge", "set of knives", "religion"]},
+    {prompt:"My toddler painted the living room wall with ___", answers:["peanut butter", "jelly", "finger paints", "spaghetti sauce", "chocolate", "yogurt", "ketchup", "crayons"]},
+    {prompt:"The orchestra was so bad, the conductor used a ___ instead of a baton", answers:["white flag", "breadstick", "carrot", "spoon", "magic wand", "ruler", "cigarette", "feather duster"]},
+    {prompt:"Aunt Harriet's hat is so big, last Easter a ___ nested in it", answers:["bird", "family of squirrels", "bee", "cat", "robin", "swarm of bees", "pigeon", "butterfly"]},
+    {prompt:"The famous detective solved the case when he found a ___ at the scene of the crime", answers:["fingerprint", "cigar butt", "lipstick stain", "glove", "footprint", "hair", "button", "ticket stub"]},
+    {prompt:"My husband is such a couch potato, he got a cramp reaching for the ___", answers:["remote", "beer", "chips", "phone", "pretzels", "pillow", "snack tray", "channel guide"]},
+    {prompt:"The summer was so hot, we fried an egg on the ___", answers:["sidewalk", "hood of the car", "dashboard", "roof", "driveway", "mailbox", "bald man's head", "grill"]},
+    {prompt:"When the wedding singer lost his voice, the best man sang the first dance song using a ___", answers:["megaphone", "hairbrush", "karaoke machine", "kazoo", "bottle", "microphone made of a spoon", "telephone", "bullhorn"]},
+    {prompt:"The little league coach was so mad, he threw his ___ onto the field", answers:["hat", "clipboard", "glove", "shoe", "water bottle", "base", "sunglasses", "protest"]},
+    {prompt:"My grandmother won the lottery and the first thing she bought was a ___", answers:["motorcycle", "new church hat", "cruise", "red convertible", "bingo hall", "wig", "pool boy", "diamond ring"]},
+    {prompt:"The absent-minded chef seasoned the soup with ___ instead of salt", answers:["sugar", "confetti", "sand", "soap flakes", "cinnamon", "pepper, lots of it", "glitter", "flour"]},
+    {prompt:"The country fair's biggest attraction this year is a ___ that weighs 500 pounds", answers:["pumpkin", "pig", "watermelon", "cow", "potato", "turkey", "pie", "farmer"]},
+    {prompt:"My dentist has such big hands, he uses a ___ to pull teeth", answers:["pair of pliers", "wrench", "tow truck", "crane", "crowbar", "vacuum", "glove size 14", "magnet"]},
+    {prompt:"When my wife said she wanted a diamond, I bought her a ___ instead", answers:["baseball diamond", "cubic zirconia", "ring pop", "diamond in the rough", "deck of cards", "diamond-shaped cookie", "picture of one", "pea-sized diamond"]},
+    {prompt:"The poor tailor's shop was so small, he had to sew ___ outside", answers:["buttonholes", "pants", "wedding dresses", "his own clothes", "curtains", "suits", "socks", "everything"]},
+    {prompt:"My parrot learned a new word at the pirate convention and now he only says ___", answers:["shiver me timbers", "where's the rum", "polly wants a cracker", "aye aye", "ahoy", "walk the plank", "yo ho", "treasure"]},
+    {prompt:"The football team was so bad this year, the cheerleaders started cheering for ___", answers:["the other team", "halftime", "the popcorn vendor", "the band", "the referees", "next season", "the mascot", "themselves"]},
+    {prompt:"Grandpa's hearing aid whistles so loud, all the ___ in the neighborhood come running", answers:["dogs", "cats", "birds", "kids", "deer", "fire trucks", "neighbors", "squirrels"]},
+    {prompt:"The fancy spa's newest treatment is a bath in ___", answers:["chocolate", "champagne", "mud", "milk", "honey", "oatmeal", "rose petals", "cucumber water"]},
+    {prompt:"My brother is so lazy, he hired a ___ to change the TV channel", answers:["kid", "neighbor", "dog", "monkey", "intern", "butler", "drone", "long stick"]},
+    {prompt:"When the orchestra's piano player didn't show up, they replaced him with a ___", answers:["player piano", "recording", "monkey", "guitar player", "kid from the audience", "jukebox", "accordion player", "metronome"]},
+    {prompt:"The real estate agent said the house has a great view of the ___", answers:["wall", "highway", "cemetery", "dump", "neighbors' yard", "parking lot", "factories", "prison"]},
+    {prompt:"My wife's book club spent the whole meeting discussing ___", answers:["the wine", "the host's husband", "gossip", "the snacks", "next month's host", "their vacations", "the cover", "everything but the book"]},
+    {prompt:"The circus strong lady lifted the ringmaster, two clowns, and a ___ over her head", answers:["pony", "safe", "motorcycle", "refrigerator", "elephant trainer", "barrel", "piano", "Volkswagen"]},
+    {prompt:"For his midlife crisis, Bob bought a red sports car, a toupee, and a ___", answers:["motorcycle", "leather jacket", "young girlfriend", "guitar", "surfboard", "gold chain", "pair of tight jeans", "speedboat"]},
+    {prompt:"The babysitter let the kids stay up late watching ___", answers:["the late show", "horror movies", "her boyfriend", "the clock", "cartoons", "the babysitter sleep", "infomercials", "the news"]},
+    {prompt:"My office Christmas party got wild when the boss started dancing with the ___", answers:["secretary", "coat rack", "plant", "copier", "janitor", "accountant", "lampshade on his head", "intern"]},
+    {prompt:"The mailman is afraid of my dog, so he delivers my mail by ___", answers:["throwing it", "drone", "the neighbor kid", "catapult", "leaving it at the corner", "tossing it over the fence", "air mail", "not delivering it"]},
+    {prompt:"Skinny Sam is so skinny, he has to run around in the ___ to get wet", answers:["shower", "rain", "sprinkler", "bathtub", "car wash", "pool", "puddle", "sauna"]},
+    {prompt:"The history teacher is so old, he personally knew ___", answers:["George Washington", "Abraham Lincoln", "the dinosaurs", "Moses", "Shakespeare", "Columbus", "cavemen", "Ben Franklin"]},
+    {prompt:"When the submarine ran out of torpedoes, the captain ordered the crew to fire the ___", answers:["periscope", "potatoes", "cannon", "cook", "spare parts", "water balloons", "anchor", "rubber ducks"]},
+    {prompt:"My daughter's wedding cost so much, for the reception we served ___", answers:["hot dogs", "peanut butter sandwiches", "cake and water", "potluck", "bologna", "snack cakes", "pizza", "whatever was on sale"]},
+    {prompt:"The nightclub bouncer was so big, his neck was the size of a ___", answers:["tree trunk", "ham", "watermelon", "telephone pole", "barrel", "tire", "man's thigh", "fire hydrant"]},
+    {prompt:"Grandma knitted a sweater so long, it fits the whole ___", answers:["family", "church choir", "football team", "neighborhood", " bridge club", "senior center", "bowling team", "town"]},
+    {prompt:"The substitute mailman delivered everyone's mail to the ___", answers:["wrong houses", "dog house", "church", "bar", "mayor", "dumpster", "school", "his own house"]},
+    {prompt:"My husband's snoring is so rhythmic, I set my ___ to it", answers:["metronome", "alarm clock", "dancing", "exercise routine", "watch", "cooking timer", "pacemaker", "foot tapping"]},
+    {prompt:"The librarian was so strict, she shushed the ___", answers:["clock", "goldfish", "principal", "mice", "ghost", "book club", "janitor", "her own stomach"]},
+    {prompt:"For the school play, little Billy played the part of a ___", answers:["tree", "rock", "sheep", "cloud", "third spear carrier", "door", "snowflake", "corpse"]},
+    {prompt:"The farmer's scarecrow is so scary, even the ___ avoid his field", answers:["farmers", "birds", "neighbors", "tractors", "ghosts", "dogs", "delivery men", "other scarecrows"]},
+    {prompt:"My wife hid my car keys in the ___ so I'd stay home and do the yard work", answers:["freezer", "cookie jar", "toilet tank", "flower pot", "her purse", "dog house", "fish tank", "washing machine"]},
+    {prompt:"The optometrist's waiting room is so crowded, I read an entire ___ before my turn", answers:["novel", "encyclopedia", "magazine from 1974", "dictionary", "comic book", "menu", "yearbook", "map"]},
+    {prompt:"My mother-in-law is so lazy, for exercise she just ___", answers:["lifts the remote", "walks to the fridge", "naps all day", "blinks slowly", "counts her steps", "orders takeout", "watches workout videos", "yawns twice"]},
+    {prompt:"The cheapskate said, why buy a new car when you can just ___ the old one", answers:["push", "paint", "patch up", "borrow parts for", "pray over", "kick", "roll downhill", "cover with stickers"]},
+    {prompt:"Dumb Donald is so dumb, he tried to unlock his phone with a ___", answers:["house key", "banana", "credit card", "paperclip", "carrot", "screwdriver", "his shoe", "spoon"]},
+    {prompt:"The world's worst waiter served me soup with a ___ in it", answers:["fly", "hair", "finger", "goldfish", "sock", "mouse", "rubber duck", "eyeball"]},
+    {prompt:"Grandpa's snoring is so loud, it woke up the ___", answers:["neighbors", "whole town", "dead", "chickens", "cat", "bears", "people next door", "astronauts"]},
+    {prompt:"The supermodel's strict diet allows her one ___ a day", answers:["grape", "ice cube", "lettuce leaf", "breath mint", "olive", "cracker", "blueberry", "sip of water"]},
+    {prompt:"I knew the date was going badly when she pulled out a ___", answers:["photo of her ex", "list of questions", "breath mint", "coupon book", "mirror", "her mother", "calculator", "knife sharpener"]},
+    {prompt:"The mad scientist invented a machine that turns water into ___", answers:["wine", "gold", "soda", "coffee", "gasoline", "soup", "ice cream", "glitter"]},
+    {prompt:"My husband is so cheap, for our anniversary he gave me a ___", answers:["coupon", "used card", "high five", "lottery ticket", "single rose", "IOU", "plastic ring", "hug and a coupon"]},
+    {prompt:"The fortune teller looked into her crystal ball and saw a ___", answers:["traffic jam", "parking ticket", "bald spot", "sale at the mall", "pizza delivery", "ex-boyfriend", "rainy Tuesday", "lottery ticket"]},
+    {prompt:"Old MacDonald sold his cows and replaced them with ___", answers:["llamas", "goats", "robots", "unicorns", "emus", "chickens", "a wifi tower", "dragons"]},
+    {prompt:"The nervous skydiver packed an extra ___ just in case", answers:["parachute", "pair of pants", "pillow", "sandwich", "umbrella", "helmet", "prayer book", "snack cake"]},
+    {prompt:"The pirate's parrot flew away, so he replaced it with a ___", answers:["rubber duck", "chicken", "owl", "stuffed parrot", "ventriloquist dummy", "recording", "parrotfish", "smartphone"]},
+    {prompt:"My goldfish has a secret talent: he can ___", answers:["play dead", "blow perfect bubbles", "count to ten", "moonwalk", "sing opera", "do taxes", "play chess", "juggle pebbles"]},
+    {prompt:"The lazy superhero fights crime by ___", answers:["texting the police", "napping through it", "watching the news", "ordering delivery", "sending his sidekick", "dreaming about it", "remote control drone", "staying in bed"]},
+    {prompt:"Aunt Bertha's fruitcake is so hard, we use it as a ___", answers:["doorstop", "paperweight", "brick", "hammer", "anchor", "dumbbell", "step stool", "weapon"]},
+    {prompt:"The forgetful professor came to class wearing ___", answers:["pajamas", "two different shoes", "slippers", "a bathrobe", "his wife's hat", "a snorkel", "a lampshade", "sunglasses indoors"]},
+    {prompt:"The world's oldest cat still loves to chase ___", answers:["mice", "laser pointers", "its tail", "shadows", "yarn balls", "butterflies", "the dog", "dust bunnies"]},
+    {prompt:"For luck, the old gambler always carries a ___ in his pocket", answers:["rabbit's foot", "lucky coin", "four-leaf clover", "horseshoe", "loaded dice", "acorn", "photo of his mom", "old lottery ticket"]},
+    {prompt:"The opera singer's voice is so high, she can shatter ___", answers:["wine glasses", "windows", "eardrums", "mirrors", "chandeliers", "glass tables", "ice sculptures", "teacups"]},
+    {prompt:"My teenager's room is so messy, I found a ___ growing in there", answers:["mold colony", "mushroom", "science project", "pizza fossil", "sock monster", "small tree", "pile of laundry", "ant farm"]},
+    {prompt:"The cheap motel room came with a complimentary ___", answers:["cockroach", "leaky faucet", "squeaky bed", "broken TV", "one thin towel", "ghost", "view of a wall", "mystery stain"]},
+    {prompt:"The bodybuilder eats twelve eggs and a whole ___ for breakfast", answers:["chicken", "steak", "protein shake", "loaf of bread", "tub of peanut butter", "raw onion", "gallon of milk", "ham"]},
+    {prompt:"Santa's reindeer went on strike demanding more ___", answers:["cookies", "carrots", "vacation days", "overtime pay", "hot cocoa", "weekends off", "hay", "shinier bells"]},
+    {prompt:"The worst thing to find in your Halloween candy bag is a ___", answers:["toothbrush", "raisin box", "rock", "apple", "penny", "piece of broccoli", "note from mom", "empty wrapper"]},
+    {prompt:"My wife says that when I snore, I sound like a ___", answers:["freight train", "chainsaw", "foghorn", "lawn mower", "jackhammer", "dying bear", "motorcycle", "thunderstorm"]},
+    {prompt:"The tiny Chihuahua is convinced he is really a ___", answers:["Doberman", "lion", "guard dog", "wolf", "dinosaur", "superhero", "king", "bear"]},
+    {prompt:"The absent-minded surgeon accidentally left a ___ inside the patient", answers:["sponge", "glove", "his watch", "sandwich", "cell phone", "pen", "scissors", "sticky note"]},
+    {prompt:"To impress the queen, the brave knight juggled ___", answers:["swords", "flaming torches", "eggs", "shields", "apples", "helmets", "live chickens", "crowns"]},
+    {prompt:"That haircut is so bad, it makes you look like a ___", answers:["poodle", "mop", "scarecrow", "mushroom", "sheepdog", "clown", "porcupine", "Chia pet"]},
+    {prompt:"My diet coach says I can eat unlimited ___", answers:["celery", "ice cubes", "lettuce", "rice cakes", "pickles", "grapefruit", "kale", "air"]},
+    {prompt:"Every mailman on the route fears one thing: the Johnsons' ___", answers:["Chihuahua", "goose", "sprinkler", "mailbox cat", "garden gnome", "toddler", "beehive", "slippery porch"]},
+    {prompt:"Grandma credits her long life to a daily shot of ___", answers:["hot sauce", "pickle juice", "espresso", "apple cider vinegar", "castor oil", "lemon juice", "whiskey", "garlic juice"]},
+    {prompt:"The magician's rabbit quit the act and became a ___", answers:["hat model", "Easter bunny", "carrot farmer", "waiter", "stunt double", "pet store greeter", "dust bunny", "full-time napper"]},
+    {prompt:"Too broke for a wedding ring, the groom gave his bride a ___", answers:["onion ring", "candy ring", "rubber band", "bottle cap", "paper ring", "twist tie", "IOU", "tin foil ring"]},
+    {prompt:"The superhero embarrassed himself when his cape got caught in the ___", answers:["revolving door", "elevator", "car door", "escalator", "ceiling fan", "airplane propeller", "photocopier", "toilet lid"]},
+    {prompt:"My parrot learned to shout ___ at the worst possible moment", answers:["uh oh", "call 911", "not the mama", "bad boy", "pay up", "who's there", "I give up", "the butler did it"]},
+    {prompt:"The traffic cop pulled me over because I had a ___ strapped to my roof", answers:["mattress", "Christmas tree", "goat", "canoe", "couch", "bathtub", "birthday cake", "swimming pool"]},
+    {prompt:"The world's bravest man eats ___ for breakfast every day", answers:["ghost peppers", "his wife's cooking", "nails", "raw eggs", "week-old pizza", "gravel", "glass", "leftover gas station sushi"]},
+    {prompt:"My houseplant died because I kept feeding it ___", answers:["soda", "coffee", "beer", "energy drinks", "leftover soup", "ice cream", "toilet water", "pure love"]},
+    {prompt:"The grumpy librarian shushed me just for ___ too loudly", answers:["breathing", "turning pages", "whispering", "sneezing", "chewing gum", "thinking", "blinking", "existing"]},
+    {prompt:"For his birthday this year, the vampire asked for a ___", answers:["coffin upgrade", "blood bank gift card", "sunscreen", "mirror", "blackout curtains", "dental work", "tomato juice", "pet bat"]},
+    {prompt:"The sleepy toddler fell asleep face-first in his ___", answers:["spaghetti", "birthday cake", "cereal bowl", "sandbox", "high chair", "toy box", "mashed potatoes", "dad's shoes"]},
+    {prompt:"Escargot is just a fancy French word for ___", answers:["snails", "tiny portions", "garden bugs", "expensive air", "leftovers", "rubber", "mystery meat", "disappointment"]},
+    {prompt:"My old car's horn sounds exactly like a dying ___", answers:["goose", "duck", "kazoo", "bagpipe", "moose", "squeaky toy", "chicken", "trumpet"]},
+    {prompt:"The museum's most prized exhibit is a 500-year-old ___", answers:["sock", "sandwich", "chair", "comb", "potato", "joke book", "pair of underwear", "selfie stick"]},
+    {prompt:"This morning our hen laid an egg shaped like a ___", answers:["heart", "football", "potato", "banana", "light bulb", "pear", "star", "bowling ball"]},
+    {prompt:"To save money, the budget airline now charges extra for ___", answers:["seats", "luggage", "peanuts", "the bathroom", "windows", "landing", "fresh air", "smiles"]},
+    {prompt:"All day long, the grumpy old man yells at kids to get off his ___", answers:["lawn", "porch", "driveway", "sidewalk", "rocking chair", "cloud", "newspaper", "corner of the street"]},
+    {prompt:"My healthy smoothie has kale, bananas, and a surprise dash of ___", answers:["hot sauce", "regret", "peanut butter", "pickle juice", "chocolate", "sardines", "sprinkles", "courage"]},
+    {prompt:"The detective knew the butler did it because of the ___ on his shoe", answers:["mud", "glitter", "gravy", "lipstick", "cat hair", "flour", "banana peel", "tiny footprint"]},
+    {prompt:"The world's shortest book is titled The Joy of ___", answers:["doing taxes", "waiting in line", "folding fitted sheets", "stepping on Legos", "Mondays", "dieting", "parallel parking", "assembling furniture"]},
+    {prompt:"Even the toughest cat burglar cannot resist a ball of ___", answers:["yarn", "string", "tinfoil", "ribbon", "twine", "wool", "spaghetti", "dental floss"]},
+    {prompt:"For the school play, little Timmy dressed up as a giant ___", answers:["banana", "hot dog", "pickle", "tooth", "carrot", "chicken", "crayon", "slice of toast"]},
+    {prompt:"The cowboy's stubborn horse will not run unless you feed it ___", answers:["sugar cubes", "carrots", "jelly beans", "apples", "donuts", "marshmallows", "oats", "beer nuts"]},
+    {prompt:"Aunt Flo's perfume smells like roses mixed with ___", answers:["mothballs", "garlic", "old cheese", "pickles", "burnt toast", "bug spray", "gasoline", "sardines"]},
+    {prompt:"The wedding was perfect until the best man mentioned the ___", answers:["ex-girlfriend", "bachelor party", "lost ring", "Vegas trip", "prenup", "tattoo", "first wife", "unpaid bet"]},
+    {prompt:"Our robot vacuum has declared war on the ___", answers:["cat", "curtains", "dust bunnies", "shoes", "rug fringe", "dog toys", "chair legs", "neighbor's robot vacuum"]},
+    {prompt:"The champion eater won the contest by eating fifty ___ in ten minutes", answers:["hot dogs", "pies", "tacos", "pickles", "doughnuts", "oysters", "meatballs", "bananas"]},
+    {prompt:"The substitute teacher lost control of the class when a kid threw a ___", answers:["paper airplane", "spitball", "eraser", "shoe", "banana", "water balloon", "textbook", "full tantrum"]},
+    {prompt:"Grandpa survived the war armed with nothing but a ___", answers:["spoon", "frying pan", "bad attitude", "slingshot", "whistle", "can opener", "umbrella", "pair of boots"]},
+    {prompt:"The world's worst babysitter let the kids play with ___", answers:["the good china", "dad's tools", "glitter", "permanent markers", "the car keys", "scissors", "the fancy wine glasses", "mom's makeup"]},
+    {prompt:"The fancy chef refuses to cook without his lucky ___", answers:["spoon", "apron", "hat", "whisk", "spatula", "rubber duck", "playlist", "lucky sock"]},
+    {prompt:"My umbrella turned inside out, so now I use it as a ___", answers:["birdbath", "satellite dish", "flower pot", "sun hat", "sail", "soup bowl", "parachute", "garden art"]},
+    {prompt:"At the wedding, instead of rice, the guests threw ___", answers:["confetti", "birdseed", "rose petals", "sprinkles", "popcorn", "gummy bears", "dollar bills", "loose change"]},
+    {prompt:"They found the sleepwalker at midnight in the kitchen eating ___", answers:["a whole cake", "pickles", "cold pizza", "a tub of ice cream", "cereal", "leftover lasagna", "whipped cream", "peanut butter by the spoonful"]},
+    {prompt:"The world's laziest dog will not chase anything except ___", answers:["the ice cream truck", "his food bowl", "treats", "a slow toddler", "squirrels in his dreams", "the mailman", "absolutely nothing", "the couch"]},
+    {prompt:"The inventor patented a machine that turns complainers into ___", answers:["frogs", "statues", "mimes", "houseplants", "goldfish", "squirrels", "mannequins", "echoes"]},
+    {prompt:"The king demands that every royal meal begin with a ___", answers:["fanfare", "drumroll", "taste tester", "joke", "prayer", "bow", "riddle", "appetizer"]},
+    {prompt:"My smartphone is so ancient, it still runs on ___", answers:["dial-up", "smoke signals", "Morse code", "carrier pigeons", "a hand crank", "floppy disks", "two cans and a string", "a rotary dial"]},
+    {prompt:"The astronaut's biggest complaint about space is the lack of ___", answers:["gravity", "pizza", "fresh air", "wifi", "showers", "tacos", "pillows", "silence"]},
+    {prompt:"The terrible poet composed a 40-stanza ode to a ___", answers:["potato", "traffic light", "sock", "puddle", "toaster", "broom", "pickle", "parking ticket"]},
+    {prompt:"Instead of a tip, the rude customer left the waiter a ___", answers:["penny", "coupon", "dirty napkin", "lecture", "IOU", "stick of gum", "empty wallet", "dirty look"]},
+    {prompt:"The world's strongest man lifted a ___ straight over his head", answers:["car", "piano", "refrigerator", "horse", "sumo wrestler", "vending machine", "full bathtub", "baby elephant"]},
+    {prompt:"Every winter, Grandma knits sweaters for her ___", answers:["cat", "goldfish", "garden gnomes", "chickens", "teapot", "car", "neighbor's dog", "houseplants"]},
+    {prompt:"The haunted elevator only stops at the ___ floor", answers:["thirteenth", "basement", "secret", "upside-down", "forbidden", "nonexistent", "haunted", "unlucky"]},
+    {prompt:"The clumsy pirate got his hook stuck in the ___", answers:["door", "treasure chest", "pickle jar", "barrel", "birthday cake", "steering wheel", "coconut", "zipper"]},
+    {prompt:"For the talent show, my sister trained her goldfish to ___", answers:["jump through a hoop", "fetch", "play dead", "dance", "blow bubbles on command", "sing", "roll over", "count to three"]},
+    {prompt:"The budget cruise ship's buffet had unlimited ___", answers:["jello", "crackers", "breadsticks", "cabbage", "hot dogs", "mystery meat", "ice", "disappointment"]},
+    {prompt:"The dentist's waiting room has a fish tank full of ___", answers:["goldfish", "guppies", "piranhas", "plastic fish", "rubber ducks", "sharks", "lost teeth", "bubbles"]},
+    {prompt:"The nervous groom rehearsed his vows in front of the ___", answers:["mirror", "dog", "cat", "stuffed animals", "houseplant", "showerhead", "refrigerator", "fish tank"]},
+    {prompt:"The world's worst tour guide pointed at a plain rock and called it a ___", answers:["ancient ruin", "famous landmark", "dinosaur egg", "castle", "wonder of the world", "sleeping giant", "sacred temple", "celebrity home"]},
+    {prompt:"Aunt Martha buys ___ as a souvenir from every country she visits", answers:["snow globes", "spoons", "shot glasses", "postcards", "magnets", "keychains", "rocks", "hotel towels"]},
+    {prompt:"The baby genius's first words were ___", answers:["not the mama", "check please", "buy low sell high", "call my agent", "more cookies", "good day sir", "it's elementary", "I'm out"]},
+    {prompt:"The grumpy wizard punished the loud neighbor by turning him into a ___", answers:["frog", "garden gnome", "toadstool", "statue", "donkey", "mushroom", "lawn ornament", "goldfish"]},
+    {prompt:"My new fitness routine is just lifting ___", answers:["the remote", "my spirits", "pizza boxes", "grocery bags", "my eyelids", "donuts to my mouth", "my phone", "couch cushions"]},
+    {prompt:"The fashion designer shocked Paris with a gown made entirely of ___", answers:["bubble wrap", "newspaper", "duct tape", "balloons", "leaves", "candy wrappers", "toilet paper", "feathers"]},
+    {prompt:"The world's pickiest eater will only eat food that is ___", answers:["beige", "round", "dinosaur-shaped", "cut into stars", "not touching other food", "from a blue plate", "served by grandma", "arranged by color"]},
+    {prompt:"The retired racehorse now spends his days ___", answers:["grazing", "napping", "giving pony rides", "eating carrots", "telling tall tales", "posing for photos", "watching old races", "sulking"]},
+    {prompt:"The librarian's secret tattoo says ___", answers:["shhh", "quiet please", "read more", "overdue", "bookworm", "knowledge is power", "mom", "turn the page"]},
+    {prompt:"Times are tough, so the Tooth Fairy now leaves ___ under pillows", answers:["coupons", "IOUs", "dental floss", "gift cards", "stickers", "a stern note", "raisins", "bus tokens"]},
+    {prompt:"The opera was so dull, even the ___ fell asleep", answers:["orchestra", "conductor", "lead singer", "ushers", "critics", "audience", "stagehands", "musicians"]},
+    {prompt:"My cat earns his keep around the house by ___", answers:["catching mice", "looking cute", "guarding the door", "warming the couch", "judging guests", "sitting in boxes", "shedding everywhere", "ignoring everyone"]},
+    {prompt:"The world's worst magician accidentally sawed his assistant's ___ in half", answers:["shoes", "hat", "purse", "sandwich", "phone", "wig", "paycheck", "car keys"]},
+    {prompt:"The farmer's scarecrow is so lifelike, it scared away the ___", answers:["farmer himself", "crows", "mailman", "kids", "deer", "tax collector", "tractor", "chickens"]},
+    {prompt:"The time machine manual warns: never, ever press the ___ button", answers:["red", "big red", "shiny", "blinking", "self-destruct", "purple", "unmarked", "tempting"]},
+    {prompt:"Grandma entered the baking contest with her famous ___ pie", answers:["rhubarb", "shoofly", "mincemeat", "mud", "humble", "chicken pot", "sweet potato", "vinegar"]},
+    {prompt:"The retired superhero now runs a ___ shop downtown", answers:["donut", "coffee", "comic book", "cape", "spandex repair", "mask", "smoothie", "souvenir"]},
+    {prompt:"My neighbor insists on mowing his lawn wearing nothing but ___", answers:["socks", "a hat", "flip-flops", "shorts", "an apron", "headphones", "a smile", "confidence"]},
+    {prompt:"The wedding cake topper showed the bride, the groom, and a tiny ___", answers:["dog", "cat", "lawyer", "mother-in-law", "prenup", "referee", "baby", "ex-girlfriend"]},
+    {prompt:"Too cheap for a band, the wedding hired a ___ to play the music", answers:["kazoo choir", "boom box", "cousin with a guitar", "karaoke machine", "humming uncle", "radio", "triangle solo", "parrot on a perch"]},
+    {prompt:"The detective's magnifying glass revealed a tiny ___", answers:["fingerprint", "clue", "ant", "footprint", "crumb", "hair", "secret message", "spider"]},
+    {prompt:"My apartment is so small, the mice have to ___", answers:["take turns", "sleep in shifts", "duck", "rent tiny rooms", "knock first", "share a bed", "go on diets", "use the dollhouse"]},
+    {prompt:"The motivational speaker starts every morning by yelling ___", answers:["I am a tiger", "let's go", "show me the money", "no more snooze", "I got this", "today is mine", "coffee first", "charge"]},
+    {prompt:"The royal chef was fired for serving the queen a ___", answers:["cold soup", "burnt toast", "happy meal", "peanut butter sandwich", "frozen pizza", "bowl of cereal", "gas station burrito", "plain hot dog"]},
+    {prompt:"Instead of a guard dog, the junkyard hired a guard ___", answers:["goose", "cat", "rooster", "llama", "goat", "peacock", "skunk", "Chihuahua"]},
+    {prompt:"The world's oldest turtle still remembers when ___ was invented", answers:["dirt", "the wheel", "fire", "rock music", "gossip", "walking", "trees", "the ocean"]},
+    {prompt:"The forgetful chef keeps adding ___ to every single dish", answers:["salt", "garlic", "hot sauce", "sugar", "ketchup", "more salt", "cinnamon", "sprinkles"]},
+    {prompt:"The mall Santa turned out to be just a ___ in a costume", answers:["teenager", "robot", "dad", "mannequin", "elf on stilts", "retired pirate", "raccoon in a suit", "ventriloquist dummy"]},
+    {prompt:"The world's worst weather forecast predicted a 100 percent chance of ___", answers:["rain", "Mondays", "falling pianos", "awkwardness", "meetings", "mosquitoes", "glitter", "your ex texting"]},
+    {prompt:"Aunt Gertrude knits ___ for every one of her cats", answers:["sweaters", "hats", "mittens", "scarves", "booties", "blankets", "tiny socks", "full costumes"]},
+    {prompt:"The brave knight charged into battle waving a ___", answers:["flag", "spoon", "pool noodle", "white flag", "baguette", "feather duster", "foam finger", "spatula"]},
+    {prompt:"My goldfish bowl has a tiny sign that reads ___", answers:["no diving", "gone fishing", "help", "send food", "do not tap", "wet floor", "blub", "I'm watching you"]},
+    {prompt:"The fancy hotel's pillow menu offers one stuffed with ___", answers:["feathers", "clouds", "memories", "lavender", "rice", "gel", "old money", "marshmallows"]},
+    {prompt:"The world's slowest elevator plays ___ on a constant loop", answers:["elevator music", "a kazoo solo", "total silence", "a funeral dirge", "a metronome", "whale sounds", "baby shark", "one hand clapping"]},
+    {prompt:"After retiring, the pirate opened a ___ business", answers:["lemonade stand", "seafood restaurant", "parrot rental", "treasure tour", "boat wash", "map shop", "gold-buying", "daycare"]},
+    {prompt:"My refrigerator light never turns off because of the ___ living inside", answers:["elves", "penguin", "tiny yeti", "gnome", "mouse family", "snowman", "ice fairy", "leftovers monster"]},
+    {prompt:"The world's meanest teacher gives surprise quizzes on ___", answers:["Fridays", "Mondays", "birthdays", "field trips", "the last day of school", "holidays", "weekends", "your feelings"]},
+    {prompt:"Instead of a diploma, clown college graduates receive a ___", answers:["red nose", "pie in the face", "bucket of confetti", "whoopee cushion", "tiny car", "balloon animal", "seltzer bottle", "pratfall certificate"]},
+    {prompt:"The museum guard's toughest duty is stopping tourists from touching the ___", answers:["famous statue", "Mona Lisa", "dinosaur bones", "golden throne", "mummy", "crown jewels", "ancient vase", "giant pearl"]},
+    {prompt:"The worst neighbor ever would borrow your ___ and never give it back", answers:["lawn mower", "money", "car", "tools", "sugar", "ladder", "wife", "toothbrush"]},
+    {prompt:"My husband snores so loud, the neighbors think it's a ___", answers:["chainsaw", "freight train", "jackhammer", "lawn mower", "bear", "earthquake", "motorcycle", "tuba"]},
+    {prompt:"The cheapskate tipped the waiter a single ___", answers:["penny", "dollar", "nickel", "button", "breath mint", "IOU note", "peanut", "paper clip"]},
+    {prompt:"At the office party, Howard got drunk and danced on top of the ___", answers:["table", "desk", "copier", "boss's desk", "water cooler", "filing cabinet", "conference table", "mail cart"]},
+    {prompt:"My mother-in-law's cooking is so bad, it could be used as ___", answers:["rat poison", "cement", "a weapon", "dog food", "doorstop", "fertilizer", "paint remover", "insect repellent"]},
+    {prompt:"The world's worst superhero's only power is ___", answers:["napping", "burping", "folding laundry", "parallel parking", "making toast", "tying shoes", "blinking", "hiccuping"]},
+    {prompt:"The laziest cat in the world won't even chase a ___", answers:["mouse", "laser pointer", "ball of yarn", "treat", "bird", "bug", "its own tail", "feather"]},
+    {prompt:"Uncle Fred's toupee flew off in the wind and landed on the ___", answers:["pastor's head", "wedding cake", "cat", "mailman", "car windshield", "soup tureen", "baby", "flagpole"]},
+    {prompt:"The bank robber escaped and stuffed all the money into a ___", answers:["pillowcase", "garbage bag", "his underwear", "grocery bag", "suitcase", "sock", "backpack", "baby stroller"]},
+    {prompt:"Grandpa fell asleep in his ___ again", answers:["recliner", "dinner", "porch swing", "church pew", "bathtub", "lawn chair", "wheelchair", "gravy"]},
+    {prompt:"The worst thing to find in your salad is a ___", answers:["bug", "finger", "snail", "band-aid", "worm", "tooth", "fly", "caterpillar"]},
+    {prompt:"My mechanic shook his head and said my car needs a brand-new ___", answers:["engine", "transmission", "brakes", "battery", "alternator", "radiator", "starter", "everything"]},
+    {prompt:"The bride tossed her bouquet and it landed right in the ___", answers:["punch bowl", "priest's hands", "cake", "chandelier", "soup", "groom's face", "flower girl's hair", "trash can"]},
+    {prompt:"A terrible place to hide your money is inside a ___", answers:["mattress", "sock drawer", "cookie jar", "book", "freezer", "toilet tank", "shoe", "piggy bank"]},
+    {prompt:"My roommate eats everything in the fridge except the ___", answers:["leftovers", "pickles", "moldy cheese", "mayonnaise", "fruit cake", "olives", "kale", "sardines"]},
+    {prompt:"The fortune teller gazed into her crystal ball and saw a big ___", answers:["wedding", "lottery win", "storm coming", "baby", "promotion", "dark stranger", "accident", "refund check"]},
+    {prompt:"The worst job in the whole world is cleaning the ___", answers:["elephant cage", "porta-potty", "subway", "chimney", "sewer", "dentist's drain", "grease trap", "cat box"]},
+    {prompt:"Whenever I get nervous, I start chewing on my ___", answers:["fingernails", "pencil", "lip", "hair", "collar", "straw", "pen cap", "sleeve"]},
+    {prompt:"My goldfish is addicted to watching ___ on TV", answers:["the weather", "shark shows", "soap operas", "fishing shows", "the news", "cooking shows", "sponge cartoons", "aquarium channel"]},
+    {prompt:"The worst thing to whisper on a first date is ___", answers:["my ex's name", "I forgot my wallet", "you remind me of mom", "I'm married", "nice wig", "what's your name again", "burp", "I collect dolls"]},
+    {prompt:"Santa's reindeer went on strike because they wanted more ___", answers:["cookies", "days off", "carrots", "overtime pay", "hay", "respect", "hot cocoa", "bells"]},
+    {prompt:"The world's worst babysitter lets the kids play with ___", answers:["matches", "scissors", "the stove", "darts", "glue", "permanent markers", "dad's tools", "the hose"]},
+    {prompt:"My dentist found a ___ stuck between my teeth", answers:["popcorn kernel", "piece of steak", "spinach", "corn", "candy wrapper", "chicken bone", "thread", "pretzel"]},
+    {prompt:"The plumber pulled a ___ out of my clogged drain", answers:["dead rat", "wig", "sock", "toy duck", "toothbrush", "hairball", "cell phone", "spoon"]},
+    {prompt:"If my car could talk, it would beg me to stop ___", answers:["singing", "eating fries", "talking to it", "hitting potholes", "leaving it dirty", "idling", "tailgating", "forgetting oil changes"]},
+    {prompt:"The worst hotel in town is so cheap, the rooms don't even come with a ___", answers:["bed", "door", "towels", "TV", "shower", "lock", "roof", "pillow"]},
+    {prompt:"The ugliest Christmas sweater I ever saw had a giant ___ on the front", answers:["reindeer", "Santa face", "snowman", "cat", "glitter tree", "elf", "pumpkin", "my face"]},
+    {prompt:"When the power went out, we ate dinner by the light of a ___", answers:["flashlight", "candle", "cell phone", "firefly jar", "lighter", "glow stick", "car headlights", "birthday candle"]},
+    {prompt:"My sandwich tasted funny because somebody put ___ in it", answers:["pickles", "peanut butter", "a napkin", "mustard", "banana", "soap", "cardboard", "hot sauce"]},
+    {prompt:"The traffic cop pulled me over for having a ___ on my dashboard", answers:["hula dancer", "bobblehead", "fuzzy dice", "pineapple", "goldfish bowl", "baby shoe", "rubber duck", "dashboard Jesus"]},
+    {prompt:"A bride's worst nightmare is spilling ___ all down her white dress", answers:["red wine", "spaghetti sauce", "coffee", "chocolate", "grape juice", "ink", "mustard", "lipstick"]},
+    {prompt:"The sleepwalker woke up in the middle of ___", answers:["the street", "his neighbor's yard", "the kitchen", "a wedding", "the freeway", "his boss's office", "a cornfield", "church"]},
+    {prompt:"My dog dug a hole and buried my ___ in the backyard", answers:["slippers", "wallet", "phone", "keys", "shoes", "remote", "sandwich", "socks"]},
+    {prompt:"The world's oldest man says the secret to a long life is eating a ___ every day", answers:["apple", "pickle", "onion", "donut", "clove of garlic", "bacon strip", "sardine", "prune"]},
+    {prompt:"The ice cream truck ran out of everything except ___", answers:["vanilla", "licorice", "popsicles", "sno-cones", "the broken kind", "rum raisin", "samples", "excuses"]},
+    {prompt:"My boss caught me napping under my ___", answers:["desk", "blanket", "newspaper", "coat", "spreadsheet", "hard hat", "briefcase", "lunch menu"]},
+    {prompt:"The worst thing to step on barefoot in the dark is a ___", answers:["Lego", "thumbtack", "toy car", "nail", "dog toy", "cactus", "wet spot", "chewing gum"]},
+    {prompt:"My wallet is so empty, all that's left in it is a ___", answers:["moth", "receipt", "expired coupon", "library card", "button", "lint", "photo", "condom wrapper"]},
+    {prompt:"The old prospector struck it rich when he found a vein of ___", answers:["gold", "silver", "chocolate", "cheese", "bacon", "oil", "diamonds", "fool's gold"]},
+    {prompt:"The world's worst doctor treats every patient with a ___", answers:["band-aid", "lollipop", "leech", "ice pack", "vitamin", "hug", "placebo", "bill"]},
+    {prompt:"The show-off at the beach kept flexing his ___", answers:["biceps", "beer belly", "tattoo", "chest hair", "tan lines", "wallet", "sunglasses", "gold chain"]},
+    {prompt:"Granny knits a ___ for everybody every Christmas", answers:["sweater", "scarf", "pair of socks", "hat", "blanket", "mittens", "cozy", "underwear"]},
+    {prompt:"The spy hid the secret microfilm inside a ___", answers:["fake tooth", "cigar", "watch", "heel of his shoe", "sandwich", "book", "umbrella", "cane"]},
+    {prompt:"My parrot learned to swear from watching ___", answers:["my father", "sailors", "football games", "the news", "truck drivers", "my mother-in-law", "pirates", "reality TV"]},
+    {prompt:"The worst thing to bring to a potluck dinner is a casserole made of ___", answers:["leftovers", "tuna", "mystery meat", "jello", "spam", "kale", "fish sticks", "last week's meatloaf"]},
+    {prompt:"After a week in space, the astronaut's suit smelled like ___", answers:["sweat", "old socks", "cheese", "a locker room", "feet", "farts", "gym bag", "salami"]},
+    {prompt:"My wife hides all the good snacks inside the ___", answers:["vegetable drawer", "her purse", "cleaning closet", "car trunk", "empty cereal box", "under the bed", "toolbox", "laundry hamper"]},
+    {prompt:"The world's worst singer sounds exactly like a dying ___", answers:["cat", "cow", "goat", "seal", "rooster", "whale", "donkey", "bagpipe"]},
+    {prompt:"The mailman is absolutely terrified of my ___", answers:["dog", "goose", "sprinkler", "mother", "cat", "garden gnome", "chihuahua", "turkey"]},
+    {prompt:"At lunch, the kids traded sandwiches for a handful of ___", answers:["gummy bears", "marbles", "candy", "baseball cards", "bugs", "crayons", "cookies", "stickers"]},
+    {prompt:"The worst excuse for being late to work is: the ___ ate it", answers:["dog", "cat", "baby", "goat", "paper shredder", "toddler", "parrot", "goldfish"]},
+    {prompt:"The king decreed that on Tuesdays, everyone must wear ___", answers:["underwear outside", "a hat", "purple", "socks on hands", "pajamas", "a fake mustache", "one shoe", "polka dots"]},
+    {prompt:"My expensive treadmill is now just a very fancy ___", answers:["clothes rack", "coat hanger", "dust collector", "plant stand", "laundry pile", "cat bed", "shelf", "reminder of guilt"]},
+    {prompt:"The bride's something borrowed turned out to be her mother-in-law's ___", answers:["wedding dress", "ring", "pearls", "garter", "veil", "lucky penny", "dentures", "opinion"]},
+    {prompt:"The worst thing to find in your hotel bed is a ___", answers:["scorpion", "stranger", "crumbs", "snake", "wet spot", "previous guest", "bug", "mint surprise"]},
+    {prompt:"I looked in the mirror this morning and my hair looked like a ___", answers:["bird's nest", "mop", "tumbleweed", "poodle", "haystack", "helmet", "tornado", "brillo pad"]},
+    {prompt:"The cheerleaders' pom-poms were actually made out of ___", answers:["spaghetti", "tinfoil", "old newspapers", "feathers", "shredded tires", "car wash strips", "tinsel", "my homework"]},
+    {prompt:"My phone's most-used app by far is the ___", answers:["calculator", "flashlight", "alarm clock", "camera", "weather", "notes", "games", "bank app"]},
+    {prompt:"The cowboy's horse will only gallop if you feed it ___", answers:["carrots", "sugar cubes", "apples", "beer", "oats", "candy", "hay", "compliments"]},
+    {prompt:"The worst smell in the office fridge is coming from someone's old ___", answers:["fish", "eggs", "tuna sandwich", "yogurt", "soup", "mystery tupperware", "kimchi", "milk"]},
+    {prompt:"The vampire gave up biting necks and opened a ___ shop", answers:["blood bank", "tomato juice", "neck brace", "fang sharpening", "red wine", "cape dry cleaning", "garlic-free deli", "denture repair"]},
+    {prompt:"Grandma beats everyone at poker because she hides cards in her ___", answers:["sleeve", "bra", "hair bun", "apron pocket", "dentures", "handbag", "stocking", "teapot"]},
+    {prompt:"The tightrope walker refuses to perform without his lucky ___", answers:["underwear", "umbrella", "rabbit's foot", "hat", "socks", "medal", "rosary", "teddy bear"]},
+    {prompt:"My beard is so long now, the birds think it's a ___", answers:["nest", "bush", "tree", "mop", "beard contest winner", "forest", "home", "Santa audition"]},
+    {prompt:"The worst wedding gift ever was a used ___", answers:["toaster", "regifted candle", "blender", "bathrobe", "picture frame", "fondue set", "exercise bike", "toothbrush"]},
+    {prompt:"The burglar got caught because he stopped to eat the homeowner's ___", answers:["fried chicken", "pie", "birthday cake", "steak", "leftovers", "ice cream", "pizza", "cookies"]},
+    {prompt:"The world's shortest book ever written is titled How to ___", answers:["Diet", "Save Money", "Understand Women", "Win Arguments", "Fold a Fitted Sheet", "Be Humble", "Tell Jokes", "Train Your Cat"]},
+    {prompt:"My doctor told me to give up ___ - so I gave up my doctor", answers:["fried food", "sugar", "coffee", "bacon", "beer", "desserts", "salt", "second helpings"]},
+    {prompt:"The world's worst tour guide only shows the tourists the ___", answers:["gift shop", "parking lot", "bathroom", "his house", "dumpster", "bus", "brochure rack", "exit"]},
+    {prompt:"The bride and groom cut their wedding cake with a ___", answers:["sword", "chainsaw", "butter knife", "machete", "samurai blade", "spatula", "their hands", "axe"]},
+    {prompt:"My houseplant died even though I watered it every day with ___", answers:["coffee", "soda", "beer", "soup", "fish tank water", "pickle juice", "milk", "whiskey"]},
+    {prompt:"The pickiest eater alive will only eat food shaped like a ___", answers:["dinosaur", "star", "heart", "car", "circle", "letter", "animal", "his face"]},
+    {prompt:"My junk drawer is full of rubber bands, dead batteries, and one mysterious ___", answers:["key", "skeleton key", "photo", "coin", "ring", "handcuff key", "love letter", "tiny umbrella"]},
+    {prompt:"The world's worst lifeguard saves drowning people by throwing them a ___", answers:["pool noodle", "inner tube", "anchor", "beach ball", "towel", "sunscreen", "sandwich", "high five"]},
+    {prompt:"My umbrella turned inside out in the storm and turned into a ___", answers:["bowl", "satellite dish", "kite", "bird bath", "hat", "parachute", "flower pot", "soup ladle"]},
+    {prompt:"The world's worst butler serves dinner while wearing a ___", answers:["bathing suit", "clown nose", "tutu", "football helmet", "bikini", "paper bag", "cape", "oven mitts"]},
+    {prompt:"The champion racehorse's secret breakfast is a bowl of ___", answers:["oatmeal", "lucky charms", "carrots", "wheaties", "sugar cubes", "hay", "pancakes", "coffee"]},
+    {prompt:"My memory is getting so bad, yesterday I forgot my own ___", answers:["name", "birthday", "address", "anniversary", "password", "kids' names", "car", "wedding"]},
+    {prompt:"The world's worst pirate buried a treasure chest full of ___", answers:["bottle caps", "coupons", "socks", "IOU notes", "sand", "fake gold", "his laundry", "seashells"]},
+    {prompt:"The toddler drew a masterpiece on the living room wall using a ___", answers:["crayon", "lipstick", "marker", "chocolate", "finger paint", "ketchup", "mascara", "shoe polish"]},
+    {prompt:"My landlord raised my rent because I keep a ___ in the bathtub", answers:["goldfish", "duck", "alligator", "garden", "lobster", "beer cooler", "plant", "mermaid statue"]},
+    {prompt:"The opera singer hit a note so high, she shattered the ___", answers:["chandelier", "wine glasses", "windows", "crystal ball", "fish tank", "mirror", "vase", "audience's eardrums"]},
+    {prompt:"My coworkers staged an intervention over my enormous collection of ___", answers:["bottle caps", "rubber ducks", "gnomes", "sneakers", "baseball cards", "spoons", "snow globes", "belly button lint"]},
+    {prompt:"The world's worst fashion designer makes all his dresses out of ___", answers:["trash bags", "curtains", "bubble wrap", "duct tape", "newspapers", "shower curtains", "tin foil", "his ex's clothes"]},
+    {prompt:"The wedding photographer took three hundred pictures, but only of the ___", answers:["food", "bride's mother", "open bar", "cake", "his girlfriend", "dogs", "flowers", "exit sign"]},
+    {prompt:"My souffle fell completely flat because I forgot to add the ___", answers:["eggs", "flour", "sugar", "magic", "air", "baking powder", "love", "recipe"]},
+    {prompt:"The world's cheapest man on earth reuses his ___", answers:["tea bags", "coffee filters", "dental floss", "bath water", "gift wrap", "tissues", "batteries", "underwear"]},
+    {prompt:"The robot butler short-circuited after somebody poured him a ___", answers:["cup of coffee", "glass of water", "beer", "martini", "milkshake", "lemonade", "soup", "bubble bath"]},
+    {prompt:"After a day at the beach, my sunburn was shaped exactly like a ___", answers:["hand", "heart", "star", "fish", "palm tree", "my sunglasses", "smiley face", "question mark"]},
+    {prompt:"The world's worst ventriloquist performs by talking through his ___", answers:["nose", "armpit", "belly button", "sock puppet", "kazoo", "mask", "elbow", "assistant"]},
+    {prompt:"The librarian shushed me for laughing out loud at a book about ___", answers:["farts", "clowns", "my life", "plumbing", "mime school", "taxes", "funerals", "silent films"]},
+    {prompt:"My car horn is broken - instead of honking, it plays a ___", answers:["song", "siren", "duck quack", "laugh track", "opera note", "whistle", "drum solo", "foghorn"]},
+    {prompt:"The world's worst gardener can't grow anything except ___", answers:["weeds", "dandelions", "rocks", "mold", "cactus", "plastic flowers", "excuses", "debt"]},
+    {prompt:"The bride's long veil got caught in the ___", answers:["car door", "fan", "escalator", "chandelier", "rose bush", "ceiling fan", "groom's zipper", "elevator"]},
+    {prompt:"My souffle chef hat is collecting dust right next to my ___", answers:["treadmill", "gym bag", "diet books", "guitar", "French dictionary", "yoga mat", "telescope", "resolutions list"]},
+    {prompt:"The world's worst chef's signature dish is burnt ___", answers:["toast", "water", "spaghetti", "rice", "salad", "ice", "popcorn", "everything"]},
+    {prompt:"The old cowboy finally hung up his spurs and became a ___", answers:["librarian", "ballet dancer", "florist", "mall Santa", "yoga instructor", "poet", "barista", "greeter"]},
+    {prompt:"My fortune cookie said: Beware the man with the ___", answers:["glass eye", "wooden leg", "purple hat", "briefcase", "umbrella", "pencil mustache", "loud tie", "second umbrella"]},
+    {prompt:"The world's worst comedian's whole act is jokes about his ___", answers:["mother-in-law", "ex-wife", "hairline", "job", "dog", "mother", "bills", "nose"]},
+    {prompt:"The baby shower gift nobody wanted was a talking ___", answers:["doll", "teddy bear", "diaper", "book", "plant", "fish", "alarm clock", "mother-in-law doll"]},
   ],
   password: [
     {word:"guitar", clues:["instrument","strings","rock"]},
@@ -6055,59 +6413,172 @@ render:function(c,ctx){
 }});
 
 /* ================= MATCH GAME ================= */
-regGame('matchgame',{howto:"Fill in the blank with the funniest answer you can think of, then see if the celebrity panel matched you. 2 rounds - most matches wins.",name:'Match Game',icon:'✏️',tags:'Game Show',pvp:true,seats:2,
+regGame('matchgame',{howto:"Official Match Game: 2 rounds against a rival. Each turn pick question A or B, fill in the blank, and match the 6 celebrities on the panel - 1 point per match.\n\nWin the game and you play the AUDIENCE MATCH: a phrase our studio audience was polled on. Ask up to 3 celebrities for suggestions, then give your answer. Match the audience's #1 answer for $500, #2 for $250, #3 for $100.\n\nThen the HEAD-TO-HEAD: pick one celebrity and match them exactly to win 10x your Audience Match money!",name:'Match Game',icon:'✏️',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
-  if(g1Guard(c,BANKS2.matchgame.length>=2))return;
-  var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS2.matchgame,2)));};
-  if(net)g1Pvp(net,share,function(d,fin){playRounds(d,false,fin);},function(iw,sc){g1Settle(c,iw,sc,'Match Game');});
-  else playRounds(share(),true,null);
-  var CELEBS=['Glitzy Gail','Captain Chuckles','Madame Zsa','Funky Fred','Sassy Sue','Professor Brain'];
-  var JUNK=['pickles','my homework','a sandwich','Tuesday','the moon','cheese'];
-  function playRounds(prompts,vsBot,fin){
-    var ri=0,myM=0,botM=0;
-    round();
-    function round(){
-      if(ri>=2){
-        if(vsBot){
-          var win=myM>botM;
-          c.innerHTML='<div class="card center"><div class="big">You: '+myM+' matches<br>Rival: '+botM+' matches</div>'+(win?'<div class="ok">🏆 You win Match Game!</div>':'<div class="err">😞 Rival wins.</div>')+'</div>';
-          if(win){Sound.win();(async function(){await Wallet.recordWin('matchgame');})();}
-          else Sound.lose();
-        }else{
-          c.innerHTML='<div class="card center"><div class="big">Matches: '+myM+'</div><div class="muted">Waiting for opponent…</div></div>';
-          fin(myM);
-        }
-        return;
+  if(g1Guard(c,BANKS2.matchgame.length>=4))return;
+  var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS2.matchgame,14)));};
+  if(net)g1Pvp(net,share,function(d,fin){playGame(d,false,fin);},function(iw,sc){g1Settle(c,iw,sc,'Match Game');});
+  else playGame(share(),true,null);
+  var WILD=['pickles','my left shoe','a ham sandwich','underwear','Tuesday','the phone book','burp','my grandma'];
+  function qcard(prompt){
+    return '<div class="mg-qcard">'+esc(prompt).replace(/___/g,'<span class="mg-blank"></span>')+'</div>';
+  }
+  /* weighted mixed panel: popular answers favored, shuffled fresh every time */
+  function panelAnswers(p){
+    var pool=[];
+    p.answers.forEach(function(a,i){var w=i===0?8:(i===1?5:(i===2?3:1));for(var k=0;k<w;k++)pool.push(a);});
+    return [0,1,2,3,4,5].map(function(){
+      if(Math.random()<0.15)return WILD[Math.floor(Math.random()*WILD.length)];
+      return pool[Math.floor(Math.random()*pool.length)];
+    });
+  }
+  function rivalAnswer(p){
+    var r=Math.random();
+    if(r<0.45)return p.answers[0];
+    if(r<0.7)return p.answers[1+Math.floor(Math.random()*2)];
+    return p.answers[Math.floor(Math.random()*p.answers.length)];
+  }
+  function panelHTML(celebs,ans,matchWith){
+    return '<div class="mg-panel">'+celebs.map(function(nm,i){
+      var a=ans?ans[i]:null;
+      var hit=a&&matchWith&&SHG.feudMatch(a,matchWith);
+      return '<div class="mg-seat'+(hit?' hit':'')+'"><div class="nm">⭐ '+esc(nm)+'</div><div class="ans">'+(a?'"'+esc(a)+'"':'<span class="muted">✏️ writing…</span>')+'</div></div>';
+    }).join('')+'</div>';
+  }
+  function playGame(prompts,vsBot,fin){
+    var celebs=g1Bots(6),rival=vsBot?g1Bots(1)[0]:null;
+    var ptr=0,myM=0,botM=0,round=1;
+    function nextP(){return prompts[ptr++%prompts.length];}
+    function scoreLine(){return '<div class="status" style="margin-top:8px">You: <b>'+myM+'</b> · '+(vsBot?esc(rival)+': <b>'+botM+'</b>':'<b>Match Game</b>')+'</div>';}
+    myTurn();
+    function myTurn(){
+      if(round>2){decide();return;}
+      var pA=nextP(),pB=nextP();
+      c.innerHTML='<h2>✏️ Match Game — Round '+round+'</h2><div class="mg-wrap"><div class="muted center" style="color:#ffd9a0">Pick your question:</div><div class="row" style="gap:10px;margin-top:8px"><button class="btn grow" id="cA">❓ Question A</button><button class="btn secondary grow" id="cB">❓ Question B</button></div>'+panelHTML(celebs,null,null)+scoreLine()+'</div>';
+      c.querySelector('#cA').onclick=function(){Sound.click();answerTurn(pA,'you');};
+      c.querySelector('#cB').onclick=function(){Sound.click();answerTurn(pB,'you');};
+    }
+    function answerTurn(p,who){
+      if(who==='you'){
+        c.innerHTML='<h2>✏️ Match Game — Round '+round+'</h2><div class="mg-wrap">'+qcard(p.prompt)
+          +'<div class="row" style="gap:8px;margin-top:10px"><input id="a" class="grow" placeholder="Your answer…" autocomplete="off"><button class="btn" id="go">Lock in</button></div>'
+          +panelHTML(celebs,null,null)+scoreLine()+'</div>';
+        var inp=c.querySelector('#a');
+        inp.focus&&inp.focus();
+        var lock=function(){
+          var v=inp.value.trim();if(!v)return;Sound.click();
+          reveal(p,v,'you');
+        };
+        c.querySelector('#go').onclick=lock;
+        inp.addEventListener('keydown',function(e){if(e.key==='Enter')lock();});
+      }else{
+        c.innerHTML='<h2>✏️ Match Game — Round '+round+'</h2><div class="mg-wrap">'+qcard(p.prompt)
+          +'<div class="muted center" style="color:#ffd9a0">'+esc(rival)+' is answering…</div>'+panelHTML(celebs,null,null)+scoreLine()+'</div>';
+        setTimeout(function(){if(c.isConnected)reveal(p,rivalAnswer(p),'bot');},1100);
       }
-      var p=prompts[ri];
-      c.innerHTML='<h2>✏️ Match Game — Round '+(ri+1)+'/2</h2><div class="card"><div class="big" style="font-size:19px">'+esc(p.prompt)+'</div><div class="muted">Fill in the blank — match the celebrities!</div><input id="a" placeholder="Your answer…" autocomplete="off"><button class="btn" id="go">Lock in</button><div id="res"></div></div>';
-      var inp=c.querySelector('#a');
-      function lock(){
-        var v=inp.value.trim();if(!v)return;Sound.click();
-        var celebAns=CELEBS.map(function(){
-          if(Math.random()<0.7)return p.answers[Math.floor(Math.random()*p.answers.length)];
-          return JUNK[Math.floor(Math.random()*JUNK.length)];
+    }
+    function reveal(p,v,who){
+      var ans=panelAnswers(p),matches=0;
+      ans.forEach(function(a){if(SHG.feudMatch(a,v))matches++;});
+      if(who==='you')myM+=matches;else botM+=matches;
+      c.innerHTML='<h2>✏️ Match Game — Round '+round+'</h2><div class="mg-wrap">'+qcard(p.prompt)
+        +'<div class="center" style="color:#fff;font-weight:800;margin-top:6px">'+(who==='you'?'You':esc(rival))+' said: "'+esc(v)+'" — <b>'+matches+'</b> match'+(matches===1?'':'es')+'!</div>'
+        +panelHTML(celebs,ans,v)+scoreLine()
+        +'<button class="btn" id="nx" style="margin-top:10px">Continue</button></div>';
+      if(matches>0)Sound.win();else Sound.lose();
+      c.querySelector('#nx').onclick=function(){
+        Sound.click();
+        if(who==='you'&&vsBot)answerTurn(nextP(),'bot');
+        else if(who==='you'&&!vsBot){round++;myTurn();}
+        else{round++;myTurn();}
+      };
+    }
+    function decide(){
+      if(myM===botM&&round<=5){round++;myTurn();return;} /* tiebreak */
+      if(!vsBot){
+        c.innerHTML='<div class="card center"><div class="big">Matches: '+myM+'</div><div class="muted">Waiting for opponent…</div></div>';
+        fin(myM);return;
+      }
+      var win=myM>botM;
+      if(!win){
+        c.innerHTML='<div class="card center"><div class="big">You: '+myM+' · '+esc(rival)+': '+botM+'</div><div class="err">😞 '+esc(rival)+' wins Match Game.</div></div>';
+        Sound.lose();return;
+      }
+      Sound.win();
+      (async function(){await Wallet.recordWin('matchgame');})();
+      audienceMatch();
+    }
+    /* ----- Audience Match ----- */
+    function audienceMatch(){
+      var p=nextP(),sugs=[],suggBy=[];
+      var asked=0;
+      c.innerHTML='<div class="card center"><div class="big">🏆 You win '+myM+'–'+botM+'!</div><div class="muted">Now the Audience Match — match the studio audience and win up to $500!</div><button class="btn" id="am">Play Audience Match</button></div>';
+      c.querySelector('#am').onclick=function(){Sound.click();amAsk();};
+      function amAsk(){
+        c.innerHTML='<h2>🎙️ Audience Match</h2><div class="mg-wrap">'+qcard(p.prompt)
+          +'<div class="muted center" style="color:#ffd9a0">Tap up to 3 celebrities for a suggestion, then give your final answer.</div>'
+          +'<div class="mg-panel">'+celebs.map(function(nm,i){return '<button class="mg-seat" data-c="'+i+'"><div class="nm">⭐ '+esc(nm)+'</div><div class="ans" data-s="'+i+'">tap to ask</div></button>';}).join('')+'</div>'
+          +'<div id="sugLine" class="center" style="color:#fff;font-weight:700"></div>'
+          +'<div class="row" style="gap:8px;margin-top:10px"><input id="a" class="grow" placeholder="Your final answer…" autocomplete="off"><button class="btn" id="go">Answer</button></div></div>';
+        c.querySelectorAll('[data-c]').forEach(function(b){
+          b.onclick=function(){
+            if(asked>=3||b.disabled)return;
+            var i=+b.getAttribute('data-c');asked++;
+            var s=p.answers[Math.min(i,p.answers.length-1)];
+            suggBy.push(celebs[i]);sugs.push(s);
+            b.disabled=true;
+            b.querySelector('[data-s]').textContent='"'+s+'"';
+            c.querySelector('#sugLine').textContent='Suggestions: '+sugs.map(function(x){return '"'+x+'"';}).join(' · ');
+          };
         });
-        var matches=0;
-        var rows=celebAns.map(function(ca,ci){
-          var m=SHG.feudMatch(ca,v);if(m)matches++;
-          return '<tr><td>'+(m?'✅':'❌')+'</td><td>'+esc(CELEBS[ci])+': "'+esc(ca)+'"</td></tr>';
-        }).join('');
-        myM+=matches;
-        var h='<div class="status">You matched <b>'+matches+'</b> of 6 celebrities!</div><table class="lb">'+rows+'</table>',botAns=null,bm=0;
-        if(vsBot){
-          botAns=p.answers[Math.floor(Math.random()*p.answers.length)];
-          celebAns.forEach(function(ca){if(SHG.feudMatch(ca,botAns))bm++;});
-          botM+=bm;
-          h+='<div class="muted">Rival answered "'+esc(botAns)+'" and matched '+bm+'.</div>';
-        }
-        h+='<button class="btn" id="nx">Next round</button>';
-        c.querySelector('#res').innerHTML=h;
-        c.querySelector('#nx').onclick=function(){Sound.click();ri++;round();};
+        var inp=c.querySelector('#a');
+        var go=function(){
+          var v=inp.value.trim();if(!v)return;Sound.click();amReveal(p,v);
+        };
+        c.querySelector('#go').onclick=go;
+        inp.addEventListener('keydown',function(e){if(e.key==='Enter')go();});
       }
-      c.querySelector('#go').onclick=lock;
-      inp.addEventListener('keydown',function(e){if(e.key==='Enter')lock();});
+    }
+    function amReveal(p,v){
+      var top=p.answers.slice(0,3),amounts=[500,250,100],hit=-1;
+      top.forEach(function(a,i){if(hit<0&&SHG.feudMatch(a,v))hit=i;});
+      c.innerHTML='<h2>🎙️ Audience Match</h2><div class="mg-wrap">'+qcard(p.prompt)
+        +'<div class="mg-am">'+top.map(function(a,i){
+          return '<div class="mg-row"><div class="mg-money">$'+amounts[i]+'</div><div class="mg-slot '+(i===hit?'hit':'shown')+'"><span>'+esc(a)+'</span></div></div>';
+        }).join('')+'</div>'
+        +(hit>=0
+          ?'<div class="center ok" style="color:#7dffab;font-weight:900;font-size:18px">🎉 You matched #'+(hit+1)+' — you win $'+amounts[hit]+'!</div><button class="btn" id="h2h" style="margin-top:10px">Play Head-to-Head for 10× — $'+(amounts[hit]*10).toLocaleString('en-US')+'!</button>'
+          :'<div class="center err" style="color:#ff9a8a;font-weight:900;font-size:18px">No match — the audience said "'+esc(top[0])+'". Game over.</div>')
+        +'</div>';
+      if(hit>=0){Sound.win();c.querySelector('#h2h').onclick=function(){Sound.click();headToHead(amounts[hit]);};}
+      else Sound.lose();
+    }
+    /* ----- Head-to-Head ----- */
+    function headToHead(base){
+      var p=nextP();
+      c.innerHTML='<h2>🎯 Head-to-Head</h2><div class="mg-wrap"><div class="muted center" style="color:#ffd9a0">Pick one celebrity to match EXACTLY for $'+(base*10).toLocaleString('en-US')+':</div>'
+        +'<div class="mg-panel">'+celebs.map(function(nm,i){return '<button class="mg-seat" data-h="'+i+'"><div class="nm">⭐ '+esc(nm)+'</div><div class="ans">pick me</div></button>';}).join('')+'</div></div>';
+      c.querySelectorAll('[data-h]').forEach(function(b){
+        b.onclick=function(){Sound.click();h2hPlay(p,celebs[+b.getAttribute('data-h')],base);};
+      });
+    }
+    function h2hPlay(p,celeb,base){
+      c.innerHTML='<h2>🎯 Head-to-Head vs '+esc(celeb)+'</h2><div class="mg-wrap">'+qcard(p.prompt)
+        +'<div class="row" style="gap:8px;margin-top:10px"><input id="a" class="grow" placeholder="Your answer…" autocomplete="off"><button class="btn" id="go">Lock in</button></div>'
+        +'<div class="muted center" style="color:#ffd9a0">'+esc(celeb)+' is writing…</div></div>';
+      var inp=c.querySelector('#a');
+      var go=function(){
+        var v=inp.value.trim();if(!v)return;Sound.click();
+        var ca=Math.random()<0.5?p.answers[0]:p.answers[Math.floor(Math.random()*p.answers.length)];
+        var match=SHG.feudMatch(ca,v);
+        c.innerHTML='<div class="card center"><div class="big">'+(match?'🎉 EXACT MATCH!':'😞 No match')+'</div>'
+          +'<div class="muted">You: "'+esc(v)+'" · '+esc(celeb)+': "'+esc(ca)+'"</div>'
+          +'<div class="big" style="margin-top:6px">'+(match?'You win $'+(base*10).toLocaleString('en-US')+'!':'You keep your $'+base.toLocaleString('en-US'))+'</div></div>';
+        if(match)Sound.win();else Sound.lose();
+      };
+      c.querySelector('#go').onclick=go;
+      inp.addEventListener('keydown',function(e){if(e.key==='Enter')go();});
     }
   }
 }});
