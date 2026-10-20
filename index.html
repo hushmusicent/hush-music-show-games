@@ -103,6 +103,28 @@ table.lb tr.me td{color:var(--gold); font-weight:800;}
 /* ===== Hollywood Game Night marquee ===== */
 /* ===== Deal or No Deal stage ===== */
 /* ===== Press Your Luck Big Board ===== */
+/* ===== Pyramid boards ===== */
+.pyr-stage{background:linear-gradient(#123a7d,#081a3a);border:3px solid #c9973f;border-radius:12px;padding:12px;margin-bottom:10px;text-align:center;}
+.pyr-sign{font-size:15px;font-weight:900;color:#ffd873;letter-spacing:2px;}
+.pyr-logo{font-size:30px;font-weight:900;color:#fff;letter-spacing:6px;text-shadow:0 2px 0 #c00,0 0 16px rgba(255,200,60,.5);}
+.pyr-score{display:flex;justify-content:space-between;align-items:center;background:#17122a;border:1px solid #5a4a86;border-radius:8px;padding:7px 10px;margin-bottom:8px;font-size:14px;}
+.pyr-board{background:linear-gradient(#2b5aa8,#122f5e);border:3px solid #d8b25a;border-radius:10px;padding:10px 8px;margin-bottom:8px;}
+.pyr-row{display:flex;gap:6px;justify-content:center;margin:3px 0;}
+.pyr-box{flex:1;max-width:170px;background:linear-gradient(#fdfdf5,#d9d4c3);border:3px solid #b33; border-radius:6px;color:#1c2440;padding:8px 4px;text-align:center;font-family:inherit;}
+.pyr-cat{font-weight:900;font-size:12px;text-transform:uppercase;line-height:1.25;}
+.pyr-val{color:#b3001b;font-weight:900;font-size:13px;margin-top:2px;}
+.pyr-hint{font-size:10px;color:#7a4d00;font-weight:700;}
+.pyr-box.used{opacity:.45;}
+button.pyr-box{cursor:pointer;}
+.wc-board{background:linear-gradient(#1c49a8,#0c2560);border:3px solid #9fc2ff;border-radius:10px;padding:10px 8px;margin-bottom:8px;position:relative;}
+.wc-sign{text-align:center;font-weight:900;color:#ffd873;font-size:17px;letter-spacing:2px;margin-bottom:4px;text-shadow:0 0 10px rgba(255,190,60,.6);}
+.wc-box{flex:1;max-width:170px;background:linear-gradient(#e02020,#8f0f0f);border:3px solid #fff;border-radius:6px;color:#ffd23e;padding:9px 4px;text-align:center;min-height:52px;display:flex;flex-direction:column;justify-content:center;}
+.wc-box .wc-cat{font-weight:900;font-size:19px;}
+.wc-box.got{color:#fff;}
+.wc-box.got .wc-cat{font-size:11px;text-transform:uppercase;line-height:1.25;}
+.wc-box.cur{box-shadow:0 0 0 3px #ffd23e,0 0 18px rgba(255,210,62,.8);}
+.wc-val{font-size:11px;font-weight:900;color:#ffe9b0;}
+.wc-item{display:inline-block;background:#12275e;border:1px solid #5b8fe0;border-radius:12px;padding:3px 10px;margin:2px;font-size:14px;}
 .pl-stage{background:radial-gradient(ellipse at 50% 30%,#5c430a,#241a04 70%);border:3px solid #c9973f;border-radius:12px;padding:10px;margin-bottom:10px;}
 .pl-logo{grid-column:2/6;grid-row:2/5;background:radial-gradient(ellipse at center,#ffe45e,#f2b705 70%);border:4px solid #c00;border-radius:10px;color:#d40000;font-weight:900;font-size:19px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1.15;padding:8px 4px;}
 .pl-swoosh{width:72%;height:9px;background:#111;border-radius:50%;margin:3px 0;}
@@ -4527,48 +4549,149 @@ var BANKS2 = {
     ]
   },
   pyramid: [
-    {subject:"Things that are round", clues:["Ball","Orange","Coin","Wheel","Donut","Moon","Button"]},
-    {subject:"Things you find at the beach", clues:["Sand","Seashell","Towel","Sunscreen","Umbrella","Waves","Crab"]},
-    {subject:"Things that are cold", clues:["Ice","Snow","Popsicle","Freezer","Winter","Ice cream","Cold pizza"]},
-    {subject:"Things with wheels", clues:["Car","Bicycle","Skateboard","Train","Wheelchair","Shopping cart","Roller skates"]},
-    {subject:"Breakfast foods", clues:["Eggs","Bacon","Pancakes","Cereal","Toast","Waffles","Orange juice"]},
-    {subject:"Things that fly", clues:["Bird","Airplane","Bee","Kite","Helicopter","Butterfly","Superman"]},
-    {subject:"Animals at the zoo", clues:["Lion","Elephant","Giraffe","Monkey","Penguin","Tiger","Zebra"]},
-    {subject:"Things in a kitchen", clues:["Stove","Fridge","Microwave","Sink","Toaster","Blender","Dishwasher"]},
-    {subject:"School supplies", clues:["Pencil","Notebook","Backpack","Eraser","Ruler","Glue","Scissors"]},
-    {subject:"Things that are red", clues:["Apple","Fire truck","Rose","Stop sign","Tomato","Heart","Strawberry"]},
-    {subject:"Sports equipment", clues:["Ball","Bat","Helmet","Glove","Net","Whistle","Jersey"]},
-    {subject:"Things you wear on your feet", clues:["Shoes","Socks","Sandals","Boots","Slippers","Sneakers","Flip-flops"]},
-    {subject:"Things at a birthday party", clues:["Cake","Balloons","Presents","Candles","Confetti","Party hats","Pinata"]},
-    {subject:"Things that make noise", clues:["Drum","Horn","Alarm","Dog","Thunder","Baby","Fireworks"]},
-    {subject:"Fruits", clues:["Apple","Banana","Orange","Grapes","Strawberry","Watermelon","Pineapple"]},
-    {subject:"Things in outer space", clues:["Stars","Moon","Planets","Sun","Astronaut","Rocket","Aliens"]},
-    {subject:"Things that are sticky", clues:["Glue","Honey","Tape","Gum","Syrup","Sticker","Peanut butter"]},
-    {subject:"Things you do in the morning", clues:["Brush teeth","Shower","Eat breakfast","Get dressed","Make the bed","Drink coffee","Check phone"]},
-    {subject:"Things at a carnival", clues:["Ferris wheel","Cotton candy","Clown","Popcorn","Games","Balloons","Roller coaster"]},
-    {subject:"Things that are yellow", clues:["Banana","Sun","Taxi","Lemon","Rubber duck","School bus","Cheese"]},
-    {subject:"Things in a bedroom", clues:["Bed","Pillow","Lamp","Closet","Blanket","Dresser","Alarm clock"]},
-    {subject:"Things you plug in", clues:["Phone charger","TV","Lamp","Toaster","Computer","Hair dryer","Microwave"]},
-    {subject:"Insects", clues:["Ant","Bee","Butterfly","Spider","Fly","Mosquito","Ladybug"]},
-    {subject:"Things at a wedding", clues:["Bride","Groom","Cake","Rings","Flowers","Dress","Dancing"]},
-    {subject:"Things that are square", clues:["Window","Dice","Sandwich","TV","Book","Picture frame","Cracker"]},
-    {subject:"Things you find in a park", clues:["Trees","Bench","Swing","Slide","Squirrels","Fountain","Picnic table"]},
-    {subject:"Vegetables", clues:["Carrot","Broccoli","Corn","Potato","Lettuce","Tomato","Peas"]},
-    {subject:"Things that are hot", clues:["Fire","Sun","Coffee","Lava","Stove","Summer","Soup"]},
-    {subject:"Things in a bathroom", clues:["Toilet","Sink","Mirror","Towel","Soap","Shower","Toothbrush"]},
-    {subject:"Things you see in the sky", clues:["Clouds","Birds","Rainbow","Stars","Airplane","Sun","Moon"]},
-    {subject:"Things at a baseball game", clues:["Hot dogs","Bat","Glove","Umpire","Popcorn","Peanuts","Seventh inning stretch"]},
-    {subject:"Things with keys", clues:["Piano","Car","House","Locker","Computer","Safe","Treasure chest"]},
-    {subject:"Things that are soft", clues:["Pillow","Cotton","Teddy bear","Marshmallow","Blanket","Kitten","Cloud"]},
-    {subject:"Things you read", clues:["Book","Newspaper","Magazine","Menu","Map","Comic","Text message"]},
-    {subject:"Things at a farm", clues:["Barn","Tractor","Cow","Hay","Fence","Chicken","Pig"]},
-    {subject:"Things that are sharp", clues:["Knife","Scissors","Needle","Teeth","Claws","Sword","Thumbtack"]},
-    {subject:"Things in a toolbox", clues:["Hammer","Screwdriver","Wrench","Nails","Tape measure","Drill","Pliers"]},
-    {subject:"Things you do at the gym", clues:["Lift weights","Run","Push-ups","Stretch","Swim","Yoga","Sit-ups"]},
-    {subject:"Things that are sweet", clues:["Candy","Cake","Honey","Ice cream","Cookies","Chocolate","Cupcake"]},
-    {subject:"Things you take on vacation", clues:["Suitcase","Sunscreen","Camera","Swimsuit","Passport","Snacks","Flip-flops"]},
-    {subject:"Things in the ocean", clues:["Fish","Shark","Coral","Waves","Whale","Seaweed","Octopus"]},
-    {subject:"Things that glow", clues:["Light bulb","Firefly","Stars","Neon sign","Candle","Moon","Glow stick"]}
+    {subject:"Things that are round", clues:["Ball", "Orange", "Coin", "Wheel", "Donut", "Moon", "Button"]},
+    {subject:"Things you find at the beach", clues:["Sand", "Seashell", "Towel", "Sunscreen", "Umbrella", "Waves", "Crab"]},
+    {subject:"Things that are cold", clues:["Ice", "Snow", "Popsicle", "Freezer", "Winter", "Ice cream", "Cold pizza"]},
+    {subject:"Things with wheels", clues:["Car", "Bicycle", "Skateboard", "Train", "Wheelchair", "Shopping cart", "Roller skates"]},
+    {subject:"Breakfast foods", clues:["Eggs", "Bacon", "Pancakes", "Cereal", "Toast", "Waffles", "Orange juice"]},
+    {subject:"Things that fly", clues:["Bird", "Airplane", "Bee", "Kite", "Helicopter", "Butterfly", "Superman"]},
+    {subject:"Animals at the zoo", clues:["Lion", "Elephant", "Giraffe", "Monkey", "Penguin", "Tiger", "Zebra"]},
+    {subject:"Things in a kitchen", clues:["Stove", "Fridge", "Microwave", "Sink", "Toaster", "Blender", "Dishwasher"]},
+    {subject:"School supplies", clues:["Pencil", "Notebook", "Backpack", "Eraser", "Ruler", "Glue", "Scissors"]},
+    {subject:"Things that are red", clues:["Apple", "Fire truck", "Rose", "Stop sign", "Tomato", "Heart", "Strawberry"]},
+    {subject:"Sports equipment", clues:["Ball", "Bat", "Helmet", "Glove", "Net", "Whistle", "Jersey"]},
+    {subject:"Things you wear on your feet", clues:["Shoes", "Socks", "Sandals", "Boots", "Slippers", "Sneakers", "Flip-flops"]},
+    {subject:"Things at a birthday party", clues:["Cake", "Balloons", "Presents", "Candles", "Confetti", "Party hats", "Pinata"]},
+    {subject:"Things that make noise", clues:["Drum", "Horn", "Alarm", "Dog", "Thunder", "Baby", "Fireworks"]},
+    {subject:"Fruits", clues:["Apple", "Banana", "Orange", "Grapes", "Strawberry", "Watermelon", "Pineapple"]},
+    {subject:"Things in outer space", clues:["Stars", "Moon", "Planets", "Sun", "Astronaut", "Rocket", "Aliens"]},
+    {subject:"Things that are sticky", clues:["Glue", "Honey", "Tape", "Gum", "Syrup", "Sticker", "Peanut butter"]},
+    {subject:"Things you do in the morning", clues:["Brush teeth", "Shower", "Eat breakfast", "Get dressed", "Make the bed", "Drink coffee", "Check phone"]},
+    {subject:"Things at a carnival", clues:["Ferris wheel", "Cotton candy", "Clown", "Popcorn", "Games", "Balloons", "Roller coaster"]},
+    {subject:"Things that are yellow", clues:["Banana", "Sun", "Taxi", "Lemon", "Rubber duck", "School bus", "Cheese"]},
+    {subject:"Things in a bedroom", clues:["Bed", "Pillow", "Lamp", "Closet", "Blanket", "Dresser", "Alarm clock"]},
+    {subject:"Things you plug in", clues:["Phone charger", "TV", "Lamp", "Toaster", "Computer", "Hair dryer", "Microwave"]},
+    {subject:"Insects", clues:["Ant", "Bee", "Butterfly", "Spider", "Fly", "Mosquito", "Ladybug"]},
+    {subject:"Things at a wedding", clues:["Bride", "Groom", "Cake", "Rings", "Flowers", "Dress", "Dancing"]},
+    {subject:"Things that are square", clues:["Window", "Dice", "Sandwich", "TV", "Book", "Picture frame", "Cracker"]},
+    {subject:"Things you find in a park", clues:["Trees", "Bench", "Swing", "Slide", "Squirrels", "Fountain", "Picnic table"]},
+    {subject:"Vegetables", clues:["Carrot", "Broccoli", "Corn", "Potato", "Lettuce", "Tomato", "Peas"]},
+    {subject:"Things that are hot", clues:["Fire", "Sun", "Coffee", "Lava", "Stove", "Summer", "Soup"]},
+    {subject:"Things in a bathroom", clues:["Toilet", "Sink", "Mirror", "Towel", "Soap", "Shower", "Toothbrush"]},
+    {subject:"Things you see in the sky", clues:["Clouds", "Birds", "Rainbow", "Stars", "Airplane", "Sun", "Moon"]},
+    {subject:"Things at a baseball game", clues:["Hot dogs", "Bat", "Glove", "Umpire", "Popcorn", "Peanuts", "Seventh inning stretch"]},
+    {subject:"Things with keys", clues:["Piano", "Car", "House", "Locker", "Computer", "Safe", "Treasure chest"]},
+    {subject:"Things that are soft", clues:["Pillow", "Cotton", "Teddy bear", "Marshmallow", "Blanket", "Kitten", "Cloud"]},
+    {subject:"Things you read", clues:["Book", "Newspaper", "Magazine", "Menu", "Map", "Comic", "Text message"]},
+    {subject:"Things at a farm", clues:["Barn", "Tractor", "Cow", "Hay", "Fence", "Chicken", "Pig"]},
+    {subject:"Things that are sharp", clues:["Knife", "Scissors", "Needle", "Teeth", "Claws", "Sword", "Thumbtack"]},
+    {subject:"Things in a toolbox", clues:["Hammer", "Screwdriver", "Wrench", "Nails", "Tape measure", "Drill", "Pliers"]},
+    {subject:"Things you do at the gym", clues:["Lift weights", "Run", "Push-ups", "Stretch", "Swim", "Yoga", "Sit-ups"]},
+    {subject:"Things that are sweet", clues:["Candy", "Cake", "Honey", "Ice cream", "Cookies", "Chocolate", "Cupcake"]},
+    {subject:"Things you take on vacation", clues:["Suitcase", "Sunscreen", "Camera", "Swimsuit", "Passport", "Snacks", "Flip-flops"]},
+    {subject:"Things in the ocean", clues:["Fish", "Shark", "Coral", "Waves", "Whale", "Seaweed", "Octopus"]},
+    {subject:"Things that glow", clues:["Light bulb", "Firefly", "Stars", "Neon sign", "Candle", "Moon", "Glow stick"]},
+    {subject:"Things you wear in winter", clues:["Coat", "Gloves", "Scarf", "Boots", "Hat", "Sweater", "Earmuffs"]},
+    {subject:"Things in a car", clues:["Steering wheel", "Seatbelt", "Mirror", "Tires", "Radio", "Gas pedal", "Trunk"]},
+    {subject:"Things that smell good", clues:["Perfume", "Flowers", "Cookies", "Soap", "Candle", "Shampoo", "Fresh bread"]},
+    {subject:"Things that smell bad", clues:["Garbage", "Skunk", "Rotten eggs", "Dirty socks", "Sweat", "Manure", "Moldy cheese"]},
+    {subject:"Things in a garage", clues:["Car", "Lawn mower", "Bicycle", "Tools", "Boxes", "Ladder", "Tires"]},
+    {subject:"Things at the dinner table", clues:["Plates", "Forks", "Napkins", "Glasses", "Salt shaker", "Chairs", "Food"]},
+    {subject:"Things you wear on your head", clues:["Hat", "Cap", "Helmet", "Headband", "Wig", "Hood", "Crown"]},
+    {subject:"Things in a wallet", clues:["Money", "Credit card", "License", "Photos", "Coins", "Receipts", "Business card"]},
+    {subject:"Things that melt", clues:["Ice", "Butter", "Chocolate", "Cheese", "Snow", "Candle wax", "Ice cream"]},
+    {subject:"Things you sit on", clues:["Chair", "Couch", "Stool", "Bench", "Bed", "Toilet", "Swing"]},
+    {subject:"Things in the refrigerator", clues:["Milk", "Eggs", "Butter", "Cheese", "Leftovers", "Juice", "Ketchup"]},
+    {subject:"Things that are green", clues:["Grass", "Frog", "Lettuce", "Money", "Pickle", "Broccoli", "Traffic light"]},
+    {subject:"Things at the movies", clues:["Popcorn", "Screen", "Tickets", "Seats", "Soda", "Previews", "Candy"]},
+    {subject:"Things you wear to bed", clues:["Pajamas", "Slippers", "Robe", "Nightgown", "Socks", "Eye mask", "T-shirt"]},
+    {subject:"Things in a first aid kit", clues:["Bandages", "Alcohol", "Cotton balls", "Tape", "Scissors", "Ointment", "Thermometer"]},
+    {subject:"Things on a pizza", clues:["Cheese", "Pepperoni", "Mushrooms", "Peppers", "Onions", "Sausage", "Olives"]},
+    {subject:"Things you drink", clues:["Water", "Coffee", "Tea", "Juice", "Milk", "Soda", "Lemonade"]},
+    {subject:"Things at a picnic", clues:["Blanket", "Sandwiches", "Ants", "Basket", "Watermelon", "Frisbee", "Cooler"]},
+    {subject:"Things that are crunchy", clues:["Chips", "Carrots", "Apples", "Crackers", "Celery", "Nuts", "Toast"]},
+    {subject:"Things in a garden", clues:["Flowers", "Tomatoes", "Dirt", "Watering can", "Shovel", "Weeds", "Butterflies"]},
+    {subject:"Things you lock", clues:["Door", "Car", "Safe", "Diary", "Bike", "Locker", "Mailbox"]},
+    {subject:"Things at the airport", clues:["Planes", "Luggage", "Tickets", "Runway", "Pilot", "Security", "Passengers"]},
+    {subject:"Things that are slippery", clues:["Ice", "Soap", "Banana peel", "Oil", "Wet floor", "Fish", "Eel"]},
+    {subject:"Things in a baby room", clues:["Crib", "Diapers", "Bottle", "Teddy bear", "Blanket", "Rattle", "Pacifier"]},
+    {subject:"Things at a hair salon", clues:["Scissors", "Mirror", "Hair dryer", "Shampoo", "Chair", "Comb", "Hair dye"]},
+    {subject:"Things you hang on a wall", clues:["Picture", "Clock", "Mirror", "Calendar", "Painting", "Shelf", "Poster"]},
+    {subject:"Things that are sour", clues:["Lemon", "Pickle", "Vinegar", "Sour candy", "Lime", "Grapefruit", "Yogurt"]},
+    {subject:"Things at a campsite", clues:["Tent", "Campfire", "Sleeping bag", "Flashlight", "Marshmallows", "Backpack", "Lantern"]},
+    {subject:"Things you clean with", clues:["Soap", "Sponge", "Broom", "Vacuum", "Mop", "Bucket", "Windex"]},
+    {subject:"Things at the dentist", clues:["Chair", "Drill", "Toothbrush", "Floss", "Mirror", "Gloves", "X-ray"]},
+    {subject:"Things you do before bed", clues:["Brush teeth", "Set alarm", "Read", "Pray", "Wash face", "Lock doors", "Turn off lights"]},
+    {subject:"Things that bounce", clues:["Ball", "Kangaroo", "Trampoline", "Check", "Rabbit", "Pogo stick", "Basketball"]},
+    {subject:"Things in a classroom", clues:["Desk", "Teacher", "Blackboard", "Books", "Pencils", "Globe", "Students"]},
+    {subject:"Things you find in the desert", clues:["Sand", "Cactus", "Camel", "Rocks", "Sun", "Oasis", "Scorpion"]},
+    {subject:"Things that are purple", clues:["Grapes", "Eggplant", "Plum", "Violet", "Lavender", "Crayon", "Jelly"]},
+    {subject:"Things you wear in the rain", clues:["Raincoat", "Boots", "Umbrella", "Hat", "Gloves", "Poncho", "Jacket"]},
+    {subject:"Things that ring", clues:["Phone", "Doorbell", "Alarm clock", "Church bell", "School bell", "Bicycle bell", "Timer"]},
+    {subject:"Things in a grocery cart", clues:["Milk", "Bread", "Eggs", "Cereal", "Fruit", "Meat", "Vegetables"]},
+    {subject:"Things that float", clues:["Boat", "Balloon", "Duck", "Leaf", "Ice", "Beach ball", "Bubble"]},
+    {subject:"Things you put on a sandwich", clues:["Cheese", "Lettuce", "Tomato", "Mayonnaise", "Ham", "Pickles", "Mustard"]},
+    {subject:"Things a baby does", clues:["Cry", "Crawl", "Drool", "Nap", "Giggle", "Teethe", "Babble"]},
+    {subject:"Things you find in a purse", clues:["Wallet", "Lipstick", "Keys", "Phone", "Tissues", "Mirror", "Gum"]},
+    {subject:"Things a firefighter uses", clues:["Hose", "Ladder", "Axe", "Helmet", "Boots", "Oxygen mask", "Fire truck"]},
+    {subject:"Famous pairs: name the second half", clues:["Salt and pepper", "Batman and Robin", "Peanut butter and jelly", "Tom and Jerry", "Shoes and socks", "Macaroni and cheese", "Bacon and eggs"]},
+    {subject:"Things with stripes", clues:["Zebra", "Tiger", "Flag", "Candy cane", "Prison uniform", "Referee shirt", "Barber pole"]},
+    {subject:"Things a dog does", clues:["Bark", "Fetch", "Dig", "Pant", "Wag its tail", "Roll over", "Chase squirrels"]},
+    {subject:"Things you do at the dentist", clues:["Open wide", "Rinse", "Spit", "X-ray", "Floss", "Numb", "Fill a cavity"]},
+    {subject:"Things you ride", clues:["Bicycle", "Horse", "Bus", "Roller coaster", "Motorcycle", "Train", "Elevator"]},
+    {subject:"Things that are loud", clues:["Thunder", "Fireworks", "Siren", "Drums", "Jet engine", "Alarm clock", "Crowd cheering"]},
+    {subject:"Things a chef uses", clues:["Knife", "Skillet", "Apron", "Whisk", "Cutting board", "Oven mitt", "Spatula"]},
+    {subject:"Things you do in winter", clues:["Ski", "Shovel snow", "Build a snowman", "Drink cocoa", "Ice skate", "Sled", "Wear gloves"]},
+    {subject:"Things with buttons", clues:["Shirt", "Remote control", "Elevator", "Coat", "Phone keypad", "Calculator", "Jacket"]},
+    {subject:"Things a pirate says", clues:["Ahoy", "Arrr", "Treasure", "Aye aye", "Land ho", "Shiver me timbers", "Yo ho"]},
+    {subject:"Things you eat with your hands", clues:["Pizza", "Burger", "French fries", "Popcorn", "Taco", "Donut", "Chicken wings"]},
+    {subject:"Things that grow", clues:["Hair", "Flowers", "Children", "Trees", "Fingernails", "Grass", "Vegetables"]},
+    {subject:"Things that spin", clues:["Top", "Ceiling fan", "Washing machine", "Globe", "Record player", "Merry-go-round", "Tornado"]},
+    {subject:"Things in a hospital", clues:["Doctor", "Nurse", "Stretcher", "Wheelchair", "Bandages", "X-ray machine", "Waiting room"]},
+    {subject:"Things you catch", clues:["A cold", "Baseball", "Fish", "Butterfly", "Bus", "Frisbee", "Fireflies"]},
+    {subject:"Things a mailman delivers", clues:["Letters", "Packages", "Bills", "Magazines", "Postcards", "Catalogs", "Junk mail"]},
+    {subject:"Things that tickle", clues:["Feather", "Fingers", "Grass", "Mustache", "Feet", "Goosebumps", "Bubble wrap"]},
+    {subject:"Things you find under the couch", clues:["Loose change", "Remote control", "Dust bunnies", "Lost socks", "Crumbs", "Old toys", "Pennies"]},
+    {subject:"Things that drip", clues:["Faucet", "Ice cream cone", "Candle", "Wet umbrella", "Paint", "Nose", "Ice"]},
+    {subject:"Things a cowboy wears", clues:["Boots", "Hat", "Belt buckle", "Bandana", "Spurs", "Jeans", "Vest"]},
+    {subject:"Things you do at the beach house", clues:["Grill", "Swim", "Watch sunset", "Play cards", "Nap in a hammock", "Eat seafood", "Collect shells"]},
+    {subject:"Things that are fragile", clues:["Glass", "Eggs", "Bubble", "China plate", "Icicle", "Old bones", "Promise"]},
+    {subject:"Things in a gym bag", clues:["Sneakers", "Water bottle", "Towel", "Deodorant", "Shorts", "Headphones", "Protein bar"]},
+    {subject:"Things that wiggle", clues:["Worm", "Jello", "Baby tooth", "Fingers", "Jellyfish", "Hula dancer", "Puppy tail"]},
+    {subject:"Things you say when you win", clues:["Yes", "I did it", "Winner", "High five", "Told you so", "Victory", "Champion"]},
+    {subject:"Things that have teeth", clues:["Shark", "Comb", "Zipper", "Saw", "Dog", "Gear", "Alligator"]},
+    {subject:"Things you do at a concert", clues:["Clap", "Sing along", "Dance", "Cheer", "Wave your phone", "Buy a shirt", "Encore"]},
+    {subject:"Things a superhero does", clues:["Fly", "Save the day", "Wear a cape", "Fight villains", "Hide identity", "Lift cars", "Wear a mask"]},
+    {subject:"Things that are fried", clues:["Chicken", "French fries", "Eggs", "Donuts", "Onion rings", "Shrimp", "Pickles"]},
+    {subject:"Things you put on a pizza", clues:["Pepperoni", "Mushrooms", "Green peppers", "Sausage", "Onions", "Olives", "Extra cheese"]},
+    {subject:"Things that grow on trees", clues:["Apples", "Pears", "Peaches", "Plums", "Cherries", "Walnuts", "Acorns"]},
+    {subject:"Things in a jungle", clues:["Monkeys", "Parrots", "Snakes", "Tigers", "Vines", "Waterfalls", "Frogs"]},
+    {subject:"Musical instruments", clues:["Guitar", "Piano", "Trumpet", "Drums", "Violin", "Flute", "Saxophone"]},
+    {subject:"Things superheroes wear", clues:["Cape", "Mask", "Tights", "Boots", "Belt", "Gloves", "Chest emblem"]},
+    {subject:"Things at a circus", clues:["Clowns", "Trapeze", "Ringmaster", "Elephants", "Tightrope", "Cotton candy", "Juggler"]},
+    {subject:"Board games", clues:["Monopoly", "Scrabble", "Chess", "Checkers", "Clue", "Risk", "Sorry"]},
+    {subject:"Things you find in a refrigerator", clues:["Milk", "Eggs", "Butter", "Cheese", "Ketchup", "Leftovers", "Orange juice"]},
+    {subject:"Things that are spicy", clues:["Hot sauce", "Jalapenos", "Chili peppers", "Curry", "Salsa", "Horseradish", "Wasabi"]},
+    {subject:"Things you grill", clues:["Hamburgers", "Hot dogs", "Steak", "Chicken breasts", "Corn on the cob", "Ribs", "Kebabs"]},
+    {subject:"Things in a desert", clues:["Cactus", "Sand dunes", "Camels", "Oasis", "Scorpions", "Tumbleweeds", "Mirages"]},
+    {subject:"Flowers", clues:["Roses", "Tulips", "Daisies", "Sunflowers", "Lilies", "Daffodils", "Orchids"]},
+    {subject:"Things that swim", clues:["Fish", "Ducks", "Frogs", "Turtles", "Dolphins", "Beavers", "Penguins"]},
+    {subject:"Things in a movie theater", clues:["Popcorn", "Soda", "Big screen", "Seats", "Trailers", "Tickets", "Candy"]},
+    {subject:"Things in a video game", clues:["Controller", "Coins", "Extra life", "Boss battle", "Joystick", "High score", "Avatar"]},
+    {subject:"Things a pirate has", clues:["Eye patch", "Parrot", "Treasure map", "Wooden leg", "Hook", "Sword", "Ship"]},
+    {subject:"Things at a rock concert", clues:["Guitars", "Drums", "Microphone", "Amplifiers", "Stage lights", "Crowd", "Encore"]},
+    {subject:"Things in a haunted house", clues:["Ghosts", "Cobwebs", "Skeletons", "Creepy dolls", "Bats", "Fog", "Ouija board"]},
+    {subject:"Things you take camping", clues:["Tent", "Sleeping bag", "Flashlight", "Backpack", "Lantern", "Cooler", "Bug spray"]},
+    {subject:"Things in a bakery", clues:["Bread", "Croissants", "Muffins", "Cakes", "Cookies", "Donuts", "Bagels"]},
+    {subject:"Things you grow in a garden", clues:["Tomatoes", "Carrots", "Cucumbers", "Peppers", "Lettuce", "Beans", "Zucchini"]},
+    {subject:"Things at the North Pole", clues:["Santa Claus", "Elves", "Reindeer", "Toy workshop", "Snow", "Ice", "Mrs. Claus"]},
+    {subject:"Birds", clues:["Eagle", "Owl", "Penguin", "Robin", "Cardinal", "Flamingo", "Woodpecker"]},
+    {subject:"Things that roar", clues:["Lion", "Tiger", "Bear", "Dinosaur", "Waterfall", "Crowd", "Motorcycle"]},
+    {subject:"Things in a treasure chest", clues:["Gold coins", "Jewels", "Rubies", "Pearls", "Diamonds", "Crown", "Goblets"]},
+    {subject:"Things a magician uses", clues:["Magic wand", "Top hat", "Rabbit", "Playing cards", "Cape", "Coins", "Scarf"]},
+    {subject:"Things at a swimming pool", clues:["Diving board", "Lifeguard", "Goggles", "Beach towel", "Noodles", "Ladder", "Inner tube"]},
+    {subject:"Things in a thunderstorm", clues:["Lightning", "Thunder", "Rain", "Dark clouds", "Wind", "Hail", "Puddles"]},
+    {subject:"Things that are blue", clues:["Sky", "Ocean", "Blueberries", "Blue jeans", "Bluebird", "Sapphire", "Smurf"]}
   ],
   matchgame: [
     {prompt:"Dumb Dora is so dumb, she thought a ___ was a sandwich", answers:["hot dog", "taco", "shoe", "brick", "pillow", "remote control", "football"]},
@@ -10831,113 +10954,296 @@ render(c,ctx){
 }});
 
 /* ================= THE $100,000 PYRAMID ================= */
-regGame('pyramid',{howto:"Winner's Circle: guess all 7 words in 60 seconds from the clues given. Get all 7 to take the $100,000!",name:'The $100,000 Pyramid',icon:'🔺',tags:'Game Show',pvp:true,seats:2,
+regGame('pyramid',{howto:"Official $100,000 Pyramid:\n\nMAIN GAME: two teams. Six categories sit on the pyramid ($50 boxes on the bottom row, $100 in the middle, $200 on top). Teams take turns picking one - you get 30 seconds to name as many of its 7 words as you can from your partner's hints. Every word is worth $10. Sweep all 7 and you also bank the box value!\n\nHidden behind one box each round: the MYSTERY 7 (round 1) and the 7-11 (round 2). Sweep that category for the bonus prize.\n\nTwo rounds - the team with more money goes to the WINNER'S CIRCLE: 60 seconds, 6 categories up the pyramid. Your partner lists things, you name the category. Bottom boxes pay $1,000, middle $2,000, the top $5,000 - get all six for $100,000!",name:'The $100,000 Pyramid',icon:'🔺',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
-  if(shgGuard(BANKS2.pyramid&&BANKS2.pyramid.length>=3,'Pyramid word lists are still loading')) return;
-  var S=null, pvpCtl=null, py, timer=null;
-  c.innerHTML='<h2>🔺 The $100,000 Pyramid</h2><div class="muted">Winner\'s Circle: guess all 7 words from the clues — 60 seconds per list!</div><div id="py"></div>';
+  var allLists=(BANKS2.pyramid||[]).map(SHG.pyramidNorm).filter(function(l){ return l.title&&l.items.length>=7; });
+  if(shgGuard(allLists.length>=18,'Pyramid word lists are still loading')) return;
+  var S=null, pvpCtl=null, py, timer=null, dripIv=null;
+  c.innerHTML='<h2>🔺 The $100,000 Pyramid</h2><div id="py"></div>';
   py=c.querySelector('#py');
-  function pickLists(){
-    return (BANKS2.pyramid||[]).map(SHG.pyramidNorm).filter(function(l){ return l.items.length>=7; })
-      .slice(0,3).map(function(l){ return {title:l.title,items:l.items.slice(0,7)}; });
-  }
+  var ROWVAL=[50,50,50,100,100,200]; /* board positions 0-2 bottom, 3-4 middle, 5 top */
+  var WCVAL=[1000,1000,1000,2000,2000,5000];
+  function stopTimers(){ if(timer){clearInterval(timer);timer=null;} if(dripIv){clearInterval(dripIv);dripIv=null;} }
   function start(shared){
-    stopTimer();
-    S={lists:shared.lists,li:0,ci:0,correct:0,total:0,botTotal:0,time:60,done:false};
-    playList();
+    stopTimers();
+    var names=SHG.botNames?SHG.botNames(3):['Partner','Rival A','Rival B'];
+    S={r1:shared.r1,r2:shared.r2,wc:shared.wc,partner:names[0],rivals:[names[1],names[2]],
+       round:1,board:null,used:{},pick:'me',my$:0,riv$:0,hidden:-1,
+       cat:null,queue:[],got:0,time:0,done:false,wcMoney:0,wcGot:null,wcCur:-1,mainWon:false};
+    newBoard();
+    drawIntro();
   }
-  function stopTimer(){ if(timer){ clearInterval(timer); timer=null; } }
-  function hud(){
-    return '<div class="row"><div class="grow center">List '+(S.li+1)+'/'+S.lists.length+'</div>'
-      +'<div class="grow center">⏱ <b id="tLeft">'+S.time+'</b>s</div>'
-      +'<div class="grow center">✅ <b>'+S.correct+'</b>/'+S.lists[S.li].items.length+'</div>'
-      +'<div class="grow center">Total: <b>'+S.total+'</b></div></div>';
+  function newBoard(){
+    S.board=S.round===1?S.r1:S.r2;
+    S.used={};
+    S.hidden=Math.floor(Math.random()*6);
+    S.pick=S.round===1?'me':(S.my$<=S.riv$?'me':'riv');
   }
-  function playList(){
-    var L=S.lists[S.li];
-    S.ci=0; S.correct=0; S.time=60;
-    drawQ();
+  function money(n){ return '$'+n.toLocaleString(); }
+  function scoreHTML(){
+    return '<div class="pyr-score"><span>⭐ YOUR TEAM <b>'+money(S.my$)+'</b></span><span class="muted">vs</span><span>🎤 RIVALS <b>'+money(S.riv$)+'</b></span></div>';
+  }
+  function boardHTML(clickable){
+    var rows=[[5],[3,4],[0,1,2]];
+    var h='<div class="pyr-board">';
+    rows.forEach(function(row){
+      h+='<div class="pyr-row">'+row.map(function(i){
+        var L=S.board[i], val=ROWVAL[i];
+        if(S.used[i])return '<div class="pyr-box used"><div class="pyr-cat">'+esc(L.title)+'</div><div class="pyr-val">played</div></div>';
+        var inner='<div class="pyr-cat">'+esc(L.title)+'</div><div class="pyr-val">'+money(val)+'</div>'+(i===S.hidden?'<div class="pyr-hint">'+(S.round===1?'❓ MYSTERY 7 hides here':'7-11 hides here')+'</div>':'');
+        return clickable?'<button class="pyr-box" data-box="'+i+'">'+inner+'</button>':'<div class="pyr-box">'+inner+'</div>';
+      }).join('')+'</div>';
+    });
+    return h+'</div>';
+  }
+  function drawIntro(){
+    py.innerHTML='<div class="pyr-stage"><div class="pyr-sign">$100,000</div><div class="pyr-logo">PYRAMID</div>'
+      +'<div class="center" style="color:#ffe9b0;font-size:13px">You & '+esc(S.partner)+' vs '+esc(S.rivals[0])+' & '+esc(S.rivals[1])+'<br>Two rounds, then the Winner\'s Circle!</div></div>'
+      +'<button class="btn" id="pyGo">▶ Play the Pyramid!</button>';
+    py.querySelector('#pyGo').onclick=function(){ Sound.click(); drawBoard(); };
+  }
+  function drawBoard(){
+    stopTimers();
+    var left=[0,1,2,3,4,5].filter(function(i){ return !S.used[i]; });
+    if(!left.length){ endRound(); return; }
+    var h='<div class="muted center">Round '+S.round+' — '+(S.pick==='me'?'⭐ YOUR pick!':'🎤 Rivals\' pick')+'</div>'+scoreHTML()+boardHTML(S.pick==='me')
+      +(S.pick==='me'?'<div class="muted center">Pick a category — $10 a word, sweep all 7 for the box bonus!</div>':'<div class="muted center">The rivals are choosing…</div>');
+    py.innerHTML=h;
+    if(S.pick==='me'){
+      py.querySelectorAll('[data-box]').forEach(function(b){
+        b.onclick=function(){ Sound.click(); playCategory('me',+b.getAttribute('data-box')); };
+      });
+    } else {
+      dripIv=setTimeout(function(){
+        if(!py.isConnected)return;
+        var pickIdx=left[Math.floor(Math.random()*left.length)];
+        playCategory('riv',pickIdx);
+      },1100);
+    }
+  }
+  function hintFor(word,stage){
+    if(stage===0)return '💬 Starts with "'+word.charAt(0).toUpperCase()+'" · '+word.length+' letters';
+    if(stage===1)return '💬 '+word.split('').map(function(ch,i){ return ch===' '?' ':(i%2===0?ch:'_'); }).join(' ')+'';
+    return '💬 Ends with "'+word.charAt(word.length-1).toUpperCase()+'" · '+word.length+' letters';
+  }
+  function playCategory(team,idx){
+    stopTimers();
+    S.used[idx]=1;
+    var L=S.board[idx], val=ROWVAL[idx], isHidden=idx===S.hidden;
+    if(team==='riv'){
+      var got=3+Math.floor(Math.random()*4); if(Math.random()<0.12)got=7;
+      var gain=got*10+(got===7?val:0)+(got===7&&isHidden?(S.round===1?250:1100):0);
+      S.riv$+=gain;
+      py.innerHTML='<div class="muted center">Round '+S.round+'</div>'+scoreHTML()
+        +'<div class="card center"><div class="muted">🎤 The rivals played</div><h3 style="margin:6px 0">'+esc(L.title)+'</h3>'
+        +'<div>They named <b>'+got+' of 7</b> — +'+money(gain)+(got===7&&isHidden?' (they swept the hidden bonus!)':'')+'</div></div>';
+      dripIv=setTimeout(function(){ if(py.isConnected){ S.pick='me'; drawBoard(); } },1700);
+      return;
+    }
+    S.cat={L:L,val:val,isHidden:isHidden};
+    S.queue=L.items.map(function(it){ return it.answer; });
+    S.got=0; S.time=30; S.lastStage=0;
+    drawCatQ();
     timer=setInterval(function(){
+      if(!py.isConnected){ stopTimers(); return; }
       S.time--;
-      var t=py.querySelector('#tLeft'); if(t) t.textContent=S.time;
-      if(S.time<=0){ stopTimer(); endList(); }
+      var t=py.querySelector('#tLeft'); if(t)t.textContent=S.time;
+      var st=S.time>20?0:(S.time>10?1:2);
+      if(st!==S.lastStage&&S.queue.length){
+        S.lastStage=st;
+        var hintEl=py.querySelector('#catHint');
+        if(hintEl)hintEl.textContent=S.partner+' hints: '+hintFor(S.queue[0],st);
+      }
+      if(S.time<=0){ stopTimers(); endCategory(); }
     },1000);
   }
-  function drawQ(){
-    if(S.done) return;
-    var L=S.lists[S.li];
-    if(S.ci>=L.items.length){ endList(); return; }
-    var it=L.items[S.ci];
-    py.innerHTML=hud()
-      +'<div class="card"><div class="muted center">Things that are…</div><h3 class="center">'+esc(L.title)+'</h3>'
-      +'<div class="center" style="font-size:15px;margin:10px 0">Clue '+(S.ci+1)+': <b>'+esc(it.clue)+'</b></div>'
-      +'<div class="row"><input id="pAns" class="grow" placeholder="Type the word…" autocomplete="off" autocapitalize="off">'
-      +'<button class="btn small" id="pGo">Guess</button>'
-      +'<button class="btn small secondary" id="pSkip">Skip</button></div>'
+  function drawCatQ(){
+    if(!S.queue.length){ stopTimers(); endCategory(); return; }
+    var word=S.queue[0];
+    var stage=S.time>20?0:(S.time>10?1:2);
+    py.innerHTML='<div class="muted center">Round '+S.round+' · ⏱ <b id="tLeft">'+S.time+'</b>s · ✅ '+S.got+'/7</div>'+scoreHTML()
+      +'<div class="card"><div class="muted center">'+(S.cat.isHidden?(S.round===1?'❓ MYSTERY 7 category! Sweep it for a $250 prize!':'🎰 7-11 category! Sweep it for $1,100!'):'Category')+'</div>'
+      +'<h3 class="center" style="margin:4px 0">'+esc(S.cat.L.title)+'</h3>'
+      +'<div class="center" style="margin:8px 0;font-size:15px" id="catHint">'+esc(S.partner)+' hints: '+hintFor(word,stage)+'</div>'
+      +'<div class="row"><input id="pAns" class="grow" placeholder="The word is…" autocomplete="off" autocapitalize="off">'
+      +'<button class="btn" id="pGo">Guess</button><button class="btn secondary" id="pSkip">Pass</button></div>'
       +'<div class="status" id="pMsg"></div></div>';
-    var inp=py.querySelector('#pAns'); inp.focus();
+    var inp=py.querySelector('#pAns'); if(inp&&inp.focus)inp.focus();
     function guess(){
-      var g=inp.value;
-      if(!g.trim()) return;
-      if(SHG.fuzzy(g,it.answer)){
-        S.correct++; Sound.beep(880,.1); S.ci++; drawQ();
+      var g=inp.value; if(!g.trim())return;
+      if(SHG.fuzzy(g,word)){
+        S.got++; Sound.beep(880,.09); S.queue.shift(); drawCatQ();
       } else {
-        Sound.beep(200,.15,'sawtooth');
-        py.querySelector('#pMsg').innerHTML='<span class="err">Not quite — try again or skip.</span>';
+        Sound.beep(200,.12,'sawtooth');
+        var m=py.querySelector('#pMsg'); if(m)m.innerHTML='<span class="err">Not it — keep trying or pass!</span>';
         inp.select();
       }
     }
     py.querySelector('#pGo').onclick=guess;
-    inp.onkeydown=function(e){ if(e.key==='Enter') guess(); };
-    py.querySelector('#pSkip').onclick=function(){ Sound.click(); S.ci++; drawQ(); };
+    inp.onkeydown=function(e){ if(e.key==='Enter')guess(); };
+    py.querySelector('#pSkip').onclick=function(){ Sound.click(); S.queue.push(S.queue.shift()); drawCatQ(); };
   }
-  function endList(){
-    stopTimer();
-    var bot=SHG.pyramidBotScore();
-    S.botTotal+=bot; S.total+=S.correct;
-    var doneLists=S.li+1;
-    if(doneLists>=S.lists.length){ S.done=true; drawDone(); return; }
-    py.innerHTML=hud()+'<div class="card center"><div class="muted">List complete!</div>'
-      +'<div>You: <b>'+S.correct+'</b> — Computer: <b>'+bot+'</b></div>'
-      +'<button class="btn" id="pNext" style="margin-top:10px">Next list ▶</button></div>';
-    py.querySelector('#pNext').onclick=function(){ Sound.click(); S.li++; playList(); };
+  function endCategory(){
+    stopTimers();
+    var gain=S.got*10+(S.got===7?S.cat.val:0)+(S.got===7&&S.cat.isHidden?(S.round===1?250:1100):0);
+    S.my$+=gain;
+    py.innerHTML=scoreHTML()+'<div class="card center"><h3 style="margin:4px 0">'+esc(S.cat.L.title)+'</h3>'
+      +'<div>You named <b>'+S.got+' of 7</b> — +'+money(gain)+'</div>'
+      +(S.got===7?'<div class="status"><span class="ok">🎉 SWEEP! Box bonus banked'+(S.cat.isHidden?' + hidden bonus!':'')+'</span></div>':'<div class="muted">The words were: '+S.cat.L.items.map(function(it){ return esc(it.answer); }).join(', ')+'</div>')
+      +'<button class="btn" id="pyNx" style="margin-top:8px">▶ Back to the board</button></div>';
+    py.querySelector('#pyNx').onclick=function(){ Sound.click(); S.pick='riv'; drawBoard(); };
+  }
+  function endRound(){
+    stopTimers();
+    if(S.round===1){
+      S.round=2; newBoard();
+      py.innerHTML='<div class="pyr-stage"><div class="center" style="color:#ffe9b0;font-weight:900;font-size:16px">ROUND 2</div>'
+        +'<div class="center" style="color:#ffe9b0;font-size:13px">New board — and the 7-11 is hiding behind one box!</div>'+scoreHTML()+'</div>'
+        +'<button class="btn" id="pyR2">▶ Round 2</button>';
+      py.querySelector('#pyR2').onclick=function(){ Sound.click(); drawBoard(); };
+      return;
+    }
+    S.mainWon=S.my$>S.riv$;
+    if(S.mainWon){ wcIntro(); } else { drawDone(); }
+  }
+  /* ---------- WINNER'S CIRCLE ---------- */
+  function wcBoardHTML(){
+    var rows=[[5],[3,4],[0,1,2]];
+    return '<div class="wc-board"><div class="wc-sign">$100,000</div>'+rows.map(function(row){
+      return '<div class="pyr-row">'+row.map(function(i){
+        var st=S.wcGot[i];
+        var cls=st===true?'got':(S.wcCur===i?'cur':'');
+        var txt=st===true?esc(S.wc[i].title):(st==='dead'?esc(S.wc[i].title):'▲');
+        return '<div class="wc-box '+cls+'"><div class="wc-cat">'+txt+'</div><div class="wc-val">'+money(WCVAL[i])+'</div></div>';
+      }).join('')+'</div>';
+    }).join('')+'</div>';
+  }
+  function wcIntro(){
+    S.wcGot=[false,false,false,false,false,false];
+    py.innerHTML='<div class="pyr-stage"><div class="center" style="color:#ffe9b0;font-weight:900;font-size:17px">🏆 WINNER\'S CIRCLE</div>'
+      +'<div class="center" style="color:#ffe9b0;font-size:13px">Your team won the main game '+money(S.my$)+' to '+money(S.riv$)+'!<br>'+esc(S.partner)+' will list things — YOU name the category.<br>60 seconds · all 6 boxes = $100,000!</div></div>'
+      +'<button class="btn" id="pyWc">▶ To the Winner\'s Circle!</button>';
+    py.querySelector('#pyWc').onclick=function(){ Sound.click(); wcStart(); };
+  }
+  function wcStart(){
+    S.wcQueue=[0,1,2,3,4,5]; S.wcMoney=0; S.time=60; S.phase='wc';
+    timer=setInterval(function(){
+      if(!py.isConnected){ stopTimers(); return; }
+      S.time--;
+      var t=py.querySelector('#tLeft'); if(t)t.textContent=S.time;
+      if(S.time<=0){ stopTimers(); wcEnd(); }
+    },1000);
+    wcNext();
+  }
+  function wcNext(){
+    if(dripIv){ clearInterval(dripIv); dripIv=null; }
+    if(!S.wcQueue.length){ stopTimers(); wcEnd(); return; }
+    S.wcCur=S.wcQueue[0]; S.wcShown=0;
+    drawWcBox();
+    dripIv=setInterval(function(){
+      if(!py.isConnected){ stopTimers(); return; }
+      var L=S.wc[S.wcCur];
+      if(S.wcShown<L.items.length){ S.wcShown++; paintWcItems(); }
+    },1100);
+  }
+  function paintWcItems(){
+    var box=py.querySelector('#wcItems'); if(!box)return;
+    var L=S.wc[S.wcCur];
+    box.innerHTML=L.items.slice(0,S.wcShown).map(function(it){ return '<span class="wc-item">'+esc(it.answer)+'</span>'; }).join(' ')
+      ||'<span class="muted">listen…</span>';
+  }
+  function wcCore(subject){
+    return subject.replace(/^things\s+(that\s+are|that|you|a|in|on|with)\s+/i,'').trim();
+  }
+  function drawWcBox(){
+    var L=S.wc[S.wcCur];
+    py.innerHTML='<div class="muted center">🏆 Winner\'s Circle · ⏱ <b id="tLeft">'+S.time+'</b>s · 💰 '+money(S.wcMoney)+'</div>'
+      +wcBoardHTML()
+      +'<div class="card"><div class="muted center">'+esc(S.partner)+' is listing… name the category!</div>'
+      +'<div id="wcItems" class="center" style="margin:10px 0;min-height:30px"></div>'
+      +'<div class="row"><input id="wAns" class="grow" placeholder="The category is…" autocomplete="off" autocapitalize="off">'
+      +'<button class="btn" id="wGo">Guess</button><button class="btn secondary" id="wPass">Pass</button></div>'
+      +'<div class="status" id="wMsg"></div></div>';
+    paintWcItems();
+    var inp=py.querySelector('#wAns'); if(inp&&inp.focus)inp.focus();
+    function guess(){
+      var g=inp.value; if(!g.trim())return;
+      if(SHG.fuzzy(g,L.title)||SHG.fuzzy(g,wcCore(L.title))){
+        S.wcGot[S.wcCur]=true; S.wcMoney+=WCVAL[S.wcCur]; Sound.win();
+        toast('🏆 '+L.title+' +'+money(WCVAL[S.wcCur]));
+        S.wcQueue.shift(); wcNext();
+      } else {
+        Sound.beep(200,.12,'sawtooth');
+        var m=py.querySelector('#wMsg'); if(m)m.innerHTML='<span class="err">Not the category — keep listening!</span>';
+        inp.select();
+      }
+    }
+    py.querySelector('#wGo').onclick=guess;
+    inp.onkeydown=function(e){ if(e.key==='Enter')guess(); };
+    py.querySelector('#wPass').onclick=function(){
+      Sound.click();
+      S.wcQueue.push(S.wcQueue.shift());
+      if(S.wcQueue.length===1){ S.wcGot[S.wcCur]='dead'; S.wcQueue.shift(); }
+      wcNext();
+    };
+  }
+  function wcEnd(){
+    stopTimers();
+    var gotCount=S.wcGot.filter(function(x){ return x===true; }).length;
+    if(gotCount>=6)S.wcMoney=100000;
+    S.wcDone=true;
+    drawDone();
   }
   async function drawDone(){
-    stopTimer();
-    py.innerHTML='<div class="card center"><div class="muted">Winner\'s Circle complete!</div>'
-      +'<div class="big">You: <b>'+S.total+'</b>'+(isNet?'':' vs Computer: <b>'+S.botTotal+'</b>')+'</div><div id="pyRes"></div></div>';
+    stopTimers();
+    var h;
+    if(!S.mainWon){
+      var rivWc=[3000,6000,9000,14000][Math.floor(Math.random()*4)];
+      h='<div class="card center"><div class="muted">The rivals took the main game</div>'
+        +'<div class="big">'+money(S.riv$)+' — '+money(S.my$)+'</div>'
+        +'<div class="muted">They went to the Winner\'s Circle and won '+money(rivWc)+' there.</div><div id="pyRes"></div></div>';
+    } else {
+      var gotCount=S.wcGot?S.wcGot.filter(function(x){ return x===true; }).length:0;
+      h=wcBoardHTML()+'<div class="card center"><div class="muted">Winner\'s Circle</div>'
+        +'<div class="big" style="color:#eab676">'+money(S.wcMoney)+'</div>'
+        +(gotCount>=6?'<div class="status"><span class="ok">🏆 ALL SIX — THE $100,000 PYRAMID IS YOURS!</span></div>':'<div class="muted">'+gotCount+' of 6 categories · main game '+money(S.my$)+'</div>')
+        +'<div id="pyRes"></div></div>';
+    }
+    py.innerHTML=h;
     var res=py.querySelector('#pyRes');
     if(isNet){
       res.innerHTML='<div class="muted">Waiting for opponent...</div>';
       pvpCtl.submit();
+    } else if(S.mainWon){
+      await Wallet.add(Math.max(1,Math.round((S.my$+S.wcMoney)/10)),'pyramid');
+      await Wallet.recordWin('pyramid');
+      res.innerHTML='<div class="status"><span class="ok">🎉 Pyramid champion!</span></div>';
     } else {
-      if(S.total>=S.botTotal){
-        Sound.win();
-        res.innerHTML='<div class="status"><span class="ok">🎉 You win the Winner\'s Circle, '+S.total+' to '+S.botTotal+'!</span></div>';
-        await Wallet.recordWin('pyramid');
-      } else {
-        Sound.lose();
-        res.innerHTML='<div class="status"><span class="err">😞 Computer takes it, '+S.botTotal+' to '+S.total+'. Try again!</span></div>';
-      }
+      Sound.lose();
+      res.innerHTML='<div class="status"><span class="err">😞 The rivals win this episode. Run it back!</span></div>';
     }
   }
   if(isNet){
     pvpCtl=shgPvp(net,{
-      share:function(){ return {lists:pickLists()}; },
+      share:function(){
+        var picks=SHG.pickN(allLists,18);
+        return {r1:picks.slice(0,6),r2:picks.slice(6,12),wc:picks.slice(12,18)};
+      },
       onData:function(d){ start(d); },
-      submitPayload:function(){ return shgPayLoad(S.total); },
+      submitPayload:function(){ return shgPayLoad(S.my$+S.wcMoney); },
       onSettle:function(iWon,room,w){
         var res=py.querySelector('#pyRes');
         shgResultBanner(res,iWon,w,
-          '🎉 You win the Pyramid, '+S.total+' words!',
-          '😞 Opponent guessed more words. You had '+S.total+'.');
+          '🎉 You win the Pyramid!',
+          '😞 Opponent out-scored you this episode.');
         Sound[iWon?'win':'lose']();
         shgAward(iWon);
       }
     });
   } else {
-    start({lists:pickLists()});
+    var picks=SHG.pickN(allLists,18);
+    start({r1:picks.slice(0,6),r2:picks.slice(6,12),wc:picks.slice(12,18)});
   }
 }});
 
