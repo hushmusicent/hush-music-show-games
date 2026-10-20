@@ -101,6 +101,24 @@ table.lb tr.me td{color:var(--gold); font-weight:800;}
 /* ===== Password classic ===== */
 /* ===== What's My Line studio ===== */
 /* ===== Hollywood Game Night marquee ===== */
+/* ===== Deal or No Deal stage ===== */
+.dl-banker{display:flex;align-items:center;gap:10px;background:linear-gradient(#101623,#05070d);border:2px solid #3a4a66;border-radius:10px;padding:8px 12px;margin-bottom:8px;}
+.dl-sil{font-size:30px;filter:brightness(.35) drop-shadow(0 0 6px #000);}
+.dl-board{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;background:#0a1230;border:2px solid #2b4f9e;border-radius:10px;padding:8px;margin-top:8px;}
+.dl-col{display:flex;flex-direction:column;gap:3px;}
+.dl-amt{background:linear-gradient(#f3cd6b,#c9973f);color:#231703;font-weight:900;font-size:12px;border-radius:4px;padding:3px 8px;text-align:center;}
+.dl-amt.gone{background:#232733;color:#5c6270;text-decoration:line-through;font-weight:400;}
+.dl-cases{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:8px 0;}
+.dl-case{background:linear-gradient(#e8c766,#a87e1e);border:2px solid #6b4d10;border-radius:8px;color:#231703;padding:7px 0;text-align:center;font-family:inherit;}
+.dl-cnum{font-weight:900;font-size:15px;}
+.dl-cval{font-size:11px;}
+.dl-case.open{background:#1a2033;border-color:#333c52;color:#8b93a7;}
+.dl-case.mine{background:linear-gradient(#ffe98a,#d4a017);border-color:#fff0b3;box-shadow:0 0 10px rgba(255,210,62,.6);}
+.dl-reveal{text-align:center;background:#12275e;border:1px solid #5b8fe0;border-radius:8px;padding:7px;margin-bottom:6px;font-size:14px;}
+.dl-reveal.big{background:#5e1212;border-color:#e05b5b;}
+.dl-call{background:linear-gradient(#1b0f14,#0c060a);border:3px solid #a02c22;border-radius:12px;padding:14px;text-align:center;margin-bottom:8px;}
+.dl-offer{font-size:34px;font-weight:900;color:#ffd873;text-shadow:0 0 14px rgba(255,190,60,.5);margin:4px 0;}
+.dl-dealbtn{background:radial-gradient(circle at 50% 35%,#ff7a6b,#c21f12 65%,#7d0f07);color:#fff;font-size:20px;border:3px solid #ffb3a8;box-shadow:0 0 18px rgba(255,60,40,.55);padding:16px;}
 .hw-stage{background:linear-gradient(155deg,#3d0a2e,#1c1030 60%,#12081f);border:3px solid #c9973f;border-radius:12px;padding:10px;margin-bottom:10px;}
 .hw-bulbs{display:flex;justify-content:space-between;padding:0 2px;}
 .hw-bulb{width:7px;height:7px;border-radius:50%;background:#ffd873;box-shadow:0 0 6px 2px rgba(255,200,80,.75);}
@@ -9223,14 +9241,16 @@ function shgQBtn(label,fn,cls){
 }
 
 /* ================= DEAL OR NO DEAL ================= */
-regGame('deal',{howto:"Pick your case, then open the rest one round at a time. After each round the banker calls with an offer - take the DEAL or say NO DEAL and keep opening. Down to two cases? Swap or stick. Walk away with the banker's money or whatever is in your case!",name:'Deal or No Deal',icon:'💼',tags:'Game Show',pvp:true,seats:2,
+regGame('deal',{howto:"Official Deal or No Deal: 26 cases hold $0.01 to $1,000,000, shuffled so nobody knows what's where.\n\nPick ONE case to keep - it's yours to the end. Then open the others in rounds: 6, then 5, 4, 3, 2, then one at a time.\n\nAfter each round THE BANKER calls with an offer to buy your case. The offer follows what's left on the board - knock out the big money and offers crash; knock out pennies and they soar.\n\nHit the red button for DEAL and take his money, or say NO DEAL and play on. Down to two cases, you may SWAP or stick - then your case is opened and you win what's inside. Took a deal? We'll still open your case to see if you made a GOOD DEAL!",name:'Deal or No Deal',icon:'💼',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
-  var S=null, pvpCtl=null, dz;
-  c.innerHTML='<h2>💼 Deal or No Deal</h2><div class="muted">Pick your case, open the rest, and beat the banker.</div><div id="dz"></div>';
+  var S=null, pvpCtl=null, dz, callTimer=null;
+  c.innerHTML='<h2>💼 Deal or No Deal</h2><div id="dz"></div>';
   dz=c.querySelector('#dz');
   function start(shared){
-    S={values:shared.values,my:-1,opened:{},round:0,toOpen:0,phase:'pick',offer:0,won:0,done:false};
+    var names=SHG.botNames?SHG.botNames(3):['Mom','Uncle Ray','Bestie'];
+    S={values:shared.values,my:-1,opened:{},round:0,toOpen:0,phase:'pick',offer:0,won:0,done:false,
+       fans:names,lastReveal:null,dealTaken:false,swapped:false,callStage:0};
     draw();
   }
   function remVals(inclMine){
@@ -9238,72 +9258,99 @@ render(c,ctx){
     for(var i=0;i<26;i++){ if(!S.opened[i]&&(inclMine||i!==S.my)) r.push(S.values[i]); }
     return r;
   }
-  function ladderHTML(){
-    var vals=SHG.dealCaseValues().slice().sort(function(a,b){return a-b;});
-    var h='<div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:8px 0">';
-    vals.forEach(function(v){
-      var gone=false;
-      for(var i=0;i<26;i++){ if(S.opened[i]&&S.values[i]===v){ gone=true; break; } }
-      h+='<span style="padding:2px 8px;border-radius:8px;font-size:12px;background:'+(gone?'#332':'#1c2a1c')+';color:'+(gone?'#777':'#eab676')+';'+(gone?'text-decoration:line-through':'')+'">'+SHG.money(v)+'</span>';
-    });
-    return h+'</div>';
+  function isGone(v){
+    for(var i=0;i<26;i++){ if(S.opened[i]&&S.values[i]===v) return true; }
+    return false;
   }
-  function gridHTML(){
-    var h='<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:8px 0">';
+  function boardHTML(){
+    var vals=SHG.dealCaseValues();
+    var low=vals.slice(0,13), high=vals.slice(13);
+    function col(list){
+      return '<div class="dl-col">'+list.map(function(v){
+        return '<div class="dl-amt'+(isGone(v)?' gone':'')+'">'+SHG.money(v)+'</div>';
+      }).join('')+'</div>';
+    }
+    return '<div class="dl-board">'+col(low)+col(high)+'</div>';
+  }
+  function bankerHTML(){
+    return '<div class="dl-banker"><div class="dl-sil">🕴️</div><div class="grow"><b>THE BANKER</b><div class="muted" style="font-size:11px">watching from the skybox…</div></div><div style="font-size:22px">☎️</div></div>';
+  }
+  function fansHTML(){
+    return '<div class="muted center" style="font-size:12px;margin:6px 0">📣 Your supporters: '+S.fans.map(function(f){return esc(f);}).join(' · ')+'</div>';
+  }
+  function casesHTML(){
+    var h='<div class="dl-cases">';
     for(var i=0;i<26;i++){
-      if(S.opened[i]) h+='<div class="center muted" style="padding:10px 0;border:1px solid #333;border-radius:8px;font-size:11px">'+SHG.money(S.values[i])+'</div>';
-      else if(i===S.my&&S.phase!=='pick') h+='<div class="center" style="padding:10px 0;border:2px solid #eab676;border-radius:8px">⭐</div>';
-      else h+='<button class="btn small" data-case="'+i+'" style="padding:10px 0">'+(i+1)+'</button>';
+      if(S.opened[i]) h+='<div class="dl-case open"><div class="dl-cnum">'+(i+1)+'</div><div class="dl-cval">'+SHG.money(S.values[i])+'</div></div>';
+      else if(i===S.my&&S.phase!=='pick') h+='<div class="dl-case mine"><div class="dl-cnum">⭐ '+(i+1)+'</div><div class="dl-cval">YOURS</div></div>';
+      else h+='<button class="dl-case shut" data-case="'+i+'"><div class="dl-cnum">'+(i+1)+'</div><div class="dl-cval">💼</div></button>';
     }
     return h+'</div>';
   }
+  function revealHTML(){
+    if(!S.lastReveal) return '';
+    var big=S.lastReveal.v>=100000;
+    return '<div class="dl-reveal'+(big?' big':'')+'">Case '+S.lastReveal.i+' held <b>'+SHG.money(S.lastReveal.v)+'</b>'+(big?' — OUCH! 💥':' — nice, a small one gone! 🎉')+'</div>';
+  }
   function draw(){
     if(S.done){ drawDone(); return; }
-    var h='';
+    var h=bankerHTML();
     if(S.phase==='pick'){
-      h='<div class="status center">Pick <b>YOUR</b> case to keep:</div>'+gridHTML();
+      h+='<div class="status center">Pick <b>YOUR</b> case to keep:</div>'+casesHTML()+boardHTML();
     } else if(S.phase==='play'){
       var opens=SHG.dealRoundOpens();
-      h='<div class="row"><div class="grow center">Your case: <b>⭐</b></div><div class="grow center">Open <b>'+S.toOpen+'</b> more case'+(S.toOpen===1?'':'s')+'</div></div>'
-        +ladderHTML()+gridHTML()
-        +'<div class="muted center">Round '+(S.round+1)+' of '+opens.length+'</div>';
+      h+='<div class="row"><div class="grow center">⭐ Your case: <b>#'+(S.my+1)+'</b></div><div class="grow center">Open <b>'+S.toOpen+'</b> more</div><div class="grow center">Round '+(S.round+1)+' of '+opens.length+'</div></div>'
+        +revealHTML()+casesHTML()+boardHTML()+fansHTML();
+    } else if(S.phase==='call'){
+      h+='<div class="dl-call"><div style="font-size:34px">☎️</div><div class="big" style="color:#ffd9d0">The banker is calling…</div><div class="muted">He\'s seen the board. An offer is coming.</div></div>'+boardHTML();
     } else if(S.phase==='offer'){
-      h='<div class="card center"><div class="muted">📞 The banker offers</div><div class="big" style="color:#eab676">'+SHG.money(S.offer)+'</div>'
-        +'<div class="row" style="margin-top:10px"><button class="btn grow" id="dDeal">💰 DEAL</button>'
-        +'<button class="btn secondary grow" id="dNo">NO DEAL</button></div></div>'+ladderHTML();
+      var rem=remVals(true), ev=rem.reduce(function(a,b){return a+b;},0)/rem.length;
+      var pct=Math.round(S.offer/ev*100);
+      var fan=S.fans[S.round%S.fans.length];
+      var advice=pct>=85?esc(fan)+': "That\'s real money — I\'d take it!"':(pct>=55?esc(fan)+': "Tough one… trust your gut!"':esc(fan)+': "He\'s lowballing you — NO DEAL!"');
+      var quip=S.offer>=ev*0.9?'The banker is sweating. He wants this case gone.':(S.offer<ev*0.45?'The banker smirks: "Take it before it gets worse."':'The banker\'s offer is on the table.');
+      h+='<div class="dl-call"><div class="muted">📞 '+quip+'</div><div class="muted">THE BANKER OFFERS</div><div class="dl-offer">'+SHG.money(S.offer)+'</div>'
+        +'<div class="muted" style="font-size:12px">That\'s '+pct+'% of the board average ('+SHG.money(Math.round(ev))+') · '+rem.length+' cases left</div>'
+        +'<div class="msg" style="margin:8px 0">📣 '+advice+'</div>'
+        +'<button class="btn dl-dealbtn" id="dDeal">💰 DEAL</button>'
+        +'<button class="btn secondary" id="dNo" style="margin-top:8px">✋ NO DEAL</button></div>'+boardHTML();
     } else if(S.phase==='final'){
       var last=-1;
       for(var i=0;i<26;i++){ if(!S.opened[i]&&i!==S.my) last=i; }
-      h='<div class="card center"><div class="muted">Two cases left!</div>'
-        +'<div class="row" style="margin:10px 0"><div class="grow"><div class="big">⭐</div><div class="muted">Your case</div></div>'
-        +'<div class="grow"><div class="big">💼 '+(last+1)+'</div><div class="muted">Last case</div></div></div>'
-        +'<div class="row"><button class="btn grow" id="dKeep">KEEP mine</button>'
-        +'<button class="btn secondary grow" id="dSwap">SWAP</button></div></div>'+ladderHTML();
+      h+='<div class="card center"><div class="muted">Two cases left. The final choice!</div>'
+        +'<div class="row" style="margin:10px 0"><div class="grow"><div style="font-size:34px">⭐</div><div class="muted">Your case #'+(S.my+1)+'</div></div>'
+        +'<div class="grow"><div style="font-size:34px">💼</div><div class="muted">Case #'+(last+1)+'</div></div></div>'
+        +'<div class="row" style="gap:6px"><button class="btn grow" id="dKeep">KEEP mine</button>'
+        +'<button class="btn secondary grow" id="dSwap">🔀 SWAP</button></div></div>'+boardHTML();
     }
     dz.innerHTML=h;
     dz.querySelectorAll('[data-case]').forEach(function(b){
       b.onclick=function(){
         var i=+b.getAttribute('data-case');
-        Sound.click();
-        if(S.phase==='pick'){ S.my=i; S.phase='play'; S.round=0; S.toOpen=SHG.dealRoundOpens()[0]; draw(); return; }
+        if(S.phase==='pick'){ Sound.click(); S.my=i; S.phase='play'; S.round=0; S.toOpen=SHG.dealRoundOpens()[0]; draw(); return; }
         if(S.phase==='play'&&i!==S.my&&!S.opened[i]){
           S.opened[i]=1; S.toOpen--;
           var v=S.values[i];
-          toast('Case '+(i+1)+' held '+SHG.money(v));
-          if(v>=100000) Sound.lose(); else Sound.beep();
+          S.lastReveal={i:i+1,v:v};
+          if(v>=100000) Sound.lose(); else Sound.beep(880,.08);
           if(S.toOpen<=0){
             S.offer=SHG.bankerOffer(remVals(true),S.round);
-            S.phase='offer';
+            S.phase='call'; draw();
+            callTimer=setTimeout(function(){
+              if(!dz.isConnected||S.done||S.phase!=='call')return;
+              S.phase='offer'; Sound.beep(660,.2); draw();
+            },1500);
+            return;
           }
           draw();
         }
       };
     });
     var d=dz.querySelector('#dDeal');
-    if(d) d.onclick=function(){ Sound.win(); S.won=S.offer; S.done=true; draw(); };
+    if(d) d.onclick=function(){ Sound.win(); S.won=S.offer; S.dealTaken=true; S.done=true; draw(); };
     var n=dz.querySelector('#dNo');
     if(n) n.onclick=function(){
-      Sound.click(); S.round++;
+      Sound.click(); S.round++; S.lastReveal=null;
       var opens=SHG.dealRoundOpens();
       if(S.round>=opens.length){ S.phase='final'; }
       else { S.phase='play'; S.toOpen=opens[S.round]; }
@@ -9313,7 +9360,7 @@ render(c,ctx){
     if(k) k.onclick=function(){ Sound.win(); S.won=S.values[S.my]; S.done=true; draw(); };
     var sw=dz.querySelector('#dSwap');
     if(sw) sw.onclick=function(){
-      Sound.win();
+      Sound.click(); S.swapped=true;
       for(var i=0;i<26;i++){ if(!S.opened[i]&&i!==S.my){ S.my=i; break; } }
       S.won=S.values[S.my]; S.done=true; draw();
     };
@@ -9324,8 +9371,20 @@ render(c,ctx){
     await Wallet.recordWin('deal');
   }
   async function drawDone(){
-    var h='<div class="card center"><div class="muted">Your case held</div><div class="big" style="color:#eab676">'+SHG.money(S.won)+'</div><div id="dRes"></div></div>'+ladderHTML();
-    dz.innerHTML=h;
+    if(callTimer){ clearTimeout(callTimer); callTimer=null; }
+    var other=-1;
+    for(var i=0;i<26;i++){ if(!S.opened[i]&&i!==S.my) other=i; }
+    var headline, sub;
+    if(S.dealTaken){
+      var caseVal=S.values[S.my];
+      var good=S.won>=caseVal;
+      headline='You took the DEAL: '+SHG.money(S.won);
+      sub='Your case #'+(S.my+1)+' actually held <b>'+SHG.money(caseVal)+'</b> — '+(good?'<span class="ok">🎉 GOOD DEAL! You beat the banker!</span>':'<span class="err">😱 BAD DEAL — your case was worth more!</span>');
+    } else {
+      headline='Your case held '+SHG.money(S.won)+'!';
+      sub='The other case held <b>'+SHG.money(S.values[other])+'</b>'+(S.swapped?' (you swapped 🔀)':'')+' — '+(S.won>=S.values[other]?'<span class="ok">🎉 You picked the better case!</span>':'<span class="err">The big money was in the other case!</span>');
+    }
+    dz.innerHTML=bankerHTML()+'<div class="card center"><div class="big" style="color:#eab676">'+headline+'</div><div style="margin-top:6px">'+sub+'</div><div id="dRes"></div></div>'+boardHTML();
     var res=dz.querySelector('#dRes');
     if(isNet){
       res.innerHTML='<div class="muted">Waiting for opponent...</div>';
