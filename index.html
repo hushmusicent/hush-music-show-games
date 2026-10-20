@@ -125,6 +125,18 @@ button.pyr-box{cursor:pointer;}
 .wc-box.cur{box-shadow:0 0 0 3px #ffd23e,0 0 18px rgba(255,210,62,.8);}
 .wc-val{font-size:11px;font-weight:900;color:#ffe9b0;}
 .wc-item{display:inline-block;background:#12275e;border:1px solid #5b8fe0;border-radius:12px;padding:3px 10px;margin:2px;font-size:14px;}
+/* ===== Weakest Link studio ===== */
+.wl-stage{background:radial-gradient(ellipse at 50% 0%,#1b3a75,#060d24 75%);border:3px solid #3f66b8;border-radius:12px;padding:10px;margin-bottom:10px;color:#dbe7ff;}
+.wl-podiums{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:8px 0;}
+.wl-pod{flex:1 1 22%;max-width:110px;background:linear-gradient(#2c4f9e,#16294f);border:2px solid #5b84d6;border-radius:6px;padding:5px 3px;text-align:center;}
+.wl-pod.me{border-color:#ffd873;}
+.wl-pod.cur{box-shadow:0 0 0 2px #ffd873,0 0 14px rgba(255,210,60,.75);}
+.wl-pname{font-weight:900;font-size:11px;white-space:nowrap;overflow:hidden;}
+.wl-pstat{font-size:10px;color:#b9ccf5;}
+.wl-ladder{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;margin:6px 0;}
+.wl-disc{background:#101c3d;border:2px solid #41639f;color:#7e97c4;border-radius:50%;width:41px;height:41px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;}
+.wl-disc.on{background:radial-gradient(circle at 35% 30%,#9fd0ff,#2050b8);color:#fff;border-color:#cfe5ff;}
+.wl-disc.next{border-color:#ffd873;color:#ffd873;animation:plpulse 1s infinite;}
 .pl-stage{background:radial-gradient(ellipse at 50% 30%,#5c430a,#241a04 70%);border:3px solid #c9973f;border-radius:12px;padding:10px;margin-bottom:10px;}
 .pl-logo{grid-column:2/6;grid-row:2/5;background:radial-gradient(ellipse at center,#ffe45e,#f2b705 70%);border:4px solid #c00;border-radius:10px;color:#d40000;font-weight:900;font-size:19px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1.15;padding:8px 4px;}
 .pl-swoosh{width:72%;height:9px;background:#111;border-radius:50%;margin:3px 0;}
@@ -3392,7 +3404,947 @@ var BANKS2 = {
     {q:"What fruit keeps the doctor away?", a:"Apple"},
     {q:"How many strings does a violin have?", a:"Four"},
     {q:"What is the currency of Japan?", a:"Yen"},
-    {q:"What do you call a baby frog?", a:"Tadpole"}
+    {q:"What do you call a baby frog?", a:"Tadpole"},
+    {q:"What is the capital of France?", a:"Paris"},
+    {q:"What is the capital of Italy?", a:"Rome"},
+    {q:"What is the capital of Spain?", a:"Madrid"},
+    {q:"What is the capital of Germany?", a:"Berlin"},
+    {q:"What is the capital of Canada?", a:"Ottawa"},
+    {q:"What is the capital of Mexico?", a:"Mexico City"},
+    {q:"What is the capital of Australia?", a:"Canberra"},
+    {q:"What is the capital of Brazil?", a:"Brasilia"},
+    {q:"What is the capital of Russia?", a:"Moscow"},
+    {q:"What is the capital of China?", a:"Beijing"},
+    {q:"What is the capital of Egypt?", a:"Cairo"},
+    {q:"What is the capital of Ireland?", a:"Dublin"},
+    {q:"What is the capital of Greece?", a:"Athens"},
+    {q:"What is the capital of Norway?", a:"Oslo"},
+    {q:"What is the capital of Sweden?", a:"Stockholm"},
+    {q:"What is the capital of Portugal?", a:"Lisbon"},
+    {q:"What is the capital of Argentina?", a:"Buenos Aires"},
+    {q:"What is the capital of South Korea?", a:"Seoul"},
+    {q:"What is the capital of India?", a:"New Delhi"},
+    {q:"What is the capital of Turkey?", a:"Ankara"},
+    {q:"What is the capital of Poland?", a:"Warsaw"},
+    {q:"What is the capital of the Netherlands?", a:"Amsterdam"},
+    {q:"What is the capital of Switzerland?", a:"Bern"},
+    {q:"What is the capital of Austria?", a:"Vienna"},
+    {q:"What is the capital of Denmark?", a:"Copenhagen"},
+    {q:"What is the capital of Finland?", a:"Helsinki"},
+    {q:"What is the capital of Iceland?", a:"Reykjavik"},
+    {q:"What is the capital of Peru?", a:"Lima"},
+    {q:"What is the capital of Chile?", a:"Santiago"},
+    {q:"What is the capital of Cuba?", a:"Havana"},
+    {q:"What is the capital of Jamaica?", a:"Kingston"},
+    {q:"What is the capital of Kenya?", a:"Nairobi"},
+    {q:"What is the capital of Morocco?", a:"Rabat"},
+    {q:"What is the capital of Thailand?", a:"Bangkok"},
+    {q:"What is the capital of Vietnam?", a:"Hanoi"},
+    {q:"What is the capital of Indonesia?", a:"Jakarta"},
+    {q:"What is the capital of Malaysia?", a:"Kuala Lumpur"},
+    {q:"What is the capital of New Zealand?", a:"Wellington"},
+    {q:"What is the capital of Colombia?", a:"Bogota"},
+    {q:"What is the capital of Venezuela?", a:"Caracas"},
+    {q:"Which river flows through Egypt?", a:"Nile"},
+    {q:"Which is the longest river in South America?", a:"Amazon"},
+    {q:"Which river flows through London?", a:"Thames"},
+    {q:"Which river forms much of the border between the US and Mexico?", a:"Rio Grande"},
+    {q:"Which river runs through the Grand Canyon?", a:"Colorado River"},
+    {q:"Which is the longest river in the United States?", a:"Missouri River"},
+    {q:"Which river flows through Paris?", a:"Seine"},
+    {q:"Which waterfall sits on the border of the US and Canada?", a:"Niagara Falls"},
+    {q:"Which waterfall on the Zambezi River is among the largest in the world?", a:"Victoria Falls"},
+    {q:"Which river flows through Rome?", a:"Tiber"},
+    {q:"Which river is the longest in Europe?", a:"Volga"},
+    {q:"Which river flows through Baghdad?", a:"Tigris"},
+    {q:"Which river is sacred to Hindus in India?", a:"Ganges"},
+    {q:"Which river flows through Vienna and Budapest?", a:"Danube"},
+    {q:"Which river empties into the Mississippi at St. Louis?", a:"Missouri River"},
+    {q:"Mount Everest sits on the border of Nepal and which country?", a:"China"},
+    {q:"What is the tallest mountain in Africa?", a:"Kilimanjaro"},
+    {q:"What is the tallest mountain in North America?", a:"Denali"},
+    {q:"What is the tallest mountain in South America?", a:"Aconcagua"},
+    {q:"Which mountain range separates France and Spain?", a:"Pyrenees"},
+    {q:"Which mountain range runs down the western side of South America?", a:"Andes"},
+    {q:"Which mountain range contains Mount Everest?", a:"Himalayas"},
+    {q:"Which mountains form the traditional boundary between Europe and Asia?", a:"Ural Mountains"},
+    {q:"Mount Fuji is in which country?", a:"Japan"},
+    {q:"Which US mountain has four presidents carved into it?", a:"Mount Rushmore"},
+    {q:"The Matterhorn is in which mountain range?", a:"Alps"},
+    {q:"What is the longest mountain range on land?", a:"Andes"},
+    {q:"Mount Kilimanjaro is in which country?", a:"Tanzania"},
+    {q:"Which mountain is the highest in the Alps?", a:"Mont Blanc"},
+    {q:"Which volcanic mountain destroyed Pompeii?", a:"Vesuvius"},
+    {q:"Which ocean is the smallest?", a:"Arctic Ocean"},
+    {q:"Which ocean lies between Europe and North America?", a:"Atlantic Ocean"},
+    {q:"Which ocean borders California?", a:"Pacific Ocean"},
+    {q:"Which ocean is home to the Great Barrier Reef?", a:"Pacific Ocean"},
+    {q:"Which sea separates Europe from Africa?", a:"Mediterranean Sea"},
+    {q:"Which sea lies between Africa and Asia?", a:"Red Sea"},
+    {q:"Which body of water separates Alaska from Russia?", a:"Bering Strait"},
+    {q:"Which gulf lies south of Texas?", a:"Gulf of Mexico"},
+    {q:"Which bay is famous in San Francisco?", a:"San Francisco Bay"},
+    {q:"Which is the largest lake in the world by surface area?", a:"Lake Superior"},
+    {q:"Which Great Lake is entirely within the United States?", a:"Lake Michigan"},
+    {q:"Which lake is the deepest in the world?", a:"Lake Baikal"},
+    {q:"Which desert is the largest hot desert in the world?", a:"Sahara"},
+    {q:"Which is the largest desert in Australia?", a:"Great Victoria Desert"},
+    {q:"The Gobi Desert is in which continent?", a:"Asia"},
+    {q:"Death Valley is in which US state?", a:"California"},
+    {q:"Which desert is in Chile and is among the driest on Earth?", a:"Atacama"},
+    {q:"What is the largest island in the world?", a:"Greenland"},
+    {q:"Which island nation lies southeast of India?", a:"Sri Lanka"},
+    {q:"Which island is shared by Indonesia, Malaysia and Brunei?", a:"Borneo"},
+    {q:"Which island country has Reykjavik as its capital?", a:"Iceland"},
+    {q:"Which Caribbean island is the largest?", a:"Cuba"},
+    {q:"Which island is famous for its giant stone heads called moai?", a:"Easter Island"},
+    {q:"Which US island state is made up of islands including Oahu?", a:"Hawaii"},
+    {q:"Which island is divided between Haiti and the Dominican Republic?", a:"Hispaniola"},
+    {q:"Which island lies off the southeast coast of Africa?", a:"Madagascar"},
+    {q:"Which Greek island is the largest?", a:"Crete"},
+    {q:"Which island does the Statue of Liberty stand on?", a:"Liberty Island"},
+    {q:"Which country has the most natural lakes?", a:"Canada"},
+    {q:"Which is the smallest continent?", a:"Australia"},
+    {q:"Which continent has the most countries?", a:"Africa"},
+    {q:"Which continent is Egypt part of?", a:"Africa"},
+    {q:"Which continent is Brazil part of?", a:"South America"},
+    {q:"Which continent is completely covered by the South Pole ice sheet?", a:"Antarctica"},
+    {q:"Which country is both a continent and a country?", a:"Australia"},
+    {q:"Which country has the largest population?", a:"India"},
+    {q:"Which country has the largest land area?", a:"Russia"},
+    {q:"Which is the smallest country in the world?", a:"Vatican City"},
+    {q:"Which country has the longest coastline?", a:"Canada"},
+    {q:"Which European country is shaped like a boot?", a:"Italy"},
+    {q:"Which country is home to the kangaroo?", a:"Australia"},
+    {q:"Which country has a maple leaf on its flag?", a:"Canada"},
+    {q:"Which country's flag is a red circle on white?", a:"Japan"},
+    {q:"Which country's flag has a Union Jack in the corner and stars?", a:"Australia"},
+    {q:"Which country has red and white stripes with a blue canton of 50 stars?", a:"United States"},
+    {q:"Which Scandinavian country's flag is blue with a yellow cross?", a:"Sweden"},
+    {q:"Which country's flag is red with a white crescent and star?", a:"Turkey"},
+    {q:"Which country has a black, red and gold horizontal flag?", a:"Germany"},
+    {q:"Which country has a green, white and orange vertical flag?", a:"Ireland"},
+    {q:"Which country has a red flag with five yellow stars?", a:"China"},
+    {q:"Which country's flag shows a golden eagle on green, white and red stripes?", a:"Mexico"},
+    {q:"Which Nordic country's flag is red with a white and blue cross?", a:"Norway"},
+    {q:"Which South American country speaks Portuguese?", a:"Brazil"},
+    {q:"What is the main language of Egypt?", a:"Arabic"},
+    {q:"What is the main language of Brazil?", a:"Portuguese"},
+    {q:"What language is spoken in Quebec province?", a:"French"},
+    {q:"What is the official language of Austria?", a:"German"},
+    {q:"What language is spoken in Iran?", a:"Persian"},
+    {q:"What is the most spoken language in the world by native speakers?", a:"Mandarin Chinese"},
+    {q:"What is the currency of the United Kingdom?", a:"Pound sterling"},
+    {q:"What is the currency of Mexico?", a:"Peso"},
+    {q:"What is the currency of India?", a:"Rupee"},
+    {q:"What is the currency of China?", a:"Yuan"},
+    {q:"What is the currency of Switzerland?", a:"Franc"},
+    {q:"What currency is used by most of the European Union?", a:"Euro"},
+    {q:"What is the currency of Canada?", a:"Canadian dollar"},
+    {q:"What is the currency of South Korea?", a:"Won"},
+    {q:"What is the currency of Russia?", a:"Ruble"},
+    {q:"What is the currency of Brazil?", a:"Real"},
+    {q:"Which famous wall was built to protect China from northern invaders?", a:"Great Wall of China"},
+    {q:"The Eiffel Tower is in which city?", a:"Paris"},
+    {q:"The Colosseum is in which city?", a:"Rome"},
+    {q:"Big Ben is in which city?", a:"London"},
+    {q:"The Taj Mahal is in which country?", a:"India"},
+    {q:"The Statue of Liberty was a gift from which country?", a:"France"},
+    {q:"The pyramids of Giza are near which city?", a:"Cairo"},
+    {q:"The Sydney Opera House is in which country?", a:"Australia"},
+    {q:"Christ the Redeemer statue overlooks which city?", a:"Rio de Janeiro"},
+    {q:"The Leaning Tower of Pisa is in which country?", a:"Italy"},
+    {q:"The Burj Khalifa, the tallest building in the world, is in which city?", a:"Dubai"},
+    {q:"The Golden Gate Bridge is in which US city?", a:"San Francisco"},
+    {q:"The Empire State Building is in which US city?", a:"New York City"},
+    {q:"Stonehenge is in which country?", a:"England"},
+    {q:"The Acropolis is in which city?", a:"Athens"},
+    {q:"Machu Picchu is in which country?", a:"Peru"},
+    {q:"The CN Tower is in which Canadian city?", a:"Toronto"},
+    {q:"The Space Needle is in which US city?", a:"Seattle"},
+    {q:"Which US state is the Grand Canyon in?", a:"Arizona"},
+    {q:"Which US state is known as the Lone Star State?", a:"Texas"},
+    {q:"Which US state is known as the Sunshine State?", a:"Florida"},
+    {q:"Which US state is the largest by area?", a:"Alaska"},
+    {q:"Which US state is the smallest by area?", a:"Rhode Island"},
+    {q:"Which US state is home to Yellowstone National Park?", a:"Wyoming"},
+    {q:"What is the capital of Texas?", a:"Austin"},
+    {q:"What is the capital of California?", a:"Sacramento"},
+    {q:"What is the capital of Florida?", a:"Tallahassee"},
+    {q:"What is the capital of New York state?", a:"Albany"},
+    {q:"What is the capital of Alaska?", a:"Juneau"},
+    {q:"What is the capital of Hawaii?", a:"Honolulu"},
+    {q:"What is the capital of Illinois?", a:"Springfield"},
+    {q:"What is the capital of Colorado?", a:"Denver"},
+    {q:"What is the capital of Georgia?", a:"Atlanta"},
+    {q:"What is the capital of Washington state?", a:"Olympia"},
+    {q:"What is the capital of Pennsylvania?", a:"Harrisburg"},
+    {q:"Which city is known as the Windy City?", a:"Chicago"},
+    {q:"Which city is known as the Big Apple?", a:"New York City"},
+    {q:"Which city is home to the Las Vegas Strip?", a:"Las Vegas"},
+    {q:"Which US city is famous for the Liberty Bell?", a:"Philadelphia"},
+    {q:"The Alamo is in which Texas city?", a:"San Antonio"},
+    {q:"Which city hosted the first modern Olympic Games in 1896?", a:"Athens"},
+    {q:"Which canal connects the Atlantic and Pacific Oceans?", a:"Panama Canal"},
+    {q:"Which canal connects the Mediterranean Sea to the Red Sea?", a:"Suez Canal"},
+    {q:"Which US city is home to the French Quarter?", a:"New Orleans"},
+    {q:"Which city is the capital of Scotland?", a:"Edinburgh"},
+    {q:"Which city is the capital of Wales?", a:"Cardiff"},
+    {q:"Rio de Janeiro is in which country?", a:"Brazil"},
+    {q:"Which city is famous for its canals and gondolas?", a:"Venice"},
+    {q:"Which city straddles two continents, Europe and Asia?", a:"Istanbul"},
+    {q:"Which city is home to the Kremlin?", a:"Moscow"},
+    {q:"Which Australian city is famous for its Opera House?", a:"Sydney"},
+    {q:"Which city is the largest in Canada?", a:"Toronto"},
+    {q:"What is the capital of Japan?", a:"Tokyo"},
+    {q:"Which country is home to the city of Reykjavik?", a:"Iceland"},
+    {q:"Havana is the capital of which country?", a:"Cuba"},
+    {q:"Which country is home to the ancient city of Petra?", a:"Jordan"},
+    {q:"Which country has the city of Marrakech?", a:"Morocco"},
+    {q:"Which European country has the city of Barcelona?", a:"Spain"},
+    {q:"Which country is the city of Krakow in?", a:"Poland"},
+    {q:"Which city is known as the Eternal City?", a:"Rome"},
+    {q:"Which city is known as the City of Love?", a:"Paris"},
+    {q:"How many legs does a spider have?", a:"8"},
+    {q:"What is the largest land animal?", a:"African elephant"},
+    {q:"What bird cannot fly but swims in the ocean?", a:"Penguin"},
+    {q:"What do caterpillars turn into?", a:"Butterflies"},
+    {q:"How many wings does a bee have?", a:"4"},
+    {q:"What animal has black and white stripes?", a:"Zebra"},
+    {q:"What is a baby horse called?", a:"Foal"},
+    {q:"What animal carries its home on its back?", a:"Turtle"},
+    {q:"What is the only mammal that can fly?", a:"Bat"},
+    {q:"How many hearts does an octopus have?", a:"3"},
+    {q:"What animal is the king of the jungle?", a:"Lion"},
+    {q:"What do bees produce?", a:"Honey"},
+    {q:"What is a group of fish called?", a:"School"},
+    {q:"What animal has a long trunk?", a:"Elephant"},
+    {q:"What is the fastest land animal?", a:"Cheetah"},
+    {q:"What bird delivers babies in fairy tales?", a:"Stork"},
+    {q:"How many legs does an insect have?", a:"6"},
+    {q:"What animal hops and carries babies in a pouch?", a:"Kangaroo"},
+    {q:"What is a baby cow called?", a:"Calf"},
+    {q:"What animal changes color to blend in?", a:"Chameleon"},
+    {q:"What do owls hunt at?", a:"Night"},
+    {q:"What is the largest bird in the world?", a:"Ostrich"},
+    {q:"What animal has quills on its back?", a:"Porcupine"},
+    {q:"What do frogs eat with their long tongues?", a:"Flies"},
+    {q:"What animal sleeps through the winter?", a:"Bear"},
+    {q:"What is a baby sheep called?", a:"Lamb"},
+    {q:"What animal is the largest member of the cat family?", a:"Tiger"},
+    {q:"What creature makes a web to catch prey?", a:"Spider"},
+    {q:"What animal is black, white and bamboo-eating?", a:"Panda"},
+    {q:"How many eyes does a spider have?", a:"8"},
+    {q:"What animal has the longest neck?", a:"Giraffe"},
+    {q:"What is a baby duck called?", a:"Duckling"},
+    {q:"What animal squirts ink to escape?", a:"Octopus"},
+    {q:"What do silkworms produce?", a:"Silk"},
+    {q:"What animal has antlers and lives in forests?", a:"Deer"},
+    {q:"What is the smallest bird in the world?", a:"Hummingbird"},
+    {q:"What animal builds dams in rivers?", a:"Beaver"},
+    {q:"What is a group of lions called?", a:"Pride"},
+    {q:"What animal has a shell and flippers in the sea?", a:"Sea turtle"},
+    {q:"What do ants march in search of?", a:"Food"},
+    {q:"What animal has tusks made of ivory?", a:"Elephant"},
+    {q:"What is a baby pig called?", a:"Piglet"},
+    {q:"What animal howls at the moon?", a:"Wolf"},
+    {q:"What insect glows at night?", a:"Firefly"},
+    {q:"What animal has a hump on its back?", a:"Camel"},
+    {q:"What do tadpoles grow into?", a:"Frogs"},
+    {q:"What animal is famous for playing dead?", a:"Opossum"},
+    {q:"What bird is a symbol of wisdom?", a:"Owl"},
+    {q:"What animal has a black mask and a ringed tail?", a:"Raccoon"},
+    {q:"What is a male chicken called?", a:"Rooster"},
+    {q:"What green plant makes oxygen from sunlight?", a:"Leaves"},
+    {q:"What part of a plant grows underground?", a:"Roots"},
+    {q:"What do plants need to make food?", a:"Sunlight"},
+    {q:"What is the process plants use to make food?", a:"Photosynthesis"},
+    {q:"What part of a flower makes pollen?", a:"Stamen"},
+    {q:"What grows from an acorn?", a:"Oak tree"},
+    {q:"What plant traps and eats insects?", a:"Venus flytrap"},
+    {q:"What is the tallest type of tree?", a:"Redwood"},
+    {q:"What flower follows the sun across the sky?", a:"Sunflower"},
+    {q:"What part of a tree carries water to the leaves?", a:"Trunk"},
+    {q:"What do bees carry from flower to flower?", a:"Pollen"},
+    {q:"What season do leaves fall from trees?", a:"Autumn"},
+    {q:"What plant grows in the desert with spines?", a:"Cactus"},
+    {q:"What is a young plant called?", a:"Seedling"},
+    {q:"What gas do plants absorb from the air?", a:"Carbon dioxide"},
+    {q:"What gas do plants release?", a:"Oxygen"},
+    {q:"What fruit tree produces apples?", a:"Apple tree"},
+    {q:"What is the main ingredient in guacamole?", a:"Avocado"},
+    {q:"What vegetable makes your eyes water when cut?", a:"Onion"},
+    {q:"What grows on a vine and makes wine?", a:"Grapes"},
+    {q:"What is the largest planet in our solar system?", a:"Jupiter"},
+    {q:"What planet is known as the Red Planet?", a:"Mars"},
+    {q:"What planet is closest to the Sun?", a:"Mercury"},
+    {q:"What planet has rings around it?", a:"Saturn"},
+    {q:"What star is closest to Earth?", a:"The Sun"},
+    {q:"What is the name of our galaxy?", a:"Milky Way"},
+    {q:"How long does Earth take to orbit the Sun?", a:"One year"},
+    {q:"What causes day and night on Earth?", a:"Earth rotating"},
+    {q:"What is the Moon made mostly of?", a:"Rock"},
+    {q:"How many moons does Mars have?", a:"2"},
+    {q:"What planet is known for its Great Red Spot?", a:"Jupiter"},
+    {q:"What is a shooting star really called?", a:"Meteor"},
+    {q:"What object do astronauts ride into space?", a:"Rocket"},
+    {q:"What planet is farthest from the Sun?", a:"Neptune"},
+    {q:"What planet is hottest in our solar system?", a:"Venus"},
+    {q:"What force keeps planets in orbit?", a:"Gravity"},
+    {q:"What is the path a planet follows around the Sun?", a:"Orbit"},
+    {q:"What do we call a group of stars forming a picture?", a:"Constellation"},
+    {q:"What planet is called the Morning Star?", a:"Venus"},
+    {q:"How many moons does Earth have?", a:"1"},
+    {q:"What is the center of our solar system?", a:"The Sun"},
+    {q:"What space rock orbits between Mars and Jupiter?", a:"Asteroid"},
+    {q:"What is a comet's glowing tail made of?", a:"Gas and dust"},
+    {q:"What planet rotates on its side?", a:"Uranus"},
+    {q:"What instrument do astronomers use to see stars?", a:"Telescope"},
+    {q:"How many bones are in the adult human body?", a:"206"},
+    {q:"What is the largest organ of the human body?", a:"Skin"},
+    {q:"What organ pumps blood through the body?", a:"Heart"},
+    {q:"What organ do you breathe with?", a:"Lungs"},
+    {q:"Where in the body is food digested first?", a:"Stomach"},
+    {q:"What is the control center of the body?", a:"Brain"},
+    {q:"How many teeth does a normal adult have?", a:"32"},
+    {q:"What part of the eye gives it color?", a:"Iris"},
+    {q:"What sense do you use with your tongue?", a:"Taste"},
+    {q:"How many chambers does the human heart have?", a:"4"},
+    {q:"What is the hardest substance in the human body?", a:"Tooth enamel"},
+    {q:"What do you call the bones down your back?", a:"Spine"},
+    {q:"What muscle helps you breathe in and out?", a:"Diaphragm"},
+    {q:"What liquid in your mouth starts digestion?", a:"Saliva"},
+    {q:"How many senses does a human have?", a:"5"},
+    {q:"What part of the body produces insulin?", a:"Pancreas"},
+    {q:"What is the longest bone in the human body?", a:"Femur"},
+    {q:"What organ filters blood in the body?", a:"Kidneys"},
+    {q:"What type of blood cells carry oxygen?", a:"Red blood cells"},
+    {q:"What is the scientific study of living things?", a:"Biology"},
+    {q:"What kind of weather brings thunder and lightning?", a:"Thunderstorm"},
+    {q:"What is frozen rain called?", a:"Hail"},
+    {q:"What instrument measures temperature?", a:"Thermometer"},
+    {q:"What do we call a spinning storm over the ocean?", a:"Hurricane"},
+    {q:"What season has the longest days?", a:"Summer"},
+    {q:"What falls from clouds as rain or snow?", a:"Precipitation"},
+    {q:"What instrument shows wind direction?", a:"Weather vane"},
+    {q:"What is a giant ocean wave from an earthquake called?", a:"Tsunami"},
+    {q:"What cloud type brings thunderstorms?", a:"Cumulonimbus"},
+    {q:"What is the calm center of a hurricane called?", a:"Eye"},
+    {q:"What measures air pressure?", a:"Barometer"},
+    {q:"What do we call frozen water vapor on grass?", a:"Frost"},
+    {q:"What is the most common gas in Earth's atmosphere?", a:"Nitrogen"},
+    {q:"What colorful arc appears after rain?", a:"Rainbow"},
+    {q:"How many colors are in a rainbow?", a:"7"},
+    {q:"What is the chemical symbol for gold?", a:"Au"},
+    {q:"What is the chemical symbol for oxygen?", a:"O"},
+    {q:"What gas do humans need to breathe?", a:"Oxygen"},
+    {q:"What is H2O commonly known as?", a:"Water"},
+    {q:"At what temperature Celsius does water freeze?", a:"0 degrees"},
+    {q:"At what temperature Celsius does water boil?", a:"100 degrees"},
+    {q:"What force pulls objects to Earth?", a:"Gravity"},
+    {q:"What force opposes motion between two surfaces?", a:"Friction"},
+    {q:"What simple machine is a ramp?", a:"Inclined plane"},
+    {q:"What do magnets attract?", a:"Iron"},
+    {q:"What are the two poles of a magnet called?", a:"North and south"},
+    {q:"What form of energy comes from the Sun?", a:"Solar energy"},
+    {q:"What is the center of an atom called?", a:"Nucleus"},
+    {q:"What tiny particles make up everything?", a:"Atoms"},
+    {q:"What gas makes balloons float?", a:"Helium"},
+    {q:"What metal is liquid at room temperature?", a:"Mercury"},
+    {q:"What is the study of rocks called?", a:"Geology"},
+    {q:"What is the main gas in fizzy drinks?", a:"Carbon dioxide"},
+    {q:"What dinosaur had three horns?", a:"Triceratops"},
+    {q:"What dinosaur was the largest meat eater?", a:"Tyrannosaurus rex"},
+    {q:"What do scientists call dinosaur remains in rock?", a:"Fossils"},
+    {q:"What flying reptile lived with dinosaurs?", a:"Pterodactyl"},
+    {q:"What dinosaur had plates on its back?", a:"Stegosaurus"},
+    {q:"How long ago did dinosaurs die out in millions of years?", a:"65 million"},
+    {q:"What long-necked dinosaur ate plants?", a:"Brachiosaurus"},
+    {q:"What do we call animals that eat only plants?", a:"Herbivores"},
+    {q:"What do we call animals that eat only meat?", a:"Carnivores"},
+    {q:"What do we call animals that eat both?", a:"Omnivores"},
+    {q:"What is the deepest ocean on Earth?", a:"Pacific Ocean"},
+    {q:"What is the longest river in the world?", a:"Nile"},
+    {q:"What sea creature has eight arms?", a:"Octopus"},
+    {q:"What is the largest fish in the ocean?", a:"Whale shark"},
+    {q:"What mammal lives in the ocean and uses echolocation?", a:"Dolphin"},
+    {q:"What do whales use to breathe at the surface?", a:"Blowhole"},
+    {q:"What ocean lies between America and Europe?", a:"Atlantic Ocean"},
+    {q:"What is frozen ocean water called?", a:"Sea ice"},
+    {q:"What is the largest mammal in the world?", a:"Blue whale"},
+    {q:"What coral structure is the largest living structure on Earth?", a:"Great Barrier Reef"},
+    {q:"What causes the ocean tides?", a:"The Moon"},
+    {q:"What is the salt in ocean water mostly?", a:"Sodium chloride"},
+    {q:"What do fish use to swim?", a:"Fins"},
+    {q:"What sea animal looks like a star?", a:"Starfish"},
+    {q:"How many arms does a starfish usually have?", a:"5"},
+    {q:"What is the fastest fish in the ocean?", a:"Sailfish"},
+    {q:"What ocean is the smallest?", a:"Arctic Ocean"},
+    {q:"What do whales eat that is tiny shrimp-like?", a:"Krill"},
+    {q:"What do you call a scientist who studies animals?", a:"Zoologist"},
+    {q:"What is the powerhouse of the cell?", a:"Mitochondria"},
+    {q:"What connects muscles to bones in the body?", a:"Tendons"},
+    {q:"How many legs does a crab have?", a:"10"},
+    {q:"What do you call animals that are active at night?", a:"Nocturnal"},
+    {q:"What leaves are the main food of a koala?", a:"Eucalyptus"},
+    {q:"What planet has the tallest volcano, Olympus Mons?", a:"Mars"},
+    {q:"What do astronauts wear in space?", a:"Spacesuit"},
+    {q:"What is the cocoon stage of a butterfly called?", a:"Chrysalis"},
+    {q:"What is the hardest natural substance on Earth?", a:"Diamond"},
+    {q:"What instrument measures earthquakes?", a:"Seismograph"},
+    {q:"What is molten rock below the surface of Earth called?", a:"Magma"},
+    {q:"What layer protects Earth from ultraviolet rays?", a:"Ozone layer"},
+    {q:"What is a baby goat called?", a:"Kid"},
+    {q:"What bird can fly backwards?", a:"Hummingbird"},
+    {q:"What is the largest hot desert in the world?", a:"Sahara"},
+    {q:"What river flows through the Grand Canyon?", a:"Colorado River"},
+    {q:"How many sides does a snowflake crystal have?", a:"6"},
+    {q:"What is the chemical symbol for iron?", a:"Fe"},
+    {q:"What part of a plant makes seeds?", a:"Flower"},
+    {q:"What is the green pigment in leaves called?", a:"Chlorophyll"},
+    {q:"What continent is also a country?", a:"Australia"},
+    {q:"What is frozen soil in the Arctic called?", a:"Permafrost"},
+    {q:"What mammal lays eggs?", a:"Platypus"},
+    {q:"Who was the first US president?", a:"George Washington"},
+    {q:"Who was the second US president?", a:"John Adams"},
+    {q:"Who was the third US president?", a:"Thomas Jefferson"},
+    {q:"Which president led the Union during the Civil War?", a:"Abraham Lincoln"},
+    {q:"Which president is pictured on the US penny?", a:"Abraham Lincoln"},
+    {q:"Which president is on the twenty-dollar bill?", a:"Andrew Jackson"},
+    {q:"Which founding father is on the ten-dollar bill?", a:"Alexander Hamilton"},
+    {q:"Who was president when World War II ended?", a:"Harry Truman"},
+    {q:"Who was president at the start of World War II?", a:"Franklin Roosevelt"},
+    {q:"Which president resigned from office in 1974?", a:"Richard Nixon"},
+    {q:"Who was the youngest person elected US president?", a:"John F. Kennedy"},
+    {q:"Which US president was a former Hollywood actor?", a:"Ronald Reagan"},
+    {q:"Who was president during World War I?", a:"Woodrow Wilson"},
+    {q:"Which president shares Mount Rushmore with Washington, Jefferson, and Lincoln?", a:"Theodore Roosevelt"},
+    {q:"Who was the first president to live in the White House?", a:"John Adams"},
+    {q:"Which president bought the Louisiana Territory from France?", a:"Thomas Jefferson"},
+    {q:"Who commanded the Continental Army in the Revolution?", a:"George Washington"},
+    {q:"Which president delivered the Gettysburg Address?", a:"Abraham Lincoln"},
+    {q:"Who became president after John F. Kennedy was assassinated?", a:"Lyndon Johnson"},
+    {q:"Which 1800s president served two separate, non-consecutive terms?", a:"Grover Cleveland"},
+    {q:"Who was president when the Great Depression began?", a:"Herbert Hoover"},
+    {q:"Which president created the New Deal programs?", a:"Franklin Roosevelt"},
+    {q:"Which president was nicknamed Old Hickory?", a:"Andrew Jackson"},
+    {q:"Who was the first vice president of the United States?", a:"John Adams"},
+    {q:"Which president's face is on the nickel?", a:"Thomas Jefferson"},
+    {q:"In what year did World War I begin?", a:"1914"},
+    {q:"In what year did World War II end?", a:"1945"},
+    {q:"Which country attacked Pearl Harbor in 1941?", a:"Japan"},
+    {q:"In which month was Pearl Harbor attacked?", a:"December"},
+    {q:"Which dictator led Nazi Germany?", a:"Adolf Hitler"},
+    {q:"Who led the Soviet Union during World War II?", a:"Joseph Stalin"},
+    {q:"Who was Britain's prime minister for most of World War II?", a:"Winston Churchill"},
+    {q:"The Allied invasion of Normandy is known by what name?", a:"D-Day"},
+    {q:"In which country is Normandy, site of the D-Day landings?", a:"France"},
+    {q:"Which war was fought between North Korea and South Korea?", a:"Korean War"},
+    {q:"The American Civil War was fought between the Union and what?", a:"The Confederacy"},
+    {q:"In what year did the American Civil War end?", a:"1865"},
+    {q:"Which general led the Confederate army?", a:"Robert E. Lee"},
+    {q:"Which ship's sinking in 1915 helped push the US toward World War I?", a:"Lusitania"},
+    {q:"Which treaty officially ended World War I?", a:"Treaty of Versailles"},
+    {q:"The Cold War was mainly between the US and which country?", a:"Soviet Union"},
+    {q:"Which US general commanded Allied forces in Europe in World War II?", a:"Dwight Eisenhower"},
+    {q:"On which Japanese city was the first atomic bomb dropped?", a:"Hiroshima"},
+    {q:"The second atomic bomb was dropped on which Japanese city?", a:"Nagasaki"},
+    {q:"In what year did the Berlin Wall fall?", a:"1989"},
+    {q:"In what year did the United States declare independence?", a:"1776"},
+    {q:"Which country gave the Statue of Liberty to the United States?", a:"France"},
+    {q:"Who was the first US Secretary of the Treasury?", a:"Alexander Hamilton"},
+    {q:"Which war ended with the Treaty of Paris in 1783?", a:"American Revolution"},
+    {q:"What was the first battle of the American Revolution?", a:"Lexington and Concord"},
+    {q:"Who invented the practical light bulb?", a:"Thomas Edison"},
+    {q:"Who invented the telephone?", a:"Alexander Graham Bell"},
+    {q:"The first successful airplane was built by which brothers?", a:"Wright brothers"},
+    {q:"Who invented dynamite?", a:"Alfred Nobel"},
+    {q:"Who invented the movable-type printing press?", a:"Johannes Gutenberg"},
+    {q:"Who developed the theory of relativity?", a:"Albert Einstein"},
+    {q:"Which Scottish engineer improved the steam engine?", a:"James Watt"},
+    {q:"Who invented the World Wide Web?", a:"Tim Berners-Lee"},
+    {q:"Who discovered penicillin?", a:"Alexander Fleming"},
+    {q:"Who is credited with inventing the radio?", a:"Guglielmo Marconi"},
+    {q:"Who invented the cotton gin?", a:"Eli Whitney"},
+    {q:"Who invented the telegraph?", a:"Samuel Morse"},
+    {q:"Who invented the phonograph?", a:"Thomas Edison"},
+    {q:"Who made the first solo nonstop flight across the Atlantic?", a:"Charles Lindbergh"},
+    {q:"Who invented the polio vaccine?", a:"Jonas Salk"},
+    {q:"Who invented the steamboat?", a:"Robert Fulton"},
+    {q:"Who invented the mechanical reaper?", a:"Cyrus McCormick"},
+    {q:"Who invented the first practical automobile assembly line?", a:"Henry Ford"},
+    {q:"Who invented the electric battery?", a:"Alessandro Volta"},
+    {q:"Who invented bifocal glasses?", a:"Benjamin Franklin"},
+    {q:"Who invented the lightning rod?", a:"Benjamin Franklin"},
+    {q:"Who invented the hot air balloon?", a:"Montgolfier brothers"},
+    {q:"Who invented the diesel engine?", a:"Rudolf Diesel"},
+    {q:"Who designed the first mechanical computer, the Analytical Engine?", a:"Charles Babbage"},
+    {q:"Who invented the safety elevator?", a:"Elisha Otis"},
+    {q:"Who sailed to the Americas in 1492?", a:"Christopher Columbus"},
+    {q:"Which explorer first circumnavigated the globe with his crew?", a:"Ferdinand Magellan"},
+    {q:"Who was the first person to reach the South Pole?", a:"Roald Amundsen"},
+    {q:"Which explorer claimed the Mississippi River for France?", a:"La Salle"},
+    {q:"Who led the first expedition across the continental US to the Pacific?", a:"Lewis and Clark"},
+    {q:"Which Italian explorer is America named after?", a:"Amerigo Vespucci"},
+    {q:"Who conquered the Aztec Empire?", a:"Hernan Cortes"},
+    {q:"Who conquered the Inca Empire?", a:"Francisco Pizarro"},
+    {q:"Which explorer searched for the Fountain of Youth in Florida?", a:"Ponce de Leon"},
+    {q:"Who was the first European to see the Pacific Ocean from the Americas?", a:"Vasco Balboa"},
+    {q:"Which Viking explorer reached North America around 1000 AD?", a:"Leif Erikson"},
+    {q:"Who was the first person in space?", a:"Yuri Gagarin"},
+    {q:"Who was the first person to walk on the Moon?", a:"Neil Armstrong"},
+    {q:"Who was the first American in space?", a:"Alan Shepard"},
+    {q:"Which explorer sailed around the Cape of Good Hope to India?", a:"Vasco da Gama"},
+    {q:"Who founded the colony of Pennsylvania?", a:"William Penn"},
+    {q:"Which ship carried the Pilgrims to America in 1620?", a:"Mayflower"},
+    {q:"In which year did the Pilgrims land at Plymouth?", a:"1620"},
+    {q:"Who helped the Pilgrims survive and acted as interpreter?", a:"Squanto"},
+    {q:"Which colony was the first permanent English settlement in America?", a:"Jamestown"},
+    {q:"In what year was Jamestown founded?", a:"1607"},
+    {q:"Who was the legendary leader of Jamestown colony?", a:"John Smith"},
+    {q:"Which Native American woman is linked to Jamestown and John Smith?", a:"Pocahontas"},
+    {q:"The lost colony of Roanoke was in which modern state?", a:"North Carolina"},
+    {q:"Who led the expedition that founded Quebec in 1608?", a:"Samuel de Champlain"},
+    {q:"Which ancient civilization built the pyramids of Giza?", a:"Egyptians"},
+    {q:"What is the longest river in Egypt?", a:"Nile River"},
+    {q:"What was the Egyptian writing system called?", a:"Hieroglyphics"},
+    {q:"Which Egyptian queen allied with Julius Caesar?", a:"Cleopatra"},
+    {q:"What stone helped scholars decode hieroglyphics?", a:"Rosetta Stone"},
+    {q:"Egyptian kings were known by what title?", a:"Pharaoh"},
+    {q:"Which boy king's tomb was found in 1922?", a:"King Tutankhamun"},
+    {q:"The Great Sphinx has the body of which animal?", a:"Lion"},
+    {q:"Which ancient Greek city-state was famous for its warriors?", a:"Sparta"},
+    {q:"Which ancient Greek city-state was the birthplace of democracy?", a:"Athens"},
+    {q:"The Olympic Games began in which ancient country?", a:"Greece"},
+    {q:"Who was the chief god of ancient Greece?", a:"Zeus"},
+    {q:"Which Greek philosopher taught Alexander the Great?", a:"Aristotle"},
+    {q:"Which Greek philosopher was sentenced to death by drinking hemlock?", a:"Socrates"},
+    {q:"Who wrote the Iliad and the Odyssey?", a:"Homer"},
+    {q:"The Parthenon temple stands in which city?", a:"Athens"},
+    {q:"Which empire was ruled from Rome?", a:"Roman Empire"},
+    {q:"Who was the first Roman emperor?", a:"Augustus"},
+    {q:"Which Roman leader was stabbed on the Ides of March?", a:"Julius Caesar"},
+    {q:"In which month are the Ides of March?", a:"March"},
+    {q:"Which Roman emperor fiddled while Rome burned, according to legend?", a:"Nero"},
+    {q:"What language did the ancient Romans speak?", a:"Latin"},
+    {q:"The Colosseum is located in which city?", a:"Rome"},
+    {q:"Which Roman general crossed the Alps with elephants?", a:"Hannibal"},
+    {q:"Hannibal led the forces of which city against Rome?", a:"Carthage"},
+    {q:"Which volcano destroyed Pompeii in 79 AD?", a:"Mount Vesuvius"},
+    {q:"Romulus and Remus founded which city, in legend?", a:"Rome"},
+    {q:"Which wall did the Romans build across northern Britain?", a:"Hadrian's Wall"},
+    {q:"What did Roman soldiers call their short sword?", a:"Gladius"},
+    {q:"In what year did the Boston Tea Party take place?", a:"1773"},
+    {q:"On which date is US Independence Day celebrated?", a:"July 4"},
+    {q:"In what year did World War I end?", a:"1918"},
+    {q:"In what year did the US enter World War II?", a:"1941"},
+    {q:"In what year did the stock market crash start the Great Depression?", a:"1929"},
+    {q:"In what year did humans first land on the Moon?", a:"1969"},
+    {q:"In what year was the US Constitution written?", a:"1787"},
+    {q:"In what year did the Wright brothers first fly?", a:"1903"},
+    {q:"In what year did Abraham Lincoln issue the Emancipation Proclamation?", a:"1863"},
+    {q:"In what year did women gain the right to vote in the US?", a:"1920"},
+    {q:"In what year did the Titanic sink?", a:"1912"},
+    {q:"In what year did Alaska and Hawaii become US states?", a:"1959"},
+    {q:"In what year was the telephone patented by Alexander Graham Bell?", a:"1876"},
+    {q:"In what year did the California Gold Rush begin?", a:"1849"},
+    {q:"In what year did the Berlin Wall go up?", a:"1961"},
+    {q:"In what year was John F. Kennedy assassinated?", a:"1963"},
+    {q:"In what year did Martin Luther King Jr. give his I Have a Dream speech?", a:"1963"},
+    {q:"The ancient Olympic Games were held in honor of which god?", a:"Zeus"},
+    {q:"How often were the ancient Olympic Games held?", a:"Every four years"},
+    {q:"How many amendments are in the Bill of Rights?", a:"Ten"},
+    {q:"Which amendment gave women the right to vote?", a:"Nineteenth Amendment"},
+    {q:"Which amendment abolished slavery in the US?", a:"Thirteenth Amendment"},
+    {q:"Which amendment guarantees freedom of speech?", a:"First Amendment"},
+    {q:"Which branch of US government makes the laws?", a:"Legislative"},
+    {q:"Which branch of US government enforces the laws?", a:"Executive"},
+    {q:"Which branch of US government interprets the laws?", a:"Judicial"},
+    {q:"How many senators does each US state have?", a:"Two"},
+    {q:"How many justices sit on the US Supreme Court?", a:"Nine"},
+    {q:"How long is a US president's term?", a:"Four years"},
+    {q:"How many terms can a US president serve at most?", a:"Two"},
+    {q:"What is the minimum age to become US president?", a:"Thirty-five"},
+    {q:"Which document begins with We the People?", a:"US Constitution"},
+    {q:"What are the first ten amendments to the Constitution called?", a:"Bill of Rights"},
+    {q:"Who is the head of the US Supreme Court?", a:"Chief Justice"},
+    {q:"What is the US Capitol building's city?", a:"Washington DC"},
+    {q:"Which house of Congress has 435 voting members?", a:"House of Representatives"},
+    {q:"How many electoral votes are needed to win the US presidency?", a:"270"},
+    {q:"What is it called when the president rejects a bill?", a:"Veto"},
+    {q:"Which body must approve presidential appointments to the Supreme Court?", a:"Senate"},
+    {q:"How long is a US senator's term?", a:"Six years"},
+    {q:"How long is a US representative's term?", a:"Two years"},
+    {q:"Which US document declared independence from Britain?", a:"Declaration of Independence"},
+    {q:"Who was the main author of the Declaration of Independence?", a:"Thomas Jefferson"},
+    {q:"Which founding document replaced the Articles of Confederation?", a:"US Constitution"},
+    {q:"Who is known as the Father of the Constitution?", a:"James Madison"},
+    {q:"Which state was the first to ratify the US Constitution?", a:"Delaware"},
+    {q:"What is the supreme law of the United States?", a:"The Constitution"},
+    {q:"Which amendment lowered the voting age to 18?", a:"Twenty-sixth Amendment"},
+    {q:"In the US government, who succeeds the president if both the president and VP cannot serve?", a:"Speaker of the House"},
+    {q:"Which war was America's first as an independent nation against Britain again in 1812?", a:"War of 1812"},
+    {q:"During which war was the Star-Spangled Banner written?", a:"War of 1812"},
+    {q:"Who wrote the Star-Spangled Banner?", a:"Francis Scott Key"},
+    {q:"Which purchase doubled the size of the US in 1803?", a:"Louisiana Purchase"},
+    {q:"Which trail took settlers west to Oregon in the 1800s?", a:"Oregon Trail"},
+    {q:"Which battle is remembered by the phrase Remember the Alamo?", a:"Battle of the Alamo"},
+    {q:"Which state was an independent republic before joining the US in 1845?", a:"Texas"},
+    {q:"The Underground Railroad helped enslaved people escape to where?", a:"The North"},
+    {q:"Who led many enslaved people to freedom on the Underground Railroad?", a:"Harriet Tubman"},
+    {q:"Which abolitionist published The Liberator newspaper?", a:"William Lloyd Garrison"},
+    {q:"Which president signed the Indian Removal Act?", a:"Andrew Jackson"},
+    {q:"The forced Cherokee relocation is known as the Trail of what?", a:"Trail of Tears"},
+    {q:"Which country sold Alaska to the United States?", a:"Russia"},
+    {q:"In what year did the US buy Alaska?", a:"1867"},
+    {q:"Which country first built the Panama Canal attempt and failed?", a:"France"},
+    {q:"Which ship made the first voyage through the Panama Canal in 1914?", a:"Ancon"},
+    {q:"In what year did World War II begin?", a:"1939"},
+    {q:"Which pharaoh built the Great Pyramid of Giza?", a:"Khufu"},
+    {q:"Who was the president of the Confederate States?", a:"Jefferson Davis"},
+    {q:"Which amendment to the Constitution ended Prohibition?", a:"Twenty-first Amendment"},
+    {q:"In what year did the Pilgrims celebrate the first Thanksgiving?", a:"1621"},
+    {q:"Who wrote Romeo and Juliet?", a:"Shakespeare"},
+    {q:"Who wrote the Harry Potter books?", a:"J.K. Rowling"},
+    {q:"Who painted the Mona Lisa?", a:"Leonardo da Vinci"},
+    {q:"What instrument does a guitarist play?", a:"Guitar"},
+    {q:"Who played Jack in Titanic?", a:"Leonardo DiCaprio"},
+    {q:"What is the surname of the wizard Harry in the Harry Potter books?", a:"Potter"},
+    {q:"Who wrote Alice's Adventures in Wonderland?", a:"Lewis Carroll"},
+    {q:"How many keys does a standard piano have?", a:"88"},
+    {q:"Who painted The Starry Night?", a:"Vincent van Gogh"},
+    {q:"What do you call a person who writes plays?", a:"Playwright"},
+    {q:"In what city is Broadway theater famous?", a:"New York"},
+    {q:"Who wrote Pride and Prejudice?", a:"Jane Austen"},
+    {q:"What kind of animal is Bambi in the Disney film?", a:"Deer"},
+    {q:"Who played the Joker in The Dark Knight?", a:"Heath Ledger"},
+    {q:"What string instrument is bigger than a violin but smaller than a cello?", a:"Viola"},
+    {q:"Who wrote The Great Gatsby?", a:"F. Scott Fitzgerald"},
+    {q:"Which composer wrote the opera The Magic Flute?", a:"Mozart"},
+    {q:"Who is the author of The Chronicles of Narnia?", a:"C.S. Lewis"},
+    {q:"What is the name of the cowboy's horse in Toy Story?", a:"Bullseye"},
+    {q:"In ballet, what shoes do dancers wear on their toes?", a:"Pointe shoes"},
+    {q:"Who wrote Oliver Twist?", a:"Charles Dickens"},
+    {q:"Which pop star is known as the King of Pop?", a:"Michael Jackson"},
+    {q:"Who painted the ceiling of the Sistine Chapel?", a:"Michelangelo"},
+    {q:"What is the name of the pig in Charlotte's Web?", a:"Wilbur"},
+    {q:"Who wrote The Hobbit?", a:"J.R.R. Tolkien"},
+    {q:"What do you call the words printed at the bottom of a foreign film?", a:"Subtitles"},
+    {q:"How many symphonies did Beethoven compose?", a:"Nine"},
+    {q:"Who played Hermione in the Harry Potter films?", a:"Emma Watson"},
+    {q:"What is the longest-running animated TV show in the US?", a:"The Simpsons"},
+    {q:"What brass instrument has a slide instead of valves?", a:"Trombone"},
+    {q:"Which fairy tale character lost a glass slipper?", a:"Cinderella"},
+    {q:"What do you call a two-person musical performance?", a:"Duet"},
+    {q:"Who directed Jaws and E.T.?", a:"Steven Spielberg"},
+    {q:"What instrument did Louis Armstrong play?", a:"Trumpet"},
+    {q:"In the nursery rhyme, who had a farm with an E-I-E-I-O?", a:"Old MacDonald"},
+    {q:"Who wrote The Adventures of Tom Sawyer?", a:"Mark Twain"},
+    {q:"What is the name of the spider in Charlotte's Web?", a:"Charlotte"},
+    {q:"Which artist cut off part of his own ear?", a:"Vincent van Gogh"},
+    {q:"What TV show featured a coffee shop called Central Perk?", a:"Friends"},
+    {q:"Who composed the music for the film Star Wars?", a:"John Williams"},
+    {q:"What is the name of the boy who never grows up in a classic play?", a:"Peter Pan"},
+    {q:"Who wrote Peter Pan?", a:"J.M. Barrie"},
+    {q:"How many players are in a string quartet?", a:"Four"},
+    {q:"What dance originates from Argentina and involves a dramatic partner style?", a:"Tango"},
+    {q:"Who played Indiana Jones?", a:"Harrison Ford"},
+    {q:"What is the currency of the fictional Gringotts bank run by goblins?", a:"Galleons"},
+    {q:"Who wrote The Cat in the Hat?", a:"Dr. Seuss"},
+    {q:"What color is the brick road in The Wizard of Oz?", a:"Yellow"},
+    {q:"Which instrument is Yo-Yo Ma famous for playing?", a:"Cello"},
+    {q:"What do you call a story with a moral, often featuring animals?", a:"Fable"},
+    {q:"Who wrote A Tale of Two Cities?", a:"Charles Dickens"},
+    {q:"Which singer is known as the Queen of Soul?", a:"Aretha Franklin"},
+    {q:"What film features a shark nicknamed Bruce by its crew?", a:"Jaws"},
+    {q:"Who painted Girl with a Pearl Earring?", a:"Johannes Vermeer"},
+    {q:"What is the name of Sherlock Holmes's friend and assistant?", a:"Dr. Watson"},
+    {q:"Who created Sherlock Holmes?", a:"Arthur Conan Doyle"},
+    {q:"How many lines are in a sonnet?", a:"14"},
+    {q:"What instrument is also called a fiddle?", a:"Violin"},
+    {q:"Which rock band released the album Abbey Road?", a:"The Beatles"},
+    {q:"From which city were the Beatles?", a:"Liverpool"},
+    {q:"Who played Captain Jack Sparrow?", a:"Johnny Depp"},
+    {q:"Who wrote The Odyssey?", a:"Homer"},
+    {q:"What Greek epic poem tells of the Trojan War?", a:"The Iliad"},
+    {q:"Which composer became deaf later in life?", a:"Beethoven"},
+    {q:"What is the first name of the artist Picasso?", a:"Pablo"},
+    {q:"Who sculpted the statue of David in Florence?", a:"Michelangelo"},
+    {q:"What TV series featured the starship Enterprise?", a:"Star Trek"},
+    {q:"Who played Mr. Spock in the original Star Trek?", a:"Leonard Nimoy"},
+    {q:"What do you call the main villain in a story?", a:"Antagonist"},
+    {q:"Who wrote Wuthering Heights?", a:"Emily Bronte"},
+    {q:"Which Bronte sister wrote Jane Eyre?", a:"Charlotte Bronte"},
+    {q:"What is the name of the fairy in Peter Pan?", a:"Tinker Bell"},
+    {q:"Who is the author of The Jungle Book?", a:"Rudyard Kipling"},
+    {q:"What boy in The Jungle Book was raised by wolves?", a:"Mowgli"},
+    {q:"Which musical features the song Memory and dancing cats?", a:"Cats"},
+    {q:"Who composed the musical Cats?", a:"Andrew Lloyd Webber"},
+    {q:"What musical tells the story of a masked man in a Paris opera house?", a:"The Phantom of the Opera"},
+    {q:"How many strings does a cello have?", a:"Four"},
+    {q:"What woodwind instrument does Squidward play in SpongeBob?", a:"Clarinet"},
+    {q:"Who wrote the novel Dracula?", a:"Bram Stoker"},
+    {q:"Which Shakespeare play features the witches who say double double toil and trouble?", a:"Macbeth"},
+    {q:"In Hamlet, what does Hamlet hold while saying Alas poor Yorick?", a:"A skull"},
+    {q:"Who is Romeo's love in Romeo and Juliet?", a:"Juliet"},
+    {q:"What family is Juliet from in Romeo and Juliet?", a:"Capulet"},
+    {q:"What family is Romeo from?", a:"Montague"},
+    {q:"Who wrote the poem The Raven?", a:"Edgar Allan Poe"},
+    {q:"What bird repeats Nevermore in Poe's poem?", a:"Raven"},
+    {q:"Which artist painted Campbell's Soup Cans?", a:"Andy Warhol"},
+    {q:"What art movement is Andy Warhol associated with?", a:"Pop art"},
+    {q:"Who painted Water Lilies many times?", a:"Claude Monet"},
+    {q:"From what country was Claude Monet?", a:"France"},
+    {q:"What do you call a painting on a wet plaster wall?", a:"Fresco"},
+    {q:"Who wrote the novel Moby-Dick?", a:"Herman Melville"},
+    {q:"Who is the captain chasing the white whale in Moby-Dick?", a:"Captain Ahab"},
+    {q:"What instrument does a drummer hit with sticks?", a:"Drums"},
+    {q:"How many members were in The Beatles?", a:"Four"},
+    {q:"Which Beatle was known as the quiet one?", a:"George Harrison"},
+    {q:"Who sang I Will Always Love You in the film The Bodyguard?", a:"Whitney Houston"},
+    {q:"What film stars Tom Hanks as a man who runs across America?", a:"Forrest Gump"},
+    {q:"What does Forrest Gump say life is like?", a:"A box of chocolates"},
+    {q:"Who directed Pulp Fiction?", a:"Quentin Tarantino"},
+    {q:"What dance is performed in the musical Grease at the school dance contest?", a:"Hand jive"},
+    {q:"Who played Danny in the film Grease?", a:"John Travolta"},
+    {q:"Who played Sandy in Grease?", a:"Olivia Newton-John"},
+    {q:"What is the name of the lion in The Lion King who becomes king?", a:"Simba"},
+    {q:"Who is Simba's father in The Lion King?", a:"Mufasa"},
+    {q:"What warthog sings Hakuna Matata with Timon?", a:"Pumbaa"},
+    {q:"Which Disney film features the song Let It Go?", a:"Frozen"},
+    {q:"Who is the snowman in Frozen?", a:"Olaf"},
+    {q:"What is the name of the reindeer in Frozen?", a:"Sven"},
+    {q:"Who wrote the lyrics and music for Hamilton?", a:"Lin-Manuel Miranda"},
+    {q:"Which US president is on the ten-dollar bill and a Hamilton character?", a:"Alexander Hamilton"},
+    {q:"What musical is based on the songs of ABBA?", a:"Mamma Mia"},
+    {q:"From what country was the group ABBA?", a:"Sweden"},
+    {q:"Who painted The Persistence of Memory with melting clocks?", a:"Salvador Dali"},
+    {q:"Who wrote the novel Little Women?", a:"Louisa May Alcott"},
+    {q:"How many sisters are in Little Women?", a:"Four"},
+    {q:"What is the name of the oldest March sister in Little Women?", a:"Meg"},
+    {q:"Who authored The Divine Comedy?", a:"Dante"},
+    {q:"In what language was The Divine Comedy originally written?", a:"Italian"},
+    {q:"What do you call the Japanese art of paper folding?", a:"Origami"},
+    {q:"Who is the Greek hero of The Iliad known for his heel?", a:"Achilles"},
+    {q:"What body part was Achilles' only weakness?", a:"Heel"},
+    {q:"Which Shakespeare play is known as the Scottish play by actors?", a:"Macbeth"},
+    {q:"Who killed Macbeth in the play?", a:"Macduff"},
+    {q:"What is the name of Hamlet's mother?", a:"Gertrude"},
+    {q:"Who is Hamlet's murdered father a ghost of in the play?", a:"King Hamlet"},
+    {q:"What instrument has 47 strings and is played by plucking?", a:"Harp"},
+    {q:"Which instrument is associated with jazz musician Miles Davis?", a:"Trumpet"},
+    {q:"What kind of music did Miles Davis mainly play?", a:"Jazz"},
+    {q:"Who is known as the King of Rock and Roll?", a:"Elvis Presley"},
+    {q:"In what city is Elvis Presley's Graceland located?", a:"Memphis"},
+    {q:"Which singer was known as the Material Girl?", a:"Madonna"},
+    {q:"Who released the album Thriller in 1982?", a:"Michael Jackson"},
+    {q:"Who painted The Birth of Venus?", a:"Sandro Botticelli"},
+    {q:"What goddess stands on a seashell in The Birth of Venus?", a:"Venus"},
+    {q:"What is the name of the brooding hero in Jane Eyre?", a:"Mr. Rochester"},
+    {q:"Who wrote Frankenstein?", a:"Mary Shelley"},
+    {q:"In Frankenstein, what is the creature often mistakenly called?", a:"Frankenstein"},
+    {q:"Who directed the film Psycho?", a:"Alfred Hitchcock"},
+    {q:"Which Hitchcock film is about a man who watches neighbors from his window?", a:"Rear Window"},
+    {q:"Who starred in Rear Window alongside Grace Kelly?", a:"James Stewart"},
+    {q:"What actress became Princess of Monaco?", a:"Grace Kelly"},
+    {q:"Who played Princess Leia in Star Wars?", a:"Carrie Fisher"},
+    {q:"Who played Luke Skywalker?", a:"Mark Hamill"},
+    {q:"Who played Han Solo?", a:"Harrison Ford"},
+    {q:"What is the name of Han Solo's ship?", a:"Millennium Falcon"},
+    {q:"Who is the green Jedi Master who speaks in odd word order?", a:"Yoda"},
+    {q:"What weapon do Jedi use?", a:"Lightsaber"},
+    {q:"Who wrote the A Song of Ice and Fire books behind Game of Thrones?", a:"George R.R. Martin"},
+    {q:"What is the family name of Daenerys in Game of Thrones?", a:"Targaryen"},
+    {q:"Which TV show featured a dragon queen named Daenerys?", a:"Game of Thrones"},
+    {q:"What is the Doctor's time machine called in Doctor Who?", a:"TARDIS"},
+    {q:"What does the TARDIS look like on the outside?", a:"Police box"},
+    {q:"Who created the Peanuts comic strip?", a:"Charles Schulz"},
+    {q:"What is Charlie Brown's dog named?", a:"Snoopy"},
+    {q:"What breed of dog is Snoopy?", a:"Beagle"},
+    {q:"Who created Mickey Mouse?", a:"Walt Disney"},
+    {q:"Who voiced the Genie in the 1992 Aladdin?", a:"Robin Williams"},
+    {q:"What actor played Mrs. Doubtfire?", a:"Robin Williams"},
+    {q:"In what film does Robin Williams play a teacher who says carpe diem?", a:"Dead Poets Society"},
+    {q:"Who wrote the play A Raisin in the Sun?", a:"Lorraine Hansberry"},
+    {q:"Which playwright wrote A Streetcar Named Desire?", a:"Tennessee Williams"},
+    {q:"What character shouts Stella in A Streetcar Named Desire?", a:"Stanley Kowalski"},
+    {q:"Who wrote Death of a Salesman?", a:"Arthur Miller"},
+    {q:"What is the surname of Willy in Death of a Salesman?", a:"Loman"},
+    {q:"Which ancient Greek playwright wrote Oedipus Rex?", a:"Sophocles"},
+    {q:"Who wrote the Greek tragedy Antigone?", a:"Sophocles"},
+    {q:"What do you call a play that ends sadly for the main character?", a:"Tragedy"},
+    {q:"What do you call a funny play meant to make audiences laugh?", a:"Comedy"},
+    {q:"Who composed the opera Carmen?", a:"Georges Bizet"},
+    {q:"Which opera features the character Figaro the barber?", a:"The Barber of Seville"},
+    {q:"Who composed The Barber of Seville?", a:"Rossini"},
+    {q:"What is the name of the wooden boy in a classic Italian tale?", a:"Pinocchio"},
+    {q:"What grows when Pinocchio lies?", a:"His nose"},
+    {q:"Who is the cricket counselor in Pinocchio?", a:"Jiminy Cricket"},
+    {q:"In the tale of the Three Little Pigs, what does the wolf do to the houses?", a:"Blows them down"},
+    {q:"What material is the third little pig's house made of?", a:"Bricks"},
+    {q:"Which fairy tale features a beanstalk and a giant?", a:"Jack and the Beanstalk"},
+    {q:"What does Jack trade for magic beans?", a:"A cow"},
+    {q:"In Hansel and Gretel, what is the witch's house made of?", a:"Gingerbread"},
+    {q:"What trail do Hansel and Gretel leave in the forest?", a:"Breadcrumbs"},
+    {q:"Who is the girl with very long hair in a tower?", a:"Rapunzel"},
+    {q:"What does Rapunzel let down from the tower?", a:"Her hair"},
+    {q:"Which fairy tale has a princess who sleeps for 100 years?", a:"Sleeping Beauty"},
+    {q:"What pricks Sleeping Beauty's finger?", a:"A spindle"},
+    {q:"Who wakes Sleeping Beauty?", a:"A prince"},
+    {q:"In Snow White, how many dwarfs are there?", a:"Seven"},
+    {q:"What fruit does the queen poison in Snow White?", a:"Apple"},
+    {q:"In The Ugly Duckling, what does the duckling become?", a:"A swan"},
+    {q:"Who wrote many fairy tales including The Little Mermaid (Hans Christian...)?", a:"Andersen"},
+    {q:"What is the first name of fairy tale author Hans Christian Andersen?", a:"Hans"},
+    {q:"Which brothers collected fairy tales like Cinderella and Hansel and Gretel?", a:"Grimm"},
+    {q:"In The Frog Prince, what does the frog turn into after a kiss?", a:"A prince"},
+    {q:"What musical instrument does the Pied Piper play?", a:"Flute"},
+    {q:"From what town did the Pied Piper lead away the rats?", a:"Hamelin"},
+    {q:"In Goldilocks and the Three Bears, whose porridge is just right?", a:"Baby Bear's"},
+    {q:"What does Goldilocks break in the bears' house?", a:"A chair"},
+    {q:"Who wrote the fable of the Tortoise and the Hare?", a:"Aesop"},
+    {q:"Who wins the race in the Tortoise and the Hare?", a:"The tortoise"},
+    {q:"In soccer, what is it called when a player scores three goals in one game?", a:"Hat trick"},
+    {q:"How many points is a touchdown worth in American football?", a:"Six"},
+    {q:"In baseball, how many strikes make an out?", a:"Three"},
+    {q:"In basketball, how many points is a free throw worth?", a:"One"},
+    {q:"How many years apart are the Summer Olympic Games?", a:"Four"},
+    {q:"In tennis, what is a score of zero called?", a:"Love"},
+    {q:"In golf, what is one stroke under par on a hole called?", a:"Birdie"},
+    {q:"In boxing, how many minutes does a standard round last?", a:"Three"},
+    {q:"Which country is credited with inventing modern soccer?", a:"England"},
+    {q:"In American football, how many yards long is the playing field without end zones?", a:"100"},
+    {q:"In baseball, what is the player who throws the ball to the batter called?", a:"Pitcher"},
+    {q:"In basketball, how many players from one team are on the court at once?", a:"Five"},
+    {q:"In a men's Grand Slam tennis final, how many sets must the winner take?", a:"Three"},
+    {q:"Which golf tournament awards the winner a green jacket?", a:"The Masters"},
+    {q:"In boxing, what does KO stand for?", a:"Knockout"},
+    {q:"In soccer, how many minutes is a standard match?", a:"90"},
+    {q:"Which NFL team plays its home games in Green Bay?", a:"Packers"},
+    {q:"In baseball, how many bases are there including home plate?", a:"Four"},
+    {q:"Which player won a record 11 NBA championships with the Boston Celtics?", a:"Bill Russell"},
+    {q:"How many rings appear on the Olympic flag?", a:"Five"},
+    {q:"On what surface is the Wimbledon tennis tournament played?", a:"Grass"},
+    {q:"In golf, which club is used for putting on the green?", a:"Putter"},
+    {q:"What is the heaviest weight class in boxing?", a:"Heavyweight"},
+    {q:"In soccer, what color card means a player is sent off?", a:"Red"},
+    {q:"In American football, which player snaps the ball to the quarterback?", a:"Center"},
+    {q:"In baseball, what is a home run hit with the bases loaded called?", a:"Grand slam"},
+    {q:"In basketball, what is it called when a player moves without dribbling the ball?", a:"Traveling"},
+    {q:"In which sport would you perform a slam dunk?", a:"Basketball"},
+    {q:"What color medal is awarded for first place at the Olympics?", a:"Gold"},
+    {q:"In tennis, what is an unbeatable serve that the opponent cannot touch called?", a:"Ace"},
+    {q:"In ten-pin bowling, how many pins are set up at the end of the lane?", a:"Ten"},
+    {q:"In golf, what is a score of two strokes under par on a hole called?", a:"Eagle"},
+    {q:"In which sport do players hit a shuttlecock over a net?", a:"Badminton"},
+    {q:"In soccer, which player is allowed to handle the ball inside the box?", a:"Goalkeeper"},
+    {q:"In American football, how many points is a field goal worth?", a:"Three"},
+    {q:"In baseball, how many innings are in a regulation game?", a:"Nine"},
+    {q:"Michael Jordan played most of his NBA career for which team?", a:"Chicago Bulls"},
+    {q:"The Super Bowl is the championship game of which league?", a:"NFL"},
+    {q:"In swimming, which stroke shares its name with a flying insect?", a:"Butterfly"},
+    {q:"In tennis, what is a tied score of 40-40 called?", a:"Deuce"},
+    {q:"In golf, what is the closely mowed area between the tee and the green called?", a:"Fairway"},
+    {q:"In boxing, what protective gear do fighters wear on their hands?", a:"Gloves"},
+    {q:"How many players does a baseball team have in the field at once?", a:"Nine"},
+    {q:"In ice hockey, what is the hard rubber disc hit toward the goal called?", a:"Puck"},
+    {q:"Serena Williams became famous playing which sport?", a:"Tennis"},
+    {q:"In American football, what is a two-point score by the defense called?", a:"Safety"},
+    {q:"The soccer World Cup is organized by which governing body?", a:"FIFA"},
+    {q:"In basketball, how many feet above the ground is the hoop?", a:"Ten"},
+    {q:"How many players are on a volleyball team on the court at once?", a:"Six"},
+    {q:"Sushi is a traditional dish from which country?", a:"Japan"},
+    {q:"Which herb is the main ingredient in pesto sauce?", a:"Basil"},
+    {q:"How many teaspoons make one tablespoon?", a:"Three"},
+    {q:"Which fruit is pressed to make most wine?", a:"Grapes"},
+    {q:"What is the main ingredient in hummus?", a:"Chickpeas"},
+    {q:"Which country is credited with inventing pizza?", a:"Italy"},
+    {q:"What do you call the yellow part in the center of an egg?", a:"Yolk"},
+    {q:"Tofu is made from the milk of which bean?", a:"Soybean"},
+    {q:"Which vegetable makes your eyes water when you chop it?", a:"Onion"},
+    {q:"Coffee beans are the seeds of which fruit?", a:"Cherry"},
+    {q:"Which nut is ground to make marzipan?", a:"Almond"},
+    {q:"What gas produced by yeast makes bread dough rise?", a:"Carbon dioxide"},
+    {q:"Brie and Camembert are types of what food?", a:"Cheese"},
+    {q:"What is the Japanese soup made from fermented soybean paste called?", a:"Miso"},
+    {q:"Which fruit carries its seeds on the outside?", a:"Strawberry"},
+    {q:"Cooking food by submerging it in hot oil is called what?", a:"Deep frying"},
+    {q:"Kimchi is a traditional dish from which country?", a:"Korea"},
+    {q:"What sweet substance do bees produce?", a:"Honey"},
+    {q:"Which vegetable is called an aubergine in Britain?", a:"Eggplant"},
+    {q:"What spice, made from tree bark, flavors many Christmas desserts?", a:"Cinnamon"},
+    {q:"Vodka was traditionally distilled from which vegetable?", a:"Potato"},
+    {q:"Which drink is flavored with juniper berries?", a:"Gin"},
+    {q:"Which citrus fruit is green and smaller than a lemon?", a:"Lime"},
+    {q:"In cooking, the phrase al dente most often describes which food cooked firm?", a:"Pasta"},
+    {q:"What sweet ingredient gives Mexican mole sauce its dark richness?", a:"Chocolate"},
+    {q:"Saffron spice comes from the stigma of which flower?", a:"Crocus"},
+    {q:"What is the classic yellow spice that colors American mustard?", a:"Turmeric"},
+    {q:"What is the main ingredient in mayonnaise besides oil?", a:"Eggs"},
+    {q:"Which country is the world's largest producer of coffee?", a:"Brazil"},
+    {q:"What green vegetable gives Popeye his strength?", a:"Spinach"},
+    {q:"A sommelier is an expert in which drink?", a:"Wine"},
+    {q:"Dim sum is a style of cuisine from which country?", a:"China"},
+    {q:"Which strong-smelling fruit is called the king of fruits in Southeast Asia?", a:"Durian"},
+    {q:"What spice is made from the dried pods of an orchid?", a:"Vanilla"},
+    {q:"Tacos are a traditional food of which country?", a:"Mexico"},
+    {q:"Which vegetable is fermented to make sauerkraut?", a:"Cabbage"},
+    {q:"What sparkling wine is nicknamed bubbly?", a:"Champagne"},
+    {q:"How many cups are in one pint?", a:"Two"},
+    {q:"Cranberries are the traditional sauce berry served with which holiday bird?", a:"Turkey"},
+    {q:"What do bees collect from flowers to make honey?", a:"Nectar"},
+    {q:"What type of rice is traditionally used to make risotto?", a:"Arborio"},
+    {q:"Which fruit besides walnuts is a classic ingredient in a Waldorf salad?", a:"Apple"},
+    {q:"Paella is the famous rice dish of which country?", a:"Spain"},
+    {q:"Tahini paste is made from which seeds?", a:"Sesame"},
+    {q:"What powder is added to cake batter to make it rise without yeast?", a:"Baking powder"},
+    {q:"Which fruit is dried to make raisins?", a:"Grapes"},
+    {q:"Haggis is the national dish of which country?", a:"Scotland"},
+    {q:"Which bean is named after a body organ it resembles?", a:"Kidney bean"},
+    {q:"What vegetable is carved into jack-o'-lanterns at Halloween?", a:"Pumpkin"},
+    {q:"In which sport is the Stanley Cup awarded?", a:"Ice hockey"},
+    {q:"How many periods are there in an ice hockey game?", a:"Three"},
+    {q:"In rugby union, how many points is a try worth?", a:"Five"},
+    {q:"Tiger Woods is famous for playing which sport?", a:"Golf"},
+    {q:"In cycling, who wears the yellow jersey in the Tour de France?", a:"Race leader"},
+    {q:"How many revolutions are in a triple jump in figure skating?", a:"Three"},
+    {q:"Usain Bolt competed in which kind of race?", a:"Sprints"},
+    {q:"In American football, how many downs does a team get to gain ten yards?", a:"Four"},
+    {q:"In baseball, what does the abbreviation RBI stand for?", a:"Runs batted in"},
+    {q:"In basketball, how many points is a shot from beyond the arc worth?", a:"Three"},
+    {q:"The Wimbledon Championships are held in which city?", a:"London"},
+    {q:"In boxing, how many rounds are in a modern championship fight?", a:"Twelve"},
+    {q:"From how many yards out is a soccer penalty kick taken?", a:"Twelve"},
+    {q:"Which country has won the most soccer World Cups?", a:"Brazil"},
+    {q:"In golf, from what raised area is the first shot on each hole played?", a:"Tee"},
+    {q:"Athletes from which country traditionally march first in the Olympic opening ceremony?", a:"Greece"},
+    {q:"Which sport uses the terms gutter, strike, and spare?", a:"Bowling"},
+    {q:"In baseball, which player crouches behind the batter to catch pitches?", a:"Catcher"},
+    {q:"How many seconds does an NBA team have on the shot clock?", a:"24"},
+    {q:"In karate, what color belt represents the highest standard rank?", a:"Black"},
+    {q:"What is another common name for table tennis?", a:"Ping pong"},
+    {q:"In badminton, how many points are needed to win a standard game?", a:"21"},
+    {q:"In cricket, what is a score of 100 runs by one batsman called?", a:"Century"},
+    {q:"A marathon is approximately how many miles long?", a:"26"},
+    {q:"In archery, what is the center of the target called?", a:"Bullseye"},
+    {q:"In baseball, what is a substitute batter who hits for another player called?", a:"Pinch hitter"},
+    {q:"Which NBA star is nicknamed King James?", a:"LeBron James"},
+    {q:"The five Olympic rings represent the inhabited what of the world?", a:"Continents"},
+    {q:"On what surface are matches at the French Open tennis tournament played?", a:"Clay"},
+    {q:"In golf, what is it called when a player completes a hole in one stroke?", a:"Hole in one"},
+    {q:"In boxing, to what number does the referee count for a knockout?", a:"Ten"},
+    {q:"In American football, what is the foul called when a player grabs an opponent's face mask?", a:"Face mask"},
+    {q:"In baseball, on what raised mound does the pitcher stand?", a:"Mound"},
+    {q:"In the NBA, after how many personal fouls does a player foul out?", a:"Six"},
+    {q:"In swimming, what is a race using all four strokes in sequence called?", a:"Medley"},
+    {q:"In ice hockey, what is used to break a tie at the end of overtime in some games?", a:"Shootout"},
+    {q:"The Tour de France traditionally finishes in which city?", a:"Paris"},
+    {q:"Judo originated in which country?", a:"Japan"},
+    {q:"Which team won the very first Super Bowl in 1967?", a:"Packers"},
+    {q:"A baseball glove is also commonly called a what?", a:"Mitt"},
+    {q:"In basketball, what is the opening jump between two players called?", a:"Tip-off"},
+    {q:"Which Olympic event combines cross-country skiing and rifle shooting?", a:"Biathlon"},
+    {q:"In gymnastics, male gymnasts swing and hold poses on which circular apparatus?", a:"Rings"}
   ],
   v100: [
     {q:"What is 5 + 3?", choices:["7","8","9"], correct:1, tier:1},
@@ -10549,7 +11501,7 @@ SHG.pyramidNorm=function(entry){
 
 /* ---------- WEAKEST LINK ---------- */
 SHG.weakestLinkBank=function(chain){
-  var L=[0,1000,5000,15000,30000,60000,100000,150000,200000];
+  var L=[0,1000,2500,5000,10000,25000,50000,125000,250000,1000000];
   chain=Math.max(0,Math.min(chain|0,L.length-1));
   return L[chain];
 };
@@ -11616,52 +12568,76 @@ render(c,ctx){
 }});
 
 /* ================= WEAKEST LINK ================= */
-regGame('weakestlink',{howto:"Chain correct answers to climb the money ladder - hit BANK before you miss to lock it in. A wrong answer breaks the chain. Each round ends with a vote: the team votes off the weakest link. Survive to the final head-to-head and win!",name:'Weakest Link',icon:'🔗',tags:'Game Show',pvp:true,seats:2,
+regGame('weakestlink',{howto:"Official Weakest Link:\n\nEight players stand at the podiums and answer in turn around the team. Correct answers build a CHAIN up the money ladder: $1,000, $2,500, $5,000, $10,000, $25,000, $50,000, $125,000, $250,000, $1,000,000.\n\nBefore your question you may shout BANK - that locks the chain's money into the team total and the chain starts again. A wrong answer anywhere BREAKS the chain and the unbanked money is lost. When the clock runs out, only banked money survives.\n\nAfter every round the team VOTES. The player with the most votes is the weakest link and leaves with nothing - and yes, the team can vote YOU off. Ties are decided by the round's strongest link.\n\nThe last two players go HEAD-TO-HEAD: five questions each, most correct takes the whole bank. Tied? Sudden death. You are NOT the weakest link... goodbye!",name:'Weakest Link',icon:'🔗',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   if(shgGuard(BANKS2.weakestlink&&BANKS2.weakestlink.length>=12,'Weakest Link questions are still loading')) return;
-  var S=null, pvpCtl=null, wk;
-  c.innerHTML='<h2>🔗 Weakest Link</h2><div class="muted">Chain correct answers, BANK before you miss — and vote off the weakest link.</div><div id="wk"></div>';
+  var S=null, pvpCtl=null, wk, clockIv=null, turnTimer=null;
+  c.innerHTML='<h2>🔗 Weakest Link</h2><div id="wk"></div>';
   wk=c.querySelector('#wk');
-  /* ---------- CPU: full team game ---------- */
+  function money(n){ return '$'+n.toLocaleString('en-US'); }
+  function stopTimers(){ if(clockIv){clearInterval(clockIv);clockIv=null;} if(turnTimer){clearTimeout(turnTimer);turnTimer=null;} }
+  /* ---------- CPU: the full official game ---------- */
   function newTeam(){
-    var t=[{n:'You',me:true,c:0,w:0,skill:1}];
-    SHG.weakestLinkBots().slice(0,3).forEach(function(nm){ t.push({n:nm,me:false,c:0,w:0,skill:SHG.weakestLinkBotSkill()}); });
+    var t=[{n:'You',me:true,c:0,w:0,rc:0,rw:0,banked:0,rbanked:0,skill:1}];
+    SHG.weakestLinkBots().slice(0,7).forEach(function(nm){ t.push({n:nm,me:false,c:0,w:0,rc:0,rw:0,banked:0,rbanked:0,skill:0.45+Math.random()*0.35}); });
     return t;
   }
   function startCpu(){
-    S={mode:'cpu',team:newTeam(),round:1,chain:0,roundBank:0,total:0,q:SHG.pickN(BANKS2.weakestlink,60),
-      order:[],oi:0,phase:'chain',log:[],votes:{},finalQ:0,finalMe:0,finalBot:0,sudden:false,done:false,win:false};
+    S={mode:'cpu',team:newTeam(),round:1,chain:0,roundBank:0,total:0,deck:SHG.pickN(BANKS2.weakestlink,300),
+      turnIdx:0,phase:'chain',log:[],timeLeft:0,starter:0,lastStrong:null,
+      finalQ:0,finalMe:0,finalBot:0,sudden:false,done:false,win:false,outReason:''};
+    log('Welcome to the Weakest Link. Eight players, one bank — let\'s play!');
     startRound();
   }
-  function log(m){ S.log.push(m); if(S.log.length>8) S.log.shift(); }
+  function log(m){ S.log.push(m); if(S.log.length>9) S.log.shift(); }
   function nextQ(){
-    var q=S.q.pop();
-    if(!q){ S.q=SHG.pickN(BANKS2.weakestlink,60); q=S.q.pop(); }
-    return q;
+    if(!S.deck.length)S.deck=SHG.pickN(BANKS2.weakestlink,300);
+    return S.deck.pop();
   }
+  function roundScore(m){ return m.rc*2-m.rw*3+(m.rbanked||0)/15000; }
   function startRound(){
-    S.chain=0; S.roundBank=0; S.phase='chain'; S.votes={};
-    S.order=[];
-    S.team.forEach(function(m){ S.order.push(m); S.order.push(m); });
-    for(var i=S.order.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=S.order[i]; S.order[i]=S.order[j]; S.order[j]=t; }
-    S.oi=0;
-    log('— Round '+S.round+' — chain the answers!');
+    stopTimers();
+    S.chain=0; S.roundBank=0; S.phase='chain';
+    S.team.forEach(function(m){ m.rc=0; m.rw=0; m.rbanked=0; });
+    S.turnIdx=S.starter%S.team.length;
+    S.timeLeft=Math.max(90,160-S.round*10);
+    log('— ROUND '+S.round+' · '+S.team.length+' players · '+S.timeLeft+' seconds —');
+    clockIv=setInterval(function(){
+      if(!wk.isConnected){ stopTimers(); return; }
+      if(S.phase!=='chain')return;
+      S.timeLeft-=0.25;
+      var t=wk.querySelector('#wlClock'); if(t){ t.textContent=Math.max(0,Math.ceil(S.timeLeft)); t.style.color=S.timeLeft<=20?'#ff6b6b':''; }
+      if(S.timeLeft<=0){ endRound(); }
+    },250);
     drawCpu();
   }
-  function ladderMini(){
-    var h='<div class="center muted" style="font-size:12px">Chain: ';
-    for(var i=1;i<=8;i++){ h+='<span style="color:'+(S.chain>=i?'#eab676':'#555')+'">$'+(SHG.weakestLinkBank(i)/1000)+'k </span>'; }
+  function ladderHTML(){
+    var h='<div class="wl-ladder">';
+    for(var i=9;i>=1;i--){
+      var v=SHG.weakestLinkBank(i);
+      var lbl=v>=1000000?'$1M':(v>=1000?'$'+(v/1000)+'k':'$'+v);
+      h+='<span class="wl-disc'+(S.chain>=i?' on':'')+(S.chain+1===i?' next':'')+'">'+lbl+'</span>';
+    }
     return h+'</div>';
+  }
+  function podiumsHTML(){
+    var cur=S.team[S.turnIdx%S.team.length];
+    return '<div class="wl-podiums">'+S.team.map(function(m){
+      var isCur=S.phase==='chain'&&cur&&m.n===cur.n;
+      return '<div class="wl-pod'+(isCur?' cur':'')+(m.me?' me':'')+'"><div class="wl-pname">'+(m.me?'⭐ ':'')+esc(m.n)+'</div><div class="wl-pstat">'+m.rc+'✓ '+m.rw+'✗</div></div>';
+    }).join('')+'</div>';
   }
   function drawCpu(){
     if(S.done){ drawCpuDone(); return; }
-    var h='<div class="row"><div class="grow center">Round <b>'+S.round+'</b></div>'
-      +'<div class="grow center">🏦 Total: <b style="color:#eab676">$'+S.total.toLocaleString('en-US')+'</b></div>'
-      +'<div class="grow center">Round bank: <b>$'+S.roundBank.toLocaleString('en-US')+'</b></div></div>'
-      +'<div class="center" style="margin:6px 0">'+S.team.map(function(m){ return '<span style="margin:0 6px;'+(m.me?'color:#eab676':'')+'">'+(m.me?'🧑':'🤖')+' '+esc(m.n)+'</span>'; }).join('')+'</div>'
-      +ladderMini()
-      +'<div class="card" style="min-height:60px;font-size:13px" id="wlog">'+S.log.map(esc).join('<br>')+'</div>'
+    var h='<div class="wl-stage">'
+      +'<div class="row"><div class="grow center">Round <b>'+S.round+'</b></div>'
+      +'<div class="grow center">⏱ <b id="wlClock">'+Math.max(0,Math.ceil(S.timeLeft))+'</b></div>'
+      +'<div class="grow center">🏦 Bank: <b style="color:#ffd873">'+money(S.total+S.roundBank)+'</b></div></div>'
+      +podiumsHTML()+ladderHTML()
+      +'<div class="center" style="font-size:13px">Chain: <b style="color:#ffd873">'+money(SHG.weakestLinkBank(S.chain))+'</b>'+(S.chain>0?' — BANK it before someone misses!':'')+'</div>'
+      +'</div>'
+      +'<div class="card" style="min-height:56px;font-size:13px">'+S.log.map(esc).join('<br>')+'</div>'
       +'<div id="wplay"></div>';
     wk.innerHTML=h;
     var pl=wk.querySelector('#wplay');
@@ -11669,107 +12645,179 @@ render(c,ctx){
     else if(S.phase==='vote') drawVote(pl);
     else if(S.phase==='final') drawFinal(pl);
   }
+  function doBank(m){
+    if(S.chain<=0)return 0;
+    var amt=SHG.weakestLinkBank(S.chain);
+    S.roundBank+=amt; m.banked+=amt; m.rbanked+=amt; S.chain=0;
+    return amt;
+  }
+  function botShouldBank(m){
+    if(S.chain<=0)return false;
+    if(S.chain>=9)return true;
+    if(S.chain>=6)return Math.random()<0.75;
+    if(S.chain>=4)return Math.random()<0.45;
+    if(S.chain===3)return Math.random()<0.25;
+    return Math.random()<0.05;
+  }
   function drawChainTurn(pl){
-    if(S.oi>=S.order.length){ endChainRound(); return; }
-    var m=S.order[S.oi];
-    var q=nextQ(); S.curQ=q;
+    if(S.phase!=='chain'||S.done)return;
+    if(S.timeLeft<=0){ endRound(); return; }
+    var m=S.team[S.turnIdx%S.team.length];
+    var q=nextQ(); S.curQ=q; S.curM=m;
     if(m.me){
-      pl.innerHTML='<div class="card"><div class="center muted">Your question — chain pays <b style="color:#eab676">$'+SHG.weakestLinkBank(S.chain+1).toLocaleString('en-US')+'</b> if right</div>'
+      pl.innerHTML='<div class="card"><div class="center muted">⭐ YOUR TURN — chain pays <b style="color:#ffd873">'+money(SHG.weakestLinkBank(Math.min(S.chain+1,9)))+'</b> if you\'re right</div>'
+        +(S.chain>0?'<div class="row" style="margin:6px 0"><button class="btn secondary grow" id="wBank">🏦 BANK '+money(SHG.weakestLinkBank(S.chain))+'</button></div>':'')
         +'<h3>'+esc(q.q)+'</h3><div class="row"><input id="wAns" class="grow" placeholder="Your answer…" autocomplete="off">'
-        +'<button class="btn small" id="wGo">Answer</button></div>'
-        +'<div class="row" style="margin-top:6px"><button class="btn small secondary grow" id="wBank">🏦 BANK $'+SHG.weakestLinkBank(S.chain).toLocaleString('en-US')+'</button></div></div>';
-      var inp=pl.querySelector('#wAns'); inp.focus();
+        +'<button class="btn small" id="wGo">Answer</button></div></div>';
+      var inp=pl.querySelector('#wAns'); if(inp&&inp.focus)inp.focus();
       function ans(){
+        if(S.phase!=='chain')return;
         var ok=SHG.fuzzy(inp.value,q.a);
-        if(ok){ S.chain=Math.min(S.chain+1,8); m.c++; Sound.beep(760,.08); log('✅ You: correct — chain '+S.chain); }
-        else { S.chain=0; m.w++; Sound.beep(200,.15,'sawtooth'); log('❌ You: wrong ('+q.a+') — chain reset'); }
-        S.oi++; drawCpu();
+        if(ok){ S.chain=Math.min(S.chain+1,9); m.c++; m.rc++; Sound.beep(760,.08); log('✅ You: correct — chain at '+money(SHG.weakestLinkBank(S.chain))); }
+        else { S.chain=0; m.w++; m.rw++; Sound.beep(200,.15,'sawtooth'); log('❌ You: wrong — it was "'+q.a+'" — CHAIN BROKEN'); }
+        advance();
       }
       pl.querySelector('#wGo').onclick=ans;
       inp.onkeydown=function(e){ if(e.key==='Enter') ans(); };
-      pl.querySelector('#wBank').onclick=function(){
-        if(S.chain>0){ var amt=SHG.weakestLinkBank(S.chain); S.roundBank+=amt; log('🏦 You banked $'+amt.toLocaleString('en-US')); S.chain=0; Sound.win(); }
-        else toast('Nothing to bank yet');
+      var bk=pl.querySelector('#wBank');
+      if(bk) bk.onclick=function(){
+        var amt=doBank(m); Sound.win(); log('🏦 You banked '+money(amt));
         drawCpu();
       };
     } else {
-      pl.innerHTML='<div class="card center"><div class="muted">'+esc(m.n)+' is answering…</div><h3>'+esc(q.q)+'</h3></div>';
-      setTimeout(function(){
-        if(S.phase!=='chain') return;
+      pl.innerHTML='<div class="card center"><div class="muted">'+esc(m.n)+' is at the podium…</div><h3 style="font-size:15px">'+esc(q.q)+'</h3></div>';
+      turnTimer=setTimeout(function(){
+        if(S.phase!=='chain'||S.done||!wk.isConnected)return;
+        if(botShouldBank(m)){ var amt=doBank(m); log('🏦 '+m.n+' banks '+money(amt)); Sound.win(); }
         var ok=Math.random()<m.skill;
-        if(ok){ S.chain=Math.min(S.chain+1,8); m.c++; log('✅ '+m.n+': correct — chain '+S.chain); Sound.beep(660,.06); }
-        else { S.chain=0; m.w++; log('❌ '+m.n+': wrong ('+q.a+') — chain reset'); }
-        S.oi++; drawCpu();
-      },900);
+        if(ok){ S.chain=Math.min(S.chain+1,9); m.c++; m.rc++; log('✅ '+m.n+': correct — chain at '+money(SHG.weakestLinkBank(S.chain))); Sound.beep(660,.06); }
+        else { S.chain=0; m.w++; m.rw++; log('❌ '+m.n+': wrong — it was "'+q.a+'" — CHAIN BROKEN'); }
+        advance();
+      },1100);
     }
   }
-  function endChainRound(){
-    S.total+=S.roundBank;
-    log('Round '+S.round+' banked: $'+S.roundBank.toLocaleString('en-US'));
-    S.round++;
-    if(S.team.length>2){ S.phase='vote'; }
-    else { S.phase='final'; S.finalQ=0; S.finalMe=0; S.finalBot=0; S.sudden=false; log('— HEAD TO HEAD: 5 questions each —'); }
+  function advance(){
+    S.turnIdx=(S.turnIdx+1)%S.team.length;
     drawCpu();
   }
+  function endRound(){
+    stopTimers();
+    if(S.chain>0) log('⏰ Time! The unbanked '+money(SHG.weakestLinkBank(S.chain))+' chain is LOST.');
+    else log('⏰ Time!');
+    S.total+=S.roundBank; S.chain=0;
+    log('Round '+S.round+' banked '+money(S.roundBank)+' — team total '+money(S.total));
+    S.round++;
+    if(S.team.length>2){ S.phase='vote'; drawCpu(); }
+    else { S.phase='final'; S.finalQ=0; S.finalMe=0; S.finalBot=0; S.sudden=false; log('— THE FINAL: head-to-head, five questions each —'); drawCpu(); }
+  }
   function drawVote(pl){
-    var bots=S.team.filter(function(m){ return !m.me; });
-    pl.innerHTML='<div class="card"><div class="center"><b>🗳 Vote off the Weakest Link</b></div><div class="muted center">Bots vote strategically…</div><div id="vBtns" class="center"></div></div>';
+    var ranked=S.team.slice().sort(function(a,b){ return roundScore(b)-roundScore(a); });
+    var strong=ranked[0], weak=ranked[ranked.length-1];
+    S.lastStrong=strong;
+    pl.innerHTML='<div class="card"><div class="center"><b>🗳 THE VOTE</b></div>'
+      +'<div class="muted center">Statistically: strongest link was <b>'+esc(strong.n)+'</b> · weakest was <b>'+esc(weak.n)+'</b>.<br>But the vote is what counts. Who goes?</div>'
+      +'<div id="vBtns" class="center" style="margin-top:8px"></div><div id="vOut"></div></div>';
     var vb=pl.querySelector('#vBtns');
-    bots.forEach(function(b){
-      vb.appendChild(shgQBtn('🗳 '+esc(b.n)+' <span class="muted">('+b.c+'✓/'+b.w+'✗)</span>',function(){ castVote(b.n); }));
+    S.team.forEach(function(b){
+      if(b.me)return;
+      var btn=shgQBtn('🗳 '+esc(b.n)+' <span class="muted">('+b.rc+'✓/'+b.rw+'✗ this round)</span>',function(){ castVote(b.n); });
+      vb.appendChild(btn);
     });
   }
   function castVote(playerPick){
-    var votes={};
-    S.team.forEach(function(m){ if(m.me) return; var v=SHG.weakestLinkBotVote(S.team); votes[v]=(votes[v]||0)+1; });
-    votes[playerPick]=(votes[playerPick]||0)+1;
-    var names=Object.keys(votes), out=names[0], best=votes[out];
-    names.forEach(function(nm){ if(votes[nm]>best){ best=votes[nm]; out=nm; } });
-    var tied=names.filter(function(nm){ return votes[nm]===best; });
-    if(tied.length>1) out=playerPick; // player breaks ties
-    log('🗳 Votes: '+names.map(function(nm){ return nm+' '+votes[nm]; }).join(', ')+' → '+out+' is out');
-    if(out==='You'){ S.done=true; S.win=false; drawCpu(); return; }
+    stopTimers();
+    var votes={}, order=[];
+    votes[playerPick]=(votes[playerPick]||0)+1; order.push(['You',playerPick]);
+    S.team.forEach(function(m){
+      if(m.me)return;
+      var cands=S.team.filter(function(x){ return x.n!==m.n; });
+      var target;
+      if(Math.random()<0.85){
+        cands.sort(function(a,b){ return roundScore(a)-roundScore(b); });
+        var low=roundScore(cands[0]);
+        var tied=cands.filter(function(x){ return roundScore(x)===low; });
+        target=tied[Math.floor(Math.random()*tied.length)].n;
+      } else target=cands[Math.floor(Math.random()*cands.length)].n;
+      votes[target]=(votes[target]||0)+1; order.push([m.n,target]);
+    });
+    var maxV=0; Object.keys(votes).forEach(function(k){ if(votes[k]>maxV)maxV=votes[k]; });
+    var tiedNames=Object.keys(votes).filter(function(k){ return votes[k]===maxV; });
+    var out=tiedNames[0], tieNote='';
+    if(tiedNames.length>1){
+      var strong=S.lastStrong||S.team[0];
+      if(strong.me){ out=tiedNames.indexOf(playerPick)>=0?playerPick:tiedNames[0]; tieNote=' Tied vote — YOU were the strongest link, so your vote decides!'; }
+      else { out=tiedNames[Math.floor(Math.random()*tiedNames.length)]; tieNote=' Tied vote — strongest link '+strong.n+' casts the decider.'; }
+    }
+    order.forEach(function(pr){ log('🗳 '+pr[0]+' votes '+pr[1]); });
+    log('The votes are in.'+tieNote);
+    if(out==='You'){
+      S.done=true; S.win=false; S.outReason='voted'; drawCpu(); return;
+    }
     S.team=S.team.filter(function(m){ return m.n!==out; });
-    toast(out+' was voted off!');
+    S.starter=S.team.indexOf(S.lastStrong)>=0?S.team.indexOf(S.lastStrong):0;
+    var pl=wk.querySelector('#wplay');
+    if(pl) pl.innerHTML='<div class="card center"><div style="font-size:16px">'+esc(out)+'… you ARE the weakest link. <b>Goodbye.</b></div><button class="btn" id="wNext" style="margin-top:8px">▶ Round '+S.round+'</button></div>';
     Sound.lose();
-    startRound();
+    toast(out+' voted off!');
+    var nx=wk.querySelector('#wNext');
+    if(nx) nx.onclick=function(){ Sound.click(); startRound(); };
   }
   function drawFinal(pl){
     var bot=S.team.filter(function(m){ return !m.me; })[0];
     if(!bot){ S.done=true; S.win=true; drawCpu(); return; }
     if(S.finalQ>=5&&!S.sudden){
       if(S.finalMe>S.finalBot){ S.done=true; S.win=true; drawCpu(); return; }
-      if(S.finalMe<S.finalBot){ S.done=true; S.win=false; drawCpu(); return; }
+      if(S.finalMe<S.finalBot){ S.done=true; S.win=false; S.outReason='final'; drawCpu(); return; }
       S.sudden=true; log('— SUDDEN DEATH —');
     }
     var q=nextQ(); S.curQ=q;
-    pl.innerHTML='<div class="card"><div class="center"><b>'+(S.sudden?'⚡ SUDDEN DEATH':'🎯 Head-to-head '+(Math.min(S.finalQ,4)+1)+'/5')+'</b> vs '+esc(bot.n)+'</div>'
-      +'<div class="center">You '+S.finalMe+' — '+S.finalBot+' '+esc(bot.n)+'</div>'
+    pl.innerHTML='<div class="card"><div class="center"><b>'+(S.sudden?'⚡ SUDDEN DEATH':'🎯 Head-to-head — question '+(Math.min(S.finalQ,4)+1)+' of 5')+'</b> vs '+esc(bot.n)+'</div>'
+      +'<div class="center">You '+S.finalMe+' — '+S.finalBot+' '+esc(bot.n)+' · the bank is '+money(S.total)+'</div>'
       +'<h3>'+esc(q.q)+'</h3><div class="row"><input id="wAns" class="grow" placeholder="Your answer…" autocomplete="off">'
       +'<button class="btn small" id="wGo">Answer</button></div></div>';
-    var inp=pl.querySelector('#wAns'); inp.focus();
+    var inp=pl.querySelector('#wAns'); if(inp&&inp.focus)inp.focus();
     function ans(){
       var ok=SHG.fuzzy(inp.value,q.a);
       if(ok){ S.finalMe++; Sound.beep(880,.1); } else Sound.beep(200,.15,'sawtooth');
       var bq=nextQ();
       var bok=Math.random()<bot.skill;
       if(bok) S.finalBot++;
-      log('You '+(ok?'✅':'❌')+' ('+q.a+') · '+bot.n+' '+(bok?'✅':'❌')+' ('+bq.a+')');
+      log('You '+(ok?'✅':'❌')+' ("'+q.a+'") · '+bot.n+' '+(bok?'✅':'❌')+' ("'+bq.a+'") — '+S.finalMe+'–'+S.finalBot);
       S.finalQ++;
-      if(S.sudden&&(S.finalMe!==S.finalBot)){ S.done=true; S.win=S.finalMe>S.finalBot; drawCpu(); return; }
+      if(S.sudden&&(S.finalMe!==S.finalBot)){ S.done=true; S.win=S.finalMe>S.finalBot; if(!S.win)S.outReason='final'; drawCpu(); return; }
       drawCpu();
     }
     pl.querySelector('#wGo').onclick=ans;
     inp.onkeydown=function(e){ if(e.key==='Enter') ans(); };
   }
   async function drawCpuDone(){
-    wk.innerHTML='<div class="card center"><div class="muted">Game over</div>'
-      +'<div class="big" style="color:#eab676">$'+S.total.toLocaleString('en-US')+' banked</div>'
-      +'<div class="status">'+(S.win?'<span class="ok">🎉 You are NOT the weakest link — you win!</span>':'<span class="err">😞 You are the weakest link. Goodbye!</span>')+'</div></div>';
+    stopTimers();
+    var line, cls;
+    if(S.win){ line='🏆 You won the head-to-head — you take the whole bank!'; cls='ok'; }
+    else if(S.outReason==='voted'){ line='The team voted you off. You ARE the weakest link. Goodbye.'; cls='err'; }
+    else { line='You lost the head-to-head — the bank goes to your rival. You ARE the weakest link. Goodbye.'; cls='err'; }
+    wk.innerHTML='<div class="wl-stage"><div class="center" style="font-size:18px;font-weight:900">GAME OVER</div>'
+      +'<div class="center" style="color:#ffd873;font-size:24px;font-weight:900">'+money(S.total)+'</div>'
+      +'<div class="center muted">team bank</div></div>'
+      +'<div class="card center"><div class="status"><span class="'+cls+'">'+line+'</span></div><div id="wRes"></div></div>';
     Sound[S.win?'win':'lose']();
-    if(S.win) await Wallet.recordWin('weakestlink');
+    if(S.win){
+      await Wallet.add(Math.max(1,Math.min(2000,Math.round(S.total/200))),'weakestlink');
+      await Wallet.recordWin('weakestlink');
+      var res=wk.querySelector('#wRes');
+      if(res)res.innerHTML='<div class="muted">You are NOT the weakest link. 🏆</div>';
+    }
   }
   /* ---------- PVP: solo chain sprint on shared questions ---------- */
+  function ladderMini(){
+    var h='<div class="wl-ladder">';
+    for(var i=9;i>=1;i--){
+      var v=SHG.weakestLinkBank(i);
+      var lbl=v>=1000000?'$1M':(v>=1000?'$'+(v/1000)+'k':'$'+v);
+      h+='<span class="wl-disc'+(S.chain>=i?' on':'')+'">'+lbl+'</span>';
+    }
+    return h+'</div>';
+  }
   function startPvp(shared){
     S={mode:'pvp',qs:shared.qs,qi:0,chain:0,total:0,done:false};
     drawPvp();
@@ -11777,19 +12825,20 @@ render(c,ctx){
   function drawPvp(){
     if(S.done){ drawPvpDone(); return; }
     var h='<div class="row"><div class="grow center">Question <b>'+(S.qi+1)+'/'+S.qs.length+'</b></div>'
-      +'<div class="grow center">🏦 Banked: <b style="color:#eab676">$'+S.total.toLocaleString('en-US')+'</b></div></div>'
+      +'<div class="grow center">🏦 Banked: <b style="color:#eab676">'+money(S.total)+'</b></div></div>'
       +ladderMini()
       +'<div class="card"><h3>'+esc(S.qs[S.qi].q)+'</h3>'
       +'<div class="row"><input id="wAns" class="grow" placeholder="Your answer…" autocomplete="off">'
       +'<button class="btn small" id="wGo">Answer</button></div>'
-      +'<div class="row" style="margin-top:6px"><button class="btn small secondary grow" id="wBank">🏦 BANK $'+SHG.weakestLinkBank(S.chain).toLocaleString('en-US')+'</button></div></div>';
+      +'<div class="row" style="margin-top:6px"><button class="btn small secondary grow" id="wBank">🏦 BANK '+money(SHG.weakestLinkBank(S.chain))+'</button></div></div>';
     wk.innerHTML=h;
     var inp=wk.querySelector('#wAns'); inp.focus();
     function ans(){
       var q=S.qs[S.qi];
-      if(SHG.fuzzy(inp.value,q.a)){ S.chain=Math.min(S.chain+1,8); Sound.beep(760,.08); }
+      if(SHG.fuzzy(inp.value,q.a)){ S.chain=Math.min(S.chain+1,9); Sound.beep(760,.08); }
       else { S.chain=0; Sound.beep(200,.15,'sawtooth'); toast('Wrong — '+q.a); }
       S.qi++;
+      if(S.qi>=S.qs.length){ S.done=true; }
       drawPvp();
     }
     wk.querySelector('#wGo').onclick=ans;
@@ -11802,7 +12851,7 @@ render(c,ctx){
   }
   async function drawPvpDone(){
     wk.innerHTML='<div class="card center"><div class="muted">Chain sprint complete!</div>'
-      +'<div class="big" style="color:#eab676">$'+S.total.toLocaleString('en-US')+'</div><div id="wRes"><div class="muted">Waiting for opponent...</div></div></div>';
+      +'<div class="big" style="color:#eab676">'+money(S.total)+'</div><div id="wRes"><div class="muted">Waiting for opponent...</div></div></div>';
     pvpCtl.submit();
   }
   if(isNet){
@@ -11813,8 +12862,8 @@ render(c,ctx){
       onSettle:function(iWon,room,w){
         var res=wk.querySelector('#wRes');
         shgResultBanner(res,iWon,w,
-          '🎉 You win the Weakest Link sprint with $'+S.total.toLocaleString('en-US')+'!',
-          '😞 Opponent banked more. You had $'+S.total.toLocaleString('en-US')+'.');
+          '🎉 You win the Weakest Link sprint with '+money(S.total)+'!',
+          '😞 Opponent banked more. You had '+money(S.total)+'.');
         Sound[iWon?'win':'lose']();
         shgAward(iWon);
       }
