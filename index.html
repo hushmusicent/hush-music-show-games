@@ -98,6 +98,17 @@ table.lb tr.me td{color:var(--gold); font-weight:800;}
 .ch-tag.c{background:#f7c948;color:#111;}
 .ch-tag.p{background:#e0342b;color:#fff;}
 /* ===== Match Game 70s ===== */
+/* ===== Password classic ===== */
+.pw-word{background:linear-gradient(#ffffff,#dfe8ff);border:4px solid #2b4f9e;border-radius:10px;color:#12275e;font-weight:900;font-size:23px;text-align:center;padding:12px 8px;letter-spacing:2px;}
+.pw-teams{display:flex;gap:8px;align-items:stretch;}
+.pw-team{flex:1;border-radius:10px;padding:8px 6px;text-align:center;color:#fff;font-weight:800;font-size:12px;}
+.pw-team.blue{background:linear-gradient(#1c4fa0,#0e2a5c);}
+.pw-team.red{background:linear-gradient(#b02a1e,#6d130c);}
+.pw-team .sc{font-size:26px;font-weight:900;line-height:1.1;}
+.pw-mid{align-self:center;text-align:center;font-size:10px;font-weight:900;color:var(--muted);line-height:1.3;}
+.pw-val{background:#12275e;color:#ffd23e;font-weight:900;padding:4px 14px;border-radius:20px;font-size:14px;letter-spacing:1px;}
+.pw-feed{margin-top:10px;}
+.pw-row{padding:6px 8px;border-bottom:1px solid var(--line);font-size:14px;}
 .mg-wrap{background:linear-gradient(160deg,#7a1608,#b02e0c 55%,#7a1608);border:3px solid #f0a24a;border-radius:14px;padding:12px;}
 .mg-qcard{background:#f5d98d;border:4px solid #2b4f9e;border-radius:8px;padding:14px 12px;color:#141414;font-weight:900;font-size:18px;text-align:center;line-height:1.5;}
 .mg-blank{display:inline-block;min-width:84px;border-bottom:5px solid #141414;height:1em;vertical-align:bottom;}
@@ -6587,64 +6598,172 @@ render:function(c,ctx){
 }});
 
 /* ================= PASSWORD ================= */
-regGame('password',{howto:"Guess the secret password from one-word clues. You get up to 3 clues per word across 5 words - fewer clues used means more points. Guess right to score!",name:'Password',icon:'🔑',tags:'Game Show',pvp:true,seats:2,
+regGame('password',{howto:"Official Password: two teams of two. One partner sees the secret password and gives ONE-WORD clues - the other partner guesses.\n\nTeams take turns on each password. It starts worth 10 points, and every clue given drops its value by 1 (down to 1). First team to 25 points wins!\n\nRules: clues must be exactly ONE word - no phrases, and your clue can't be the password itself or you'll lose the turn.\n\nWin and you play the LIGHTNING ROUND: 60 seconds, 5 passwords, $100 for every one your team gets!",name:'Password',icon:'🔑',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
-  if(g1Guard(c,BANKS2.password.length>=5))return;
-  var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS2.password,5)));};
-  if(net)g1Pvp(net,share,function(d,fin){playWords(d,false,fin);},function(iw,sc){g1Settle(c,iw,sc,'Password');});
-  else playWords(share(),true,null);
-  /* vsBot true → CPU game vs rival bot (recordWin); false → PvP solo (fin(points)) */
-  function playWords(words,vsBot,fin){
-    var bot=vsBot?g1Bots(1)[0]:null,wi=0,myP=0,botP=0;
-    word();
-    function word(){
-      if(wi>=5){
-        if(vsBot){
-          var win=myP>botP;
-          c.innerHTML='<div class="card center"><div class="big">You: '+myP+' pts<br>'+esc(bot)+': '+botP+' pts</div>'+(win?'<div class="ok">🏆 You win Password!</div>':'<div class="err">😞 '+esc(bot)+' wins.</div>')+'</div>';
-          if(win){Sound.win();(async function(){await Wallet.recordWin('password');})();}
-          else Sound.lose();
-        }else{
-          c.innerHTML='<div class="card center"><div class="big">'+myP+' pts</div><div class="muted">Waiting for opponent…</div></div>';
-          fin(myP);
-        }
-        return;
-      }
-      var w=words[wi],used=0,exch=0;
+  if(g1Guard(c,BANKS2.password.length>=10))return;
+  var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS2.password,30)));};
+  if(net)g1Pvp(net,share,function(d,fin){playMatch(d,true,fin);},function(iw,sc){g1Settle(c,iw,sc,'Password');});
+  else playMatch(share(),true,null);
+  var WRONG=['table','happy','window','purple','banana','doctor','river','candle','monkey','garden','ticket','blanket'];
+  function playMatch(words,vsBot,fin){
+    var bots=g1Bots(3),partner=bots[0],rival=bots[1],rivalPartner=bots[2];
+    var you=0,riv=0,wi=0,ptr=0;
+    function nextW(){return words[ptr++%words.length];}
+    function teamsHTML(){
+      return '<div class="pw-teams"><div class="pw-team blue"><div>🔵 YOU & '+esc(partner)+'</div><div class="sc">'+you+'</div></div>'
+        +'<div class="pw-mid">FIRST<br>TO 25</div>'
+        +'<div class="pw-team red"><div>🔴 '+esc(rival)+' & '+esc(rivalPartner)+'</div><div class="sc">'+riv+'</div></div></div>';
+    }
+    password();
+    function password(){
+      if(you>=25||riv>=25){endMatch();return;}
+      var w=nextW();wi++;
+      var value=10,turns=0,startTeam=(wi%2===1)?'you':'rival';
+      var team=startTeam,feed=[];
+      var youGive=(wi%2===1); /* odd passwords: you give clues; even: partner gives, you guess */
+      var clueIdx={you:0,rival:0},lastClue='',pwdone=false;
       draw();
-      function scoreLine(){return vsBot?'<div class="status">You: '+myP+' · '+esc(bot)+': '+botP+'</div>':'<div class="status">Points so far: '+myP+'</div>';}
-      function draw(msg){
-        var h='<h2>🔑 Password — word '+(wi+1)+'/5</h2><div class="card">';
-        h+='<div class="muted">Clues revealed: '+used+'/3 · word worth '+SHG.passwordPoints(used)+' pts</div>';
-        w.clues.forEach(function(cl,i){h+='<div class="msg">'+(i<used?esc(cl):'🔒 <span class="muted">clue '+(i+1)+' hidden</span>')+'</div>';});
-        h+=scoreLine();
-        if(msg)h+='<div class="msg">'+msg+'</div>';
-        h+='<div class="row"><input id="g" class="grow" placeholder="Guess the password…" autocomplete="off"><button class="btn small" id="go">Guess</button></div>'
-          +(used<3?'<button class="btn secondary" id="rv">🔍 Reveal clue '+(used+1)+' of 3</button>':'')
-          +'</div>';
-        c.innerHTML=h;
-        var inp=c.querySelector('#g'),rv=c.querySelector('#rv');
-        if(rv)rv.onclick=function(){used++;Sound.click();draw();};
-        function guess(){
-          var v=inp.value.trim();if(!v)return;Sound.click();
-          if(SHG.jeopardyGrade(v,w.word)){myP+=SHG.passwordPoints(used);Sound.win();wi++;word();return;}
-          if(vsBot){
-            exch++;
-            if(Math.random()<0.15+0.25*used){
-              botP+=SHG.passwordPoints(used);Sound.lose();wi++;
-              c.innerHTML='<div class="card"><div class="err">😈 '+esc(bot)+' steals it! The word was "'+esc(w.word)+'".</div><button class="btn" id="nx">Next word</button></div>';
-              c.querySelector('#nx').onclick=function(){Sound.click();word();};return;
-            }
-            if(exch>=8){wi++;
-              c.innerHTML='<div class="card"><div class="muted">Nobody got it — the word was "'+esc(w.word)+'".</div><button class="btn" id="nx">Next word</button></div>';
-              c.querySelector('#nx').onclick=function(){Sound.click();word();};return;
-            }
-            Sound.lose();draw('❌ Wrong! '+esc(bot)+' misses too — reveal a clue or try again.');
-          }else{Sound.lose();draw('❌ Wrong — reveal another clue or try again.');}
+      function feedHTML(){
+        return '<div class="pw-feed">'+feed.map(function(f){return '<div class="pw-row">'+f+'</div>';}).join('')+'</div>';
+      }
+      function draw(actHTML){
+        if(pwdone)return;
+        var seeIt=(team==='you'&&youGive)||team==='rival';
+        c.innerHTML='<h2>🔑 Password #'+wi+'</h2>'+teamsHTML()
+          +'<div class="card" style="margin-top:8px">'
+          +'<div class="pw-word">'+(seeIt?esc(w.word.toUpperCase()):'🔒 THE PASSWORD IS HIDDEN')+'</div>'
+          +'<div class="center" style="margin-top:6px"><span class="pw-val">WORTH '+value+' PTS</span></div>'
+          +feedHTML()
+          +'<div id="pwAct" style="margin-top:10px">'+(actHTML||'')+'</div></div>';
+        wire();
+      }
+      function pushFeed(s){feed.push(s);if(feed.length>7)feed.shift();}
+      function wire(){
+        var inp=c.querySelector('#pwIn'),btn=c.querySelector('#pwGo');
+        if(inp&&btn){
+          var act=function(){var v=inp.value.trim();if(v)doAction(v);};
+          btn.onclick=act;
+          inp.addEventListener('keydown',function(e){if(e.key==='Enter')act();});
+          inp.focus&&inp.focus();
         }
-        c.querySelector('#go').onclick=guess;
+      }
+      function doAction(v){turn(v);}
+      function turn(v){
+        turns++;
+        if(team==='you'){
+          if(youGive){
+            /* you give a one-word clue */
+            if(/\s/.test(v)){pushFeed('🚫 "'+esc(v)+'" — ONE WORD ONLY! Turn passes.');value=Math.max(1,value-1);Sound.lose();passTurn();draw();return;}
+            if(SHG.jeopardyGrade(w.word,v)){pushFeed('🚫 You can\'t clue the password itself! Turn passes.');value=Math.max(1,value-1);Sound.lose();passTurn();draw();return;}
+            var good=w.clues.some(function(cl){return SHG.feudMatch(cl,v);});
+            var lucky=Math.random()<0.2+0.15*Math.min(3,turns);
+            if(good||lucky){
+              pushFeed('🔵 '+esc(partner)+' got it: "'+esc(w.word)+'" (+'+value+')');
+              you+=value;Sound.win();endPassword('you');return;
+            }
+            pushFeed('🔵 You: "'+esc(v)+'" → '+esc(partner)+': "'+WRONG[Math.floor(Math.random()*WRONG.length)]+'" ❌');
+            Sound.lose();value=Math.max(1,value-1);passTurn();draw();
+          }else{
+            /* you guess */
+            if(SHG.jeopardyGrade(v,w.word)){
+              pushFeed('🔵 You guessed it: "'+esc(w.word)+'" (+'+value+')');
+              you+=value;Sound.win();endPassword('you');return;
+            }
+            pushFeed('🔵 '+esc(partner)+': "'+esc(lastClue)+'" → You: "'+esc(v)+'" ❌');
+            Sound.lose();value=Math.max(1,value-1);passTurn();draw();
+          }
+        }
+      }
+      function passTurn(){
+        if(pwdone)return;
+        team=(team==='you')?'rival':'you';
+        if(turns>=14){endPassword(null);return;}
+        if(team==='rival')setTimeout(rivalTurn,900);
+      }
+      function promptForYou(){
+        if(youGive)return '<div class="row"><input id="pwIn" class="grow" placeholder="Your ONE-WORD clue…" autocomplete="off"><button class="btn" id="pwGo">Give clue</button></div>';
+        var cl=w.clues[Math.min(clueIdx.you,w.clues.length-1)];clueIdx.you++;lastClue=cl;
+        return '<div class="muted">'+esc(partner)+' clues: <b>"'+esc(cl)+'"</b></div><div class="row" style="margin-top:6px"><input id="pwIn" class="grow" placeholder="Your guess…" autocomplete="off"><button class="btn" id="pwGo">Guess</button></div>';
+      }
+      function rivalTurn(){
+        if(!c.isConnected||pwdone)return;
+        var cl=w.clues[Math.min(clueIdx.rival,w.clues.length-1)];clueIdx.rival++;
+        var p=0.4+0.12*Math.min(3,turns);
+        turns++;
+        if(Math.random()<p){
+          pushFeed('🔴 '+esc(rival)+': "'+esc(cl)+'" → '+esc(rivalPartner)+': "'+esc(w.word)+'" ✅ (+'+value+')');
+          riv+=value;Sound.lose();endPassword('rival');return;
+        }
+        pushFeed('🔴 '+esc(rival)+': "'+esc(cl)+'" → '+esc(rivalPartner)+': "'+WRONG[Math.floor(Math.random()*WRONG.length)]+'" ❌');
+        value=Math.max(1,value-1);
+        passTurn();
+        if(team==='you')draw(promptForYou());else draw();
+      }
+      function endPassword(winner){
+        draw('<div class="center"><div class="muted">'+(winner==='you'?'Your team takes the password!':(winner==='rival'?'Rival team takes it.':'Nobody got it — the password was "'+esc(w.word)+'".'))+'</div><button class="btn" id="pwNx" style="margin-top:8px">Next password</button></div>');
+        pwdone=true;
+        var nx=c.querySelector('#pwNx');
+        if(nx)nx.onclick=function(){Sound.click();password();};
+      }
+      /* kick off */
+      if(team==='you')draw(promptForYou());
+      else{draw();setTimeout(rivalTurn,900);}
+    }
+    function endMatch(){
+      if(fin){fin(you);c.innerHTML='<div class="card center"><div class="big">Your team: '+you+' pts</div><div class="muted">Waiting for opponent…</div></div>';return;}
+      var win=you>=25||you>riv;
+      if(!win){
+        c.innerHTML='<div class="card center"><div class="big">🔴 '+riv+' — 🔵 '+you+'</div><div class="err">😞 The rival team wins Password.</div></div>';
+        Sound.lose();return;
+      }
+      Sound.win();
+      (async function(){await Wallet.recordWin('password');})();
+      lightningIntro();
+    }
+    /* ----- Lightning Round ----- */
+    function lightningIntro(){
+      c.innerHTML='<div class="card center"><div class="big">🏆 Your team wins '+you+'–'+riv+'!</div><div class="muted">Now the Lightning Round: 60 seconds, 5 passwords, $100 each. '+esc(partner)+' gives the clues — you guess!</div><button class="btn" id="lr">⚡ Play Lightning Round</button></div>';
+      c.querySelector('#lr').onclick=function(){Sound.click();lightning();};
+    }
+    function lightning(){
+      var set=[],seen={};
+      while(set.length<5){var w=nextW();if(!seen[w.word]){seen[w.word]=1;set.push(w);}}
+      var idx=0,got=0,over=false,ci=0,timers=[];
+      c.innerHTML='<h2>⚡ Lightning Round</h2><div class="card"><div class="status">Word <b id="lw">1</b>/5 · Got: <b id="lg">0</b> · ⏱ <span id="tmr">60s</span></div><div id="lbody"></div></div>';
+      g1Timer(c,60,c.querySelector('#tmr'),function(){finish();});
+      word();
+      function word(){
+        timers.forEach(clearTimeout);timers=[];
+        if(idx>=5){finish();return;}
+        var lw=c.querySelector('#lw');if(lw)lw.textContent=idx+1;
+        var w=set[idx];ci=0;
+        drawWord(w,'');
+        timers.push(setTimeout(function(){if(!over&&c.isConnected&&idx<5&&set[idx]===w){ci=1;drawWord(w,'');}},3000));
+        timers.push(setTimeout(function(){if(!over&&c.isConnected&&idx<5&&set[idx]===w){ci=2;drawWord(w,'');}},6000));
+      }
+      function drawWord(w,msg){
+        var lb=c.querySelector('#lbody');if(!lb)return;
+        lb.innerHTML='<div class="muted">'+esc(partner)+' is clueing…</div>'
+          +w.clues.map(function(cl,i){return '<div class="msg">'+(i<=ci?'💬 "'+esc(cl)+'"':'🔒 clue '+(i+1))+'</div>';}).join('')
+          +(msg||'')
+          +'<div class="row" style="margin-top:8px"><input id="pwIn" class="grow" placeholder="Your guess…" autocomplete="off"><button class="btn" id="pwGo">Guess</button></div>'
+          +'<button class="btn secondary" id="pwPass">Pass word</button>';
+        var inp=c.querySelector('#pwIn');
+        var guess=function(){
+          var v=inp.value.trim();if(!v)return;
+          if(SHG.jeopardyGrade(v,w.word)){got++;var lg=c.querySelector('#lg');if(lg)lg.textContent=got;Sound.win();idx++;word();}
+          else{Sound.lose();inp.value='';inp.placeholder='Nope — try again or pass';}
+        };
+        c.querySelector('#pwGo').onclick=guess;
         inp.addEventListener('keydown',function(e){if(e.key==='Enter')guess();});
+        c.querySelector('#pwPass').onclick=function(){Sound.click();idx++;word();};
+        inp.focus&&inp.focus();
+      }
+      function finish(){
+        if(over)return;over=true;timers.forEach(clearTimeout);
+        c.innerHTML='<div class="card center"><div class="big">⚡ Lightning Round over!</div><div class="muted">Your team got '+got+' of 5 passwords.</div><div class="big" style="margin-top:6px">You win $'+(got*100).toLocaleString('en-US')+'!</div></div>';
+        if(got>=3)Sound.win();else Sound.lose();
       }
     }
   }
