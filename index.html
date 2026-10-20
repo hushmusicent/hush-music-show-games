@@ -77,6 +77,23 @@ table.lb tr.me td{color:var(--gold); font-weight:800;}
 .ff-pd-screen{background:#0a0a0a;border:3px solid #3a2c10;border-radius:8px;padding:8px 4px;text-align:center;}
 .ff-pd-fam{color:#4dd0ff;font-weight:900;font-size:12px;letter-spacing:1px;margin-bottom:3px;}
 .ff-pd-score{color:#ff9d2e;font-family:"Courier New",monospace;font-weight:900;font-size:19px;}
+/* ===== The Chase tower ===== */
+.ch-wrap{display:flex;gap:10px;align-items:flex-start;margin-top:4px;}
+.ch-tower{flex:0 0 42%;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;background:#050510;border:2px solid #1c2f52;border-radius:10px;}
+.ch-step{height:30px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#fff;background:linear-gradient(#2a3f66,#16233d);border:1px solid #3d5a8f;box-shadow:inset 0 2px 4px rgba(255,255,255,.15);white-space:nowrap;overflow:hidden;}
+.ch-step.red{background:linear-gradient(#d42a1e,#7d0f08);border-color:#ff6b5e;}
+.ch-step.me{background:linear-gradient(#1fae54,#0d6b32);border-color:#7dffab;box-shadow:0 0 10px rgba(60,255,120,.55);}
+.ch-bank{color:#39ff7a;font-weight:900;letter-spacing:3px;font-size:16px;text-shadow:0 0 10px rgba(57,255,122,.8);margin-top:4px;}
+.ch-q{flex:1;background:linear-gradient(#1c3f8f,#0e2456);border:3px solid #c9d4ea;border-radius:12px;padding:12px;min-width:0;}
+.ch-qtext{color:#fff;font-weight:700;font-size:15px;margin-bottom:10px;line-height:1.4;}
+.ch-a{display:block;width:100%;margin:6px 0;background:linear-gradient(#274b8f,#132c5c);border:2px solid #8fa3cc;border-radius:8px;color:#fff;font-weight:700;font-size:14px;padding:10px;text-align:left;cursor:pointer;}
+.ch-a:disabled{opacity:.85;}
+.ch-a.ok{border-color:#39ff7a;box-shadow:0 0 12px rgba(57,255,122,.75);}
+.ch-a.bad{border-color:#ff5a4e;box-shadow:0 0 12px rgba(255,90,78,.75);}
+.ch-tags{display:flex;gap:6px;justify-content:flex-end;margin-bottom:6px;}
+.ch-tag{font-size:11px;font-weight:900;padding:3px 8px;border-radius:6px;}
+.ch-tag.c{background:#f7c948;color:#111;}
+.ch-tag.p{background:#e0342b;color:#fff;}
 .ff-xov{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;gap:12px;background:rgba(0,0,0,.45);border-radius:180px 180px 10px 10px;animation:ffxpop .25s;}
 @keyframes ffxpop{from{transform:scale(.6);opacity:0;}}
 .ff-x{width:86px;height:86px;border-radius:16px;background:linear-gradient(#f04438,#8f130d);border:4px solid #ffc9c2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:56px;font-weight:900;text-shadow:0 3px 8px #000;box-shadow:0 6px 20px rgba(0,0,0,.7);}
@@ -5427,14 +5444,41 @@ render:function(c,ctx){
 }});
 
 /* ================= THE CHASE ================= */
-regGame('chase',{howto:"60-second Cash Builder: every right answer banks $1,000. Then the Final Chase - answer questions to move down the board and escape while the Chaser hunts you. Reach the bank before the Chaser catches you!",name:'The Chase',icon:'🏃',tags:'Game Show',pvp:true,seats:2,
+regGame('chase',{howto:"60-second CASH BUILDER: $1,000 for every right answer.\n\nTHE OFFERS: The Chaser gives you three deals - a LOW offer that starts you closer to the bank, your built money in the MIDDLE, or a HIGH offer with big money but further away.\n\nTHE CHASE: Go head-to-head down the 7-step tower. Answer right to move down toward the BANK - the Chaser answers right too and hunts you from above. Get caught and you leave with nothing.\n\nFINAL CHASE: Escape and you get 60 seconds to build a head start - every right answer is a step. Then the Chaser gets their questions to run you down. Survive and the money is yours!",name:'The Chase',icon:'🏃',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS2.chase.length>=10))return;
-  var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS2.chase,15)));};
+  var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS2.chase,20)));};
+  var chaser=g1Bots(1)[0];
   if(net)g1Pvp(net,share,function(d,fin){solo(d,fin);},function(iw,sc){g1Settle(c,iw,sc,'The Chase');});
   else solo(share(),null);
-  /* fin null → full CPU game (with Final Chase); else PvP submit(builder*100 + escape?5000:0) */
+  /* tower: steps 7(top)..1, bank at 0. red = chaser zone, green = your step */
+  function towerHTML(P,C,money){
+    var h='<div class="ch-tower">';
+    for(var s=7;s>=1;s--){
+      var cls='ch-step',w=(58+(7-s)*7);
+      if(s>=C)cls+=' red';
+      else if(s===P)cls+=' me';
+      var label='';
+      if(s===C)label='😈';
+      else if(s===P)label='🧍 '+g1Money(money);
+      h+='<div class="'+cls+'" style="width:'+w+'%">'+(label||'&nbsp;')+'</div>';
+    }
+    h+='<div class="ch-bank">BANK</div></div>';
+    return h;
+  }
+  function tagsHTML(){
+    return '<div class="ch-tags"><span class="ch-tag c">CHASER</span><span class="ch-tag p">PLAYER</span></div>';
+  }
+  /* The Chase uses 3 answers: drop one wrong choice */
+  function threeChoices(q){
+    var wrongs=[];q.choices.forEach(function(_,i){if(i!==q.correct)wrongs.push(i);});
+    var drop=wrongs[Math.floor(Math.random()*wrongs.length)];
+    var out=[];
+    q.choices.forEach(function(t,i){if(i!==drop)out.push({t:t,ok:i===q.correct});});
+    return out;
+  }
+  function pickQ(qs,used){return qs[used.i++%qs.length];}
   function solo(qs,fin){
     var qi=0,correct=0;
     c.innerHTML='<h2>🏃 Cash Builder — 60s</h2><div class="card"><div class="status">Correct: <b id="cc">0</b> · ⏱ <span id="tmr">60s</span></div><div class="big" style="font-size:18px" id="q"></div><div id="ch"></div></div>';
@@ -5452,37 +5496,62 @@ render:function(c,ctx){
     function cashDone(){
       if(!c.isConnected)return;
       var money=correct*1000,diff=correct>8?'hard':(correct>5?'medium':'easy');
-      chasePhase(money,diff);
+      offers(money,diff);
     }
-    function chasePhase(money,diff){
-      var P=4,C=7,turn=0;
-      c.innerHTML='<h2>🏃 The Chase</h2><div class="card"><div class="muted">Cash: '+g1Money(money)+' · Escape to step 0! Chaser ('+diff+') starts 3 steps back.</div><div id="bd"></div><div class="big" style="font-size:18px" id="q"></div><div id="ch"></div></div>';
-      draw();qTurn();
-      function draw(){
-        var h='<div style="font-size:20px;line-height:1.8">';
-        for(var s=7;s>=0;s--)h+=((s===P?'🧍':'')+(s===C?'😈':'')+((s!==P&&s!==C)?'·':'')+' step '+s+(s===0?' 🏦':'')+'<br>');
-        h+='</div>';c.querySelector('#bd').innerHTML=h;
+    /* ----- the offers ----- */
+    function offers(money,diff){
+      var low=Math.round(money/2/500)*500,mid=money,high=Math.max(10000,Math.round(money*2.5/500)*500);
+      var opts=[
+        {amt:low,start:3,label:'LOW offer — closer to the bank'},
+        {amt:mid,start:4,label:'Your money — middle start'},
+        {amt:high,start:5,label:'HIGH offer — big money, further away'}
+      ];
+      c.innerHTML='<h2>💰 The Offers</h2><div class="card"><div class="muted">😈 '+esc(chaser)+' (the Chaser) offers you three deals. Cash built: <b>'+g1Money(money)+'</b>. Pick your start step:</div>'
+        +opts.map(function(o,i){
+          return '<button class="btn '+(i===1?'':'secondary ')+'" data-o="'+i+'" style="margin-top:8px">◀ '+g1Money(o.amt)+' ▶<br><span class="muted" style="font-size:13px">'+o.label+' · start '+o.start+' steps from the bank</span></button>';
+        }).join('')
+        +'</div>';
+      c.querySelectorAll('[data-o]').forEach(function(b){
+        b.onclick=function(){Sound.click();var o=opts[+b.getAttribute('data-o')];chasePhase(o.amt,o.start,diff);};
+      });
+    }
+    /* ----- head-to-head down the tower ----- */
+    function chasePhase(money,start,diff){
+      var P=start,C=7,turn=0,used={i:0};
+      qTurn();
+      function shell(qhtml,chtml){
+        return '<h2>🏃 The Chase</h2>'+tagsHTML()
+          +'<div class="ch-wrap">'+towerHTML(P,C,money)
+          +'<div class="ch-q"><div class="ch-qtext">'+qhtml+'</div><div id="chA">'+chtml+'</div></div></div>';
       }
       function qTurn(){
-        var q=qs[Math.floor(Math.random()*qs.length)],isChaser=turn%2===1;
-        c.querySelector('#q').innerHTML=(isChaser?'😈 <b>Chaser\'s question:</b> ':'🧍 <b>Your question:</b> ')+esc(q.q);
-        var ch=c.querySelector('#ch');
-        if(isChaser){
-          ch.innerHTML='<div class="muted">Chaser is thinking…</div>';
+        var q=pickQ(qs,used),isChaser=turn%2===1;
+        if(!isChaser){
+          var chs=threeChoices(q);
+          c.innerHTML=shell('🧍 Your question: '+esc(q.q),'');
+          var box=c.querySelector('#chA');
+          chs.forEach(function(ch2){
+            var b=document.createElement('button');b.className='ch-a';b.textContent=ch2.t;
+            b.onclick=function(){
+              box.querySelectorAll('.ch-a').forEach(function(x){x.disabled=true;});
+              if(ch2.ok){b.classList.add('ok');P--;Sound.win();}
+              else{b.classList.add('bad');Sound.lose();box.querySelectorAll('.ch-a').forEach(function(x){if(x.textContent===q.choices[q.correct])x.classList.add('ok');});}
+              step();
+            };
+            box.appendChild(b);
+          });
+        }else{
+          c.innerHTML=shell('😈 '+esc(chaser)+'\'s question: '+esc(q.q),'<div class="muted">Chaser is thinking…</div>');
           setTimeout(function(){
             if(!c.isConnected)return;
-            if(SHG.chaseBotCorrect(diff)){C--;Sound.lose();ch.innerHTML='<div class="err">Chaser correct — moves down.</div>';}
-            else{Sound.win();ch.innerHTML='<div class="ok">Chaser misses!</div>';}
+            var ok=SHG.chaseBotCorrect(diff);
+            if(ok){C--;Sound.lose();}
+            else Sound.win();
+            var box=c.querySelector('#chA');
+            if(box)box.innerHTML='<div class="'+(ok?'err':'ok')+'">'+(ok?'😈 Chaser correct — moves down!':'✅ Chaser misses!')+'</div>';
             step();
           },1200);
-          return;
         }
-        g1Choices(c,q,function(i){
-          var ch2=c.querySelector('#ch');
-          if(i===q.correct){P--;Sound.win();ch2.innerHTML='<div class="ok">Correct — you move down!</div>';}
-          else{Sound.lose();ch2.innerHTML='<div class="err">Wrong! (was '+esc(q.choices[q.correct])+')</div>';}
-          step();
-        });
       }
       function step(){
         turn++;
@@ -5490,21 +5559,24 @@ render:function(c,ctx){
           if(!c.isConnected)return;
           if(C<=P){caught();return;}
           if(P<=0){escaped(money);return;}
-          draw();qTurn();
-        },900);
+          qTurn();
+        },950);
       }
       function caught(){
-        c.innerHTML='<div class="card center"><div class="big">😈 CAUGHT!</div><div class="muted">The chaser got you — no bank.</div></div>';Sound.lose();
+        c.innerHTML='<h2>🏃 The Chase</h2><div class="card center"><div class="big">😈 CAUGHT!</div><div class="muted">'+esc(chaser)+' got you — you leave with nothing.</div></div>';Sound.lose();
         if(fin)fin(correct*100);
       }
       function escaped(money){
-        if(fin){fin(correct*100+5000);c.innerHTML='<div class="card center"><div class="big">🏦 ESCAPED!</div><div class="muted">Waiting for opponent…</div></div>';return;}
-        finalChase(money);
+        if(fin){fin(correct*100+5000);c.innerHTML='<div class="card center"><div class="big">🏦 ESCAPED!</div><div class="muted">You banked '+g1Money(money)+' — waiting for opponent…</div></div>';return;}
+        c.innerHTML='<div class="card center"><div class="big">🏦 ESCAPED!</div><div class="muted">You made it to the bank with '+g1Money(money)+'!</div></div>';
+        Sound.win();
+        setTimeout(function(){if(c.isConnected)finalChase(money);},1700);
       }
     }
+    /* ----- final chase ----- */
     function finalChase(money){
       var S=0,qn=0;
-      c.innerHTML='<h2>🏁 Final Chase — 60s</h2><div class="card"><div class="muted">Answer fast! Each correct = 1 step head start.</div><div class="status">Head start: <b id="ss">0</b> · ⏱ <span id="tmr">60s</span></div><div class="big" style="font-size:18px" id="q"></div><div id="ch"></div></div>';
+      c.innerHTML='<h2>🏁 Final Chase — 60s</h2><div class="card"><div class="muted">Answer fast! Each correct = 1 step of head start.</div><div class="status">Head start: <b id="ss">0</b> · ⏱ <span id="tmr">60s</span></div><div class="big" style="font-size:18px" id="q"></div><div id="ch"></div></div>';
       ask2();
       g1Timer(c,60,c.querySelector('#tmr'),function(){chaseDown();});
       function ask2(){
@@ -5519,16 +5591,21 @@ render:function(c,ctx){
       function chaseDown(){
         if(!c.isConnected)return;
         var need=S+1,got=0,tries=S+2,i=0;
-        c.innerHTML='<div class="card"><div class="muted">Final chase: chaser needs '+need+' correct from '+tries+'…</div><div id="cd"></div></div>';
+        draw2();
+        function draw2(){
+          c.innerHTML='<h2>🏁 Final Chase</h2>'+tagsHTML()
+            +'<div class="ch-wrap">'+towerHTML(-1,Math.max(1,7-got),money)
+            +'<div class="ch-q"><div class="ch-qtext">😈 '+esc(chaser)+' needs <b>'+need+'</b> correct to catch you — so far: <b>'+got+'</b> ('+i+'/'+tries+' asked)</div><div class="muted">'+(got>=need?'':'One wrong answer and the clock runs out on the Chaser…')+'</div></div></div>';
+        }
         (function next(){
           if(i>=tries||got>=need){verdict();return;}
           if(SHG.chaseBotCorrect('hard'))got++;
           i++;
-          var cd=c.querySelector('#cd');if(cd)cd.innerHTML='<div class="status">Chaser: '+got+' / '+need+'</div>';
-          setTimeout(next,600);
+          draw2();
+          setTimeout(next,700);
         })();
         function verdict(){
-          if(got>=need){c.innerHTML='<div class="card center"><div class="big">😈 Caught in the Final Chase!</div></div>';Sound.lose();}
+          if(got>=need){c.innerHTML='<div class="card center"><div class="big">😈 Caught in the Final Chase!</div><div class="muted">'+esc(chaser)+' ran you down.</div></div>';Sound.lose();}
           else{
             c.innerHTML='<div class="card center"><div class="big">🏆 YOU BEAT THE CHASER!</div><div class="muted">You bank '+g1Money(money)+'</div></div>';
             Sound.win();(async function(){await Wallet.recordWin('chase');})();
