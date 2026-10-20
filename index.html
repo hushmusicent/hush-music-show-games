@@ -102,6 +102,29 @@ table.lb tr.me td{color:var(--gold); font-weight:800;}
 /* ===== What's My Line studio ===== */
 /* ===== Hollywood Game Night marquee ===== */
 /* ===== Deal or No Deal stage ===== */
+/* ===== Press Your Luck Big Board ===== */
+.pl-stage{background:radial-gradient(ellipse at 50% 30%,#5c430a,#241a04 70%);border:3px solid #c9973f;border-radius:12px;padding:10px;margin-bottom:10px;}
+.pl-logo{grid-column:2/6;grid-row:2/5;background:radial-gradient(ellipse at center,#ffe45e,#f2b705 70%);border:4px solid #c00;border-radius:10px;color:#d40000;font-weight:900;font-size:19px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1.15;padding:8px 4px;}
+.pl-swoosh{width:72%;height:9px;background:#111;border-radius:50%;margin:3px 0;}
+.pl-event{font-size:11px;color:#5c430a;font-weight:700;margin-top:5px;line-height:1.3;}
+.pl-strip{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:8px 0;}
+.pl-strip span{background:#0e5c1e;border:1px solid #37d35a;border-radius:6px;color:#c8ffd2;font-size:11px;padding:3px 7px;}
+.pl-strip span.me{background:#7a5b00;border-color:#ffd23e;color:#ffeeb0;}
+.pl-strip span.out{opacity:.55;text-decoration:line-through;}
+.pl-board{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;background:#3a2c05;border:3px solid #c9973f;border-radius:12px;padding:6px;margin-bottom:8px;}
+.pl-sq{border-radius:7px;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#fff;text-align:center;padding:3px 2px;border:2px solid rgba(0,0,0,.45);text-shadow:0 1px 2px rgba(0,0,0,.6);}
+.pl-sq .pl-sub{font-size:9px;font-weight:700;}
+.pl-sq.lit{border-color:#fff;box-shadow:0 0 0 2px #ffe45e,0 0 16px 4px rgba(255,220,80,.85);filter:brightness(1.3);z-index:1;}
+.pl-b{background:linear-gradient(#2b6cb0,#1a365d);}
+.pl-g{background:linear-gradient(#2f9e44,#14532d);}
+.pl-r{background:linear-gradient(#d43a2f,#7d130c);}
+.pl-p{background:linear-gradient(#c2438f,#70124a);}
+.pl-t{background:linear-gradient(#1299a8,#0b4d57);}
+.pl-u{background:linear-gradient(#7b4fd0,#3d1a75);}
+.pl-buzzb{font-size:19px;padding:14px;}
+.pl-stopb{background:radial-gradient(circle at 50% 35%,#ff7a6b,#c21f12 65%,#7d0f07);color:#fff;font-size:20px;border:3px solid #ffb3a8;box-shadow:0 0 18px rgba(255,60,40,.55);padding:16px 26px;}
+.pl-final{background:#17122a;border:1px solid #5a4a86;border-radius:8px;padding:7px 10px;margin:4px 0;color:#e8e2f2;}
+.pl-final.me{border-color:#ffd23e;color:#ffeeb0;}
 .dl-banker{display:flex;align-items:center;gap:10px;background:linear-gradient(#101623,#05070d);border:2px solid #3a4a66;border-radius:10px;padding:8px 12px;margin-bottom:8px;}
 .dl-sil{font-size:30px;filter:brightness(.35) drop-shadow(0 0 6px #000);}
 .dl-board{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;background:#0a1230;border:2px solid #2b4f9e;border-radius:10px;padding:8px;margin-top:8px;}
@@ -6276,7 +6299,1009 @@ var BANKS2 = {
       {name:"Tree surgeon", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, false, true, false, true, false, false, false]},
       {name:"Casino dealer", answers:[true, true, true, true, false, false, false, true, false, false, true, false, false, false, false, false, false, false, false, false]}
     ]
-  }
+  },
+  pressluck: [
+    {q:"What is the capital of France?", choices:["London", "Rome", "Paris"], correct:2},
+    {q:"What is the capital of Japan?", choices:["Tokyo", "Seoul", "Beijing"], correct:0},
+    {q:"What is the capital of Australia?", choices:["Sydney", "Melbourne", "Canberra"], correct:2},
+    {q:"What is the capital of Canada?", choices:["Vancouver", "Toronto", "Ottawa"], correct:2},
+    {q:"What is the capital of Brazil?", choices:["Rio de Janeiro", "Sao Paulo", "Brasilia"], correct:2},
+    {q:"What is the capital of Egypt?", choices:["Cairo", "Giza", "Alexandria"], correct:0},
+    {q:"What is the capital of Germany?", choices:["Munich", "Berlin", "Hamburg"], correct:1},
+    {q:"What is the capital of Italy?", choices:["Naples", "Rome", "Venice"], correct:1},
+    {q:"What is the capital of Spain?", choices:["Madrid", "Seville", "Barcelona"], correct:0},
+    {q:"What is the capital of Russia?", choices:["St. Petersburg", "Moscow", "Kazan"], correct:1},
+    {q:"What is the capital of Mexico?", choices:["Guadalajara", "Mexico City", "Cancun"], correct:1},
+    {q:"What is the capital of Argentina?", choices:["Rosario", "Cordoba", "Buenos Aires"], correct:2},
+    {q:"What is the capital of India?", choices:["Mumbai", "New Delhi", "Kolkata"], correct:1},
+    {q:"What is the capital of South Korea?", choices:["Busan", "Seoul", "Incheon"], correct:1},
+    {q:"What is the capital of Turkey?", choices:["Istanbul", "Ankara", "Izmir"], correct:1},
+    {q:"What is the capital of Sweden?", choices:["Stockholm", "Malmo", "Gothenburg"], correct:0},
+    {q:"What is the capital of Norway?", choices:["Oslo", "Trondheim", "Bergen"], correct:0},
+    {q:"What is the capital of Denmark?", choices:["Copenhagen", "Odense", "Aarhus"], correct:0},
+    {q:"What is the capital of Finland?", choices:["Turku", "Helsinki", "Tampere"], correct:1},
+    {q:"What is the capital of Poland?", choices:["Warsaw", "Gdansk", "Krakow"], correct:0},
+    {q:"What is the capital of Greece?", choices:["Thessaloniki", "Crete", "Athens"], correct:2},
+    {q:"What is the capital of Portugal?", choices:["Lisbon", "Porto", "Faro"], correct:0},
+    {q:"What is the capital of Ireland?", choices:["Cork", "Dublin", "Galway"], correct:1},
+    {q:"What is the capital of Iceland?", choices:["Keflavik", "Akureyri", "Reykjavik"], correct:2},
+    {q:"What is the capital of the Netherlands?", choices:["Amsterdam", "Rotterdam", "Utrecht"], correct:0},
+    {q:"What is the capital of Belgium?", choices:["Antwerp", "Ghent", "Brussels"], correct:2},
+    {q:"What is the capital of Switzerland?", choices:["Geneva", "Bern", "Zurich"], correct:1},
+    {q:"What is the capital of Austria?", choices:["Vienna", "Salzburg", "Graz"], correct:0},
+    {q:"What is the capital of New Zealand?", choices:["Christchurch", "Auckland", "Wellington"], correct:2},
+    {q:"What is the capital of South Africa?", choices:["Cape Town", "Johannesburg", "Pretoria"], correct:2},
+    {q:"What is the capital of Kenya?", choices:["Mombasa", "Nairobi", "Kisumu"], correct:1},
+    {q:"What is the capital of Nigeria?", choices:["Kano", "Abuja", "Lagos"], correct:1},
+    {q:"What is the capital of Thailand?", choices:["Phuket", "Bangkok", "Chiang Mai"], correct:1},
+    {q:"What is the capital of Vietnam?", choices:["Ho Chi Minh City", "Hanoi", "Da Nang"], correct:1},
+    {q:"What is the capital of Indonesia?", choices:["Surabaya", "Bali", "Jakarta"], correct:2},
+    {q:"What is the capital of the Philippines?", choices:["Davao", "Manila", "Cebu"], correct:1},
+    {q:"What is the capital of Pakistan?", choices:["Islamabad", "Lahore", "Karachi"], correct:0},
+    {q:"What is the capital of Bangladesh?", choices:["Chittagong", "Khulna", "Dhaka"], correct:2},
+    {q:"What is the capital of Peru?", choices:["Cusco", "Lima", "Arequipa"], correct:1},
+    {q:"What is the capital of Chile?", choices:["Concepcion", "Valparaiso", "Santiago"], correct:2},
+    {q:"What is the capital of Colombia?", choices:["Bogota", "Cali", "Medellin"], correct:0},
+    {q:"What is the capital of Venezuela?", choices:["Caracas", "Maracaibo", "Valencia"], correct:0},
+    {q:"What is the capital of Cuba?", choices:["Havana", "Santiago", "Camaguey"], correct:0},
+    {q:"What is the capital of Jamaica?", choices:["Montego Bay", "Kingston", "Spanish Town"], correct:1},
+    {q:"What is the capital of Ukraine?", choices:["Odessa", "Lviv", "Kyiv"], correct:2},
+    {q:"What is the capital of Romania?", choices:["Cluj", "Bucharest", "Iasi"], correct:1},
+    {q:"What is the capital of Hungary?", choices:["Szeged", "Budapest", "Debrecen"], correct:1},
+    {q:"What is the capital of the Czech Republic?", choices:["Ostrava", "Prague", "Brno"], correct:1},
+    {q:"What is the capital of Morocco?", choices:["Marrakesh", "Rabat", "Casablanca"], correct:1},
+    {q:"What is the capital of Saudi Arabia?", choices:["Mecca", "Jeddah", "Riyadh"], correct:2},
+    {q:"Which country is the largest in the world by land area?", choices:["China", "Canada", "Russia"], correct:2},
+    {q:"Which country has the largest population in the world?", choices:["United States", "China", "India"], correct:2},
+    {q:"Which is the smallest country in the world?", choices:["Monaco", "Malta", "Vatican City"], correct:2},
+    {q:"Which country is both a continent and a country?", choices:["Greenland", "Australia", "Antarctica"], correct:1},
+    {q:"Which country is home to the kangaroo?", choices:["Australia", "South Africa", "Brazil"], correct:0},
+    {q:"Which country has the longest coastline in the world?", choices:["Russia", "Indonesia", "Canada"], correct:2},
+    {q:"Which European country is shaped like a boot?", choices:["Greece", "Italy", "Spain"], correct:1},
+    {q:"Which country is known as the Land of the Rising Sun?", choices:["Thailand", "Japan", "China"], correct:1},
+    {q:"Which country has the most natural lakes in the world?", choices:["Russia", "United States", "Canada"], correct:2},
+    {q:"In which country would you find the Great Wall?", choices:["Mongolia", "Japan", "China"], correct:2},
+    {q:"Which country gifted the Statue of Liberty to the United States?", choices:["France", "England", "Italy"], correct:0},
+    {q:"Which African country was formerly known as Abyssinia?", choices:["Ethiopia", "Somalia", "Sudan"], correct:0},
+    {q:"Which country has a maple leaf on its flag?", choices:["Canada", "United States", "Austria"], correct:0},
+    {q:"Which country is home to the kiwi bird?", choices:["Australia", "New Zealand", "Fiji"], correct:1},
+    {q:"Which South American country is the largest by area?", choices:["Argentina", "Brazil", "Peru"], correct:1},
+    {q:"What is the longest river in the world?", choices:["Amazon", "Nile", "Yangtze"], correct:1},
+    {q:"What is the longest river in the United States?", choices:["Colorado", "Missouri", "Mississippi"], correct:1},
+    {q:"Which river flows through the Grand Canyon?", choices:["Columbia", "Rio Grande", "Colorado"], correct:2},
+    {q:"Which river is the longest in Europe?", choices:["Rhine", "Volga", "Danube"], correct:1},
+    {q:"The Danube River empties into which body of water?", choices:["Caspian Sea", "Baltic Sea", "Black Sea"], correct:2},
+    {q:"Which river flows through London?", choices:["Tyne", "Seine", "Thames"], correct:2},
+    {q:"Which river flows through Paris?", choices:["Rhone", "Loire", "Seine"], correct:2},
+    {q:"Which river is considered sacred in India?", choices:["Ganges", "Brahmaputra", "Indus"], correct:0},
+    {q:"The Amazon River is located on which continent?", choices:["South America", "Asia", "Africa"], correct:0},
+    {q:"Which river forms part of the border between the US and Mexico?", choices:["Colorado River", "Rio Grande", "Mississippi River"], correct:1},
+    {q:"What is the tallest mountain in the world?", choices:["Kilimanjaro", "Mount Everest", "K2"], correct:1},
+    {q:"Mount Everest sits on the border of Nepal and which other country?", choices:["India", "China", "Bhutan"], correct:1},
+    {q:"What is the tallest mountain in Africa?", choices:["Mount Atlas", "Mount Kilimanjaro", "Mount Kenya"], correct:1},
+    {q:"What is the tallest mountain in North America?", choices:["Mount Rainier", "Mount Whitney", "Denali"], correct:2},
+    {q:"The Alps are located on which continent?", choices:["South America", "Asia", "Europe"], correct:2},
+    {q:"Mount Fuji is located in which country?", choices:["China", "South Korea", "Japan"], correct:2},
+    {q:"The Andes Mountains are located on which continent?", choices:["North America", "Africa", "South America"], correct:2},
+    {q:"Which mountain range separates Europe from Asia?", choices:["The Pyrenees", "The Alps", "The Urals"], correct:2},
+    {q:"Mount Olympus is located in which country?", choices:["Turkey", "Italy", "Greece"], correct:2},
+    {q:"What is the largest ocean on Earth?", choices:["Atlantic", "Pacific", "Indian"], correct:1},
+    {q:"What is the smallest ocean on Earth?", choices:["Arctic", "Indian", "Southern"], correct:0},
+    {q:"Which ocean is located between Africa and Australia?", choices:["Pacific", "Atlantic", "Indian"], correct:2},
+    {q:"The Bermuda Triangle is located in which ocean?", choices:["Atlantic", "Indian", "Pacific"], correct:0},
+    {q:"Which sea separates Europe from Africa?", choices:["Red Sea", "Black Sea", "Mediterranean Sea"], correct:2},
+    {q:"What is the largest desert in the world?", choices:["Sahara", "Gobi", "Antarctic Desert"], correct:2},
+    {q:"What is the largest hot desert in the world?", choices:["Mojave", "Sahara", "Arabian"], correct:1},
+    {q:"What is the largest island in the world?", choices:["Borneo", "Madagascar", "Greenland"], correct:2},
+    {q:"What is the deepest ocean trench in the world?", choices:["Java Trench", "Tonga Trench", "Mariana Trench"], correct:2},
+    {q:"The Great Barrier Reef is located near which country?", choices:["Japan", "Brazil", "Australia"], correct:2},
+    {q:"Which waterfall is the largest in North America by volume?", choices:["Yosemite Falls", "Niagara Falls", "Multnomah Falls"], correct:1},
+    {q:"Victoria Falls is located on which continent?", choices:["South America", "Africa", "Asia"], correct:1},
+    {q:"What is the largest lake in the world by surface area?", choices:["Caspian Sea", "Lake Superior", "Lake Victoria"], correct:0},
+    {q:"Which Great Lake is located entirely within the United States?", choices:["Lake Michigan", "Lake Erie", "Lake Ontario"], correct:0},
+    {q:"What is the longest river in Africa?", choices:["Nile", "Congo", "Niger"], correct:0},
+    {q:"Which famous landmark is located in Agra, India?", choices:["Great Wall", "Red Fort", "Taj Mahal"], correct:2},
+    {q:"The Eiffel Tower is located in which city?", choices:["London", "Paris", "Brussels"], correct:1},
+    {q:"The Colosseum is located in which city?", choices:["Athens", "Madrid", "Rome"], correct:2},
+    {q:"Big Ben is located in which city?", choices:["Edinburgh", "London", "Dublin"], correct:1},
+    {q:"The Sydney Opera House is located in which country?", choices:["New Zealand", "Australia", "Singapore"], correct:1},
+    {q:"Mount Rushmore is located in which US state?", choices:["Montana", "South Dakota", "Wyoming"], correct:1},
+    {q:"The Great Pyramid of Giza is located in which country?", choices:["Sudan", "Mexico", "Egypt"], correct:2},
+    {q:"The Christ the Redeemer statue overlooks which city?", choices:["Lima", "Rio de Janeiro", "Buenos Aires"], correct:1},
+    {q:"The Leaning Tower of Pisa is located in which country?", choices:["Spain", "Italy", "France"], correct:1},
+    {q:"Stonehenge is located in which country?", choices:["Ireland", "England", "Wales"], correct:1},
+    {q:"The Golden Gate Bridge is located in which city?", choices:["San Francisco", "San Diego", "Los Angeles"], correct:0},
+    {q:"The Burj Khalifa, the tallest building in the world, is in which city?", choices:["Dubai", "Riyadh", "Abu Dhabi"], correct:0},
+    {q:"The ancient Acropolis is located in which city?", choices:["Rome", "Athens", "Istanbul"], correct:1},
+    {q:"Machu Picchu is located in which country?", choices:["Bolivia", "Ecuador", "Peru"], correct:2},
+    {q:"The Kremlin is located in which city?", choices:["St. Petersburg", "Moscow", "Kiev"], correct:1},
+    {q:"Which country's flag is the only one that is not rectangular or square?", choices:["Nepal", "Switzerland", "Vatican City"], correct:0},
+    {q:"How many stars are on the flag of the United States?", choices:["52", "48", "50"], correct:2},
+    {q:"Which country's flag features a red maple leaf?", choices:["Switzerland", "Canada", "Austria"], correct:1},
+    {q:"Which country's flag is a simple red circle on a white background?", choices:["Japan", "Palau", "Bangladesh"], correct:0},
+    {q:"Which two colors dominate the flag of Greece?", choices:["Green and white", "Blue and white", "Red and white"], correct:1},
+    {q:"The flag of which country features the Union Jack in its corner and stars of the Southern Cross?", choices:["Tuvalu", "Fiji", "Australia"], correct:2},
+    {q:"What is the capital of Texas?", choices:["Houston", "Dallas", "Austin"], correct:2},
+    {q:"What is the capital of California?", choices:["Los Angeles", "San Jose", "Sacramento"], correct:2},
+    {q:"What is the capital of Florida?", choices:["Tallahassee", "Orlando", "Miami"], correct:0},
+    {q:"What is the capital of New York state?", choices:["New York City", "Albany", "Buffalo"], correct:1},
+    {q:"What is the capital of Illinois?", choices:["Springfield", "Chicago", "Peoria"], correct:0},
+    {q:"What is the capital of Colorado?", choices:["Aspen", "Boulder", "Denver"], correct:2},
+    {q:"What is the capital of Arizona?", choices:["Phoenix", "Tucson", "Flagstaff"], correct:0},
+    {q:"What is the capital of Washington state?", choices:["Olympia", "Seattle", "Spokane"], correct:0},
+    {q:"What is the capital of Oregon?", choices:["Portland", "Salem", "Eugene"], correct:1},
+    {q:"What is the capital of Nevada?", choices:["Las Vegas", "Carson City", "Reno"], correct:1},
+    {q:"What is the capital of Georgia?", choices:["Augusta", "Atlanta", "Savannah"], correct:1},
+    {q:"What is the capital of Pennsylvania?", choices:["Pittsburgh", "Harrisburg", "Philadelphia"], correct:1},
+    {q:"What is the capital of Ohio?", choices:["Cincinnati", "Cleveland", "Columbus"], correct:2},
+    {q:"What is the capital of Michigan?", choices:["Lansing", "Grand Rapids", "Detroit"], correct:0},
+    {q:"What is the capital of Alaska?", choices:["Juneau", "Anchorage", "Fairbanks"], correct:0},
+    {q:"What is the capital of Hawaii?", choices:["Hilo", "Kailua", "Honolulu"], correct:2},
+    {q:"What is the capital of Tennessee?", choices:["Knoxville", "Memphis", "Nashville"], correct:2},
+    {q:"What is the capital of Massachusetts?", choices:["Cambridge", "Boston", "Worcester"], correct:1},
+    {q:"What is the capital of Louisiana?", choices:["New Orleans", "Baton Rouge", "Shreveport"], correct:1},
+    {q:"Which US state is known as the Grand Canyon State?", choices:["Utah", "Arizona", "Nevada"], correct:1},
+    {q:"Which US state is nicknamed the Sunshine State?", choices:["California", "Hawaii", "Florida"], correct:2},
+    {q:"Which is the largest US state by land area?", choices:["California", "Alaska", "Texas"], correct:1},
+    {q:"Which is the smallest US state by land area?", choices:["Delaware", "Rhode Island", "Connecticut"], correct:1},
+    {q:"Which US state is home to Yellowstone National Park, mostly within its borders?", choices:["Idaho", "Montana", "Wyoming"], correct:2},
+    {q:"The city of Chicago is located in which state?", choices:["Wisconsin", "Illinois", "Indiana"], correct:1},
+    {q:"The city of Las Vegas is located in which state?", choices:["Arizona", "Nevada", "Utah"], correct:1},
+    {q:"The city of New Orleans is located in which state?", choices:["Louisiana", "Mississippi", "Alabama"], correct:0},
+    {q:"Which US city is nicknamed the Big Apple?", choices:["New York City", "Chicago", "Boston"], correct:0},
+    {q:"Which US city is nicknamed the Windy City?", choices:["Chicago", "Cleveland", "Detroit"], correct:0},
+    {q:"Which US city is home to the Liberty Bell?", choices:["Philadelphia", "Boston", "New York City"], correct:0},
+    {q:"What is the capital of Lithuania?", choices:["Vilnius", "Riga", "Tallinn"], correct:0},
+    {q:"What is the capital of Estonia?", choices:["Tallinn", "Vilnius", "Riga"], correct:0},
+    {q:"What is the capital of Latvia?", choices:["Vilnius", "Tallinn", "Riga"], correct:2},
+    {q:"What is the capital of Slovakia?", choices:["Ljubljana", "Zagreb", "Bratislava"], correct:2},
+    {q:"What is the capital of Croatia?", choices:["Belgrade", "Sarajevo", "Zagreb"], correct:2},
+    {q:"What is the capital of Bulgaria?", choices:["Bucharest", "Sofia", "Skopje"], correct:1},
+    {q:"What is the capital of Malta?", choices:["Valletta", "Mdina", "Sliema"], correct:0},
+    {q:"What is the capital of Cyprus?", choices:["Nicosia", "Limassol", "Larnaca"], correct:0},
+    {q:"Which ocean borders California?", choices:["Gulf of Mexico", "Atlantic Ocean", "Pacific Ocean"], correct:2},
+    {q:"Which continent is the Amazon rainforest mostly located on?", choices:["Africa", "South America", "Asia"], correct:1},
+    {q:"Which line divides the Earth into Northern and Southern Hemispheres?", choices:["Equator", "Prime Meridian", "Tropic of Cancer"], correct:0},
+    {q:"The Strait of Gibraltar separates Spain from which country?", choices:["Tunisia", "Morocco", "Algeria"], correct:1},
+    {q:"Which is the largest Great Lake by surface area?", choices:["Lake Erie", "Lake Huron", "Lake Superior"], correct:2},
+    {q:"Which country has the most time zones in the world?", choices:["France", "Russia", "United States"], correct:0},
+    {q:"The Iberian Peninsula is made up mostly of Spain and which other country?", choices:["Portugal", "Italy", "France"], correct:0},
+    {q:"Which island nation is located southeast of India and was formerly called Ceylon?", choices:["Mauritius", "Sri Lanka", "Maldives"], correct:1},
+    {q:"Which river is the longest in South America?", choices:["Amazon", "Orinoco", "Parana"], correct:0},
+    {q:"Mount Kilimanjaro is located in which country?", choices:["Tanzania", "Ethiopia", "Kenya"], correct:0},
+    {q:"Which US state is home to the Everglades?", choices:["Florida", "Louisiana", "Georgia"], correct:0},
+    {q:"The Panama Canal connects which two oceans?", choices:["Atlantic and Pacific", "Pacific and Arctic", "Atlantic and Indian"], correct:0},
+    {q:"Who was the first President of the United States?", choices:["John Adams", "George Washington", "Thomas Jefferson"], correct:1},
+    {q:"In what year did World War II end?", choices:["1943", "1947", "1945"], correct:2},
+    {q:"Which president issued the Emancipation Proclamation?", choices:["Abraham Lincoln", "Andrew Johnson", "Ulysses S. Grant"], correct:0},
+    {q:"The Declaration of Independence was signed in which year?", choices:["1776", "1789", "1801"], correct:0},
+    {q:"Who was president during the Great Depression and most of World War II?", choices:["Herbert Hoover", "Franklin D. Roosevelt", "Harry Truman"], correct:1},
+    {q:"Which US president resigned from office in 1974?", choices:["Lyndon B. Johnson", "Gerald Ford", "Richard Nixon"], correct:2},
+    {q:"The Louisiana Purchase was made by which president?", choices:["Thomas Jefferson", "James Monroe", "John Adams"], correct:0},
+    {q:"Who was the youngest person elected US president?", choices:["Barack Obama", "John F. Kennedy", "Bill Clinton"], correct:1},
+    {q:"Which president appears on the US five-dollar bill?", choices:["Andrew Jackson", "Abraham Lincoln", "George Washington"], correct:1},
+    {q:"The Berlin Wall fell in which year?", choices:["1985", "1991", "1989"], correct:2},
+    {q:"Which ancient civilization built the pyramids of Giza?", choices:["The Romans", "The Egyptians", "The Aztecs"], correct:1},
+    {q:"Julius Caesar was a leader of which empire?", choices:["The Roman Empire", "The Ottoman Empire", "The Persian Empire"], correct:0},
+    {q:"The Great Wall was built to protect which country?", choices:["Japan", "Mongolia", "China"], correct:2},
+    {q:"Which Greek philosopher taught Alexander the Great?", choices:["Plato", "Aristotle", "Socrates"], correct:1},
+    {q:"The Trojan War is famously told in which epic poem?", choices:["The Odyssey", "The Aeneid", "The Iliad"], correct:2},
+    {q:"Which ancient people created the first Olympic Games?", choices:["The Greeks", "The Romans", "The Egyptians"], correct:0},
+    {q:"Cleopatra was the last pharaoh of which land?", choices:["Greece", "Egypt", "Babylon"], correct:1},
+    {q:"The Colosseum, famous for gladiator fights, stands in which city?", choices:["Athens", "Rome", "Cairo"], correct:1},
+    {q:"Which civilization used hieroglyphics as writing?", choices:["The Egyptians", "The Vikings", "The Incas"], correct:0},
+    {q:"Mount Olympus was home to the gods of which mythology?", choices:["Norse", "Egyptian", "Greek"], correct:2},
+    {q:"Who sailed to the Americas in 1492?", choices:["Ferdinand Magellan", "Christopher Columbus", "Marco Polo"], correct:1},
+    {q:"The first Thanksgiving was celebrated by Pilgrims in which colony town?", choices:["Jamestown", "Salem", "Plymouth"], correct:2},
+    {q:"Which ship carried the Pilgrims to America in 1620?", choices:["The Mayflower", "The Santa Maria", "The Nina"], correct:0},
+    {q:"The Boston Tea Party protested taxes imposed by which country?", choices:["France", "Britain", "Spain"], correct:1},
+    {q:"Paul Revere warned that which troops were coming?", choices:["The French", "The Spanish", "The British"], correct:2},
+    {q:"Which war was fought between the North and South in the US?", choices:["The Revolutionary War", "The Civil War", "The War of 1812"], correct:1},
+    {q:"The Titanic sank in which year?", choices:["1912", "1905", "1920"], correct:0},
+    {q:"World War I began in which year?", choices:["1918", "1914", "1909"], correct:1},
+    {q:"The attack on Pearl Harbor happened in which year?", choices:["1939", "1941", "1943"], correct:1},
+    {q:"D-Day, the Allied invasion of Normandy, occurred in which year?", choices:["1942", "1945", "1944"], correct:2},
+    {q:"Who led Nazi Germany during World War II?", choices:["Adolf Hitler", "Joseph Stalin", "Benito Mussolini"], correct:0},
+    {q:"The Cold War was mainly between the US and which nation?", choices:["China", "The Soviet Union", "Germany"], correct:1},
+    {q:"Which wall divided East and West Berlin?", choices:["The Iron Wall", "The Great Wall", "The Berlin Wall"], correct:2},
+    {q:"The Korean War began in which year?", choices:["1950", "1945", "1960"], correct:0},
+    {q:"Who invented the telephone?", choices:["Thomas Edison", "Alexander Graham Bell", "Nikola Tesla"], correct:1},
+    {q:"The Wright brothers are famous for building the first successful what?", choices:["Automobile", "Airplane", "Steam engine"], correct:1},
+    {q:"Who invented the light bulb in its practical form?", choices:["Thomas Edison", "Benjamin Franklin", "Albert Einstein"], correct:0},
+    {q:"The printing press was developed by which inventor?", choices:["Leonardo da Vinci", "Isaac Newton", "Johannes Gutenberg"], correct:2},
+    {q:"Who painted the Mona Lisa?", choices:["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso"], correct:1},
+    {q:"The first person to walk on the Moon was who?", choices:["Buzz Aldrin", "Yuri Gagarin", "Neil Armstrong"], correct:2},
+    {q:"Apollo 11 landed on the Moon in which year?", choices:["1969", "1965", "1972"], correct:0},
+    {q:"Who was the first human in space?", choices:["Alan Shepard", "Yuri Gagarin", "John Glenn"], correct:1},
+    {q:"The first artificial satellite, Sputnik 1, was launched by which country?", choices:["The Soviet Union", "The United States", "China"], correct:0},
+    {q:"Who was the first American woman in space?", choices:["Mae Jemison", "Valentina Tereshkova", "Sally Ride"], correct:2},
+    {q:"Which president is carved into Mount Rushmore alongside Washington, Jefferson, and Lincoln?", choices:["Theodore Roosevelt", "Andrew Jackson", "James Madison"], correct:0},
+    {q:"The US Constitution was written in which year?", choices:["1776", "1787", "1799"], correct:1},
+    {q:"Who was the first US president to live in the White House?", choices:["George Washington", "Thomas Jefferson", "John Adams"], correct:2},
+    {q:"Which president delivered the Gettysburg Address?", choices:["Abraham Lincoln", "James Buchanan", "Andrew Johnson"], correct:0},
+    {q:"The Panama Canal opened in which year?", choices:["1904", "1914", "1924"], correct:1},
+    {q:"Which explorer is credited with circumnavigating the globe first?", choices:["Vasco da Gama", "Ferdinand Magellan", "James Cook"], correct:1},
+    {q:"Leif Erikson, who reached North America before Columbus, was from which group?", choices:["The Romans", "The Vikings", "The Normans"], correct:1},
+    {q:"Marco Polo traveled to the court of which empire?", choices:["China", "India", "Persia"], correct:0},
+    {q:"Which explorer conquered the Aztec Empire?", choices:["Francisco Pizarro", "Hernan Cortes", "Juan Ponce de Leon"], correct:1},
+    {q:"Ponce de Leon searched Florida for which legendary thing?", choices:["The Fountain of Youth", "El Dorado", "The Holy Grail"], correct:0},
+    {q:"Which female pilot disappeared over the Pacific in 1937?", choices:["Bessie Coleman", "Harriet Quimby", "Amelia Earhart"], correct:2},
+    {q:"Charles Lindbergh famously flew solo across which ocean?", choices:["The Pacific", "The Atlantic", "The Indian"], correct:1},
+    {q:"The Hindenburg disaster involved what type of aircraft?", choices:["A jet plane", "A helicopter", "A blimp"], correct:2},
+    {q:"Who developed the theory of relativity?", choices:["Albert Einstein", "Isaac Newton", "Niels Bohr"], correct:0},
+    {q:"Isaac Newton famously described which force after seeing an apple fall?", choices:["Magnetism", "Gravity", "Friction"], correct:1},
+    {q:"Marie Curie is famous for research into what?", choices:["Evolution", "Radioactivity", "Electricity"], correct:1},
+    {q:"Who proposed the theory of evolution by natural selection?", choices:["Charles Darwin", "Gregor Mendel", "Louis Pasteur"], correct:0},
+    {q:"The ancient Olympic Games were held in honor of which god?", choices:["Apollo", "Ares", "Zeus"], correct:2},
+    {q:"Spartacus was a famous what in ancient Rome?", choices:["Gladiator", "Senator", "Poet"], correct:0},
+    {q:"The Rosetta Stone helped decode the writing of which civilization?", choices:["The Mayans", "The Egyptians", "The Sumerians"], correct:1},
+    {q:"Hannibal famously crossed the Alps with which animals?", choices:["Camels", "Horses", "Elephants"], correct:2},
+    {q:"The Roman Empire split and its western half fell in which century?", choices:["The 5th century", "The 2nd century", "The 8th century"], correct:0},
+    {q:"Which ancient Greek city-state was Athens' great rival?", choices:["Corinth", "Sparta", "Thebes"], correct:1},
+    {q:"The Library of Alexandria was located in which country?", choices:["Greece", "Turkey", "Egypt"], correct:2},
+    {q:"The Aztec capital, Tenochtitlan, stood where which modern city is?", choices:["Lima", "Mexico City", "Bogota"], correct:1},
+    {q:"The Inca Empire was centered in which modern country?", choices:["Chile", "Brazil", "Peru"], correct:2},
+    {q:"Machu Picchu was built by which civilization?", choices:["The Inca", "The Aztec", "The Maya"], correct:0},
+    {q:"The Terracotta Army guards the tomb of an emperor of which country?", choices:["Japan", "China", "Korea"], correct:1},
+    {q:"Samurai were warriors of which country?", choices:["China", "Mongolia", "Japan"], correct:2},
+    {q:"The Magna Carta was signed in which year?", choices:["1215", "1066", "1415"], correct:0},
+    {q:"The Hundred Years' War was fought between England and which country?", choices:["Spain", "France", "Scotland"], correct:1},
+    {q:"Joan of Arc fought for which country?", choices:["England", "Italy", "France"], correct:2},
+    {q:"The Black Death devastated Europe in which century?", choices:["The 14th century", "The 11th century", "The 17th century"], correct:0},
+    {q:"Leonardo da Vinci was a leading figure of which era?", choices:["The Dark Ages", "The Renaissance", "The Industrial Age"], correct:1},
+    {q:"William Shakespeare wrote during the reign of which queen (for much of his career)?", choices:["Queen Victoria", "Queen Mary", "Queen Elizabeth I"], correct:2},
+    {q:"The Spanish Armada was defeated in which year?", choices:["1588", "1492", "1607"], correct:0},
+    {q:"Jamestown, the first permanent English settlement in America, was founded in which year?", choices:["1620", "1607", "1497"], correct:1},
+    {q:"The Salem witch trials took place in which colony?", choices:["Virginia", "New York", "Massachusetts"], correct:2},
+    {q:"The French and Indian War was part of which larger conflict?", choices:["The Seven Years' War", "The Thirty Years' War", "The War of the Roses"], correct:0},
+    {q:"Which battle is considered the turning point of the American Revolution, convincing France to ally with the colonies?", choices:["Yorktown", "Saratoga", "Bunker Hill"], correct:1},
+    {q:"The final major battle of the Revolutionary War, where Cornwallis surrendered, was at where?", choices:["Yorktown", "Trenton", "Lexington"], correct:0},
+    {q:"George Washington crossed which river on Christmas night 1776?", choices:["The Hudson", "The Potomac", "The Delaware"], correct:2},
+    {q:"The US flag's design with 50 stars became official in which year?", choices:["1950", "1960", "1777"], correct:1},
+    {q:"Who wrote the Star-Spangled Banner?", choices:["Francis Scott Key", "Thomas Paine", "Samuel Adams"], correct:0},
+    {q:"The War of 1812 was fought mainly against which country?", choices:["France", "Britain", "Mexico"], correct:1},
+    {q:"The Mexican-American War ended with the US gaining which large territory in the Treaty of Guadalupe Hidalgo?", choices:["Florida", "Alaska", "California and the Southwest"], correct:2},
+    {q:"Alaska was purchased from which country in 1867?", choices:["Russia", "Britain", "France"], correct:0},
+    {q:"The Battle of Gettysburg was fought during which war?", choices:["The War of 1812", "The Civil War", "The Spanish-American War"], correct:1},
+    {q:"Who was the Confederate general who surrendered at Appomattox?", choices:["Stonewall Jackson", "Jefferson Davis", "Robert E. Lee"], correct:2},
+    {q:"The Transcontinental Railroad was completed in which state in 1869?", choices:["Utah", "Nevada", "Colorado"], correct:0},
+    {q:"The Wright brothers made their first flight at Kitty Hawk in which state?", choices:["Ohio", "North Carolina", "Virginia"], correct:1},
+    {q:"Henry Ford's famous affordable car was called what?", choices:["Model A", "Model T", "Model F"], correct:1},
+    {q:"The telephone's first spoken words, 'Mr. Watson, come here,' were said by whom?", choices:["Thomas Edison", "Alexander Graham Bell", "Samuel Morse"], correct:1},
+    {q:"Samuel Morse is famous for developing what communication system?", choices:["The radio", "The telegraph", "The television"], correct:1},
+    {q:"The first successful steamboat, the Clermont, was built by whom?", choices:["Robert Fulton", "James Watt", "Eli Whitney"], correct:0},
+    {q:"Eli Whitney invented which machine that transformed cotton production?", choices:["The spinning jenny", "The cotton gin", "The power loom"], correct:1},
+    {q:"Who is credited with inventing the World Wide Web?", choices:["Bill Gates", "Steve Jobs", "Tim Berners-Lee"], correct:2},
+    {q:"The first programmable computer concept, the Analytical Engine, was designed by whom?", choices:["Charles Babbage", "Alan Turing", "John von Neumann"], correct:0},
+    {q:"Who cracked codes at Bletchley Park and is considered a father of computing?", choices:["Alan Turing", "Charles Babbage", "Tim Berners-Lee"], correct:0},
+    {q:"The Hubble Space Telescope was launched in which year?", choices:["1980", "1990", "2000"], correct:1},
+    {q:"Which space shuttle was the first to fly, in 1981?", choices:["Discovery", "Atlantis", "Columbia"], correct:2},
+    {q:"The first space station launched by the US was called what?", choices:["Skylab", "Mir", "Salyut"], correct:0},
+    {q:"Which planet did the Voyager probes famously tour on their grand tour?", choices:["Only Mars", "The outer gas giants", "Only Venus"], correct:1},
+    {q:"Who commanded Apollo 13 and famously said 'Houston, we've had a problem' (the mission's commander)?", choices:["Jim Lovell", "Neil Armstrong", "Michael Collins"], correct:0},
+    {q:"The first American to orbit Earth was who?", choices:["Alan Shepard", "John Glenn", "Scott Carpenter"], correct:1},
+    {q:"Edwin 'Buzz' Aldrin was the second person to do what?", choices:["Orbit Earth", "Fly solo across the Atlantic", "Walk on the Moon"], correct:2},
+    {q:"Which Soviet leader was in power during the Cuban Missile Crisis?", choices:["Nikita Khrushchev", "Leonid Brezhnev", "Mikhail Gorbachev"], correct:0},
+    {q:"The Cuban Missile Crisis occurred in which year?", choices:["1960", "1962", "1965"], correct:1},
+    {q:"Who was president during the Cuban Missile Crisis?", choices:["Lyndon B. Johnson", "Dwight D. Eisenhower", "John F. Kennedy"], correct:2},
+    {q:"John F. Kennedy was assassinated in which city?", choices:["Dallas", "Houston", "Fort Worth"], correct:0},
+    {q:"Martin Luther King Jr. delivered his 'I Have a Dream' speech in which year?", choices:["1960", "1963", "1968"], correct:1},
+    {q:"The Civil Rights Act was signed in which year?", choices:["1954", "1970", "1964"], correct:2},
+    {q:"Women in the US gained the right to vote nationwide with which amendment?", choices:["The 19th Amendment", "The 15th Amendment", "The 26th Amendment"], correct:0},
+    {q:"Prohibition, banning alcohol sales in the US, began with which amendment?", choices:["The 21st Amendment", "The 18th Amendment", "The 16th Amendment"], correct:1},
+    {q:"The stock market crash that began the Great Depression happened in which year?", choices:["1929", "1919", "1935"], correct:0},
+    {q:"Herbert Hoover was president when the Great Depression began; who succeeded him?", choices:["Calvin Coolidge", "Franklin D. Roosevelt", "Harry Truman"], correct:1},
+    {q:"The New Deal was a program of which president?", choices:["Theodore Roosevelt", "Woodrow Wilson", "Franklin D. Roosevelt"], correct:2},
+    {q:"Theodore Roosevelt helped negotiate peace in which war, winning a Nobel Peace Prize?", choices:["The Russo-Japanese War", "World War I", "The Spanish-American War"], correct:0},
+    {q:"The Spanish-American War ended with the US gaining which island territory?", choices:["Hawaii", "Puerto Rico", "Greenland"], correct:1},
+    {q:"Hawaii became a US state in which year?", choices:["1945", "1900", "1959"], correct:2},
+    {q:"The first atomic bombs were dropped on which two Japanese cities?", choices:["Hiroshima and Nagasaki", "Tokyo and Osaka", "Kyoto and Kobe"], correct:0},
+    {q:"The United Nations was founded in which year?", choices:["1939", "1945", "1950"], correct:1},
+    {q:"NATO, the military alliance, was founded in which year?", choices:["1949", "1955", "1939"], correct:0},
+    {q:"The Marshall Plan helped rebuild which region after World War II?", choices:["Asia", "Africa", "Western Europe"], correct:2},
+    {q:"Dwight D. Eisenhower served as Supreme Commander of Allied forces in which war?", choices:["World War I", "World War II", "The Korean War"], correct:1},
+    {q:"The Vietnam War's fall of Saigon happened in which year?", choices:["1968", "1973", "1975"], correct:2},
+    {q:"The first Gulf War (Desert Storm) took place in which years?", choices:["1990-1991", "1985-1986", "1998-1999"], correct:0},
+    {q:"Nelson Mandela became president of which country in 1994?", choices:["Nigeria", "South Africa", "Kenya"], correct:1},
+    {q:"The Soviet Union dissolved in which year?", choices:["1989", "1991", "1993"], correct:1},
+    {q:"Who was the Soviet leader associated with glasnost and perestroika?", choices:["Mikhail Gorbachev", "Boris Yeltsin", "Vladimir Lenin"], correct:0},
+    {q:"The Russian Revolution of 1917 overthrew which ruler?", choices:["Joseph Stalin", "Tsar Nicholas II", "Peter the Great"], correct:1},
+    {q:"Winston Churchill led which country through most of World War II?", choices:["Canada", "Britain", "Australia"], correct:1},
+    {q:"Queen Elizabeth II began her reign in which year?", choices:["1947", "1952", "1960"], correct:1},
+    {q:"The first World War I battle tank was developed by which country?", choices:["Germany", "Britain", "France"], correct:1},
+    {q:"The Lusitania, whose sinking helped push the US toward World War I, was sunk by a submarine from which country?", choices:["Germany", "Austria", "Russia"], correct:0},
+    {q:"Archduke Franz Ferdinand, whose assassination sparked World War I, was heir to which empire?", choices:["The German Empire", "The Russian Empire", "Austria-Hungary"], correct:2},
+    {q:"The Treaty of Versailles formally ended which war?", choices:["World War I", "World War II", "The Crimean War"], correct:0},
+    {q:"Benito Mussolini led which country during World War II?", choices:["Spain", "Italy", "Greece"], correct:1},
+    {q:"Anne Frank, famous for her diary, hid from the Nazis in which city?", choices:["Berlin", "Amsterdam", "Warsaw"], correct:1},
+    {q:"D-Day landings took place on the beaches of which French region?", choices:["Brittany", "Provence", "Normandy"], correct:2},
+    {q:"The Battle of Britain was fought primarily in what way?", choices:["Air battles over Britain", "Naval battles in the Channel", "Tank battles in France"], correct:0},
+    {q:"Which code-breaking machine work at Bletchley Park targeted which German cipher?", choices:["The Enigma", "The Caesar cipher", "The Vigenere cipher"], correct:0},
+    {q:"Rosie the Riveter symbolized women working in which industry during World War II?", choices:["Farming", "Factories and shipyards", "Hospitals"], correct:1},
+    {q:"The first president to be impeached in US history was who?", choices:["Andrew Johnson", "Bill Clinton", "Richard Nixon"], correct:0},
+    {q:"Abraham Lincoln was assassinated by whom?", choices:["Lee Harvey Oswald", "John Wilkes Booth", "Charles Guiteau"], correct:1},
+    {q:"President James Garfield and William McKinley were both lost to what fate?", choices:["Resignation", "Impeachment", "Assassination"], correct:2},
+    {q:"Theodore Roosevelt became president after the assassination of whom?", choices:["William McKinley", "James Garfield", "Grover Cleveland"], correct:0},
+    {q:"Which president served the longest, four terms?", choices:["George Washington", "Franklin D. Roosevelt", "Thomas Jefferson"], correct:1},
+    {q:"The 22nd Amendment limited US presidents to how many terms?", choices:["Three", "Two", "Four"], correct:1},
+    {q:"Which president appears on the US twenty-dollar bill?", choices:["Andrew Jackson", "Ulysses S. Grant", "Benjamin Franklin"], correct:0},
+    {q:"Benjamin Franklin, on the hundred-dollar bill, held which role in early America?", choices:["First Chief Justice", "Inventor and statesman (never president)", "First Secretary of State"], correct:1},
+    {q:"The first ten amendments to the US Constitution are known as what?", choices:["The Articles", "The Federalist Papers", "The Bill of Rights"], correct:2},
+    {q:"The Supreme Court case Brown v. Board of Education dealt with what issue?", choices:["School segregation", "Voting rights", "Free speech"], correct:0},
+    {q:"The first Chief Justice of the United States was who?", choices:["John Jay", "John Marshall", "Roger Taney"], correct:1},
+    {q:"John Marshall, the influential Chief Justice, served under which early republic era (he was appointed by which president)?", choices:["George Washington", "Thomas Jefferson", "John Adams"], correct:2},
+    {q:"The Lewis and Clark expedition was commissioned by which president?", choices:["Thomas Jefferson", "James Madison", "John Adams"], correct:0},
+    {q:"Sacagawea helped guide which expedition?", choices:["The Lewis and Clark expedition", "The Pike expedition", "The Fremont expedition"], correct:0},
+    {q:"The first successful powered flight lasted how long?", choices:["About 12 seconds", "About 12 minutes", "About an hour"], correct:0},
+    {q:"The Space Race's goal of landing on the Moon was set by which president in 1961?", choices:["Lyndon B. Johnson", "John F. Kennedy", "Dwight D. Eisenhower"], correct:1},
+    {q:"NASA was created in which year?", choices:["1948", "1958", "1969"], correct:1},
+    {q:"The Mercury program's first American in space, Alan Shepard, flew in which year?", choices:["1957", "1961", "1965"], correct:1},
+    {q:"Valentina Tereshkova, the first woman in space, flew for which country?", choices:["The Soviet Union", "The United States", "China"], correct:0},
+    {q:"China's first human spaceflight (taikonaut Yang Liwei) occurred in which year?", choices:["1998", "2003", "2010"], correct:1},
+    {q:"The International Space Station's first module was launched in which year?", choices:["1988", "1998", "2008"], correct:1},
+    {q:"Who was the British monarch during the Victorian era of the 1800s?", choices:["Queen Elizabeth I", "Queen Victoria", "Queen Anne"], correct:1},
+    {q:"What is the largest land animal in the world?", choices:["Giraffe", "African elephant", "Polar bear"], correct:1},
+    {q:"Which bird cannot fly but is an excellent swimmer?", choices:["Penguin", "Eagle", "Owl"], correct:0},
+    {q:"How many legs does a spider have?", choices:["Six", "Eight", "Ten"], correct:1},
+    {q:"What is a baby frog called?", choices:["Cub", "Pup", "Tadpole"], correct:2},
+    {q:"Which animal has the longest neck?", choices:["Horse", "Camel", "Giraffe"], correct:2},
+    {q:"What do pandas mostly eat?", choices:["Bamboo", "Eucalyptus", "Grass"], correct:0},
+    {q:"Which is the fastest land animal?", choices:["Lion", "Cheetah", "Horse"], correct:1},
+    {q:"What is a group of wolves called?", choices:["Herd", "Flock", "Pack"], correct:2},
+    {q:"Which animal is the largest mammal in the ocean?", choices:["Blue whale", "Great white shark", "Orca"], correct:0},
+    {q:"How many hearts does an octopus have?", choices:["One", "Two", "Three"], correct:2},
+    {q:"Which bear is the largest of all bears?", choices:["Polar bear", "Grizzly bear", "Black bear"], correct:0},
+    {q:"What is the only mammal that can truly fly?", choices:["Flying squirrel", "Bat", "Sugar glider"], correct:1},
+    {q:"Which black-and-white striped animal is related to the horse?", choices:["Dalmatian", "Panda", "Zebra"], correct:2},
+    {q:"About how long is an elephant pregnant before giving birth?", choices:["9 months", "22 months", "3 months"], correct:1},
+    {q:"Which insect makes honey?", choices:["Wasp", "Ant", "Bee"], correct:2},
+    {q:"What is a baby horse called?", choices:["Foal", "Calf", "Lamb"], correct:0},
+    {q:"Which animal is famous for playing dead when threatened?", choices:["Skunk", "Opossum", "Raccoon"], correct:1},
+    {q:"What does a caterpillar turn into?", choices:["Beetle", "Bee", "Butterfly"], correct:2},
+    {q:"Which animal hops and carries its babies in a pouch?", choices:["Kangaroo", "Rabbit", "Koala bear"], correct:0},
+    {q:"What is the tallest bird in the world?", choices:["Emu", "Ostrich", "Cassowary"], correct:1},
+    {q:"How many arms does a starfish usually have?", choices:["Eight", "Ten", "Five"], correct:2},
+    {q:"What leaves does a koala mainly eat?", choices:["Bamboo leaves", "Eucalyptus leaves", "Acacia leaves"], correct:1},
+    {q:"Which animal changes color to blend into its surroundings?", choices:["Chameleon", "Gecko", "Iguana"], correct:0},
+    {q:"What is a female deer called?", choices:["Mare", "Doe", "Ewe"], correct:1},
+    {q:"What do you call an animal that eats only plants?", choices:["Carnivore", "Omnivore", "Herbivore"], correct:2},
+    {q:"Which animal is known as the ship of the desert?", choices:["Camel", "Horse", "Donkey"], correct:0},
+    {q:"How many wings does a bee have?", choices:["Two", "Four", "Six"], correct:1},
+    {q:"What is the largest species of shark?", choices:["Great white shark", "Tiger shark", "Whale shark"], correct:2},
+    {q:"Which bird lays the largest eggs?", choices:["Emu", "Ostrich", "Kiwi"], correct:1},
+    {q:"Which nocturnal animal uses echolocation to find food?", choices:["Bat", "Owl", "Mole"], correct:0},
+    {q:"What part of a plant makes food using sunlight?", choices:["Roots", "Leaves", "Stem"], correct:1},
+    {q:"What is the process plants use to make their own food called?", choices:["Respiration", "Digestion", "Photosynthesis"], correct:2},
+    {q:"Which tree produces acorns?", choices:["Oak", "Maple", "Pine"], correct:0},
+    {q:"What is the tallest type of tree in the world?", choices:["Giant sequoia", "Coast redwood", "Douglas fir"], correct:1},
+    {q:"Which plant is famous for trapping and eating insects?", choices:["Fern", "Cactus", "Venus flytrap"], correct:2},
+    {q:"What gas do plants absorb from the air?", choices:["Carbon dioxide", "Oxygen", "Nitrogen"], correct:0},
+    {q:"What part of a flower develops into a fruit?", choices:["Petal", "Ovary", "Stamen"], correct:1},
+    {q:"Which of these plants grows the fastest?", choices:["Oak", "Rose", "Bamboo"], correct:2},
+    {q:"What do bees collect from flowers to make honey?", choices:["Nectar", "Pollen", "Sap"], correct:0},
+    {q:"Which of these is botanically a fruit?", choices:["Carrot", "Tomato", "Potato"], correct:1},
+    {q:"What is the green pigment in leaves called?", choices:["Melanin", "Keratin", "Chlorophyll"], correct:2},
+    {q:"Which tree is famous for its bright red fall leaves?", choices:["Maple", "Birch", "Willow"], correct:0},
+    {q:"Which part of a plant anchors it and absorbs water?", choices:["Trunk", "Roots", "Branch"], correct:1},
+    {q:"What is the largest flower in the world?", choices:["Sunflower", "Tulip", "Rafflesia"], correct:2},
+    {q:"Which plant fiber is used to make linen fabric?", choices:["Flax", "Cotton", "Hemp"], correct:0},
+    {q:"A cactus is specially adapted to live in which environment?", choices:["Rainforest", "Desert", "Ocean shore"], correct:1},
+    {q:"Which herb is a classic partner for tomatoes in Italian cooking?", choices:["Mint", "Sage", "Basil"], correct:2},
+    {q:"What is the young plant inside a seed called?", choices:["Embryo", "Spore", "Bulb"], correct:0},
+    {q:"The bark of which tree was the original source of aspirin-like medicine?", choices:["Elm", "Willow", "Ash"], correct:1},
+    {q:"What do you call a forest whose trees lose their leaves in autumn?", choices:["Evergreen forest", "Rainforest", "Deciduous forest"], correct:2},
+    {q:"How many bones are in the adult human body?", choices:["206", "186", "306"], correct:0},
+    {q:"What is the largest organ of the human body?", choices:["Liver", "Skin", "Heart"], correct:1},
+    {q:"Which organ pumps blood through the body?", choices:["Liver", "Lung", "Heart"], correct:2},
+    {q:"How many chambers does the human heart have?", choices:["Four", "Two", "Three"], correct:0},
+    {q:"Which is the largest muscle in the human body?", choices:["Biceps", "Gluteus maximus", "Calf muscle"], correct:1},
+    {q:"What organ produces insulin?", choices:["Liver", "Kidney", "Pancreas"], correct:2},
+    {q:"How many teeth does an adult human usually have?", choices:["32", "28", "36"], correct:0},
+    {q:"What is the main job of red blood cells?", choices:["Fight infection", "Carry oxygen", "Clot blood"], correct:1},
+    {q:"What is the colored part of the eye called?", choices:["Pupil", "Cornea", "Iris"], correct:2},
+    {q:"What connects muscles to bones?", choices:["Tendons", "Ligaments", "Cartilage"], correct:0},
+    {q:"How many lungs does the human body have?", choices:["One", "Two", "Three"], correct:1},
+    {q:"What is the hardest substance in the human body?", choices:["Bone", "Nail", "Tooth enamel"], correct:2},
+    {q:"Which organ filters blood and produces urine?", choices:["Kidney", "Bladder", "Liver"], correct:0},
+    {q:"What is the average normal human body temperature in Fahrenheit?", choices:["96.8 degrees", "98.6 degrees", "100.4 degrees"], correct:1},
+    {q:"Which part of the brain is most responsible for balance?", choices:["Cerebrum", "Brain stem", "Cerebellum"], correct:2},
+    {q:"How many pairs of ribs do most humans have?", choices:["12", "10", "14"], correct:0},
+    {q:"What is the tube that carries food from the mouth to the stomach?", choices:["Trachea", "Esophagus", "Artery"], correct:1},
+    {q:"Which blood cells help fight infections?", choices:["Red cells", "Platelets", "White cells"], correct:2},
+    {q:"What is the smallest bone in the human body?", choices:["Stapes", "Rib", "Toe bone"], correct:0},
+    {q:"The femur is found in which part of the body?", choices:["Arm", "Leg", "Back"], correct:1},
+    {q:"About what percentage of the human body is water?", choices:["About 30 percent", "About 90 percent", "About 60 percent"], correct:2},
+    {q:"Which vitamin does human skin make using sunlight?", choices:["Vitamin D", "Vitamin A", "Vitamin C"], correct:0},
+    {q:"What is another name for the voice box?", choices:["Pharynx", "Larynx", "Trachea"], correct:1},
+    {q:"Which opening in the eye lets light in?", choices:["Iris", "Lens", "Pupil"], correct:2},
+    {q:"What is the largest artery in the human body?", choices:["Aorta", "Carotid", "Femoral"], correct:0},
+    {q:"Where are most of your taste buds located?", choices:["Lips", "Tongue", "Throat"], correct:1},
+    {q:"What is the scientific name for the kneecap?", choices:["Tibia", "Fibula", "Patella"], correct:2},
+    {q:"Which small organ stores bile?", choices:["Gallbladder", "Liver", "Spleen"], correct:0},
+    {q:"What are the tiny air sacs in the lungs called?", choices:["Bronchi", "Alveoli", "Villi"], correct:1},
+    {q:"About how many times does the average heart beat in one day?", choices:["About 10,000", "About 1,000,000", "About 100,000"], correct:2},
+    {q:"What planet is known as the Red Planet?", choices:["Mars", "Venus", "Jupiter"], correct:0},
+    {q:"Which planet is closest to the Sun?", choices:["Venus", "Mercury", "Earth"], correct:1},
+    {q:"What is the largest planet in our solar system?", choices:["Saturn", "Neptune", "Jupiter"], correct:2},
+    {q:"Which planet is most famous for its rings?", choices:["Saturn", "Mars", "Venus"], correct:0},
+    {q:"About how long does Earth take to orbit the Sun?", choices:["About 30 days", "About 365 days", "About 100 days"], correct:1},
+    {q:"What is the name of Earth's only natural satellite?", choices:["Titan", "Europa", "The Moon"], correct:2},
+    {q:"Which planet is often called the Morning Star?", choices:["Venus", "Mercury", "Mars"], correct:0},
+    {q:"What force keeps the planets in orbit around the Sun?", choices:["Magnetism", "Gravity", "Friction"], correct:1},
+    {q:"What is the hottest planet in our solar system?", choices:["Mercury", "Mars", "Venus"], correct:2},
+    {q:"How many planets are in our solar system?", choices:["Eight", "Seven", "Nine"], correct:0},
+    {q:"What is a shooting star, actually?", choices:["A comet", "A meteor burning up in the atmosphere", "A passing satellite"], correct:1},
+    {q:"Which planet is tilted so far it seems to roll around the Sun on its side?", choices:["Neptune", "Pluto", "Uranus"], correct:2},
+    {q:"The Sun is best described as what?", choices:["A star", "A planet", "A comet"], correct:0},
+    {q:"Who was the first person to walk on the Moon?", choices:["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin"], correct:1},
+    {q:"What galaxy do we live in?", choices:["Andromeda", "Triangulum", "Milky Way"], correct:2},
+    {q:"Which planet is home to the Great Red Spot storm?", choices:["Jupiter", "Saturn", "Neptune"], correct:0},
+    {q:"About how long does sunlight take to reach Earth?", choices:["8 seconds", "8 minutes", "8 hours"], correct:1},
+    {q:"Which dwarf planet used to be called the ninth planet?", choices:["Ceres", "Eris", "Pluto"], correct:2},
+    {q:"Why does the Moon shine at night?", choices:["It reflects sunlight", "It makes its own light", "It reflects city lights"], correct:0},
+    {q:"Which planet's day is longer than its year?", choices:["Mercury", "Venus", "Jupiter"], correct:1},
+    {q:"What is the closest star to Earth?", choices:["Proxima Centauri", "Sirius", "The Sun"], correct:2},
+    {q:"A huge collection of stars, gas, and dust is called what?", choices:["A galaxy", "A comet", "An asteroid"], correct:0},
+    {q:"Olympus Mons, the tallest known volcano, is on which planet?", choices:["Venus", "Mars", "Mercury"], correct:1},
+    {q:"Which instrument is used to observe distant stars?", choices:["Microscope", "Periscope", "Telescope"], correct:2},
+    {q:"How many moons does Mars have?", choices:["Two", "None", "One"], correct:0},
+    {q:"What is the layer of gases surrounding Earth called?", choices:["Hydrosphere", "Atmosphere", "Lithosphere"], correct:1},
+    {q:"Which planet spins the fastest?", choices:["Earth", "Saturn", "Jupiter"], correct:2},
+    {q:"What happens during a solar eclipse?", choices:["The Moon passes between Earth and the Sun", "Earth passes between the Moon and the Sun", "The Sun passes behind the Moon's shadow side"], correct:0},
+    {q:"Who was the first person to travel into space?", choices:["Neil Armstrong", "Yuri Gagarin", "Alan Shepard"], correct:1},
+    {q:"What is the main gas the Sun is made of?", choices:["Oxygen", "Nitrogen", "Hydrogen"], correct:2},
+    {q:"What is the chemical symbol for water?", choices:["H2O", "CO2", "O2"], correct:0},
+    {q:"What is the chemical symbol for gold?", choices:["Gd", "Au", "Ag"], correct:1},
+    {q:"Which element must humans breathe to live?", choices:["Nitrogen", "Carbon", "Oxygen"], correct:2},
+    {q:"What is the most abundant element in the universe?", choices:["Hydrogen", "Helium", "Oxygen"], correct:0},
+    {q:"What is the chemical symbol for iron?", choices:["Ir", "In", "Fe"], correct:2},
+    {q:"A diamond is made of which element?", choices:["Carbon", "Silicon", "Sulfur"], correct:0},
+    {q:"What gas do plants release during photosynthesis?", choices:["Carbon dioxide", "Oxygen", "Hydrogen"], correct:1},
+    {q:"What is the chemical formula for table salt?", choices:["KCl", "CaCl2", "NaCl"], correct:2},
+    {q:"Which metal is liquid at room temperature?", choices:["Mercury", "Lead", "Tin"], correct:0},
+    {q:"What is the lightest of all elements?", choices:["Helium", "Hydrogen", "Lithium"], correct:1},
+    {q:"Pencil lead is actually made of what?", choices:["Lead", "Charcoal", "Graphite"], correct:2},
+    {q:"What single letter is the chemical symbol for oxygen?", choices:["O", "Ox", "Om"], correct:0},
+    {q:"Which gas makes soda fizzy?", choices:["Oxygen", "Carbon dioxide", "Nitrogen"], correct:1},
+    {q:"Which mineral element do bones need most to stay strong?", choices:["Iron", "Zinc", "Calcium"], correct:2},
+    {q:"What element makes up most of the air we breathe?", choices:["Nitrogen", "Oxygen", "Argon"], correct:0},
+    {q:"Rust forms on iron when it is exposed to what?", choices:["Dry air", "Water and oxygen", "Oil"], correct:1},
+    {q:"What is the pH of pure water?", choices:["0", "14", "7"], correct:2},
+    {q:"Which gas is used to fill balloons so they float?", choices:["Helium", "Oxygen", "Carbon dioxide"], correct:0},
+    {q:"What is the chemical symbol for silver?", choices:["Si", "Ag", "Sl"], correct:1},
+    {q:"At what Celsius temperature does water freeze?", choices:["10 degrees", "-10 degrees", "0 degrees"], correct:2},
+    {q:"At what Celsius temperature does water boil at sea level?", choices:["100 degrees", "90 degrees", "120 degrees"], correct:0},
+    {q:"Glass is made mainly by melting what?", choices:["Clay", "Sand", "Plastic"], correct:1},
+    {q:"What is the center of an atom called?", choices:["Electron", "Proton", "Nucleus"], correct:2},
+    {q:"How many elements are on the modern periodic table?", choices:["118", "108", "128"], correct:0},
+    {q:"Which element has the chemical symbol K?", choices:["Krypton", "Potassium", "Calcium"], correct:1},
+    {q:"What instrument measures temperature?", choices:["Barometer", "Thermometer", "Anemometer"], correct:1},
+    {q:"What do we call frozen rain that falls in hard balls?", choices:["Sleet", "Hail", "Snow"], correct:1},
+    {q:"What instrument measures air pressure?", choices:["Barometer", "Hygrometer", "Thermometer"], correct:0},
+    {q:"What is a rotating storm with a funnel cloud called?", choices:["Hurricane", "Blizzard", "Tornado"], correct:2},
+    {q:"The Saffir-Simpson scale is used to rate what?", choices:["Earthquakes", "Hurricanes", "Tornadoes"], correct:1},
+    {q:"The Richter scale is used to measure what?", choices:["Wind speed", "Rainfall", "Earthquakes"], correct:2},
+    {q:"What causes the sound of thunder?", choices:["Lightning rapidly heating the air", "Clouds bumping together", "Strong wind"], correct:0},
+    {q:"Water turning into vapor is called what?", choices:["Condensation", "Evaporation", "Precipitation"], correct:1},
+    {q:"The fluffy, puffy clouds often seen on fair days are called what?", choices:["Cirrus", "Stratus", "Cumulus"], correct:2},
+    {q:"Which season immediately follows summer?", choices:["Autumn", "Winter", "Spring"], correct:0},
+    {q:"What is a long period with little or no rain called?", choices:["Flood", "Drought", "Monsoon"], correct:1},
+    {q:"What instrument measures wind speed?", choices:["Rain gauge", "Barometer", "Anemometer"], correct:2},
+    {q:"The condition of the atmosphere at a certain time and place is called what?", choices:["Weather", "Climate", "Season"], correct:0},
+    {q:"What is the main source of energy that drives the water cycle?", choices:["The Moon", "The Sun", "The wind"], correct:1},
+    {q:"What forms on grass when water vapor cools and condenses overnight?", choices:["Frost", "Fog", "Dew"], correct:2},
+    {q:"What is the calm center of a hurricane called?", choices:["The eye", "The core", "The funnel"], correct:0},
+    {q:"Snowflakes are crystals with how many sides?", choices:["Five", "Six", "Eight"], correct:1},
+    {q:"People who study and forecast the weather are called what?", choices:["Geologists", "Astronomers", "Meteorologists"], correct:2},
+    {q:"Lightning is best described as what?", choices:["A giant electric spark", "Burning gas", "Reflected sunlight"], correct:0},
+    {q:"Rain, snow, sleet, and hail are all forms of what?", choices:["Condensation", "Precipitation", "Evaporation"], correct:1},
+    {q:"According to legend, who worked out gravity after watching an apple fall?", choices:["Albert Einstein", "Isaac Newton", "Galileo Galilei"], correct:1},
+    {q:"Who was the first woman to win a Nobel Prize?", choices:["Rosalind Franklin", "Marie Curie", "Jane Goodall"], correct:1},
+    {q:"Who became famous for studying chimpanzees in the wild?", choices:["Jane Goodall", "Dian Fossey", "Rachel Carson"], correct:0},
+    {q:"Who discovered penicillin?", choices:["Louis Pasteur", "Jonas Salk", "Alexander Fleming"], correct:2},
+    {q:"Who developed the polio vaccine?", choices:["Edward Jenner", "Jonas Salk", "Alexander Fleming"], correct:1},
+    {q:"Whose pea plant experiments founded modern genetics?", choices:["Gregor Mendel", "Charles Darwin", "James Watson"], correct:0},
+    {q:"Who published the model placing the Sun at the center of the solar system?", choices:["Ptolemy", "Tycho Brahe", "Nicolaus Copernicus"], correct:2},
+    {q:"Who is credited with inventing the telephone?", choices:["Thomas Edison", "Alexander Graham Bell", "Nikola Tesla"], correct:1},
+    {q:"Who formulated the three famous laws of motion?", choices:["Isaac Newton", "Johannes Kepler", "Galileo Galilei"], correct:0},
+    {q:"According to legend, who flew a kite in a storm to study electricity?", choices:["Thomas Edison", "Benjamin Franklin", "Michael Faraday"], correct:1},
+    {q:"The double helix is the structure of which molecule?", choices:["Protein", "RNA", "DNA"], correct:2},
+    {q:"Who wrote the bestselling science book A Brief History of Time?", choices:["Stephen Hawking", "Carl Sagan", "Neil deGrasse Tyson"], correct:0},
+    {q:"Who is credited with creating the World Wide Web?", choices:["Bill Gates", "Steve Jobs", "Tim Berners-Lee"], correct:2},
+    {q:"Who played Jack Dawson in the movie Titanic?", choices:["Brad Pitt", "Leonardo DiCaprio", "Matt Damon"], correct:1},
+    {q:"Which movie features the song 'My Heart Will Go On'?", choices:["Titanic", "Avatar", "Ghost"], correct:0},
+    {q:"Who played the Joker in The Dark Knight?", choices:["Jared Leto", "Joaquin Phoenix", "Heath Ledger"], correct:2},
+    {q:"Which film won the first Academy Award for Best Picture in 1929?", choices:["Wings", "Casablanca", "Gone with the Wind"], correct:0},
+    {q:"Who directed Jaws, E.T., and Jurassic Park?", choices:["James Cameron", "Steven Spielberg", "George Lucas"], correct:1},
+    {q:"In The Wizard of Oz, what color are Dorothy's slippers in the film?", choices:["Silver", "Gold", "Ruby red"], correct:2},
+    {q:"Which actor played Forrest Gump?", choices:["Tom Hanks", "Robin Williams", "Gary Sinise"], correct:0},
+    {q:"What is the name of the cowboy in Toy Story?", choices:["Buzz", "Woody", "Jessie"], correct:1},
+    {q:"Which movie is the highest-grossing of all time worldwide as of 2024?", choices:["Avengers: Endgame", "Titanic", "Avatar"], correct:2},
+    {q:"Who played Iron Man in the Marvel movies?", choices:["Robert Downey Jr.", "Chris Evans", "Chris Hemsworth"], correct:0},
+    {q:"In Star Wars, who is Luke Skywalker's father?", choices:["Obi-Wan Kenobi", "Darth Vader", "Yoda"], correct:1},
+    {q:"Which actress played Katniss Everdeen in The Hunger Games?", choices:["Emma Stone", "Shailene Woodley", "Jennifer Lawrence"], correct:2},
+    {q:"What movie features a giant ape named King Kong?", choices:["King Kong", "Godzilla", "Planet of the Apes"], correct:0},
+    {q:"Who played the Genie in the animated Aladdin?", choices:["Eddie Murphy", "Robin Williams", "Billy Crystal"], correct:1},
+    {q:"Which film features the quote 'May the Force be with you'?", choices:["Star Trek", "Guardians of the Galaxy", "Star Wars"], correct:2},
+    {q:"Who played Hermione Granger in the Harry Potter films?", choices:["Emma Watson", "Bonnie Wright", "Evanna Lynch"], correct:0},
+    {q:"Which movie musical features the songs 'Summer Nights' and 'You're the One That I Want'?", choices:["Hairspray", "Grease", "Mamma Mia!"], correct:1},
+    {q:"Who played Jack Sparrow in Pirates of the Caribbean?", choices:["Orlando Bloom", "Geoffrey Rush", "Johnny Depp"], correct:2},
+    {q:"Which animated film features a snowman named Olaf?", choices:["Frozen", "Tangled", "Moana"], correct:0},
+    {q:"Who directed Pulp Fiction and Django Unchained?", choices:["Martin Scorsese", "Quentin Tarantino", "David Fincher"], correct:1},
+    {q:"In The Lion King, what is the name of Simba's father?", choices:["Scar", "Zazu", "Mufasa"], correct:2},
+    {q:"Which actor played the Terminator?", choices:["Arnold Schwarzenegger", "Sylvester Stallone", "Jean-Claude Van Damme"], correct:0},
+    {q:"What is the name of the fictional African nation in Black Panther?", choices:["Zamunda", "Wakanda", "Genovia"], correct:1},
+    {q:"Who played Rose in Titanic?", choices:["Cameron Diaz", "Drew Barrymore", "Kate Winslet"], correct:2},
+    {q:"Which horror film features a masked killer named Michael Myers?", choices:["Halloween", "Scream", "A Nightmare on Elm Street"], correct:0},
+    {q:"Who played Wolverine in the X-Men films?", choices:["Ryan Reynolds", "Hugh Jackman", "Liev Schreiber"], correct:1},
+    {q:"Which film won Best Picture at the 2020 Oscars for the year 2019?", choices:["1917", "Joker", "Parasite"], correct:2},
+    {q:"In Finding Nemo, what kind of fish is Nemo?", choices:["Clownfish", "Goldfish", "Blue tang"], correct:0},
+    {q:"Who played the title role in the 1990 film Edward Scissorhands?", choices:["Brad Pitt", "Johnny Depp", "Tom Cruise"], correct:1},
+    {q:"Which movie features the dance contest scene at Jack Rabbit Slim's?", choices:["Saturday Night Fever", "Footloose", "Pulp Fiction"], correct:2},
+    {q:"Who played Gandalf in The Lord of the Rings?", choices:["Ian McKellen", "Christopher Lee", "Sean Connery"], correct:0},
+    {q:"Which Disney princess loses a glass slipper?", choices:["Aurora", "Cinderella", "Snow White"], correct:1},
+    {q:"Who played Michael Corleone in The Godfather?", choices:["Robert De Niro", "Marlon Brando", "Al Pacino"], correct:2},
+    {q:"Which 1985 film features a DeLorean time machine?", choices:["Back to the Future", "The Goonies", "E.T."], correct:0},
+    {q:"Who voiced Woody in Toy Story?", choices:["Tim Allen", "Tom Hanks", "Billy Crystal"], correct:1},
+    {q:"Which film features Hannibal Lecter?", choices:["Se7en", "Zodiac", "The Silence of the Lambs"], correct:2},
+    {q:"Who played the lead role in the Mission: Impossible film series?", choices:["Tom Cruise", "Matt Damon", "Keanu Reeves"], correct:0},
+    {q:"In Shrek, what kind of creature is Shrek?", choices:["A troll", "An ogre", "A giant"], correct:1},
+    {q:"Which actress won an Oscar for playing Queen Elizabeth II in The Queen?", choices:["Judi Dench", "Maggie Smith", "Helen Mirren"], correct:2},
+    {q:"Who played the grown-up Kevin in Home Alone? (the actor playing Kevin McCallister)", choices:["Macaulay Culkin", "Elijah Wood", "Daniel Radcliffe"], correct:0},
+    {q:"Which movie is about a rat who wants to become a chef in Paris?", choices:["Flushed Away", "Ratatouille", "Stuart Little"], correct:1},
+    {q:"Who directed The Shawshank Redemption?", choices:["David Fincher", "Christopher Nolan", "Frank Darabont"], correct:2},
+    {q:"In the movie Ghostbusters, who are you gonna call?", choices:["Ghostbusters", "The police", "My mom"], correct:0},
+    {q:"Which actor played John Wick?", choices:["Jason Statham", "Keanu Reeves", "Liam Neeson"], correct:1},
+    {q:"What is the name of the hotel in The Shining?", choices:["The Bates Motel", "The Grand Budapest", "The Overlook Hotel"], correct:2},
+    {q:"Who played Elle Woods in Legally Blonde?", choices:["Reese Witherspoon", "Alicia Silverstone", "Kate Hudson"], correct:0},
+    {q:"Which film features the character Tyler Durden?", choices:["American Psycho", "Fight Club", "The Machinist"], correct:1},
+    {q:"Who sang the theme song 'Skyfall' for the James Bond film of the same name?", choices:["Sam Smith", "Billie Eilish", "Adele"], correct:2},
+    {q:"In E.T. the Extra-Terrestrial, what does E.T. want to do?", choices:["Phone home", "Go to school", "Eat candy"], correct:0},
+    {q:"Which actor played Captain America in the Marvel Cinematic Universe?", choices:["Chris Pratt", "Chris Evans", "Sebastian Stan"], correct:1},
+    {q:"Who played the Wicked Witch of the West in The Wizard of Oz?", choices:["Billie Burke", "Judy Garland", "Margaret Hamilton"], correct:2},
+    {q:"Which 1994 film stars Jim Carrey as a pet detective?", choices:["Ace Ventura: Pet Detective", "The Mask", "Dumb and Dumber"], correct:0},
+    {q:"Who directed Avatar and Titanic?", choices:["Peter Jackson", "James Cameron", "Ridley Scott"], correct:1},
+    {q:"In Monsters, Inc., what do the monsters collect from children?", choices:["Tears", "Laughter only", "Screams"], correct:2},
+    {q:"Which actress played Princess Leia in Star Wars?", choices:["Carrie Fisher", "Natalie Portman", "Daisy Ridley"], correct:0},
+    {q:"Who played the piano-playing lead in the film La La Land? (the male lead)", choices:["Ryan Reynolds", "Ryan Gosling", "Jake Gyllenhaal"], correct:1},
+    {q:"Which movie features a theme park with cloned dinosaurs?", choices:["King Kong", "The Lost World", "Jurassic Park"], correct:2},
+    {q:"Who voiced Dory in Finding Nemo?", choices:["Ellen DeGeneres", "Amy Poehler", "Tina Fey"], correct:0},
+    {q:"Which TV show features the characters Ross, Rachel, Monica, Chandler, Joey, and Phoebe?", choices:["Seinfeld", "Friends", "How I Met Your Mother"], correct:1},
+    {q:"Who played the Doctor in Doctor Who for the longest run in the modern series?", choices:["Matt Smith", "Christopher Eccleston", "David Tennant"], correct:2},
+    {q:"Which TV show is set in the fictional town of Springfield?", choices:["The Simpsons", "Family Guy", "South Park"], correct:0},
+    {q:"Who plays Sheldon Cooper in The Big Bang Theory?", choices:["Johnny Galecki", "Jim Parsons", "Kunal Nayyar"], correct:1},
+    {q:"Which TV drama features the Stark and Lannister families fighting for the Iron Throne?", choices:["The Witcher", "Vikings", "Game of Thrones"], correct:2},
+    {q:"What is the name of Walter White's alter ego in Breaking Bad?", choices:["Heisenberg", "Scarface", "The Chemist"], correct:0},
+    {q:"Which sitcom features a bar where 'everybody knows your name'?", choices:["Frasier", "Cheers", "Taxi"], correct:1},
+    {q:"Who hosted The Tonight Show from 1992 to 2009 and again from 2010 to 2014?", choices:["David Letterman", "Conan O'Brien", "Jay Leno"], correct:2},
+    {q:"Which TV show follows the lives of the Bluth family?", choices:["Arrested Development", "Modern Family", "Schitt's Creek"], correct:0},
+    {q:"In The Office (US), what company do the characters work for?", choices:["Initech", "Dunder Mifflin", "Hooli"], correct:1},
+    {q:"Which drama series features Dr. Gregory House?", choices:["Grey's Anatomy", "ER", "House"], correct:2},
+    {q:"Who created the TV series The Twilight Zone?", choices:["Rod Serling", "Alfred Hitchcock", "Gene Roddenberry"], correct:0},
+    {q:"Which TV show's theme song asks 'Where in the World Is Carmen Sandiego?'", choices:["Jeopardy!", "Carmen Sandiego (game show)", "Reading Rainbow"], correct:1},
+    {q:"What is the name of the coffee house in Friends?", choices:["The Peach Pit", "Monk's Cafe", "Central Perk"], correct:2},
+    {q:"Which TV series stars Bryan Cranston as Walter White?", choices:["Breaking Bad", "Better Call Saul", "Ozark"], correct:0},
+    {q:"Who played Daenerys Targaryen in Game of Thrones?", choices:["Sophie Turner", "Emilia Clarke", "Lena Headey"], correct:1},
+    {q:"Which classic sitcom stars Lucille Ball as a redheaded housewife?", choices:["The Honeymooners", "The Dick Van Dyke Show", "I Love Lucy"], correct:2},
+    {q:"In Stranger Things, what is the name of the alternate dimension?", choices:["The Upside Down", "The Nether", "The Flipside"], correct:0},
+    {q:"Which TV show features judges Simon Cowell, and was created by him as a singing competition in the US?", choices:["The Voice", "American Idol", "Duets"], correct:1},
+    {q:"Who played the Fonz on Happy Days?", choices:["Ron Howard", "Don Most", "Henry Winkler"], correct:2},
+    {q:"Which medical drama is set at Grey Sloan Memorial Hospital?", choices:["Grey's Anatomy", "Scrubs", "The Good Doctor"], correct:0},
+    {q:"What is the name of the spaceship in the original Star Trek series?", choices:["Millennium Falcon", "USS Enterprise", "Serenity"], correct:1},
+    {q:"Which TV show features the character Eleven, played by Millie Bobby Brown?", choices:["Wednesday", "The Umbrella Academy", "Stranger Things"], correct:2},
+    {q:"Who won the first season of American Idol?", choices:["Kelly Clarkson", "Ruben Studdard", "Carrie Underwood"], correct:0},
+    {q:"Which sitcom features Jerry, George, Elaine, and Kramer?", choices:["Frasier", "Seinfeld", "Curb Your Enthusiasm"], correct:1},
+    {q:"In The Simpsons, what is the name of the family's baby?", choices:["Lisa", "Bart", "Maggie"], correct:2},
+    {q:"Which TV series is about a chemistry teacher turned methamphetamine manufacturer?", choices:["Breaking Bad", "Weeds", "Narcos"], correct:0},
+    {q:"Who played Jack Bauer in the series 24?", choices:["Dennis Haysbert", "Kiefer Sutherland", "Carlos Bernard"], correct:1},
+    {q:"Which show features the 'Red Wedding' episode?", choices:["The Walking Dead", "Spartacus", "Game of Thrones"], correct:2},
+    {q:"What network aired the original run of The Fresh Prince of Bel-Air?", choices:["NBC", "ABC", "FOX"], correct:0},
+    {q:"Which TV show has the catchphrase 'D'oh!'?", choices:["Family Guy", "The Simpsons", "King of the Hill"], correct:1},
+    {q:"Who played Wednesday Addams in the Netflix series Wednesday?", choices:["Christina Ricci", "Lisa Loring", "Jenna Ortega"], correct:2},
+    {q:"Which crime drama stars Idris Elba as a London detective named John Luther?", choices:["Luther", "Sherlock", "Broadchurch"], correct:0},
+    {q:"In Parks and Recreation, what is Ron Swanson's favorite food?", choices:["Salad", "Breakfast food (bacon and eggs)", "Sushi"], correct:1},
+    {q:"Which TV miniseries about chess starred Anya Taylor-Joy as Beth Harmon?", choices:["The Undoing", "Mare of Easttown", "The Queen's Gambit"], correct:2},
+    {q:"Who hosted Jeopardy! for 37 years until 2020?", choices:["Alex Trebek", "Pat Sajak", "Regis Philbin"], correct:0},
+    {q:"Which animated series features Finn and Jake in the Land of Ooo?", choices:["Regular Show", "Adventure Time", "Gravity Falls"], correct:1},
+    {q:"In The Mandalorian, what is the real name of 'Baby Yoda'?", choices:["Yaddle", "Minch", "Grogu"], correct:2},
+    {q:"Which TV show's main character is a high-functioning sociopath detective played by Benedict Cumberbatch?", choices:["Sherlock", "Luther", "Elementary"], correct:0},
+    {q:"Who sang the Friends theme song 'I'll Be There for You'?", choices:["The Rembrandts", "Goo Goo Dolls", "Counting Crows"], correct:0},
+    {q:"Which long-running animated show features Peter Griffin?", choices:["American Dad!", "Family Guy", "Bob's Burgers"], correct:1},
+    {q:"In The Crown, who played Queen Elizabeth II in the first two seasons?", choices:["Olivia Colman", "Imelda Staunton", "Claire Foy"], correct:2},
+    {q:"Which TV western stars Kevin Costner as John Dutton?", choices:["Yellowstone", "Longmire", "1883"], correct:0},
+    {q:"What is the longest-running US primetime scripted TV series?", choices:["Law and Order", "The Simpsons", "Grey's Anatomy"], correct:1},
+    {q:"Which series features a post-apocalyptic world with Ellie and Joel?", choices:["Fallout", "Station Eleven", "The Last of Us"], correct:2},
+    {q:"Who played the Eleventh Doctor in Doctor Who?", choices:["Matt Smith", "Peter Capaldi", "David Tennant"], correct:0},
+    {q:"Which TV show popularized the phrase 'Winter is coming'?", choices:["The Lord of the Rings: The Rings of Power", "Game of Thrones", "The Witcher"], correct:1},
+    {q:"In Breaking Bad, what color is the meth that Walt and Jesse produce, famously?", choices:["White", "Pink", "Blue"], correct:2},
+    {q:"Which sitcom is set in the 99th precinct of the NYPD?", choices:["Brooklyn Nine-Nine", "The Rookie", "Blue Bloods"], correct:0},
+    {q:"Who is known as the 'King of Pop'?", choices:["Michael Jackson", "Prince", "Elvis Presley"], correct:0},
+    {q:"Which singer released the album 'Thriller'?", choices:["Stevie Wonder", "Michael Jackson", "Lionel Richie"], correct:1},
+    {q:"Who sang 'Like a Prayer' and 'Vogue'?", choices:["Cyndi Lauper", "Whitney Houston", "Madonna"], correct:2},
+    {q:"Which band released the album 'Abbey Road'?", choices:["The Beatles", "The Rolling Stones", "Pink Floyd"], correct:0},
+    {q:"Who is the lead singer of Queen?", choices:["Brian May", "Freddie Mercury", "Roger Taylor"], correct:1},
+    {q:"Which rapper's real name is Marshall Mathers?", choices:["Jay-Z", "50 Cent", "Eminem"], correct:2},
+    {q:"Who sang 'Rolling in the Deep'?", choices:["Adele", "Amy Winehouse", "Duffy"], correct:0},
+    {q:"Which artist released the hit song 'Old Town Road'?", choices:["Post Malone", "Lil Nas X", "Travis Scott"], correct:1},
+    {q:"Who is known as the 'Queen of Soul'?", choices:["Diana Ross", "Tina Turner", "Aretha Franklin"], correct:2},
+    {q:"Which band wrote 'Hotel California'?", choices:["Eagles", "Fleetwood Mac", "The Doobie Brothers"], correct:0},
+    {q:"Who sang 'Purple Rain'?", choices:["Prince", "Michael Jackson", "Rick James"], correct:1},
+    {q:"Which singer performed 'Single Ladies (Put a Ring on It)'?", choices:["Rihanna", "Kelly Rowland", "Beyonce"], correct:2},
+    {q:"What is Elvis Presley's nickname?", choices:["The King of Rock and Roll", "The Boss", "The Man in Black"], correct:0},
+    {q:"Who wrote and sang 'Imagine'?", choices:["Paul McCartney", "John Lennon", "George Harrison"], correct:1},
+    {q:"Which pop star released the album '1989'?", choices:["Katy Perry", "Ariana Grande", "Taylor Swift"], correct:2},
+    {q:"Who is the lead vocalist of U2?", choices:["Bono", "The Edge", "Adam Clayton"], correct:0},
+    {q:"Which singer is known for the hit 'Uptown Funk' with Mark Ronson?", choices:["Ed Sheeran", "Bruno Mars", "Pharrell Williams"], correct:1},
+    {q:"Who sang 'I Will Always Love You' in the film The Bodyguard?", choices:["Mariah Carey", "Celine Dion", "Whitney Houston"], correct:2},
+    {q:"Which group sang 'Dancing Queen'?", choices:["ABBA", "The Bee Gees", "Boney M."], correct:0},
+    {q:"Who released the album 'The Dark Side of the Moon'?", choices:["Led Zeppelin", "Pink Floyd", "Deep Purple"], correct:1},
+    {q:"Which artist's fans are called 'Swifties'?", choices:["Billie Eilish", "Olivia Rodrigo", "Taylor Swift"], correct:2},
+    {q:"Who sang 'Johnny B. Goode'?", choices:["Chuck Berry", "Little Richard", "Buddy Holly"], correct:0},
+    {q:"Which singer released 'Bad Guy' in 2019?", choices:["Lorde", "Billie Eilish", "Halsey"], correct:1},
+    {q:"Who is the drummer and lead singer of Genesis who also had a solo hit with 'In the Air Tonight'?", choices:["Peter Gabriel", "Mike Rutherford", "Phil Collins"], correct:2},
+    {q:"Which country star sang 'Jolene'?", choices:["Dolly Parton", "Tammy Wynette", "Loretta Lynn"], correct:0},
+    {q:"Who fronted the band Nirvana?", choices:["Eddie Vedder", "Kurt Cobain", "Chris Cornell"], correct:1},
+    {q:"Which singer's real name is Stefani Germanotta?", choices:["Kesha", "Katy Perry", "Lady Gaga"], correct:2},
+    {q:"Who sang 'My Way' and 'Fly Me to the Moon' (famous versions)?", choices:["Frank Sinatra", "Dean Martin", "Tony Bennett"], correct:0},
+    {q:"Which artist released the album 'Lemonade' in 2016?", choices:["Solange", "Beyonce", "Rihanna"], correct:1},
+    {q:"Who wrote the song 'Hallelujah', later covered by Jeff Buckley?", choices:["Bob Dylan", "Nick Cave", "Leonard Cohen"], correct:2},
+    {q:"Which band performed 'Bohemian Rhapsody'?", choices:["Queen", "The Who", "Electric Light Orchestra"], correct:0},
+    {q:"Who sang 'Shape of You', one of the most streamed songs ever?", choices:["Justin Bieber", "Ed Sheeran", "Shawn Mendes"], correct:1},
+    {q:"Which Motown group sang 'My Girl'?", choices:["The Four Tops", "The Supremes", "The Temptations"], correct:2},
+    {q:"Who is known for the song 'Piano Man'?", choices:["Billy Joel", "Elton John", "Barry Manilow"], correct:0},
+    {q:"Which singer performed 'Firework' and 'Roar'?", choices:["Lady Gaga", "Katy Perry", "Miley Cyrus"], correct:1},
+    {q:"Who sang 'What a Wonderful World'?", choices:["Nat King Cole", "Sam Cooke", "Louis Armstrong"], correct:2},
+    {q:"Which hip-hop artist released 'The Chronic' and founded Aftermath Entertainment?", choices:["Dr. Dre", "Snoop Dogg", "Ice Cube"], correct:0},
+    {q:"Who was Paul Simon's partner in the duo Simon and Garfunkel?", choices:["Art Garfunkel", "Bob Dylan", "James Taylor"], correct:0},
+    {q:"Which singer released the hit 'Blinding Lights'?", choices:["Dua Lipa", "Harry Styles", "The Weeknd"], correct:2},
+    {q:"Who sang 'Stand by Me' (1961 original)?", choices:["Ben E. King", "Otis Redding", "Sam Cooke"], correct:0},
+    {q:"Which artist is famous for the album 'Purple Rain' and the symbol name change?", choices:["Michael Jackson", "Prince", "David Bowie"], correct:1},
+    {q:"Who sang 'Hello' in 2015, from the album 25?", choices:["Sam Smith", "Ed Sheeran", "Adele"], correct:2},
+    {q:"Which rock band is known for 'Stairway to Heaven'?", choices:["Led Zeppelin", "Black Sabbath", "AC/DC"], correct:0},
+    {q:"Who performed 'Shake It Off'?", choices:["Selena Gomez", "Taylor Swift", "Ariana Grande"], correct:1},
+    {q:"Which singer is called the 'Rocket Man' after his hit song?", choices:["Billy Joel", "David Bowie", "Elton John"], correct:2},
+    {q:"Who won the Grammy for Album of the Year in 2021 for 'Folklore'?", choices:["Taylor Swift", "Dua Lipa", "Billie Eilish"], correct:0},
+    {q:"Which film won the Oscar for Best Picture in 2023 (for 2022 films)?", choices:["Top Gun: Maverick", "Everything Everywhere All at Once", "Avatar: The Way of Water"], correct:1},
+    {q:"Who has won the most Grammy Awards of all time as of 2024?", choices:["Quincy Jones", "Beyonce", "Georg Solti"], correct:1},
+    {q:"Which actor has won three Best Actor Oscars?", choices:["Tom Hanks", "Jack Nicholson", "Daniel Day-Lewis"], correct:2},
+    {q:"Who won the Best Actress Oscar for her role in La La Land?", choices:["Emma Stone", "Natalie Portman", "Brie Larson"], correct:0},
+    {q:"Which movie is one of three films tied for the most Oscar wins ever, with 11?", choices:["Gone with the Wind", "Ben-Hur", "West Side Story"], correct:1},
+    {q:"Who hosted the Oscars the most times?", choices:["Billy Crystal", "Johnny Carson", "Bob Hope"], correct:2},
+    {q:"Which singer won Album of the Year at the 2017 Grammys for '25'?", choices:["Adele", "Beyonce", "Taylor Swift"], correct:0},
+    {q:"Who is the youngest person to win all four Grammy general field categories in one night (2020)?", choices:["Lorde", "Billie Eilish", "Olivia Rodrigo"], correct:1},
+    {q:"Which film composer won Oscars for The Lion King and Dune?", choices:["John Williams", "Alan Menken", "Hans Zimmer"], correct:2},
+    {q:"Who won Best Actor at the 2023 Oscars for The Whale?", choices:["Brendan Fraser", "Austin Butler", "Colin Farrell"], correct:0},
+    {q:"Which artist swept the 2011 Grammys with 'Need You Now' as part of a trio then called Lady Antebellum?", choices:["The Band Perry", "Lady A (Lady Antebellum)", "Little Big Town"], correct:1},
+    {q:"Who directed the Oscar-winning film 'Parasite'?", choices:["Park Chan-wook", "Kim Jee-woon", "Bong Joon Ho"], correct:2},
+    {q:"Which singer performed the halftime show classic 'Purple Rain' at a rainy Super Bowl in 2007?", choices:["Prince", "Bruce Springsteen", "Tom Petty"], correct:0},
+    {q:"In The Beatles, which member sang lead on 'Yellow Submarine'?", choices:["John Lennon", "Ringo Starr", "George Harrison"], correct:1},
+    {q:"Which TV show introduced the characters Daenerys, Jon Snow, and Tyrion?", choices:["The Witcher", "Vikings", "Game of Thrones"], correct:2},
+    {q:"Who played the Scarecrow in The Wizard of Oz?", choices:["Ray Bolger", "Jack Haley", "Bert Lahr"], correct:0},
+    {q:"Which artist released the 2022 album 'Renaissance'?", choices:["Beyonce", "Lizzo", "Doja Cat"], correct:0},
+    {q:"How many players does a soccer team have on the field at once?", choices:["9", "11", "13"], correct:1},
+    {q:"In American football, how many points is a touchdown worth?", choices:["6", "7", "3"], correct:0},
+    {q:"How many innings are in a standard baseball game?", choices:["7", "8", "9"], correct:2},
+    {q:"What sport uses a puck instead of a ball?", choices:["Lacrosse", "Ice hockey", "Field hockey"], correct:1},
+    {q:"In basketball, how many points is a free throw worth?", choices:["1", "2", "3"], correct:0},
+    {q:"How often are the Summer Olympic Games held?", choices:["Every 2 years", "Every 3 years", "Every 4 years"], correct:2},
+    {q:"What is the distance of a marathon in miles, roughly?", choices:["13.1", "26.2", "31"], correct:1},
+    {q:"Which country invented soccer in its modern form?", choices:["Brazil", "England", "Italy"], correct:1},
+    {q:"In tennis, what is a score of zero called?", choices:["Love", "Deuce", "Ace"], correct:0},
+    {q:"How many holes are played in a standard round of golf?", choices:["12", "18", "24"], correct:1},
+    {q:"What does NBA stand for?", choices:["National Baseball Association", "National Bowling Association", "National Basketball Association"], correct:2},
+    {q:"Which boxer was nicknamed 'The Greatest'?", choices:["Mike Tyson", "Muhammad Ali", "Joe Frazier"], correct:1},
+    {q:"In football, what is it called when a player scores three goals in one game?", choices:["Hat trick", "Triple play", "Grand slam"], correct:0},
+    {q:"How many rings are on the Olympic flag?", choices:["4", "6", "5"], correct:2},
+    {q:"What sport is played at Wimbledon?", choices:["Golf", "Tennis", "Cricket"], correct:1},
+    {q:"How many players are on a basketball team on the court at once?", choices:["5", "6", "7"], correct:0},
+    {q:"In baseball, how many strikes make an out?", choices:["2", "4", "3"], correct:2},
+    {q:"What country hosted the first modern Olympic Games in 1896?", choices:["Italy", "Greece", "France"], correct:1},
+    {q:"How many yards is an American football field, not counting end zones?", choices:["100", "120", "80"], correct:0},
+    {q:"Which sport would you see a 'slam dunk' in?", choices:["Volleyball", "Soccer", "Basketball"], correct:2},
+    {q:"What is the name of the trophy awarded to the Super Bowl winner?", choices:["Stanley Cup", "Vince Lombardi Trophy", "Commissioner's Trophy"], correct:1},
+    {q:"In golf, what is one stroke under par on a hole called?", choices:["Birdie", "Bogey", "Eagle"], correct:0},
+    {q:"How many minutes are in a standard soccer match?", choices:["80", "100", "90"], correct:2},
+    {q:"Which swimmer has won the most Olympic gold medals?", choices:["Ian Thorpe", "Michael Phelps", "Mark Spitz"], correct:1},
+    {q:"What sport uses the terms 'strike' and 'spare'?", choices:["Bowling", "Baseball", "Boxing"], correct:0},
+    {q:"In hockey, what is it called when a player scores three goals in a game?", choices:["Triple crown", "Hat trick", "Power play"], correct:1},
+    {q:"How many bases are there on a baseball diamond, including home plate?", choices:["3", "5", "4"], correct:2},
+    {q:"What is the top prize competition in soccer between national teams?", choices:["The World Cup", "The Champions League", "The Gold Cup"], correct:0},
+    {q:"In tennis, what is the term for a serve that the opponent cannot touch?", choices:["Volley", "Ace", "Fault"], correct:1},
+    {q:"Which animal racing event is known as 'The Most Exciting Two Minutes in Sports'?", choices:["Dog racing", "Camel racing", "Horse racing"], correct:2},
+    {q:"How many points is a three-point shot worth in basketball?", choices:["3", "2", "4"], correct:0},
+    {q:"What sport is Tiger Woods famous for?", choices:["Tennis", "Golf", "Polo"], correct:1},
+    {q:"In American football, how many points is a field goal worth?", choices:["2", "3", "6"], correct:1},
+    {q:"What do you call the person who throws the ball in baseball?", choices:["Catcher", "Shortstop", "Pitcher"], correct:2},
+    {q:"The Tour de France is a famous race in which sport?", choices:["Cycling", "Running", "Sailing"], correct:0},
+    {q:"How many rings does the gymnast swing on in the still rings event?", choices:["3", "2", "4"], correct:1},
+    {q:"What sport is played on ice with brooms and stones?", choices:["Luge", "Bobsled", "Curling"], correct:2},
+    {q:"In soccer, what card does a referee show to eject a player?", choices:["Red card", "Yellow card", "Black card"], correct:0},
+    {q:"Which country has won the most soccer World Cups?", choices:["Germany", "Brazil", "Argentina"], correct:1},
+    {q:"How many laps are in the Indianapolis 500 race?", choices:["100", "150", "200"], correct:2},
+    {q:"What sport features the positions of quarterback and wide receiver?", choices:["American football", "Rugby", "Soccer"], correct:0},
+    {q:"In bowling, how many pins are set up at the end of the lane?", choices:["9", "10", "12"], correct:1},
+    {q:"What is a perfect score in bowling?", choices:["200", "250", "300"], correct:2},
+    {q:"Which athlete is known as 'The Fastest Man Alive' for sprinting?", choices:["Usain Bolt", "Carl Lewis", "Jesse Owens"], correct:0},
+    {q:"How long is an Olympic swimming pool in meters?", choices:["25", "50", "100"], correct:1},
+    {q:"What sport do the Harlem Globetrotters play?", choices:["Soccer", "Baseball", "Basketball"], correct:2},
+    {q:"In baseball, what is it called when a batter hits the ball out of the park?", choices:["Home run", "Grand tour", "Long ball"], correct:0},
+    {q:"Which country won the first FIFA World Cup in 1930?", choices:["Brazil", "Uruguay", "Italy"], correct:1},
+    {q:"What does FIFA govern worldwide?", choices:["Tennis", "Ice hockey", "Soccer"], correct:2},
+    {q:"Which sport is known as 'America's pastime'?", choices:["Football", "Baseball", "Basketball"], correct:1},
+    {q:"How many downs does a football team get to move the ball 10 yards?", choices:["3", "4", "5"], correct:1},
+    {q:"In volleyball, how many players are on each side of the net?", choices:["5", "7", "6"], correct:2},
+    {q:"What is the name of the biggest annual American football game?", choices:["The Super Bowl", "The World Series", "The Stanley Cup Final"], correct:0},
+    {q:"Which boxer bit off part of Evander Holyfield's ear in a 1997 fight?", choices:["Mike Tyson", "Lennox Lewis", "Riddick Bowe"], correct:0},
+    {q:"How many events are in a decathlon?", choices:["8", "10", "12"], correct:1},
+    {q:"What sport uses a shuttlecock?", choices:["Squash", "Table tennis", "Badminton"], correct:2},
+    {q:"In golf, what club is used on the green?", choices:["Putter", "Driver", "Iron"], correct:0},
+    {q:"Which country invented basketball?", choices:["Canada", "United States", "England"], correct:1},
+    {q:"How many players are on an ice hockey team on the ice at once, including the goalie?", choices:["5", "7", "6"], correct:2},
+    {q:"How many judges score an Olympic dive?", choices:["Seven", "Five", "Three"], correct:0},
+    {q:"In soccer, what position protects the goal?", choices:["Striker", "Goalkeeper", "Midfielder"], correct:1},
+    {q:"Which tennis tournament is played on grass courts?", choices:["French Open", "US Open", "Wimbledon"], correct:2},
+    {q:"How many Super Bowl rings does Tom Brady have?", choices:["7", "5", "6"], correct:0},
+    {q:"What sport is associated with the Stanley Cup?", choices:["Basketball", "Ice hockey", "Lacrosse"], correct:1},
+    {q:"In track and field, what is the shortest Olympic sprint race?", choices:["200 meters", "400 meters", "100 meters"], correct:2},
+    {q:"What do gymnasts sprinkle on their hands to improve grip?", choices:["Chalk", "Sand", "Talc wax"], correct:0},
+    {q:"In cycling, what color jersey does the Tour de France leader wear?", choices:["Green", "Yellow", "Pink"], correct:1},
+    {q:"What Italian dish consists of layers of pasta, sauce, and cheese?", choices:["Risotto", "Lasagna", "Fettuccine"], correct:1},
+    {q:"Which fruit is known for keeping the doctor away, according to the saying?", choices:["Orange", "Banana", "Apple"], correct:2},
+    {q:"What is the main ingredient in guacamole?", choices:["Avocado", "Tomato", "Onion"], correct:0},
+    {q:"Which country is famous for inventing sushi?", choices:["China", "Japan", "Thailand"], correct:1},
+    {q:"What spice is made from dried red peppers and is known for being hot?", choices:["Paprika", "Cinnamon", "Chili powder"], correct:2},
+    {q:"How many cups are in a quart?", choices:["4", "2", "8"], correct:0},
+    {q:"What type of pasta is shaped like little ears?", choices:["Penne", "Orecchiette", "Fusilli"], correct:1},
+    {q:"Which nut is used to make marzipan?", choices:["Walnut", "Hazelnut", "Almond"], correct:2},
+    {q:"What is the most consumed beverage in the world after water?", choices:["Tea", "Coffee", "Soda"], correct:0},
+    {q:"Which vegetable is known for making people cry when cut?", choices:["Carrot", "Onion", "Celery"], correct:1},
+    {q:"What is tofu made from?", choices:["Rice", "Wheat", "Soybeans"], correct:2},
+    {q:"Which fast food chain uses the slogan 'I'm Lovin' It'?", choices:["McDonald's", "Burger King", "Wendy's"], correct:0},
+    {q:"What temperature does water boil at in Fahrenheit?", choices:["100 degrees", "212 degrees", "180 degrees"], correct:1},
+    {q:"Which fruit has its seeds on the outside?", choices:["Raspberry", "Blueberry", "Strawberry"], correct:2},
+    {q:"What is the main ingredient in hummus?", choices:["Chickpeas", "Lentils", "Black beans"], correct:0},
+    {q:"Which country drinks the most coffee per person?", choices:["Italy", "Finland", "Brazil"], correct:1},
+    {q:"What kind of food is a 'baguette'?", choices:["Cheese", "Pastry", "Bread"], correct:2},
+    {q:"Which herb is the main ingredient in pesto sauce?", choices:["Basil", "Parsley", "Mint"], correct:0},
+    {q:"How many teaspoons are in a tablespoon?", choices:["2", "3", "4"], correct:1},
+    {q:"What is sushi traditionally wrapped in?", choices:["Rice paper", "Lettuce", "Seaweed"], correct:2},
+    {q:"Which fast food chain is famous for the Whopper?", choices:["Burger King", "McDonald's", "Five Guys"], correct:0},
+    {q:"What fruit is dried to make raisins?", choices:["Plums", "Grapes", "Apricots"], correct:1},
+    {q:"Which cuisine is known for dishes like pad thai and tom yum soup?", choices:["Vietnamese", "Korean", "Thai"], correct:2},
+    {q:"What does 'al dente' mean when cooking pasta?", choices:["Firm to the bite", "Soft and mushy", "Served cold"], correct:0},
+    {q:"Which dairy product is used to make butter?", choices:["Yogurt", "Cream", "Cheese curds"], correct:1},
+    {q:"What is the main ingredient in a traditional Caesar salad dressing that gives it a salty flavor?", choices:["Capers", "Olive brine", "Anchovies"], correct:2},
+    {q:"Which spice is the most expensive in the world by weight?", choices:["Saffron", "Vanilla", "Cardamom"], correct:0},
+    {q:"How many ounces are in a pound?", choices:["12", "16", "14"], correct:1},
+    {q:"What fruit is known as the 'king of fruits' in Southeast Asia?", choices:["Mango", "Jackfruit", "Durian"], correct:2},
+    {q:"Which fast food chain's mascot is a clown named Ronald?", choices:["McDonald's", "Burger King", "Jack in the Box"], correct:0},
+    {q:"What cooking method involves submerging food in hot oil?", choices:["Braising", "Deep frying", "Poaching"], correct:1},
+    {q:"Which grain is used to make sake in Japan?", choices:["Barley", "Wheat", "Rice"], correct:2},
+    {q:"What is the green paste served with sushi that is very spicy?", choices:["Wasabi", "Miso", "Sriracha"], correct:0},
+    {q:"Which berry is used to make wine most commonly?", choices:["Raspberry", "Grape", "Elderberry"], correct:1},
+    {q:"What is a 'sous chef' in a kitchen?", choices:["The head chef", "The pastry chef", "The second-in-command chef"], correct:2},
+    {q:"Which country is the largest producer of chocolate's main ingredient, cacao?", choices:["Ivory Coast", "Brazil", "Ghana"], correct:0},
+    {q:"How many minutes does it typically take to soft-boil an egg?", choices:["About 6 minutes", "About 2 minutes", "About 15 minutes"], correct:0},
+    {q:"What is the main ingredient in the Middle Eastern dish falafel?", choices:["Lentils", "Chickpeas", "Eggplant"], correct:1},
+    {q:"Which cheese is traditionally used on a pizza Margherita?", choices:["Cheddar", "Provolone", "Mozzarella"], correct:2},
+    {q:"What fast food chain is known for its 'Frosty' dessert?", choices:["Wendy's", "Dairy Queen", "Sonic"], correct:0},
+    {q:"Which vegetable is the main ingredient in sauerkraut?", choices:["Cucumber", "Cabbage", "Beet"], correct:1},
+    {q:"What does BBQ stand for?", choices:["Barbecue Quality", "Better Burger Quality", "Barbecue"], correct:2},
+    {q:"Which fruit juice is mixed with champagne to make a mimosa?", choices:["Orange juice", "Pineapple juice", "Grapefruit juice"], correct:0},
+    {q:"What is the traditional Japanese multi-course meal style called?", choices:["Omakase", "Kaiseki", "Izakaya"], correct:1},
+    {q:"How many fluid ounces are in a standard US cup?", choices:["6", "10", "8"], correct:2},
+    {q:"Which meat is used in a traditional Eggs Benedict?", choices:["Canadian bacon", "Sausage", "Bacon strips"], correct:0},
+    {q:"What spice gives curry powder its yellow color?", choices:["Cumin", "Turmeric", "Coriander"], correct:1},
+    {q:"Which country is home to the dish poutine, made with fries, cheese curds, and gravy?", choices:["Belgium", "United States", "Canada"], correct:2},
+    {q:"What is the main ingredient in peanut butter?", choices:["Peanuts", "Peanut oil and flour", "Cashews"], correct:0},
+    {q:"Which fast food chain was founded by Colonel Harland Sanders?", choices:["Popeyes", "KFC", "Chick-fil-A"], correct:1},
+    {q:"What is the term for cooking food slowly in liquid at a low temperature?", choices:["Searing", "Blanching", "Simmering"], correct:2},
+    {q:"Which fruit is also known as the 'alligator pear'?", choices:["Avocado", "Kiwi", "Papaya"], correct:0},
+    {q:"How many grams are in a kilogram?", choices:["100", "1000", "500"], correct:1},
+    {q:"What ingredient makes bread rise?", choices:["Baking soda only", "Salt", "Yeast"], correct:2},
+    {q:"Which Italian city is credited with inventing pizza?", choices:["Naples", "Rome", "Venice"], correct:0},
+    {q:"What is the most popular type of sushi roll in the United States, named after a state?", choices:["Alaska roll", "California roll", "Texas roll"], correct:1},
+    {q:"Which herb is commonly used to garnish dishes and is also called cilantro in some regions?", choices:["Parsley", "Dill", "Coriander leaves"], correct:2},
+    {q:"What does the 'Big Mac' index measure in economics?", choices:["The price of burgers across countries", "Fast food sales", "Restaurant wages"], correct:0},
+    {q:"Which fruit is carved into jack-o'-lanterns at Halloween?", choices:["Squash", "Pumpkin", "Watermelon"], correct:1},
+    {q:"What cooking term means to cut vegetables into thin matchstick strips?", choices:["Dice", "Mince", "Julienne"], correct:2},
+    {q:"Which bean is used to make espresso and cappuccino?", choices:["Coffee bean", "Cocoa bean", "Vanilla bean"], correct:0},
+    {q:"How many calories are roughly in a gram of protein?", choices:["9", "4", "7"], correct:1},
+    {q:"What is the national dish of Spain made with rice and saffron?", choices:["Gazpacho", "Tapas", "Paella"], correct:2},
+    {q:"Which fast food chain uses the slogan 'Eat Fresh'?", choices:["Subway", "Jimmy John's", "Quiznos"], correct:0},
+    {q:"Which part of the egg is yellow?", choices:["The white", "The yolk", "The albumen"], correct:1},
+    {q:"Which temperature is considered medium-rare for a steak, roughly, in Fahrenheit?", choices:["145 degrees", "130 degrees", "160 degrees"], correct:1},
+    {q:"What is miso soup made from?", choices:["Fermented wheat", "Seaweed stock only", "Fermented soybeans"], correct:2},
+    {q:"Which country eats the most pasta per person?", choices:["Greece", "Italy", "United States"], correct:1},
+    {q:"What vegetable family do potatoes belong to?", choices:["Root family", "Nightshade family", "Legume family"], correct:1},
+    {q:"Which soft drink was originally marketed as a medicine in the 1880s?", choices:["Pepsi", "Dr Pepper", "Coca-Cola"], correct:2},
+    {q:"How many cups of water are typically used to cook one cup of rice?", choices:["About one and a half to two cups", "Three cups", "Half a cup"], correct:0},
+    {q:"What is the main ingredient in the Scottish dish haggis traditionally?", choices:["Beef liver", "Sheep's offal", "Pork sausage"], correct:1},
+    {q:"Which fruit has varieties named Cavendish and Plantain?", choices:["Mango", "Papaya", "Banana"], correct:2},
+    {q:"In basketball, what is it called when a player dribbles, stops, and dribbles again illegally?", choices:["Traveling", "Double dribble", "Goaltending"], correct:1},
+    {q:"How many periods are in an ice hockey game?", choices:["3", "2", "4"], correct:0},
+    {q:"Which golfer is nicknamed 'The Golden Bear'?", choices:["Arnold Palmer", "Jack Nicklaus", "Gary Player"], correct:1},
+    {q:"What sport is played at the Kentucky Derby?", choices:["Greyhound racing", "Polo", "Horse racing"], correct:2},
+    {q:"In American football, what is a 'Hail Mary'?", choices:["A long desperate pass", "A trick kick", "A defensive penalty"], correct:0},
+    {q:"How many Grand Slam tournaments are there in tennis each year?", choices:["3", "5", "4"], correct:2},
+    {q:"Which NFL team is known as 'America's Team'?", choices:["Dallas Cowboys", "Green Bay Packers", "New England Patriots"], correct:0},
+    {q:"In baseball, how many outs does each team get per inning?", choices:["6", "3", "9"], correct:1},
+    {q:"What Olympic sport involves riding waves on a board?", choices:["Wakeboarding", "Kitesurfing", "Surfing"], correct:2},
+    {q:"Which boxer was the first to win world titles in eight weight classes?", choices:["Manny Pacquiao", "Floyd Mayweather", "Oscar De La Hoya"], correct:0},
+    {q:"How many players are on a volleyball team on the court at once?", choices:["5", "6", "7"], correct:1},
+    {q:"What do you call a zero score in a soccer match announcement, as in 'two-nil'?", choices:["Love", "Duck", "Nil"], correct:2},
+    {q:"Which swimmer is known as the 'Baltimore Bullet'?", choices:["Michael Phelps", "Ryan Lochte", "Ian Thorpe"], correct:0},
+    {q:"In golf, how many clubs is a player allowed to carry in their bag?", choices:["12", "14", "16"], correct:1},
+    {q:"What country is famous for the dish kimchi?", choices:["Japan", "China", "Korea"], correct:2},
+    {q:"Which sauce is traditionally served with Thanksgiving turkey in the US?", choices:["Cranberry sauce", "Applesauce", "Gravy only"], correct:0},
+    {q:"What is the main ingredient in the Italian dessert tiramisu coating on top?", choices:["Powdered sugar", "Cocoa powder", "Crushed nuts"], correct:1},
+    {q:"Which fruit is used to make guacamole's close cousin, and is also the state fruit of California?", choices:["Orange", "Lemon", "Avocado"], correct:2},
+    {q:"What is the name of the flat Italian bread often topped with herbs and olive oil?", choices:["Focaccia", "Ciabatta", "Panettone"], correct:0},
+    {q:"How many colors are on a standard Rubik's Cube, a puzzle sometimes featured at food-free game nights?", choices:["5", "6", "8"], correct:1},
+    {q:"Which fast food chain is famous for animal-style fries and a secret menu?", choices:["Shake Shack", "Whataburger", "In-N-Out Burger"], correct:2},
+    {q:"What spice comes from the dried stigma of a crocus flower?", choices:["Saffron", "Sumac", "Anise"], correct:0},
+    {q:"Which grain is popped to make popcorn?", choices:["Wheat", "Corn", "Oats"], correct:1},
+    {q:"What is the Italian word for ice cream?", choices:["Sorbetto", "Granita", "Gelato"], correct:2},
+    {q:"Which chocolate bar was named after a horse, according to legend?", choices:["Snickers", "Milky Way", "Twix"], correct:0},
+    {q:"What meat is traditionally in a Reuben sandwich?", choices:["Pastrami only", "Corned beef", "Roast beef"], correct:1},
+    {q:"Which drink is made by forcing hot water through ground coffee beans under pressure?", choices:["Cold brew", "French press", "Espresso"], correct:2},
+    {q:"What is the main ingredient in the Greek sauce tzatziki?", choices:["Yogurt", "Feta cheese", "Hummus"], correct:0},
+    {q:"Which vegetable did Popeye eat to gain strength?", choices:["Kale", "Spinach", "Broccoli"], correct:1},
+    {q:"How many donuts are in a baker's dozen?", choices:["12", "14", "13"], correct:2},
+    {q:"Who wrote Romeo and Juliet?", choices:["Charles Dickens", "William Shakespeare", "Mark Twain"], correct:1},
+    {q:"Who wrote the Harry Potter books?", choices:["J.K. Rowling", "Roald Dahl", "C.S. Lewis"], correct:0},
+    {q:"Who wrote Pride and Prejudice?", choices:["Charlotte Bronte", "Jane Austen", "Mary Shelley"], correct:1},
+    {q:"The Cat in the Hat was written by whom?", choices:["Shel Silverstein", "Maurice Sendak", "Dr. Seuss"], correct:2},
+    {q:"Who wrote Moby-Dick?", choices:["Herman Melville", "Nathaniel Hawthorne", "Jack London"], correct:0},
+    {q:"The Great Gatsby was written by whom?", choices:["Ernest Hemingway", "F. Scott Fitzgerald", "John Steinbeck"], correct:1},
+    {q:"Who wrote Alice's Adventures in Wonderland?", choices:["J.M. Barrie", "Lewis Carroll", "Kenneth Grahame"], correct:1},
+    {q:"What is the first Harry Potter book called?", choices:["Harry Potter and the Goblet of Fire", "Harry Potter and the Chamber of Secrets", "Harry Potter and the Sorcerer's Stone"], correct:2},
+    {q:"Who wrote To Kill a Mockingbird?", choices:["Harper Lee", "Truman Capote", "Carson McCullers"], correct:0},
+    {q:"Charlotte's Web was written by whom?", choices:["Garth Williams", "E.B. White", "Beverly Cleary"], correct:1},
+    {q:"Who wrote The Hobbit?", choices:["C.S. Lewis", "J.R.R. Tolkien", "George R.R. Martin"], correct:1},
+    {q:"Who wrote the novel 1984?", choices:["Aldous Huxley", "Ray Bradbury", "George Orwell"], correct:2},
+    {q:"The Adventures of Tom Sawyer was written by whom?", choices:["Mark Twain", "Charles Dickens", "Robert Louis Stevenson"], correct:0},
+    {q:"Who wrote Little Women?", choices:["Louisa May Alcott", "Laura Ingalls Wilder", "L.M. Montgomery"], correct:0},
+    {q:"Which author wrote A Tale of Two Cities?", choices:["Victor Hugo", "Charles Dickens", "Leo Tolstoy"], correct:1},
+    {q:"Who wrote Frankenstein?", choices:["Bram Stoker", "Mary Shelley", "Edgar Allan Poe"], correct:1},
+    {q:"The Sherlock Holmes stories were written by whom?", choices:["Agatha Christie", "Arthur Conan Doyle", "G.K. Chesterton"], correct:1},
+    {q:"Who wrote Winnie-the-Pooh?", choices:["A.A. Milne", "Beatrix Potter", "Rudyard Kipling"], correct:0},
+    {q:"The Odyssey is credited to which ancient poet?", choices:["Virgil", "Homer", "Sophocles"], correct:1},
+    {q:"Who wrote the Chronicles of Narnia?", choices:["J.R.R. Tolkien", "C.S. Lewis", "Philip Pullman"], correct:1},
+    {q:"Who wrote Matilda?", choices:["Roald Dahl", "Judy Blume", "Beverly Cleary"], correct:0},
+    {q:"What is 7 times 8?", choices:["54", "56", "64"], correct:1},
+    {q:"What is 100 divided by 4?", choices:["20", "25", "40"], correct:1},
+    {q:"What is half of 250?", choices:["100", "150", "125"], correct:2},
+    {q:"What is 15 plus 27?", choices:["42", "32", "52"], correct:0},
+    {q:"What is the square root of 144?", choices:["14", "12", "16"], correct:1},
+    {q:"What is 9 times 9?", choices:["72", "81", "99"], correct:1},
+    {q:"How many minutes are in 3 hours?", choices:["180", "120", "300"], correct:0},
+    {q:"What is 1000 minus 375?", choices:["725", "625", "675"], correct:1},
+    {q:"The angles of a triangle add up to how many degrees?", choices:["90", "180", "360"], correct:1},
+    {q:"What is 12 times 5?", choices:["50", "60", "55"], correct:1},
+    {q:"What is the next prime number after 7?", choices:["9", "10", "11"], correct:2},
+    {q:"What is 25 percent of 200?", choices:["50", "25", "75"], correct:0},
+    {q:"How many sides does an octagon have?", choices:["6", "8", "10"], correct:1},
+    {q:"What is 144 divided by 12?", choices:["14", "11", "12"], correct:2},
+    {q:"What is 3 cubed (3 x 3 x 3)?", choices:["9", "27", "18"], correct:1},
+    {q:"What is the perimeter of a square with sides of 5?", choices:["20", "25", "15"], correct:0},
+    {q:"What is 48 divided by 6?", choices:["7", "8", "6"], correct:1},
+    {q:"What number does the Roman numeral X stand for?", choices:["5", "50", "10"], correct:2},
+    {q:"How many days are in a leap year?", choices:["366", "365", "364"], correct:0},
+    {q:"What is 11 times 11?", choices:["111", "121", "131"], correct:1},
+    {q:"What is 0.5 written as a fraction?", choices:["1/4", "1/5", "1/2"], correct:2},
+    {q:"How many cents are in one dollar?", choices:["50", "100", "10"], correct:1},
+    {q:"Which coin is worth 25 cents?", choices:["Dime", "Nickel", "Quarter"], correct:2},
+    {q:"Who is pictured on the 100 dollar bill?", choices:["Benjamin Franklin", "Thomas Jefferson", "Alexander Hamilton"], correct:0},
+    {q:"What does ATM stand for?", choices:["Automatic Transfer Machine", "Automated Teller Machine", "American Treasury Mint"], correct:1},
+    {q:"How many dimes make one dollar?", choices:["5", "20", "10"], correct:2},
+    {q:"Who is pictured on the penny?", choices:["Abraham Lincoln", "George Washington", "Franklin D. Roosevelt"], correct:0},
+    {q:"What do you call a loan used to buy a house?", choices:["A lease", "A mortgage", "A bond"], correct:1},
+    {q:"Which famous street is home to the New York stock market?", choices:["Broadway", "Wall Street", "Fifth Avenue"], correct:1},
+    {q:"Who is pictured on the 20 dollar bill?", choices:["Andrew Jackson", "Ulysses S. Grant", "James Madison"], correct:0},
+    {q:"What is money that you owe called?", choices:["Equity", "Income", "Debt"], correct:2},
+    {q:"What is the currency of Japan?", choices:["Yuan", "Yen", "Won"], correct:1},
+    {q:"What is the currency of the United Kingdom?", choices:["Euro", "Franc", "Pound"], correct:2},
+    {q:"What is the charge for borrowing money called?", choices:["Interest", "Principal", "Dividend"], correct:0},
+    {q:"What do you call a person who starts their own business?", choices:["A shareholder", "An entrepreneur", "An auditor"], correct:1},
+    {q:"How many quarters make 5 dollars?", choices:["10", "25", "20"], correct:2},
+    {q:"What is a bill sent for a service called?", choices:["An invoice", "A receipt", "A coupon"], correct:0},
+    {q:"What is a written plan for how you will spend your money called?", choices:["A ledger", "A budget", "An audit"], correct:1},
+    {q:"In the US, income taxes are usually due in which month?", choices:["April", "June", "January"], correct:0},
+    {q:"Which company is the largest retailer in the US?", choices:["Target", "Walmart", "Costco"], correct:1},
+    {q:"What is it called when a company sells shares to the public?", choices:["Going public", "Franchising", "Outsourcing"], correct:0},
+    {q:"Which company makes the Mustang?", choices:["Ford", "Chevrolet", "Dodge"], correct:0},
+    {q:"What does MPH stand for?", choices:["Miles Per Hour", "Meters Per Hour", "Miles Per Hundred"], correct:0},
+    {q:"How many wheels does a typical semi truck have?", choices:["10", "18", "12"], correct:1},
+    {q:"Which company makes the Corolla?", choices:["Honda", "Nissan", "Toyota"], correct:2},
+    {q:"What does SUV stand for?", choices:["Sport Utility Vehicle", "Standard Urban Van", "Super Utility Vehicle"], correct:0},
+    {q:"Tire pressure is measured in what?", choices:["MPG", "PSI", "RPM"], correct:1},
+    {q:"What fuel do most cars run on?", choices:["Diesel", "Kerosene", "Gasoline"], correct:2},
+    {q:"In the US, the steering wheel of a car is usually on which side?", choices:["Left", "Right", "Center"], correct:0},
+    {q:"What does a speedometer measure?", choices:["Fuel level", "Speed", "Engine heat"], correct:1},
+    {q:"Which car brand has a bowtie logo?", choices:["Chevrolet", "Ford", "Jeep"], correct:0},
+    {q:"What are windshield wipers used for?", choices:["Cooling the engine", "Clearing rain from the windshield", "Polishing the glass"], correct:1},
+    {q:"What was the first mass-produced car, made by Ford?", choices:["Model A", "Model T", "Mustang"], correct:1},
+    {q:"What does a car's GPS help the driver do?", choices:["Navigate to places", "Charge the battery", "Check the oil"], correct:0},
+    {q:"Which company makes the Civic?", choices:["Hyundai", "Subaru", "Honda"], correct:2},
+    {q:"What do you call a car with no roof?", choices:["A sedan", "A convertible", "A hatchback"], correct:1},
+    {q:"Which company makes the Model 3 electric car?", choices:["Tesla", "Rivian", "Lucid"], correct:0},
+    {q:"What does a muffler reduce?", choices:["Speed", "Noise", "Fuel use"], correct:1},
+    {q:"What does RPM stand for?", choices:["Roads Per Mile", "Revolutions Per Minute", "Rotations Per Meter"], correct:1},
+    {q:"A yield sign is shaped like what?", choices:["A circle", "A square", "An upside-down triangle"], correct:2},
+    {q:"What color is a stop sign?", choices:["Red", "Yellow", "Orange"], correct:0},
+    {q:"What does WWW stand for?", choices:["World Web Window", "World Wide Web", "Wide World Web"], correct:1},
+    {q:"Who co-founded Apple with Steve Jobs?", choices:["Steve Wozniak", "Bill Gates", "Elon Musk"], correct:0},
+    {q:"Binary code uses which two digits?", choices:["1 and 2", "0 and 1", "0 and 9"], correct:1},
+    {q:"Which company makes the PlayStation?", choices:["Nintendo", "Microsoft", "Sony"], correct:2},
+    {q:"What symbol must every email address contain?", choices:["#", "@", "$"], correct:1},
+    {q:"Who founded Microsoft with Paul Allen?", choices:["Bill Gates", "Jeff Bezos", "Larry Page"], correct:0},
+    {q:"What do you call unwanted junk email?", choices:["Phishing", "Spam", "Malware"], correct:1},
+    {q:"What is the brain of a computer called?", choices:["The monitor", "The hard drive", "The CPU"], correct:2},
+    {q:"What does the word app stand for?", choices:["Application", "Appliance", "Appendix"], correct:0},
+    {q:"Which company created the Android operating system?", choices:["Apple", "Google", "Samsung"], correct:1},
+    {q:"In what year was the first iPhone released?", choices:["2005", "2010", "2007"], correct:2},
+    {q:"Mark Zuckerberg founded which social media site?", choices:["Facebook", "Twitter", "Snapchat"], correct:0},
+    {q:"How many bits are in a byte?", choices:["4", "8", "16"], correct:1},
+    {q:"What is the main page of a website called?", choices:["The landing strip", "The homepage", "The portal"], correct:1},
+    {q:"What does a search engine help you do?", choices:["Find information on the web", "Send packages", "Print photos"], correct:0},
+    {q:"Which device do you use to type letters into a computer?", choices:["A scanner", "A keyboard", "A router"], correct:1},
+    {q:"About how much storage is a gigabyte?", choices:["1,000 megabytes", "100 megabytes", "10 megabytes"], correct:0},
+    {q:"What does a webcam capture?", choices:["Sound only", "Video and images", "Text documents"], correct:1},
+    {q:"What does download mean?", choices:["Deleting a file", "Copying data from the internet to your device", "Charging a battery"], correct:1},
+    {q:"What does a printer do?", choices:["Puts documents and photos on paper", "Connects to Wi-Fi", "Stores passwords"], correct:0},
+    {q:"What does Wi-Fi connect your device to?", choices:["The power grid", "A wireless network", "Satellite TV"], correct:1},
+    {q:"Which company makes the Xbox?", choices:["Sony", "Nintendo", "Microsoft"], correct:2},
+    {q:"On what date is Christmas Day?", choices:["December 24", "December 25", "December 31"], correct:1},
+    {q:"Which holiday features a bunny and decorated eggs?", choices:["Easter", "Valentine's Day", "St. Patrick's Day"], correct:0},
+    {q:"On what date is US Independence Day?", choices:["July 4", "June 14", "August 4"], correct:0},
+    {q:"What do people carve into jack-o'-lanterns at Halloween?", choices:["Watermelons", "Pumpkins", "Turnips"], correct:1},
+    {q:"Which US holiday in November is about giving thanks?", choices:["Memorial Day", "Labor Day", "Thanksgiving"], correct:2},
+    {q:"What color is worn for St. Patrick's Day?", choices:["Green", "Purple", "Gold"], correct:0},
+    {q:"Who is said to bring gifts to children on Christmas Eve?", choices:["The Easter Bunny", "Santa Claus", "The Tooth Fairy"], correct:1},
+    {q:"New Year's Day falls in which month?", choices:["December", "January", "November"], correct:1},
+    {q:"Valentine's Day is in which month?", choices:["February", "March", "January"], correct:0},
+    {q:"What drops in Times Square on New Year's Eve?", choices:["A giant apple", "A crystal ball", "A confetti cannon"], correct:1},
+    {q:"Which US holiday in May honors fallen soldiers?", choices:["Veterans Day", "Memorial Day", "Flag Day"], correct:1},
+    {q:"Halloween falls in which month?", choices:["September", "November", "October"], correct:2},
+    {q:"A four-leaf clover is a symbol of what?", choices:["Good luck", "Spring rain", "Friendship"], correct:0},
+    {q:"Which bird is traditionally eaten at Thanksgiving?", choices:["Chicken", "Duck", "Turkey"], correct:2},
+    {q:"What do children wear on Halloween?", choices:["Pajamas", "Costumes", "Uniforms"], correct:1},
+    {q:"Kwanzaa is celebrated in which month?", choices:["December", "February", "June"], correct:0},
+    {q:"Hanukkah is known as the festival of what?", choices:["Harvest", "Lights", "Freedom"], correct:1},
+    {q:"Mother's Day in the US is celebrated in which month?", choices:["April", "June", "May"], correct:2},
+    {q:"What do you light on top of a birthday cake?", choices:["Candles", "Fireworks", "Lanterns"], correct:0},
+    {q:"Earth Day is celebrated in which month?", choices:["March", "April", "May"], correct:1},
+    {q:"St. Patrick's Day is in which month?", choices:["March", "April", "February"], correct:0},
+    {q:"Which appliance keeps food cold?", choices:["Freezer", "Refrigerator", "Oven"], correct:1},
+    {q:"What do you use to sweep the floor?", choices:["A mop", "A broom", "A rake"], correct:1},
+    {q:"Which machine washes clothes?", choices:["Dishwasher", "Dryer", "Washing machine"], correct:2},
+    {q:"What appliance heats food quickly using waves?", choices:["Microwave", "Toaster oven", "Blender"], correct:0},
+    {q:"What utensil do you use to eat soup?", choices:["Fork", "Spoon", "Knife"], correct:1},
+    {q:"What do you look into to see your reflection?", choices:["A window", "A photograph", "A mirror"], correct:2},
+    {q:"What small appliance browns sliced bread?", choices:["A toaster", "A kettle", "A waffle iron"], correct:0},
+    {q:"What do you dry off with after a shower?", choices:["A blanket", "A towel", "A bathrobe"], correct:1},
+    {q:"What tool do you use to drive a nail?", choices:["A wrench", "A hammer", "A screwdriver"], correct:1},
+    {q:"What do you use to cut paper?", choices:["Scissors", "A stapler", "A ruler"], correct:0},
+    {q:"What appliance cleans carpets by suction?", choices:["A fan", "A steam mop", "A vacuum cleaner"], correct:2},
+    {q:"What do you put a letter inside before mailing it?", choices:["A mailbox", "An envelope", "A stamp book"], correct:1},
+    {q:"What do you use to open a soup can?", choices:["A bottle opener", "A can opener", "A corkscrew"], correct:1},
+    {q:"What do you put on a toothbrush?", choices:["Toothpaste", "Mouthwash", "Floss"], correct:0},
+    {q:"Which appliance washes dishes?", choices:["Dishwasher", "Garbage disposal", "Water heater"], correct:0},
+    {q:"What keeps your front door locked with a key?", choices:["A hinge", "A deadbolt", "A doorknob"], correct:1},
+    {q:"What do you hold over your head to stay dry in the rain?", choices:["A raincoat", "An umbrella", "A tarp"], correct:1},
+    {q:"What piece of furniture do you sit on at a desk?", choices:["A stool", "A chair", "A bench"], correct:1},
+    {q:"What do you rest your head on in bed?", choices:["A pillow", "A mattress", "A headboard"], correct:0},
+    {q:"What appliance makes crushed ice and smoothies?", choices:["A juicer", "A food processor", "A blender"], correct:2},
+    {q:"What do you use to iron clothes?", choices:["A steamer", "An iron", "A press"], correct:1},
+    {q:"Just Do It is the slogan of which brand?", choices:["Adidas", "Nike", "Puma"], correct:1},
+    {q:"The Golden Arches are the symbol of which restaurant?", choices:["McDonald's", "Wendy's", "Burger King"], correct:0},
+    {q:"Have It Your Way is the slogan of which chain?", choices:["McDonald's", "Burger King", "Subway"], correct:1},
+    {q:"Which coffee chain has a green mermaid logo?", choices:["Dunkin'", "Starbucks", "Tim Hortons"], correct:1},
+    {q:"Finger Lickin' Good is the slogan of which chain?", choices:["Popeyes", "Chick-fil-A", "KFC"], correct:2},
+    {q:"The three stripes are the mark of which brand?", choices:["Adidas", "Reebok", "New Balance"], correct:0},
+    {q:"Which store has a red bullseye logo?", choices:["Walmart", "Target", "Kmart"], correct:1}
+  ]
 };
 if (typeof module!=='undefined' && module.exports) module.exports = BANKS2;
 
@@ -9415,134 +10440,393 @@ render(c,ctx){
 }});
 
 /* ================= PRESS YOUR LUCK ================= */
-regGame('pressluck',{howto:"Answer trivia to earn spins, then spin the board for cash and prizes - but dodge the WHAMMY! 4 Whammies and you are out. You can pass spins to put the pressure on. Biggest bank at the end wins.",name:'Press Your Luck',icon:'🍀',tags:'Game Show',pvp:true,seats:2,
+regGame('pressluck',{howto:"Official Press Your Luck: 3 players, 2 question rounds and 2 Big Board rounds. No Whammies, no Whammies, STOP!\n\nQUESTION ROUNDS: buzz in first and answer right for 3 SPINS. If a rival buzzes first, you can still pick the right answer from the 3 choices for 1 spin.\n\nTHE BIG BOARD: 18 squares of cash, prizes and Whammies, always changing. On your turn, SPIN and slam STOP! - or PASS your earned spins to a rival and make THEM risk it. Passed spins must be played, and a Whammy on passed spins turns the rest into earned spins.\n\nA Whammy wipes your bank. 4 Whammies and you're OUT. Big Bucks jumps you to the biggest cash on the board. After Round 2, the biggest bank wins!",name:'Press Your Luck',icon:'🍀',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
-  if(shgGuard(BANKS2.chase&&BANKS2.chase.length>=3,'Press Your Luck questions are still loading')) return;
-  var S=null, pvpCtl=null, pz;
-  c.innerHTML='<h2>🍀 Press Your Luck</h2><div class="muted">Earn spins with trivia, then spin the board — but avoid the WHAMMY!</div><div id="pz"></div>';
+  var bank=(BANKS2.pressluck||[]);
+  if(shgGuard(bank.length>=8,'Press Your Luck questions are still loading')) return;
+  var S=null, pvpCtl=null, pz, raceIv=null, buzzTo=null, botTo=null;
+  c.innerHTML='<h2>🍀 Press Your Luck</h2><div id="pz"></div>';
   pz=c.querySelector('#pz');
+  function C(a,s){ return {t:'cash',a:a,s:s||0}; }
+  function PR(n,e,a){ return {t:'prize',name:n,e:e,a:a}; }
+  var W={t:'whammy'};
+  var R1=[
+    [C(500,1),C(750),PR('Stereo','🎵',650)],[C(1000),W,C(300)],[C(1250),C(500),W],
+    [C(1500,1),C(500),{t:'bigbucks'}],[C(1250),PR('Luggage','🧳',450),C(750)],[C(1750),W,C(600)],
+    [PR('TV','📺',800),C(1000),W],[C(750),C(1500,1),C(400)],[C(500),W,PR('Watch','⌚',500)],
+    [C(1250),C(300),{t:'goback2'}],[C(530),W,C(1000)],[{t:'bigbucks'},C(1250),C(500)],
+    [C(500,1),C(750),{t:'across'}],[W,C(1400),C(350)],[C(1200),PR('Bike','🚲',400),W],
+    [C(800),C(500,1),C(1100)],[W,C(950),PR('Camera','📷',550)],[C(650),{t:'move1'},C(900)]];
+  var R2=[
+    [C(1500,1),C(3000),PR('Spa Trip','🧖',1800)],[C(2000),W,C(750)],[{t:'orlose',a:3000},C(1250),W],
+    [C(4000),C(1000),{t:'bigbucks'}],[C(800),PR('Car','🚗',14500),C(2000)],[C(5000),W,C(1500)],
+    [PR('Game Table','🎱',1200),C(1500,1),W],[C(1000),{t:'orlose',a:4000},C(1750)],[C(2000),W,PR('Washer','🧺',1100)],
+    [C(3000),C(1250),{t:'goback2'}],[C(700),W,C(2500)],[{t:'bigbucks'},C(2000),C(900)],
+    [C(1500,1),{t:'across'},C(600)],[W,C(3500),C(800)],[C(1750),PR('Boat','⛵',6000),W],
+    [C(1100),C(2500,1),{t:'move1'}],[W,C(1300),PR('Jewelry','💎',2200)],[C(900),{t:'move1'},C(1600)]];
+  var PALETTE=['pl-b','pl-g','pl-r','pl-p','pl-t','pl-u'];
+  function stopTimers(){ if(raceIv){clearInterval(raceIv);raceIv=null;} if(buzzTo){clearTimeout(buzzTo);buzzTo=null;} if(botTo){clearTimeout(botTo);botTo=null;} }
   function start(shared){
-    S={phase:'earn',qi:0,qs:shared.qs,spins:SHG.pressluckStartSpins(),bank:0,wham:0,done:false,botBank:null,spinAnim:null};
-    draw();
+    stopTimers();
+    var names=SHG.botNames?SHG.botNames(2):['Leslie','Kathy'];
+    S={qs:shared.qs,players:[
+        {name:'YOU',bank:0,earned:0,passed:0,wham:0,out:false},
+        {name:names[0],bank:0,earned:0,passed:0,wham:0,out:false},
+        {name:names[1],bank:0,earned:0,passed:0,wham:0,out:false}],
+       phase:'intro',qRound:1,qi:0,qStage:'',boardRound:1,order:[],turnPos:0,
+       hi:0,tick:0,racing:false,lastEvent:'',spinCtx:null,done:false};
+    drawIntro();
   }
-  function hud(){
-    return '<div class="row"><div class="grow center">🌀 Spins: <b>'+S.spins+'</b></div>'
-      +'<div class="grow center">💰 Bank: <b style="color:#eab676">$'+S.bank.toLocaleString('en-US')+'</b></div>'
-      +'<div class="grow center">💥 Whammy: <b>'+S.wham+'/4</b></div></div>';
+  function me(){ return S.players[0]; }
+  function alive(P){ return !P.out; }
+  function spinsOf(P){ return P.earned+P.passed; }
+  function drawIntro(){
+    pz.innerHTML='<div class="pl-stage"><div class="pl-logo"><div class="pl-swoosh"></div>PRESS<br>YOUR<br>LUCK<div class="pl-swoosh"></div></div>'
+      +'<div class="center" style="color:#ffe9b0;font-size:13px;padding:0 8px">3 players · 2 question rounds · 2 Big Board rounds<br>Big bucks, no Whammies!</div>'
+      +'<div class="pl-strip">'+S.players.map(function(P){ return '<span>🎤 '+esc(P.name)+'</span>'; }).join('')+'</div></div>'
+      +'<button class="btn" id="plGo">▶ Start the show!</button>';
+    pz.querySelector('#plGo').onclick=function(){ Sound.click(); S.phase='q'; S.qRound=1; S.qi=0; drawQuestion(); };
   }
-  function draw(){
-    if(S.done){ drawDone(); return; }
-    var h=hud();
-    if(S.phase==='earn'){
-      var q=S.qs[S.qi];
-      h+='<div class="card"><div class="muted">Earn spins — question '+(S.qi+1)+' of '+S.qs.length+' (correct = +1 spin)</div>'
-        +'<h3>'+esc(q.q)+'</h3><div id="ch"></div></div>';
-      pz.innerHTML=h;
-      var ch=pz.querySelector('#ch');
-      q.choices.forEach(function(t,i){ ch.appendChild(shgQBtn(esc(t),function(){ answerEarn(i); })); });
-    } else {
-      h+='<div class="card center"><div class="muted">THE BIG BOARD</div>'
-        +'<div id="tile" style="font-size:44px;min-height:70px">❓</div>'
-        +'<div class="status" id="spinMsg"></div>'
-        +'<div class="row"><button class="btn grow" id="doSpin" '+(S.spins<=0?'disabled':'')+'>🌀 SPIN ('+S.spins+' left)</button>'
-        +'<button class="btn secondary grow" id="doPass">✋ PASS</button></div></div>';
-      pz.innerHTML=h;
-      pz.querySelector('#doSpin').onclick=doSpin;
-      pz.querySelector('#doPass').onclick=function(){ Sound.click(); finish(false); };
+  function stripHTML(){
+    return '<div class="pl-strip">'+S.players.map(function(P,i){
+      return '<span class="'+(i===0?'me':'')+(P.out?' out':'')+'">'+(i===0?'⭐ ':'🎤 ')+esc(P.name)+': <b>$'+P.bank.toLocaleString()+'</b> · '+P.earned+'e/'+P.passed+'p'+(P.wham?' · '+'😈'.repeat(P.wham):'')+(P.out?' OUT':'')+'</span>';
+    }).join('')+'</div>';
+  }
+  /* ---------- QUESTION ROUNDS ---------- */
+  function drawQuestion(){
+    stopTimers();
+    var q=S.qs[S.qi];
+    S.qStage='buzz';
+    pz.innerHTML='<div class="muted center">❓ Question round '+S.qRound+' · '+((S.qi%4)+1)+' of 4 — buzz in for 3 spins!</div>'+stripHTML()
+      +'<div class="card"><h3 style="margin:4px 0">'+esc(q.q)+'</h3><div id="qZone" class="center"><button class="btn pl-buzzb" id="qBuzz">🔔 BUZZ!</button><div class="muted" id="qMsg" style="margin-top:6px">First to buzz answers for 3 spins…</div></div></div>';
+    var which=1+Math.floor(Math.random()*2);
+    buzzTo=setTimeout(function(){
+      if(!pz.isConnected||S.qStage!=='buzz')return;
+      botBuzz(which);
+    }, 1300+Math.random()*2200);
+    pz.querySelector('#qBuzz').onclick=function(){
+      if(S.qStage!=='buzz')return;
+      stopTimers(); Sound.beep(990,.15);
+      S.qStage='mine3'; drawChoices(3);
+    };
+  }
+  function botBuzz(which){
+    S.qStage='botbuzz';
+    var P=S.players[which], q=S.qs[S.qi];
+    var right=Math.random()<0.72;
+    var zone=pz.querySelector('#qZone');
+    if(right){ P.earned+=3; if(zone)zone.innerHTML='<div class="status"><span class="err">🔔 '+esc(P.name)+' buzzed in — CORRECT! +3 spins.</span></div><div class="muted">Your turn to pick from the 3 choices for 1 spin:</div><div id="qCh"></div>'; Sound.beep(330,.15); }
+    else { if(zone)zone.innerHTML='<div class="status"><span class="ok">🔔 '+esc(P.name)+' buzzed in — WRONG!</span></div><div class="muted">Pick the right answer for 1 spin:</div><div id="qCh"></div>'; Sound.lose(); }
+    S.qStage='mine1'; drawChoices(1);
+  }
+  function drawChoices(spins){
+    var q=S.qs[S.qi];
+    if(spins===3){
+      var zone=pz.querySelector('#qZone');
+      if(zone)zone.innerHTML='<div class="status"><span class="ok">\u{1F514} You buzzed in!</span></div><div class="muted">Answer for 3 spins:</div><div id="qCh"></div>';
+    }
+    var box=pz.querySelector('#qCh');
+    if(!box){ var host=pz.querySelector('.card'); box=document.createElement('div'); host.appendChild(box); }
+    q.choices.forEach(function(t,i){
+      box.appendChild(shgQBtn(esc(t),function(){
+        if(i===q.correct){ me().earned+=spins; Sound.win(); toast('✅ Correct! +'+spins+' spin'+(spins>1?'s':'')); }
+        else { Sound.lose(); toast('❌ It was: '+q.choices[q.correct]); }
+        if(spins===3){ /* bots get their pick phase */
+          S.players.slice(1).forEach(function(P){ if(Math.random()<0.65){ P.earned+=1; } });
+        }
+        nextQuestion();
+      }));
+    });
+    if(spins===3){
+      var card=pz.querySelector('.card .muted#qMsg');
+      if(card)card.textContent='You buzzed in — answer for 3 spins!';
     }
   }
-  function answerEarn(i){
-    var q=S.qs[S.qi];
-    if(i===q.correct){ S.spins++; Sound.win(); toast('Correct! +1 spin'); }
-    else { Sound.lose(); toast('Wrong — the answer was: '+q.choices[q.correct]); }
+  function nextQuestion(){
     S.qi++;
-    if(S.qi>=S.qs.length){ S.phase='play'; }
-    draw();
+    var target=S.qRound===1?4:8;
+    if(S.qi>=target){ startBoard(S.qRound); return; }
+    drawQuestion();
   }
-  function doSpin(){
-    if(S.spins<=0||S.done) return;
-    S.spins--;
-    var btn=pz.querySelector('#doSpin'); if(btn) btn.disabled=true;
-    var tile=pz.querySelector('#tile'), msg=pz.querySelector('#spinMsg');
-    var ticks=0;
-    var faces=['💵','💰','💎','💥','⭐','🎁'];
-    var iv=setInterval(function(){
-      ticks++;
-      tile.textContent=faces[ticks%faces.length];
-      Sound.beep(300+ticks*60,.05,'square');
-      if(ticks>=9){
-        clearInterval(iv);
-        var r=SHG.pressluckSpin();
-        if(r.type==='whammy'){
-          tile.textContent='💥'; S.bank=0; S.wham++;
-          msg.innerHTML='<span class="err">WHAMMY! Bank wiped ('+S.wham+'/4)</span>';
-          Sound.lose();
-          if(S.wham>=4){ setTimeout(function(){ finish(true); },1200); return; }
-        } else if(r.type==='bigbucks'){
-          tile.textContent='💰'; S.bank+=r.amount; S.spins++;
-          msg.innerHTML='<span class="ok">BIG BUCKS! +$'+r.amount.toLocaleString('en-US')+' and +1 spin!</span>';
-          Sound.win();
-        } else {
-          tile.textContent='💵'; S.bank+=r.amount;
-          msg.innerHTML='<span class="ok">+$'+r.amount.toLocaleString('en-US')+'</span>';
-          Sound.win();
-        }
-        if(S.spins<=0){ setTimeout(function(){ finish(false); },1400); }
-        else draw();
+  /* ---------- BIG BOARD ---------- */
+  function board(){ return S.boardRound===1?R1:R2; }
+  function faceAt(idx){ var sq=board()[idx]; return sq[(S.tick+idx)%3]; }
+  function faceText(f){
+    if(f.t==='cash')return '$'+f.a.toLocaleString()+(f.s?'<div class="pl-sub">+ ONE SPIN</div>':'');
+    if(f.t==='prize')return f.e+'<div class="pl-sub">'+esc(f.name)+' $'+f.a.toLocaleString()+'</div>';
+    if(f.t==='whammy')return '😈<div class="pl-sub">WHAMMY</div>';
+    if(f.t==='bigbucks')return '<span style="font-size:13px">BIG BUCKS</span>';
+    if(f.t==='goback2')return '<span style="font-size:12px">⬅ GO BACK 2</span>';
+    if(f.t==='move1')return '<span style="font-size:12px">↔ MOVE 1 SPACE</span>';
+    if(f.t==='corner')return '<span style="font-size:12px">🎯 PICK A CORNER</span>';
+    if(f.t==='across')return '<span style="font-size:12px">⬇ ACROSS THE BOARD</span>';
+    if(f.t==='orlose')return '<span style="font-size:12px">$'+f.a.toLocaleString()+' or LOSE-1-WHAMMY</span>';
+    return '?';
+  }
+  function boardHTML(){
+    var order=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17];
+    var gridPos={0:0,1:1,2:2,3:3,4:4,5:5,6:11,7:17,8:23,9:29,10:28,11:27,12:26,13:25,14:24,15:18,16:12,17:6};
+    var cells=[];
+    for(var gp=0;gp<30;gp++){
+      if(gp>=7&&gp<=10||gp>=13&&gp<=16||gp>=19&&gp<=22){
+        if(gp===7)cells.push('<div class="pl-logo"><div class="pl-swoosh"></div>PRESS YOUR LUCK<div class="pl-swoosh"></div><div class="pl-event" id="plEvent">'+(S.lastEvent||'Big bucks, no Whammies!')+'</div></div>');
+        continue;
       }
-    },110);
+      var idx=order.filter(function(o){ return gridPos[o]===gp; })[0];
+      cells.push('<div class="pl-sq '+PALETTE[idx%6]+(S.hi===idx?' lit':'')+'" data-sq="'+idx+'">'+faceText(faceAt(idx))+'</div>');
+    }
+    return '<div class="pl-board">'+cells.join('')+'</div>';
   }
-  function finish(out){
-    if(S.done) return;
-    S.done=true;
-    draw();
+  function startBoard(round){
+    stopTimers();
+    S.boardRound=round; S.phase='board';
+    var key=round===1?function(P){ return spinsOf(P); }:function(P){ return P.bank; };
+    S.order=[0,1,2].filter(function(i){ return !S.players[i].out; }).sort(function(a,b){ return key(S.players[a])-key(S.players[b]); });
+    S.turnPos=0;
+    pz.innerHTML='<div class="pl-stage"><div class="center" style="color:#ffe9b0;font-size:16px;font-weight:900">🎡 BIG BOARD — ROUND '+round+'</div>'
+      +'<div class="center" style="color:#ffe9b0;font-size:13px">'+(round===1?'Lowest spins play first.':'Lowest bank plays first — time to pass those spins!')+'</div>'+stripHTML()+'</div>'
+      +'<button class="btn" id="plBGo">▶ To the Big Board!</button>';
+    pz.querySelector('#plBGo').onclick=function(){ Sound.click(); takeTurn(); };
+  }
+  function curP(){ return S.players[S.order[S.turnPos]]; }
+  function takeTurn(){ advance(); }
+  function controlsHTML(P){
+    var h='<div class="card center"><div style="font-weight:900">⭐ YOUR TURN — bank $'+P.bank.toLocaleString()+' · '+P.earned+' earned / '+P.passed+' passed spins</div>'
+      +'<div class="row" style="gap:6px;margin-top:8px"><button class="btn grow" id="plSpin">🎡 SPIN!</button>';
+    if(P.earned>0&&P.passed<=0){
+      h+='</div><div class="muted" style="margin-top:6px;font-size:12px">…or pass your '+P.earned+' earned spins:</div><div class="row" style="gap:6px;margin-top:4px">'
+        +S.players.slice(1).map(function(B,i){ return B.out?'':'<button class="btn secondary grow" data-pass="'+(i+1)+'">Pass to '+esc(B.name)+'</button>'; }).join('')+'</div>';
+    } else h+='</div>';
+    if(P.passed>0)h+='<div class="muted" style="margin-top:4px;font-size:12px">Passed spins must be played first!</div>';
+    return h+'</div>';
+  }
+  function drawPlayerTurn(){
+    var P=me();
+    pz.innerHTML='<div class="muted center">🎡 Big Board round '+S.boardRound+'</div>'+stripHTML()+boardHTML()+controlsHTML(P);
+    wireControls(P);
+  }
+  function wireControls(P){
+    var sp=pz.querySelector('#plSpin');
+    if(sp)sp.onclick=function(){ doSpin(P,true); };
+    pz.querySelectorAll('[data-pass]').forEach(function(b){
+      b.onclick=function(){
+        var T=S.players[+b.getAttribute('data-pass')];
+        T.passed+=P.earned; S.lastEvent='⭐ YOU passed '+P.earned+' spins to '+T.name+'!'; P.earned=0; Sound.click();
+        takeTurn();
+      };
+    });
+  }
+  function botAct(P){
+    pz.innerHTML='<div class="muted center">🎡 Big Board round '+S.boardRound+'</div>'+stripHTML()+boardHTML()
+      +'<div class="card center"><div style="font-weight:900">🎤 '+esc(P.name)+' is at the board…</div><div class="muted" id="botMsg">bank $'+P.bank.toLocaleString()+' · '+P.earned+'e/'+P.passed+'p</div></div>';
+    botTo=setTimeout(function(){
+      if(!pz.isConnected)return;
+      /* pass strategy: leading the game with earned spins to burn -> dump on the #2 player */
+      var others=S.players.filter(function(X){ return X!==P&&!X.out; });
+      var leading=others.every(function(X){ return P.bank>=X.bank; });
+      if(P.earned>0&&P.passed<=0&&leading&&P.earned>=2&&S.boardRound===2){
+        var T=others.sort(function(a,b){ return b.bank-a.bank; })[0];
+        T.passed+=P.earned; S.lastEvent='🎤 '+P.name+' passed '+P.earned+' spins to '+T.name+'!';
+        P.earned=0; takeTurn(); return;
+      }
+      doSpin(P,false);
+    },900);
+  }
+  function doSpin(P,isPlayer){
+    var wasPassed=false;
+    if(P.passed>0){ P.passed--; wasPassed=true; }
+    else if(P.earned>0){ P.earned--; }
+    else { advance(); return; }
+    S.spinWasPassed=wasPassed;
+    S.racing=true;
+    pz.innerHTML='<div class="muted center">🎡 Big Board round '+S.boardRound+' — '+esc(P.name)+' spinning…</div>'+stripHTML()+boardHTML()
+      +(isPlayer
+        ? '<div class="center"><button class="btn pl-stopb" id="plStop">✋ STOP!</button></div>'
+        : '<div class="card center"><div class="muted">The board is spinning…</div></div>');
+    var stopAt=isPlayer?Infinity:(16+Math.floor(Math.random()*12));
+    var ticks=0;
+    raceIv=setInterval(function(){
+      if(!pz.isConnected){ stopTimers(); return; }
+      ticks++; S.hi=(S.hi+1)%18; S.tick++;
+      var cells=pz.querySelectorAll('.pl-sq');
+      cells.forEach(function(cell){
+        var idx=+cell.getAttribute('data-sq');
+        cell.className='pl-sq '+PALETTE[idx%6]+(S.hi===idx?' lit':'');
+        cell.innerHTML=faceText(faceAt(idx));
+      });
+      if(ticks%3===0)Sound.beep(240+S.hi*22,.04,'square');
+      if(ticks>=stopAt||ticks>120){ finishSpin(P); }
+    },55);
+    var sb=pz.querySelector('#plStop');
+    if(sb)sb.onclick=function(){ finishSpin(P); };
+  }
+  function finishSpin(P){
+    if(raceIv){ clearInterval(raceIv); raceIv=null; }
+    if(!S.racing)return;
+    S.racing=false;
+    var idx=S.hi, f=faceAt(idx);
+    applyFace(P,idx,f,0);
+  }
+  function ev(html){ S.lastEvent=html; }
+  function afterAction(P){
+    botTo=setTimeout(function(){ if(pz.isConnected)advance(); }, P===me()?500:850);
+    drawBoardState(P);
+  }
+  function drawBoardState(P){
+    pz.innerHTML='<div class="muted center">🎡 Big Board round '+S.boardRound+'</div>'+stripHTML()+boardHTML()
+      +'<div class="card center"><div id="plMsg">'+(S.lastEvent||'')+'</div><div id="plChoice"></div></div>';
+  }
+  function applyFace(P,idx,f,depth){
+    var nm=P===me()?'⭐ YOU':'🎤 '+esc(P.name);
+    if(f.t==='cash'){
+      P.bank+=f.a; if(f.s)P.earned+=1;
+      ev(nm+' hit <b>$'+f.a.toLocaleString()+'</b>'+(f.s?' + ONE SPIN!':'!')); Sound.beep(880,.12);
+      afterAction(P); return;
+    }
+    if(f.t==='prize'){
+      P.bank+=f.a;
+      ev(nm+' won a prize: '+f.e+' <b>'+esc(f.name)+' ($'+f.a.toLocaleString()+')</b>!'); Sound.beep(990,.12);
+      afterAction(P); return;
+    }
+    if(f.t==='whammy'){
+      P.bank=0; P.wham++;
+      if(S.spinWasPassed&&P.passed>0){ P.earned+=P.passed; P.passed=0; ev(nm+' hit a 😈 WHAMMY on passed spins — the rest became earned spins! '); }
+      else ev(nm+' hit a 😈 <b>WHAMMY!</b> Bank wiped! ('+P.wham+'/4)');
+      if(P.wham>=4){ P.out=true; P.earned=0; P.passed=0; ev(nm+' hit their 4th 😈 WHAMMY — THEY\'RE OUT!'); }
+      Sound.lose();
+      afterAction(P); return;
+    }
+    if(depth>=2){ ev(nm+' — the board settles there.'); afterAction(P); return; }
+    if(f.t==='bigbucks'){
+      var best=-1,bv=-1;
+      for(var i=0;i<18;i++){ var cf=faceAt(i); if(cf.t==='cash'&&cf.a>bv){ bv=cf.a; best=i; } }
+      if(best<0){ afterAction(P); return; }
+      S.hi=best; ev(nm+' hit <b>BIG BUCKS</b> — jumping to $'+bv.toLocaleString()+'!');
+      drawBoardState(P);
+      botTo=setTimeout(function(){ if(pz.isConnected)applyFace(P,best,faceAt(best),depth+1); },800);
+      return;
+    }
+    if(f.t==='goback2'||f.t==='across'){
+      var ni=f.t==='goback2'?(idx+16)%18:(idx+9)%18;
+      S.hi=ni; ev(nm+(f.t==='goback2'?' goes BACK 2 spaces…':' goes ACROSS THE BOARD…'));
+      drawBoardState(P);
+      botTo=setTimeout(function(){ if(pz.isConnected)applyFace(P,ni,faceAt(ni),depth+1); },800);
+      return;
+    }
+    if(f.t==='move1'||f.t==='corner'){
+      drawBoardState(P);
+      var ch=pz.querySelector('#plChoice');
+      if(P===me()&&ch){
+        if(f.t==='move1'){
+          ch.innerHTML='<div class="muted">Move one space:</div><div class="row" style="gap:6px"><button class="btn grow" id="mvL">◀ Left</button><button class="btn grow" id="mvR">Right ▶</button></div>';
+          ch.querySelector('#mvL').onclick=function(){ moveTo(P,(idx+17)%18,depth); };
+          ch.querySelector('#mvR').onclick=function(){ moveTo(P,(idx+1)%18,depth); };
+        } else {
+          ch.innerHTML='<div class="muted">Pick a corner:</div><div class="row" style="gap:6px;flex-wrap:wrap">'
+            +[0,5,9,14].filter(function(cn){ return cn!==idx; }).map(function(cn){ return '<button class="btn secondary grow" data-corner="'+cn+'">Corner '+(cn+1)+'</button>'; }).join('')+'</div>';
+          ch.querySelectorAll('[data-corner]').forEach(function(b){ b.onclick=function(){ moveTo(P,+b.getAttribute('data-corner'),depth); }; });
+        }
+      } else {
+        var opts=f.t==='move1'?[(idx+17)%18,(idx+1)%18]:[0,5,9,14].filter(function(cn){ return cn!==idx; });
+        var pick=opts[Math.floor(Math.random()*opts.length)];
+        botTo=setTimeout(function(){ if(pz.isConnected)moveTo(P,pick,depth); },800);
+      }
+      return;
+    }
+    if(f.t==='orlose'){
+      drawBoardState(P);
+      var ch2=pz.querySelector('#plChoice');
+      if(P===me()&&ch2){
+        ch2.innerHTML='<div class="muted">Your choice:</div><div class="row" style="gap:6px"><button class="btn grow" id="olCash">💵 Take $'+f.a.toLocaleString()+'</button>'
+          +(P.wham>0?'<button class="btn secondary grow" id="olLose">😈 Lose 1 Whammy ('+P.wham+')</button>':'')+'</div>';
+        ch2.querySelector('#olCash').onclick=function(){ P.bank+=f.a; ev('⭐ YOU took the $'+f.a.toLocaleString()+'!'); afterAction(P); };
+        var lb=ch2.querySelector('#olLose');
+        if(lb)lb.onclick=function(){ P.wham--; ev('⭐ YOU lost a Whammy — down to '+P.wham+'!'); afterAction(P); };
+      } else {
+        botTo=setTimeout(function(){
+          if(!pz.isConnected)return;
+          if(P.wham>=2){ P.wham--; ev('🎤 '+esc(P.name)+' lost a Whammy (now '+P.wham+').'); }
+          else { P.bank+=f.a; ev('🎤 '+esc(P.name)+' took $'+f.a.toLocaleString()+'.'); }
+          afterAction(P);
+        },800);
+      }
+      return;
+    }
+    afterAction(P);
+  }
+  function moveTo(P,ni,depth){
+    S.hi=ni; Sound.click();
+    applyFace(P,ni,faceAt(ni),depth+1);
+  }
+  function advance(){
+    stopTimers();
+    if(!pz.isConnected||S.done)return;
+    /* current seat again if they still hold spins */
+    var cur=curP();
+    if(cur&&!cur.out&&spinsOf(cur)>0){ actSeat(); return; }
+    for(var k=1;k<=S.order.length;k++){
+      var pos=(S.turnPos+k)%S.order.length;
+      var P=S.players[S.order[pos]];
+      if(P&&!P.out&&spinsOf(P)>0){ S.turnPos=pos; actSeat(); return; }
+    }
+    endBoardRound();
+  }
+  function actSeat(){
+    var P=curP();
+    if(S.order[S.turnPos]===0)drawPlayerTurn();
+    else botAct(P);
+  }
+  function endBoardRound(){
+    stopTimers();
+    if(S.boardRound===1){
+      S.phase='q'; S.qRound=2; S.qi=4;
+      pz.innerHTML='<div class="pl-stage"><div class="center" style="color:#ffe9b0;font-size:16px;font-weight:900">❓ QUESTION ROUND 2</div><div class="center" style="color:#ffe9b0;font-size:13px">4 more questions — earn spins for the final board!</div>'+stripHTML()+'</div>'
+        +'<button class="btn" id="plQ2">▶ Round 2 questions</button>';
+      pz.querySelector('#plQ2').onclick=function(){ Sound.click(); drawQuestion(); };
+    } else {
+      S.done=true; drawDone();
+    }
   }
   async function drawDone(){
-    var h=hud()+'<div class="card center">';
-    if(S.wham>=4) h+='<div class="big">💥💥💥💥</div><div class="err">4 WHAMMIES — you\'re out!</div>';
-    else h+='<div class="muted">Final bank</div><div class="big" style="color:#eab676">$'+S.bank.toLocaleString('en-US')+'</div>';
-    h+='<div id="pRes"></div></div>';
+    stopTimers();
+    var sorted=S.players.slice().sort(function(a,b){ return b.bank-a.bank; });
+    var iWon=sorted[0]===me()&&me().bank>0;
+    var h='<div class="pl-stage"><div class="pl-logo"><div class="pl-swoosh"></div>PRESS YOUR LUCK<div class="pl-swoosh"></div></div>'
+      +'<div class="center" style="color:#ffe9b0;font-weight:900;font-size:16px">🏆 FINAL STANDINGS</div>'
+      +sorted.map(function(P,i){ return '<div class="pl-final'+(P===me()?' me':'')+'">'+(i+1)+'. '+(P===me()?'⭐ YOU':'🎤 '+esc(P.name))+' — <b>$'+P.bank.toLocaleString()+'</b>'+(P.out?' (whammied out)':'')+'</div>'; }).join('')
+      +'</div><div class="card center"><div id="pRes"></div></div>';
     pz.innerHTML=h;
     var res=pz.querySelector('#pRes');
     if(isNet){
       res.innerHTML='<div class="muted">Waiting for opponent...</div>';
       pvpCtl.submit();
+    } else if(iWon){
+      Sound.win();
+      res.innerHTML='<div class="status"><span class="ok">🎉 YOU WIN PRESS YOUR LUCK with $'+me().bank.toLocaleString()+'!</span></div>';
+      await Wallet.add(Math.max(1,Math.round(me().bank/100)),'pressluck');
+      await Wallet.recordWin('pressluck');
     } else {
-      var totalSpins=SHG.pressluckStartSpins()+S.qs.length;
-      var bot=SHG.pressluckSimBot(totalSpins);
-      S.botBank=bot.bank;
-      h+='';
-      res.innerHTML='<div class="muted">Computer banked <b>$'+bot.bank.toLocaleString('en-US')+'</b>'+(bot.out?' (whammied out!)':'')+'</div><div id="pWin"></div>';
-      var wdiv=res.querySelector('#pWin');
-      if(S.bank>bot.bank){
-        Sound.win();
-        wdiv.innerHTML='<div class="status"><span class="ok">🎉 You win $'+S.bank.toLocaleString('en-US')+'!</span></div>';
-        await Wallet.recordWin('pressluck');
-      } else if(S.bank<bot.bank){
-        Sound.lose();
-        wdiv.innerHTML='<div class="status"><span class="err">😞 Computer wins this one.</span></div>';
-      } else {
-        wdiv.innerHTML='<div class="status"><span class="muted">🤝 Tie game!</span></div>';
-      }
+      Sound.lose();
+      res.innerHTML='<div class="status"><span class="err">😞 '+esc(sorted[0].name)+' takes it with $'+sorted[0].bank.toLocaleString()+'. Your bank: $'+me().bank.toLocaleString()+'.</span></div>';
     }
   }
   if(isNet){
     pvpCtl=shgPvp(net,{
-      share:function(){ return {qs:SHG.pickN(BANKS2.chase,3)}; },
+      share:function(){ return {qs:SHG.pickN(bank,8)}; },
       onData:function(d){ start(d); },
-      submitPayload:function(){ return shgPayLoad(S.bank); },
+      submitPayload:function(){ return shgPayLoad(me().bank); },
       onSettle:function(iWon,room,w){
         var res=pz.querySelector('#pRes');
         shgResultBanner(res,iWon,w,
-          '🎉 You win with $'+S.bank.toLocaleString('en-US')+' banked!',
-          '😞 Opponent banked more. You had $'+S.bank.toLocaleString('en-US')+'.');
+          '🎉 You win with $'+me().bank.toLocaleString('en-US')+' banked!',
+          '😞 Opponent banked more. You had $'+me().bank.toLocaleString('en-US')+'.');
         Sound[iWon?'win':'lose']();
         shgAward(iWon);
       }
     });
   } else {
-    start({qs:SHG.pickN(BANKS2.chase,3)});
+    start({qs:SHG.pickN(bank,8)});
   }
 }});
 
