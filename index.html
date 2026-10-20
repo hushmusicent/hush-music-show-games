@@ -99,6 +99,17 @@ table.lb tr.me td{color:var(--gold); font-weight:800;}
 .ch-tag.p{background:#e0342b;color:#fff;}
 /* ===== Match Game 70s ===== */
 /* ===== Password classic ===== */
+/* ===== What's My Line studio ===== */
+.wml-board{background:linear-gradient(#22301f,#141f12);border:5px solid #8a6b32;border-radius:8px;padding:14px 12px;text-align:center;margin-bottom:8px;}
+.wml-signlabel{color:#cbb26a;font-size:11px;font-weight:900;letter-spacing:3px;}
+.wml-sign{font-family:'Brush Script MT','Segoe Script',cursive;font-size:30px;color:#f3e9c8;padding:4px 0;text-shadow:0 1px 0 #000;}
+.wml-cards{display:flex;gap:4px;justify-content:center;margin:6px 0 2px;}
+.wml-card{flex:0 0 26px;height:36px;border-radius:4px;background:linear-gradient(#e8c766,#a87e1e);color:#231703;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:13px;border:1px solid #6b4d10;}
+.wml-card.flip{background:linear-gradient(#b02a1e,#6d130c);color:#ffd9d0;border-color:#ff8a7a;}
+.wml-panel{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px;}
+.wml-seat{background:#12306e;border:2px solid #5a6f92;border-radius:8px;padding:7px 4px;text-align:center;}
+.wml-seat.on{border-color:#ffd23e;box-shadow:0 0 10px rgba(255,210,62,.5);}
+.wml-pname{font-weight:900;font-size:12px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .pw-word{background:linear-gradient(#ffffff,#dfe8ff);border:4px solid #2b4f9e;border-radius:10px;color:#12275e;font-weight:900;font-size:23px;text-align:center;padding:12px 8px;letter-spacing:2px;}
 .pw-teams{display:flex;gap:8px;align-items:stretch;}
 .pw-team{flex:1;border-radius:10px;padding:8px 6px;text-align:center;color:#fff;font-weight:800;font-size:12px;}
@@ -4971,56 +4982,306 @@ var BANKS2 = {
       "Do you make things?"
     ],
     occupations: [
-      {name:"Doctor", answers:[true,false,true,true,false,false,true,true,false,true,false,true,false,false,false,false,false,true,false,false]},
-      {name:"Plumber", answers:[true,true,true,true,false,false,false,true,false,true,false,false,false,true,true,false,false,false,false,false]},
-      {name:"Teacher", answers:[true,false,false,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,true,false]},
-      {name:"Clown", answers:[false,false,true,true,true,true,false,true,true,false,true,false,false,false,true,false,false,false,true,true]},
-      {name:"Pilot", answers:[true,true,true,true,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false]},
-      {name:"Chef", answers:[true,true,true,true,false,false,false,true,false,true,false,false,true,false,false,false,false,false,false,true]},
-      {name:"Firefighter", answers:[false,true,true,true,false,true,false,true,false,true,false,false,false,true,false,false,true,false,false,false]},
-      {name:"Librarian", answers:[true,false,false,true,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false]},
-      {name:"Farmer", answers:[false,false,true,false,false,true,false,false,false,true,false,false,true,true,true,true,true,false,false,true]},
-      {name:"Astronaut", answers:[true,true,true,false,false,false,true,false,false,true,false,false,false,false,false,false,true,false,true,false]},
-      {name:"Barber", answers:[true,false,true,true,true,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false]},
-      {name:"Dentist", answers:[true,false,true,true,true,false,true,false,false,true,false,true,false,false,true,false,false,true,false,false]},
-      {name:"Police officer", answers:[false,true,true,true,false,true,false,true,false,true,false,false,false,true,false,false,true,false,false,false]},
-      {name:"Musician", answers:[false,false,true,false,false,false,false,true,true,true,true,false,false,false,true,false,false,false,false,true]},
-      {name:"Athlete", answers:[false,true,false,false,false,true,false,true,false,false,true,false,false,false,false,false,true,false,true,false]},
-      {name:"Baker", answers:[true,true,true,false,false,false,false,true,false,true,false,false,true,false,false,false,false,false,false,true]},
-      {name:"Electrician", answers:[true,true,true,true,false,false,false,true,false,true,false,false,false,true,true,false,true,false,false,false]},
-      {name:"Nurse", answers:[true,true,true,true,true,false,true,true,false,true,false,true,false,false,false,false,false,false,false,false]},
-      {name:"Actor", answers:[false,false,false,false,false,true,false,true,true,false,true,false,false,false,true,false,false,false,true,false]},
-      {name:"Janitor", answers:[true,true,true,true,false,false,false,true,false,true,false,false,false,false,false,false,false,false,false,false]},
-      {name:"Mechanic", answers:[true,true,true,true,false,false,false,false,false,true,false,false,false,true,true,false,false,false,false,false]},
-      {name:"Lawyer", answers:[true,false,false,true,false,false,true,false,false,false,false,false,false,false,true,false,false,true,false,false]},
-      {name:"Veterinarian", answers:[true,false,true,true,false,false,true,true,false,true,false,true,false,false,true,true,false,true,false,false]},
-      {name:"Mail carrier", answers:[false,true,true,true,false,true,false,false,false,false,false,false,false,true,false,false,false,false,true,false]},
-      {name:"Photographer", answers:[false,false,true,true,true,true,false,true,false,true,false,false,false,true,true,true,false,false,false,true]},
-      {name:"Lifeguard", answers:[false,true,false,true,true,true,false,false,false,false,false,false,false,false,false,false,true,false,false,false]},
-      {name:"Taxi driver", answers:[true,false,true,true,false,false,false,true,false,false,false,false,false,true,true,false,false,false,false,false]},
-      {name:"Zookeeper", answers:[false,true,true,false,false,true,true,false,false,true,false,false,true,false,false,true,true,false,false,false]},
-      {name:"Florist", answers:[true,false,true,false,false,false,false,false,false,true,false,false,false,true,true,false,false,false,false,true]},
-      {name:"Carpenter", answers:[false,false,true,true,false,true,false,false,false,true,false,false,false,true,true,false,true,false,false,true]},
-      {name:"Soldier", answers:[false,true,true,true,false,true,false,true,false,true,false,false,false,true,false,false,true,false,false,false]},
-      {name:"Scientist", answers:[true,false,true,false,false,false,true,false,false,true,false,false,false,false,false,false,false,false,false,true]},
-      {name:"Comedian", answers:[false,false,false,false,false,false,false,true,false,false,true,false,false,false,true,false,false,false,false,false]},
-      {name:"Magician", answers:[false,false,true,false,true,false,false,true,true,true,true,false,false,false,true,true,false,false,false,false]},
-      {name:"Dancer", answers:[false,false,false,false,false,false,false,true,true,false,true,false,false,false,true,false,false,false,false,false]},
-      {name:"Banker", answers:[true,false,false,true,false,false,true,false,false,false,false,false,false,false,false,false,false,true,false,false]},
-      {name:"Cashier", answers:[true,true,true,true,false,false,false,true,false,false,false,false,true,false,false,false,false,false,false,false]},
-      {name:"Bus driver", answers:[true,true,true,true,true,false,false,true,false,false,false,false,false,true,false,false,false,false,true,false]},
-      {name:"Real estate agent", answers:[false,false,false,true,false,true,false,true,false,false,false,false,false,true,true,false,false,true,false,false]},
-      {name:"Judge", answers:[true,true,false,true,false,false,true,false,false,false,false,false,false,false,false,false,false,true,false,false]},
-      {name:"Waiter", answers:[true,true,true,true,false,false,false,true,false,false,false,false,true,false,false,false,false,false,false,false]},
-      {name:"News anchor", answers:[true,false,false,false,false,false,true,true,false,false,true,false,false,false,false,false,false,false,true,false]},
-      {name:"Fisherman", answers:[false,false,true,false,false,true,false,true,false,true,false,false,true,false,true,true,true,false,false,false]},
-      {name:"Author", answers:[true,false,false,false,false,false,false,false,false,false,true,false,false,false,true,false,false,true,false,true]},
-      {name:"House painter", answers:[false,false,true,true,false,true,false,false,false,true,false,false,false,true,true,false,false,false,false,false]},
-      {name:"Security guard", answers:[true,true,false,true,false,false,false,true,false,false,false,false,false,false,false,false,true,false,false,false]},
-      {name:"Landscaper", answers:[false,false,true,true,false,true,false,false,false,true,false,false,false,true,true,false,false,false,false,true]},
-      {name:"Paramedic", answers:[false,true,true,true,true,true,false,true,false,true,false,true,false,true,false,false,true,false,false,false]},
-      {name:"Jeweler", answers:[true,false,true,false,false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,true]},
-      {name:"Butler", answers:[true,true,true,true,true,false,false,true,false,false,false,false,true,true,false,false,false,false,false,false]}
+      {name:"Doctor", answers:[true, false, true, true, false, false, true, true, false, true, false, true, false, false, false, false, false, true, false, false]},
+      {name:"Plumber", answers:[true, true, true, true, false, false, false, true, false, true, false, false, false, true, true, false, false, false, false, false]},
+      {name:"Teacher", answers:[true, false, false, true, true, false, true, false, false, false, false, false, false, false, false, false, false, false, true, false]},
+      {name:"Clown", answers:[false, false, true, true, true, true, false, true, true, false, true, false, false, false, true, false, false, false, true, true]},
+      {name:"Pilot", answers:[true, true, true, true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Chef", answers:[true, true, true, true, false, false, false, true, false, true, false, false, true, false, false, false, false, false, false, true]},
+      {name:"Firefighter", answers:[false, true, true, true, false, true, false, true, false, true, false, false, false, true, false, false, true, false, false, false]},
+      {name:"Librarian", answers:[true, false, false, true, true, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Farmer", answers:[false, false, true, false, false, true, false, false, false, true, false, false, true, true, true, true, true, false, false, true]},
+      {name:"Astronaut", answers:[true, true, true, false, false, false, true, false, false, true, false, false, false, false, false, false, true, false, true, false]},
+      {name:"Barber", answers:[true, false, true, true, true, false, false, false, false, true, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Dentist", answers:[true, false, true, true, true, false, true, false, false, true, false, true, false, false, true, false, false, true, false, false]},
+      {name:"Police officer", answers:[false, true, true, true, false, true, false, true, false, true, false, false, false, true, false, false, true, false, false, false]},
+      {name:"Musician", answers:[false, false, true, false, false, false, false, true, true, true, true, false, false, false, true, false, false, false, false, true]},
+      {name:"Athlete", answers:[false, true, false, false, false, true, false, true, false, false, true, false, false, false, false, false, true, false, true, false]},
+      {name:"Baker", answers:[true, true, true, false, false, false, false, true, false, true, false, false, true, false, false, false, false, false, false, true]},
+      {name:"Electrician", answers:[true, true, true, true, false, false, false, true, false, true, false, false, false, true, true, false, true, false, false, false]},
+      {name:"Nurse", answers:[true, true, true, true, true, false, true, true, false, true, false, true, false, false, false, false, false, false, false, false]},
+      {name:"Actor", answers:[false, false, false, false, false, true, false, true, true, false, true, false, false, false, true, false, false, false, true, false]},
+      {name:"Janitor", answers:[true, true, true, true, false, false, false, true, false, true, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Mechanic", answers:[true, true, true, true, false, false, false, false, false, true, false, false, false, true, true, false, false, false, false, false]},
+      {name:"Lawyer", answers:[true, false, false, true, false, false, true, false, false, false, false, false, false, false, true, false, false, true, false, false]},
+      {name:"Veterinarian", answers:[true, false, true, true, false, false, true, true, false, true, false, true, false, false, true, true, false, true, false, false]},
+      {name:"Mail carrier", answers:[false, true, true, true, false, true, false, false, false, false, false, false, false, true, false, false, false, false, true, false]},
+      {name:"Photographer", answers:[false, false, true, true, true, true, false, true, false, true, false, false, false, true, true, true, false, false, false, true]},
+      {name:"Lifeguard", answers:[false, true, false, true, true, true, false, false, false, false, false, false, false, false, false, false, true, false, false, false]},
+      {name:"Taxi driver", answers:[true, false, true, true, false, false, false, true, false, false, false, false, false, true, true, false, false, false, false, false]},
+      {name:"Zookeeper", answers:[false, true, true, false, false, true, true, false, false, true, false, false, true, false, false, true, true, false, false, false]},
+      {name:"Florist", answers:[true, false, true, false, false, false, false, false, false, true, false, false, false, true, true, false, false, false, false, true]},
+      {name:"Carpenter", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, true, true, false, true, false, false, true]},
+      {name:"Soldier", answers:[false, true, true, true, false, true, false, true, false, true, false, false, false, true, false, false, true, false, false, false]},
+      {name:"Scientist", answers:[true, false, true, false, false, false, true, false, false, true, false, false, false, false, false, false, false, false, false, true]},
+      {name:"Comedian", answers:[false, false, false, false, false, false, false, true, false, false, true, false, false, false, true, false, false, false, false, false]},
+      {name:"Magician", answers:[false, false, true, false, true, false, false, true, true, true, true, false, false, false, true, true, false, false, false, false]},
+      {name:"Dancer", answers:[false, false, false, false, false, false, false, true, true, false, true, false, false, false, true, false, false, false, false, false]},
+      {name:"Banker", answers:[true, false, false, true, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, false]},
+      {name:"Cashier", answers:[true, true, true, true, false, false, false, true, false, false, false, false, true, false, false, false, false, false, false, false]},
+      {name:"Bus driver", answers:[true, true, true, true, true, false, false, true, false, false, false, false, false, true, false, false, false, false, true, false]},
+      {name:"Real estate agent", answers:[false, false, false, true, false, true, false, true, false, false, false, false, false, true, true, false, false, true, false, false]},
+      {name:"Judge", answers:[true, true, false, true, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, false]},
+      {name:"Waiter", answers:[true, true, true, true, false, false, false, true, false, false, false, false, true, false, false, false, false, false, false, false]},
+      {name:"News anchor", answers:[true, false, false, false, false, false, true, true, false, false, true, false, false, false, false, false, false, false, true, false]},
+      {name:"Fisherman", answers:[false, false, true, false, false, true, false, true, false, true, false, false, true, false, true, true, true, false, false, false]},
+      {name:"Author", answers:[true, false, false, false, false, false, false, false, false, false, true, false, false, false, true, false, false, true, false, true]},
+      {name:"House painter", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, true, true, false, false, false, false, false]},
+      {name:"Security guard", answers:[true, true, false, true, false, false, false, true, false, false, false, false, false, false, false, false, true, false, false, false]},
+      {name:"Landscaper", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, true, true, false, false, false, false, true]},
+      {name:"Paramedic", answers:[false, true, true, true, true, true, false, true, false, true, false, true, false, true, false, false, true, false, false, false]},
+      {name:"Jeweler", answers:[true, false, true, false, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true]},
+      {name:"Butler", answers:[true, true, true, true, true, false, false, true, false, false, false, false, true, true, false, false, false, false, false, false]},
+      {name:"Tailor", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true]},
+      {name:"Locksmith", answers:[false, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, false, false, false, false]},
+      {name:"Housekeeper", answers:[true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Roofer", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, true, false, false, true, false, false, false]},
+      {name:"Welder", answers:[true, false, true, false, false, false, false, false, false, true, false, false, false, false, false, false, true, false, false, true]},
+      {name:"Chimney sweep", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, true, true, false, true, false, false, false]},
+      {name:"Window washer", answers:[false, true, true, true, false, true, false, false, false, true, false, false, false, true, false, false, true, false, false, false]},
+      {name:"Exterminator", answers:[true, true, true, true, false, true, false, false, false, true, false, false, false, true, false, false, false, false, false, false]},
+      {name:"Cobbler", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Upholsterer", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true]},
+      {name:"Piano tuner", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, true, true, false, false, false, false, false]},
+      {name:"Seamstress", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true]},
+      {name:"Dog groomer", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, true, false, false, false, false]},
+      {name:"Tattoo artist", answers:[true, false, true, true, false, false, false, true, false, true, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Massage therapist", answers:[true, false, true, true, false, false, false, false, false, false, false, true, false, false, true, false, false, false, false, false]},
+      {name:"Manicurist", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Dry cleaner", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Mover", answers:[true, true, true, true, false, true, false, false, false, true, false, false, false, true, false, false, true, false, false, false]},
+      {name:"Pool cleaner", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, true, true, false, false, false, false, false]},
+      {name:"Babysitter", answers:[true, false, false, true, true, false, false, true, false, false, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Wedding planner", answers:[true, false, false, true, false, false, false, true, false, false, false, false, false, true, true, false, false, true, false, false]},
+      {name:"Interior decorator", answers:[true, false, true, true, false, false, false, false, false, false, false, false, false, true, true, false, false, false, false, false]},
+      {name:"Personal trainer", answers:[true, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Yoga instructor", answers:[true, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Tour guide", answers:[false, false, false, true, false, true, false, false, false, false, true, false, false, true, true, false, false, false, false, false]},
+      {name:"Interpreter", answers:[true, false, false, true, false, false, true, false, false, false, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Funeral director", answers:[true, false, true, true, false, false, true, true, false, true, false, false, false, true, false, false, false, false, false, false]},
+      {name:"Optician", answers:[true, false, true, true, false, false, false, false, false, true, false, true, false, false, false, false, false, false, false, true]},
+      {name:"Pharmacist", answers:[true, true, false, true, false, false, true, false, false, false, false, true, false, false, false, false, false, false, false, false]},
+      {name:"Dental hygienist", answers:[true, true, true, true, false, false, true, false, false, true, false, true, false, false, false, false, false, false, false, false]},
+      {name:"Physical therapist", answers:[true, false, true, true, false, false, true, false, false, true, false, true, false, false, false, false, false, false, false, false]},
+      {name:"Bricklayer", answers:[false, false, true, false, false, true, false, false, false, true, false, false, false, true, true, false, true, false, false, true]},
+      {name:"Lumberjack", answers:[false, false, true, false, false, true, false, false, false, true, false, false, false, false, false, false, true, false, false, false]},
+      {name:"Miner", answers:[false, true, true, false, false, false, false, true, false, true, false, false, false, false, false, false, true, false, false, false]},
+      {name:"Crane operator", answers:[false, false, true, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, false, false]},
+      {name:"Gravedigger", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Blacksmith", answers:[true, false, true, false, false, false, false, false, false, true, false, false, false, false, true, false, true, false, false, true]},
+      {name:"Beekeeper", answers:[false, true, true, false, false, true, false, false, false, true, false, false, true, false, true, true, false, false, false, false]},
+      {name:"Commercial diver", answers:[false, true, true, true, false, true, false, false, false, true, false, false, false, false, false, false, true, false, false, false]},
+      {name:"Dog walker", answers:[false, false, true, true, false, true, false, false, false, false, false, false, false, true, true, true, false, false, false, false]},
+      {name:"Appliance repairman", answers:[true, true, true, true, false, false, false, false, false, true, false, false, false, true, false, false, false, false, false, false]},
+      {name:"Shoe shiner", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Fortune teller", answers:[true, false, false, true, false, false, false, true, true, false, true, false, false, false, true, false, false, false, false, false]},
+      {name:"Private investigator", answers:[false, false, false, true, false, true, false, true, false, true, false, false, false, true, true, false, true, false, false, false]},
+      {name:"Bounty hunter", answers:[false, false, true, false, false, true, false, true, false, true, false, false, false, true, true, false, true, false, false, false]},
+      {name:"Auctioneer", answers:[true, false, false, true, false, false, false, false, false, false, true, false, false, false, true, false, false, false, false, false]},
+      {name:"Pawnbroker", answers:[true, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Butcher", answers:[true, true, true, true, false, false, false, false, false, true, false, false, true, false, false, false, true, false, false, false]},
+      {name:"Bartender", answers:[true, false, true, true, false, false, false, true, false, true, false, false, true, false, false, false, false, false, false, false]},
+      {name:"Dishwasher", answers:[true, false, true, false, false, false, false, true, false, false, false, false, false, true, false, false, false, false, false, false]},
+      {name:"Barista", answers:[true, true, true, true, false, false, false, false, false, true, false, false, true, false, false, false, false, false, false, false]},
+      {name:"Sommelier", answers:[true, false, false, true, false, false, false, true, false, false, false, false, true, false, false, false, false, false, false, false]},
+      {name:"Caterer", answers:[true, true, true, true, false, false, false, true, false, true, false, false, true, true, true, false, false, false, false, true]},
+      {name:"Chocolatier", answers:[true, true, true, false, false, false, false, false, false, true, false, false, true, false, true, false, false, false, false, true]},
+      {name:"Candy maker", answers:[true, false, true, false, false, false, false, false, false, true, false, false, true, false, false, false, false, false, false, true]},
+      {name:"Brewer", answers:[true, false, true, false, false, false, false, false, false, true, false, false, true, false, false, false, false, false, false, true]},
+      {name:"Winemaker", answers:[true, false, true, false, false, true, false, false, false, true, false, false, true, false, true, false, false, false, false, true]},
+      {name:"Fishmonger", answers:[true, true, true, true, false, false, false, false, false, true, false, false, true, false, false, false, false, false, false, false]},
+      {name:"Deli clerk", answers:[true, true, true, true, false, false, false, false, false, true, false, false, true, false, false, false, false, false, false, false]},
+      {name:"Restaurant host", answers:[true, false, false, true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Food critic", answers:[true, false, false, false, false, false, false, true, false, false, true, false, true, true, true, false, false, false, false, false]},
+      {name:"Dietitian", answers:[true, false, false, true, false, false, true, false, false, false, false, true, true, false, false, false, false, true, false, false]},
+      {name:"Coffee roaster", answers:[true, false, true, false, false, false, false, false, false, true, false, false, true, false, false, false, false, false, false, true]},
+      {name:"Milkman", answers:[false, true, true, true, false, true, false, true, false, false, false, false, true, true, false, false, false, false, false, false]},
+      {name:"Pitmaster", answers:[false, false, true, false, false, true, false, true, false, true, false, false, true, false, false, false, false, false, false, true]},
+      {name:"Cafeteria worker", answers:[true, true, true, true, true, false, false, false, false, true, false, false, true, false, false, false, false, false, false, false]},
+      {name:"Truck driver", answers:[false, false, false, false, false, false, false, true, false, false, false, false, false, true, true, false, true, false, false, false]},
+      {name:"Flight attendant", answers:[true, true, false, true, false, false, false, true, false, false, false, false, true, false, false, false, false, false, false, false]},
+      {name:"Train conductor", answers:[true, true, false, true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Ship captain", answers:[false, true, false, false, false, true, true, true, false, false, false, false, false, true, false, false, true, false, false, false]},
+      {name:"Hot air balloon pilot", answers:[false, false, true, true, false, true, false, false, false, true, true, false, false, false, true, false, true, false, false, false]},
+      {name:"Delivery driver", answers:[false, true, true, true, false, true, false, false, false, false, false, false, false, true, true, false, false, false, false, false]},
+      {name:"Bike messenger", answers:[false, false, true, true, false, true, false, false, false, false, false, false, false, false, true, false, true, false, false, false]},
+      {name:"Chauffeur", answers:[false, true, false, true, false, false, false, true, false, false, false, false, false, true, true, false, false, false, false, false]},
+      {name:"Tow truck driver", answers:[false, false, true, true, false, true, false, true, false, true, false, false, false, true, false, false, false, false, false, false]},
+      {name:"Garbage collector", answers:[false, true, true, true, false, true, false, true, false, true, false, false, false, true, false, false, true, false, false, false]},
+      {name:"Train engineer", answers:[true, true, true, false, false, false, false, true, false, false, false, false, false, true, false, false, false, false, false, false]},
+      {name:"Rickshaw driver", answers:[false, false, true, true, false, true, false, false, false, false, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Race car driver", answers:[false, true, true, false, false, false, false, false, false, false, true, false, false, true, false, false, true, false, true, false]},
+      {name:"Air traffic controller", answers:[true, false, false, true, false, false, true, true, false, false, false, false, false, false, false, false, false, true, false, false]},
+      {name:"Crossing guard", answers:[false, true, false, true, true, true, false, false, false, false, false, false, false, false, false, false, true, false, false, false]},
+      {name:"Parking valet", answers:[false, true, false, true, false, false, false, true, false, false, false, false, false, true, false, false, false, false, false, false]},
+      {name:"Carriage driver", answers:[false, false, true, true, false, true, false, false, false, false, true, false, false, true, true, true, false, false, false, false]},
+      {name:"Gondolier", answers:[false, true, true, true, false, true, false, false, false, false, true, false, false, false, false, false, false, false, true, false]},
+      {name:"Elevator operator", answers:[true, true, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Stunt double", answers:[true, false, true, true, false, true, false, true, true, true, true, false, false, false, false, false, true, false, false, false]},
+      {name:"Ventriloquist", answers:[true, false, true, true, false, false, false, true, true, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Juggler", answers:[true, false, true, true, false, false, false, true, true, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Tightrope walker", answers:[false, false, false, true, false, true, false, true, true, false, true, false, false, false, false, false, true, false, false, false]},
+      {name:"Acrobat", answers:[true, false, false, true, false, false, false, true, true, false, true, false, false, false, false, false, true, false, false, false]},
+      {name:"Fire-eater", answers:[true, false, false, true, false, true, false, true, true, false, true, false, false, false, false, false, true, false, false, false]},
+      {name:"Mime", answers:[true, false, false, true, false, true, false, true, true, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Opera singer", answers:[true, false, false, true, false, false, true, true, true, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Ballet dancer", answers:[true, false, false, true, false, false, false, true, true, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Movie director", answers:[false, false, false, true, false, true, true, false, false, false, true, false, false, false, false, false, false, false, false, true]},
+      {name:"Impressionist", answers:[true, false, false, true, false, false, false, true, true, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Talk show host", answers:[true, false, false, true, false, false, true, false, false, false, true, false, false, false, false, false, false, false, true, false]},
+      {name:"Voice actor", answers:[true, false, false, true, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Carnival barker", answers:[false, false, false, true, false, true, false, true, true, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Sword swallower", answers:[true, false, false, true, false, true, false, true, true, false, true, false, false, false, false, false, true, false, false, false]},
+      {name:"Trapeze artist", answers:[true, false, false, true, false, false, false, true, true, false, true, false, false, false, false, false, true, false, false, false]},
+      {name:"Rodeo clown", answers:[false, false, false, true, false, true, false, true, true, false, true, false, false, false, false, true, true, false, false, false]},
+      {name:"Animal trainer", answers:[false, false, true, true, false, true, false, false, false, false, true, false, false, false, false, true, true, false, false, false]},
+      {name:"Puppeteer", answers:[true, false, true, true, true, false, false, true, false, false, true, false, false, false, false, false, false, false, false, true]},
+      {name:"Film critic", answers:[true, false, false, true, false, false, true, false, false, false, true, false, false, false, false, false, false, true, false, false]},
+      {name:"Camera operator", answers:[true, false, true, true, false, true, false, true, false, true, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Screenwriter", answers:[true, false, false, true, false, false, true, false, false, false, true, false, false, false, false, false, false, true, false, true]},
+      {name:"Songwriter", answers:[true, false, false, true, false, false, false, false, false, false, true, false, false, false, false, false, false, true, false, true]},
+      {name:"Choreographer", answers:[true, false, false, true, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Disc jockey", answers:[true, false, true, true, false, false, false, true, false, true, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Rock star", answers:[true, false, true, true, false, false, false, true, true, true, true, false, false, false, false, false, false, false, true, false]},
+      {name:"Bagpiper", answers:[false, true, true, true, false, true, false, false, true, true, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Orchestra conductor", answers:[true, true, true, true, false, false, true, true, false, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Film makeup artist", answers:[true, false, true, true, false, false, false, true, false, true, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Game show host", answers:[true, false, false, true, false, false, false, false, false, false, true, false, false, false, false, false, false, false, true, false]},
+      {name:"Football player", answers:[false, true, false, true, false, true, true, false, false, false, true, false, false, false, false, false, true, false, true, false]},
+      {name:"Basketball player", answers:[true, true, false, true, false, false, true, true, false, false, true, false, false, false, false, false, false, false, true, false]},
+      {name:"Baseball player", answers:[false, true, false, true, false, true, false, true, false, false, true, false, false, false, false, false, false, false, true, false]},
+      {name:"Boxer", answers:[true, false, true, true, false, false, false, true, false, false, true, false, false, false, false, false, true, false, true, false]},
+      {name:"Jockey", answers:[false, true, true, true, false, true, false, false, true, false, true, false, false, false, false, true, true, false, false, false]},
+      {name:"Referee", answers:[false, true, false, true, false, true, false, true, false, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Coach", answers:[true, false, false, true, false, true, true, false, false, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Figure skater", answers:[true, false, false, true, false, false, false, true, true, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Professional golfer", answers:[false, false, false, true, false, true, true, false, false, true, true, false, false, false, false, false, false, false, true, false]},
+      {name:"Tennis player", answers:[false, false, false, true, false, true, false, false, false, true, true, false, false, false, false, false, false, false, true, false]},
+      {name:"Competitive swimmer", answers:[true, false, false, true, false, false, true, false, false, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Gymnast", answers:[true, false, false, true, false, false, false, false, true, false, true, false, false, false, false, false, true, false, false, false]},
+      {name:"Rodeo rider", answers:[false, false, true, true, false, true, false, false, false, false, true, false, false, false, false, true, true, false, false, false]},
+      {name:"Hockey player", answers:[true, true, false, true, false, false, false, true, false, false, true, false, false, false, false, false, true, false, true, false]},
+      {name:"Soccer player", answers:[false, true, false, true, false, true, false, true, false, false, true, false, false, false, false, false, false, false, true, false]},
+      {name:"Professional wrestler", answers:[true, false, true, true, false, false, false, true, true, false, true, false, false, false, false, false, true, false, true, false]},
+      {name:"Ski instructor", answers:[false, true, false, true, true, true, false, false, false, true, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Bullfighter", answers:[false, false, false, true, false, true, false, false, true, false, true, false, false, false, false, false, true, false, false, false]},
+      {name:"Professional pool player", answers:[true, false, true, true, false, false, false, true, false, true, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Darts player", answers:[true, false, true, true, false, false, false, true, false, true, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Professional bowler", answers:[true, true, true, true, false, false, false, true, false, true, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Ski jumper", answers:[false, false, false, true, false, true, false, false, false, true, true, false, false, false, false, false, true, false, false, false]},
+      {name:"Weightlifter", answers:[true, false, true, true, false, false, false, false, false, true, true, false, false, false, false, false, false, false, false, false]},
+      {name:"High diver", answers:[true, false, false, true, false, false, false, false, false, false, true, false, false, false, false, false, true, false, false, false]},
+      {name:"Sports announcer", answers:[true, false, false, true, false, false, true, true, false, false, true, false, false, false, false, false, false, false, true, false]},
+      {name:"Fitness trainer", answers:[true, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Professional skateboarder", answers:[false, false, false, true, false, true, false, false, false, true, true, false, false, false, false, false, true, false, false, false]},
+      {name:"Sprinter", answers:[false, true, false, true, false, true, false, false, false, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Fencer", answers:[true, true, true, true, false, false, true, false, false, true, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Sculptor", answers:[true, false, true, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, true]},
+      {name:"Cartoonist", answers:[true, false, true, false, false, false, false, false, false, true, false, false, false, false, false, false, false, true, false, true]},
+      {name:"Model", answers:[true, false, false, true, false, false, false, false, true, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Fashion designer", answers:[true, false, true, false, false, false, true, false, false, true, false, false, false, false, false, false, false, true, false, true]},
+      {name:"Graphic designer", answers:[true, false, true, true, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, true]},
+      {name:"Wedding photographer", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Film editor", answers:[true, false, false, true, false, false, true, false, false, false, true, false, false, false, false, false, false, true, false, true]},
+      {name:"Weatherman", answers:[true, false, false, true, false, false, true, false, false, false, true, false, false, false, false, false, false, false, true, false]},
+      {name:"Sportscaster", answers:[true, false, false, true, false, false, true, true, false, false, true, false, false, false, false, false, false, false, true, false]},
+      {name:"Glassblower", answers:[true, false, true, false, false, false, false, false, false, true, false, false, false, false, true, false, true, false, false, true]},
+      {name:"Calligrapher", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, false, false, true, false, true]},
+      {name:"Street performer", answers:[false, false, false, true, false, true, false, true, true, false, true, false, false, false, true, false, false, false, false, false]},
+      {name:"Interior designer", answers:[true, false, false, true, false, false, true, false, false, false, false, false, false, false, true, false, false, true, false, false]},
+      {name:"Magazine editor", answers:[true, false, false, true, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, false]},
+      {name:"Newspaper reporter", answers:[false, false, false, true, false, true, true, false, false, false, false, false, false, false, false, false, false, true, false, false]},
+      {name:"Poet", answers:[true, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, true]},
+      {name:"Costume designer", answers:[true, false, true, true, false, false, true, false, false, true, true, false, false, false, false, false, false, false, false, true]},
+      {name:"Set designer", answers:[true, false, true, true, false, false, true, false, false, true, true, false, false, false, false, false, false, false, false, true]},
+      {name:"Lighting technician", answers:[true, false, true, true, false, false, false, true, false, true, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Sound engineer", answers:[true, false, true, true, false, false, false, true, false, true, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Portrait artist", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true]},
+      {name:"Art director", answers:[true, false, false, true, false, false, true, false, false, false, true, false, false, false, false, false, false, true, false, false]},
+      {name:"Pretzel Twister", answers:[true, false, true, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, true]},
+      {name:"Fortune Cookie Writer", answers:[true, false, false, false, false, false, false, false, false, false, false, false, true, false, true, false, false, true, false, false]},
+      {name:"Lighthouse Keeper", answers:[false, false, true, true, false, true, false, true, false, true, false, false, false, false, false, false, true, false, false, false]},
+      {name:"Ice Cream Taster", answers:[true, false, false, false, false, false, true, false, false, false, false, false, true, false, false, false, false, false, false, false]},
+      {name:"Professional Mourner", answers:[true, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Snake Milker", answers:[true, false, true, false, false, false, true, false, false, true, false, false, false, false, false, true, true, false, false, false]},
+      {name:"Umpire", answers:[false, true, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, false, false]},
+      {name:"Ice Sculptor", answers:[true, false, true, false, false, false, false, false, false, true, false, false, false, false, true, false, true, false, false, true]},
+      {name:"Hypnotist", answers:[true, false, false, true, false, false, false, true, false, false, true, false, false, false, true, false, false, false, false, false]},
+      {name:"Water Slide Tester", answers:[false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Golf Ball Diver", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, false, true, false, true, false, false, false]},
+      {name:"Egg Inspector", answers:[true, false, true, false, false, false, false, false, false, true, false, false, true, false, false, false, false, false, false, false]},
+      {name:"Bingo Caller", answers:[true, false, false, false, false, false, false, true, false, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Amusement Ride Inspector", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, true, false, false, true, false, false, false]},
+      {name:"Professional Line Stander", answers:[false, false, false, true, false, true, false, false, false, false, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Zamboni Driver", answers:[true, false, true, true, false, false, false, true, false, false, false, false, false, true, false, false, false, false, false, false]},
+      {name:"Hairdresser", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Driving Instructor", answers:[false, false, true, true, true, false, false, false, false, false, false, false, false, true, false, false, true, false, false, false]},
+      {name:"Potter", answers:[true, false, true, false, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true]},
+      {name:"Truffle Hunter", answers:[false, false, true, false, false, true, false, false, false, true, false, false, true, false, true, true, false, false, false, false]},
+      {name:"Astronomer", answers:[true, false, false, false, false, false, true, true, false, true, false, false, false, false, false, false, false, true, false, false]},
+      {name:"Chemist", answers:[true, false, true, false, false, false, true, false, false, true, false, false, false, false, false, false, true, false, false, true]},
+      {name:"Surgeon", answers:[true, true, true, true, false, false, true, true, false, true, false, true, false, false, false, false, false, false, false, false]},
+      {name:"Midwife", answers:[true, true, true, true, true, false, true, true, false, true, false, true, false, false, true, false, false, false, false, false]},
+      {name:"Optometrist", answers:[true, false, true, true, false, false, true, false, false, true, false, true, false, false, true, false, false, false, false, false]},
+      {name:"X-Ray Technician", answers:[true, true, true, true, false, false, true, true, false, true, false, true, false, false, false, false, false, false, false, false]},
+      {name:"Meteorologist", answers:[true, false, false, true, false, false, true, false, false, false, false, false, false, false, false, false, false, true, true, false]},
+      {name:"Geologist", answers:[false, false, true, false, false, true, true, false, false, true, false, false, false, true, false, false, false, false, false, false]},
+      {name:"Marine Biologist", answers:[false, false, true, false, false, true, true, false, false, true, false, false, false, false, false, true, false, false, false, false]},
+      {name:"Crime Scene Investigator", answers:[false, false, true, true, false, true, true, true, false, true, false, false, false, true, false, false, false, false, false, false]},
+      {name:"Archaeologist", answers:[false, false, true, false, false, true, true, false, false, true, false, false, false, true, false, false, false, false, false, false]},
+      {name:"Botanist", answers:[false, false, true, false, false, true, true, false, false, true, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Entomologist", answers:[true, false, true, false, false, false, true, false, false, true, false, false, false, false, false, true, false, false, false, false]},
+      {name:"Medical Lab Technician", answers:[true, true, true, false, false, false, true, true, false, true, false, true, false, false, false, false, false, false, false, false]},
+      {name:"Speech Therapist", answers:[true, false, true, true, true, false, true, false, false, false, false, true, false, false, true, false, false, false, false, false]},
+      {name:"Chiropractor", answers:[true, false, true, true, false, false, true, false, false, false, false, true, false, false, true, false, false, false, false, false]},
+      {name:"Acupuncturist", answers:[true, false, true, true, false, false, true, false, false, true, false, true, false, false, true, false, false, false, false, false]},
+      {name:"Psychologist", answers:[true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, false, true, false, false]},
+      {name:"Paleontologist", answers:[false, false, true, false, false, true, true, false, false, true, false, false, false, true, false, false, false, false, false, false]},
+      {name:"Accountant", answers:[true, false, false, true, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, false]},
+      {name:"Secretary", answers:[true, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false]},
+      {name:"Architect", answers:[true, false, true, true, false, false, true, false, false, false, false, false, false, false, true, false, false, true, false, false]},
+      {name:"Software Developer", answers:[true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, true]},
+      {name:"Social Worker", answers:[true, false, false, true, true, false, true, false, false, false, false, false, false, true, false, false, false, true, false, false]},
+      {name:"Court Reporter", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Stockbroker", answers:[true, false, false, true, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, false]},
+      {name:"Insurance Agent", answers:[true, false, false, true, false, false, false, false, false, false, false, false, false, true, true, false, false, true, false, false]},
+      {name:"College Professor", answers:[true, false, false, true, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, false]},
+      {name:"Travel Agent", answers:[true, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, false, true, false, false]},
+      {name:"Watchmaker", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true]},
+      {name:"Ferris wheel operator", answers:[false, true, true, true, true, true, false, true, false, false, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Morgue attendant", answers:[true, true, true, true, false, false, false, true, false, true, false, true, false, false, false, false, false, false, false, false]},
+      {name:"Dial-a-joke writer", answers:[true, false, false, true, false, false, false, false, false, false, true, false, false, false, true, false, false, false, false, false]},
+      {name:"Mannequin maker", answers:[true, false, true, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, true]},
+      {name:"Toll booth operator", answers:[true, true, true, true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Horse trainer", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, false, true, true, true, false, false, false]},
+      {name:"Bellhop", answers:[true, true, true, true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Doorman", answers:[false, true, true, true, false, true, false, true, false, false, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Organ grinder", answers:[false, false, true, false, false, true, false, false, false, false, true, false, false, false, true, true, false, false, false, false]},
+      {name:"Human cannonball", answers:[false, false, false, false, false, true, false, true, true, false, true, false, false, false, false, false, true, false, false, false]},
+      {name:"Mall Santa", answers:[true, false, false, true, true, false, false, false, true, false, true, false, false, false, false, false, false, false, true, false]},
+      {name:"Dog food taster", answers:[true, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false]},
+      {name:"Chicken sexer", answers:[true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false]},
+      {name:"Worm farmer", answers:[false, false, true, false, false, true, false, false, false, true, false, false, false, false, true, true, false, false, false, false]},
+      {name:"Rat catcher", answers:[false, false, true, true, false, true, false, true, false, true, false, false, false, false, true, true, true, false, false, false]},
+      {name:"Lamplighter", answers:[false, true, true, true, false, true, false, true, false, true, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Switchboard operator", answers:[true, false, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false]},
+      {name:"Movie projectionist", answers:[true, false, true, true, false, false, false, true, false, true, true, false, false, false, false, false, false, false, false, false]},
+      {name:"Typewriter repairman", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Pinsetter", answers:[true, false, true, true, false, false, false, true, false, false, true, false, false, false, false, false, true, false, false, false]},
+      {name:"Greeting card writer", answers:[true, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false]},
+      {name:"Sign painter", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, false, true, false, false, false, false, true]},
+      {name:"Window dresser", answers:[true, false, true, true, false, false, false, true, false, true, false, false, false, false, false, false, false, false, false, true]},
+      {name:"Milliner", answers:[true, false, true, false, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true]},
+      {name:"Cooper", answers:[true, false, true, false, false, false, false, false, false, true, false, false, false, false, true, false, false, false, false, true]},
+      {name:"Farrier", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, true, true, true, true, false, false, true]},
+      {name:"Falconer", answers:[false, false, true, false, false, true, false, false, false, false, false, false, false, false, true, true, false, false, false, false]},
+      {name:"Taxidermist", answers:[true, false, true, true, false, false, false, false, false, true, false, false, false, false, true, true, false, false, false, true]},
+      {name:"Repo man", answers:[false, false, true, true, false, true, false, true, false, true, false, false, false, true, false, false, true, false, false, false]},
+      {name:"Meter reader", answers:[false, true, true, true, false, true, false, false, false, true, false, false, false, true, false, false, false, false, false, false]},
+      {name:"Land surveyor", answers:[false, false, true, true, false, true, true, false, false, true, false, false, false, false, false, false, false, false, false, false]},
+      {name:"Steeplejack", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, false, true, false, true, false, false, false]},
+      {name:"Tree surgeon", answers:[false, false, true, true, false, true, false, false, false, true, false, false, false, false, true, false, true, false, false, false]},
+      {name:"Casino dealer", answers:[true, true, true, true, false, false, false, true, false, false, true, false, false, false, false, false, false, false, false, false]}
     ]
   }
 };
@@ -8839,108 +9100,189 @@ render(c,ctx){
 }});
 
 /* ================= WHAT'S MY LINE ================= */
-regGame('whatsmline',{howto:"A mystery occupation is hiding. Ask up to 10 yes/no questions to narrow it down, then guess the occupation. Fewer questions asked means more points!",name:"What's My Line?",icon:'🕵️',tags:'Game Show',pvp:true,seats:2,
+regGame('whatsmline',{howto:"Official What's My Line?: a mystery guest signs in with a secret occupation. You lead a panel of 4 asking YES/NO questions.\n\nA panelist keeps asking while the answers are YES. A NO answer flips a $5 card and passes the questioning to the next panelist. Flip all 10 cards ($50) and the guest stumps the panel and wins!\n\nOn your turn you can ask a question, PASS, call a CONFERENCE once to hear the panel's thinking, or GUESS the occupation. A wrong guess flips a card too. Guess it right and the panel wins!",name:"What's My Line?",icon:'🕵️',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   var occs=(BANKS2.whatsmline.occupations||[]).map(SHG.wmlNormOcc).filter(function(o){ return o.name; });
   if(shgGuard(occs.length>=4,"What's My Line occupations are still loading")) return;
   var S=null, pvpCtl=null, wl;
-  c.innerHTML='<h2>🕵️ What\'s My Line?</h2><div class="muted">Ask up to 10 yes/no questions, then guess the mystery occupation!</div><div id="wl"></div>';
+  c.innerHTML='<h2>🕵️ What\'s My Line?</h2><div id="wl"></div>';
   wl=c.querySelector('#wl');
+  function consistent(){
+    return occs.filter(function(o){
+      if(S.excluded[o.name])return false;
+      for(var qid in S.asked){ if(o.answers[qid]!==S.asked[qid])return false; }
+      return true;
+    });
+  }
   function start(shared){
-    S={occ:shared.occ,others:shared.others,used:0,asked:{},lastA:null,done:false,won:false,panel:SHG.wmlPanel()};
-    draw();
+    var bots=SHG.wmlPanel();
+    S={occ:shared.occ,asked:{},excluded:{},flips:0,turn:0,confUsed:false,done:false,panelWon:false,guesser:null,log:[],
+       panel:['YOU',bots[0],bots[1],bots[2]],guest:(SHG.botNames?SHG.botNames(1)[0]:'Our Guest'),signed:false};
+    signIn();
+  }
+  function signIn(){
+    wl.innerHTML='<div class="wml-board"><div class="wml-signlabel">✍️ SIGN IN, PLEASE…</div><div class="wml-sign">'+esc(S.guest)+'</div>'
+      +'<div class="muted" style="color:#cbb26a">Our guest has a secret line of work. Panel — can you guess it before all 10 cards flip?</div></div>'
+      +'<button class="btn" id="wBegin">▶ Bring in the panel</button>';
+    wl.querySelector('#wBegin').onclick=function(){ Sound.click(); S.signed=true; draw(); advance(); };
+  }
+  function cardsHTML(){
+    var h='<div class="wml-cards">';
+    for(var i=0;i<10;i++)h+='<div class="wml-card'+(i<S.flips?' flip':'')+'">'+(i<S.flips?'$5':'?')+'</div>';
+    return h+'</div><div class="center muted" style="font-size:12px">Cards flipped: '+S.flips+'/10 — guest wins $'+(S.flips*5)+' if all 10 flip</div>';
+  }
+  function panelHTML(){
+    return '<div class="wml-panel">'+S.panel.map(function(nm,i){
+      return '<div class="wml-seat'+(S.turn===i?' on':'')+'"><div class="wml-pname">'+(i===0?'⭐ ':'🎩 ')+esc(nm)+'</div><div class="muted" style="font-size:11px">'+(S.turn===i?'asking…':'panel')+'</div></div>';
+    }).join('')+'</div>';
+  }
+  function logHTML(){
+    if(!S.log.length)return '';
+    return '<div class="card" style="margin-top:8px">'+S.log.slice(-6).map(function(l){return '<div class="pw-row">'+l+'</div>';}).join('')+'</div>';
   }
   function hud(){
-    return '<div class="row"><div class="grow center">Questions used: <b>'+S.used+'</b>/10</div>'
-      +'<div class="grow center">Mystery guest: <b>???</b></div></div>'
-      +'<div class="center muted" style="font-size:12px;margin:4px 0">🎩 Panel: '+S.panel.map(function(p){ return esc(p); }).join(' · ')+' <span class="muted">nods along…</span></div>';
+    return '<div class="wml-board"><div class="wml-signlabel">🎩 MYSTERY GUEST</div><div class="wml-sign" style="font-size:22px">'+esc(S.guest)+' — ???</div></div>'
+      +cardsHTML()+panelHTML();
   }
   function draw(){
     if(S.done){ drawDone(); return; }
     var h=hud();
-    if(S.lastA){
-      h+='<div class="card center"><div class="muted">'+esc(S.lastA.q)+'</div><div class="big">'+(S.lastA.a==='yes'?'<span class="ok">YES</span>':'<span class="err">NO</span>')+'</div></div>';
+    if(S.turn===0){
+      h+='<div class="card"><div class="muted center">Your turn, panelist! Pick a question:</div><div id="qlist" style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center"></div>'
+        +'<div class="row" style="margin-top:8px;gap:6px;flex-wrap:wrap">'
+        +'<button class="btn grow" id="wGuess">🎯 Guess the line</button>'
+        +(S.confUsed?'':'<button class="btn secondary grow" id="wConf">📣 Conference</button>')
+        +'<button class="btn secondary grow" id="wPass">⏭ Pass</button></div>'
+        +'<div id="wAct"></div></div>';
+    }else{
+      h+='<div class="card center"><div class="muted">'+esc(S.panel[S.turn])+' is questioning the guest…</div></div>';
     }
-    h+='<div class="card"><div class="muted center">Pick a question to ask:</div><div id="qlist" style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center"></div></div>'
-      +'<div class="center"><button class="btn" id="wGuess" style="margin-top:8px">🔍 GUESS THE OCCUPATION</button></div>';
+    h+=logHTML();
     wl.innerHTML=h;
     var ql=wl.querySelector('#qlist');
-    SHG.wmlQuestions().forEach(function(qq){
-      var id=qq[0], t=qq[1];
-      var b=document.createElement('button');
-      b.className='btn small secondary';
-      b.style.margin='2px'; b.style.fontSize='11px';
-      b.textContent=(S.asked[id]?'✓ ':'')+t;
-      b.disabled=!!S.asked[id]||S.used>=10;
-      b.onclick=function(){ askQ(id,t); };
-      ql.appendChild(b);
-    });
-    wl.querySelector('#wGuess').onclick=showGuess;
+    if(ql){
+      SHG.wmlQuestions().forEach(function(qq){
+        var id=qq[0], t=qq[1];
+        var b=document.createElement('button');
+        b.className='btn small secondary'; b.style.margin='2px'; b.style.fontSize='11px';
+        b.textContent=(S.asked[id]?((S.asked[id]==='yes'?'✓ YES: ':'✗ NO: ')):'')+t;
+        b.disabled=!!S.asked[id];
+        b.onclick=function(){ askQ(id,t,'YOU'); };
+        ql.appendChild(b);
+      });
+      wl.querySelector('#wGuess').onclick=showGuess;
+      wl.querySelector('#wPass').onclick=function(){ Sound.click(); pushLog('⭐ YOU pass.'); nextPanelist(); draw(); advance(); };
+      var cf=wl.querySelector('#wConf');
+      if(cf)cf.onclick=conference;
+    }
   }
-  function askQ(id,t){
-    if(S.used>=10||S.asked[id]) return;
-    S.asked[id]=1; S.used++;
+  function pushLog(s){ S.log.push(s); }
+  function nextPanelist(){ S.turn=(S.turn+1)%4; }
+  function askQ(id,t,who){
+    if(S.done||S.asked[id])return;
     var a=S.occ.answers[id]||'no';
-    S.lastA={q:t,a:a};
+    S.asked[id]=a;
+    pushLog((who==='YOU'?'⭐ YOU':'🎩 '+esc(who))+': "'+esc(t)+'" → <b>'+(a==='yes'?'YES':'NO')+'</b>');
     Sound.beep(a==='yes'?880:440,.12);
-    var nod=S.panel[Math.floor(Math.random()*S.panel.length)];
-    toast('🎩 '+nod+': "Hmm, interesting…"');
-    draw();
-    if(S.used>=10) setTimeout(function(){ if(!S.done){ toast('That was your 10th question — time to guess!'); showGuess(); } },600);
+    if(a==='no'){ flip(who); }
+    else { draw(); advance(); }
+  }
+  function flip(who){
+    S.flips++;
+    if(S.flips>=10){ S.done=true; S.panelWon=false; draw(); return; }
+    nextPanelist(); draw(); advance();
   }
   function showGuess(){
-    var opts=[S.occ.name].concat(S.others);
-    for(var i=opts.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=opts[i]; opts[i]=opts[j]; opts[j]=t; }
-    wl.innerHTML=hud()+'<div class="card center"><div class="muted">What\'s their line?</div><div id="gopts"></div>'
-      +'<div class="muted" style="margin-top:8px">Score if right: <b>'+SHG.wmlScore(S.used)+'</b> (fewer questions = more points)</div></div>';
-    var go=wl.querySelector('#gopts');
-    opts.forEach(function(nm){
-      go.appendChild(shgQBtn('💼 '+esc(nm),function(){
-        if(SHG.wmlCheck(nm,S.occ.name)){ S.won=true; }
-        S.done=true; Sound[S.won?'win':'lose'](); draw();
-      }));
+    var act=wl.querySelector('#wAct'); if(!act)return;
+    act.innerHTML='<div class="row" style="margin-top:8px"><input id="wGIn" class="grow" placeholder="Their line is…" autocomplete="off"><button class="btn" id="wGGo">Guess!</button></div>';
+    var inp=act.querySelector('#wGIn');
+    var go=function(){
+      var v=inp.value.trim(); if(!v)return; Sound.click();
+      if(SHG.wmlCheck(v,S.occ.name)){ S.done=true; S.panelWon=true; S.guesser='YOU'; Sound.win(); draw(); }
+      else { pushLog('⭐ YOU guessed "'+esc(v)+'" — WRONG! Card flips.'); Sound.lose(); flip('YOU'); }
+    };
+    act.querySelector('#wGGo').onclick=go;
+    inp.addEventListener('keydown',function(e){ if(e.key==='Enter')go(); });
+    inp.focus&&inp.focus();
+  }
+  function conference(){
+    if(S.confUsed)return; S.confUsed=true; Sound.click();
+    var set=consistent().slice(0,5);
+    var act=wl.querySelector('#wAct'); if(!act)return;
+    act.innerHTML='<div class="msg" style="margin-top:8px">📣 <b>Conference:</b> the panel whispers… most likely: <b>'+(set.length?set.map(function(o){return esc(o.name);}).join(', '):'no idea yet!')+'</b> ('+consistent().length+' lines still fit)</div>';
+    var cf=wl.querySelector('#wConf'); if(cf)cf.remove();
+  }
+  function advance(){
+    if(S.done||S.turn===0)return;
+    setTimeout(botTurn,1150);
+  }
+  function botTurn(){
+    if(S.done||!wl.isConnected||S.turn===0)return;
+    var who=S.panel[S.turn];
+    var set=consistent();
+    if(set.length<=2&&set.length>=1&&Math.random()<0.65){
+      var pick=set[Math.floor(Math.random()*set.length)];
+      if(pick.name===S.occ.name){ S.done=true; S.panelWon=true; S.guesser=who; pushLog('🎩 '+esc(who)+' GUESSES "'+esc(pick.name)+'" — CORRECT!'); Sound.win(); draw(); return; }
+      S.excluded[pick.name]=1;
+      pushLog('🎩 '+esc(who)+' guesses "'+esc(pick.name)+'" — WRONG! Card flips.');
+      Sound.lose(); flip(who); return;
+    }
+    /* pick the unasked question that best splits the consistent set */
+    var best=null,bestScore=1e9;
+    SHG.wmlQuestions().forEach(function(qq){
+      var id=qq[0]; if(S.asked[id])return;
+      var yes=0; set.forEach(function(o){ if(o.answers[id]==='yes')yes++; });
+      if(yes===0||yes===set.length)return;
+      var sc=Math.abs(yes-set.length/2)+Math.random()*0.6;
+      if(sc<bestScore){ bestScore=sc; best=qq; }
     });
+    if(!best){ /* nothing informative left: pass */
+      pushLog('🎩 '+esc(who)+' is stumped and passes.');
+      nextPanelist(); draw(); advance(); return;
+    }
+    askQ(best[0],best[1],who);
   }
   async function drawDone(){
-    var sc=S.won?SHG.wmlScore(S.used):0;
-    wl.innerHTML='<div class="card center"><div class="muted">The mystery guest was…</div>'
+    var askedN=Object.keys(S.asked).length;
+    wl.innerHTML=hud()
+      +'<div class="card center" style="margin-top:8px"><div class="muted">'+esc(S.guest)+'\'s line was…</div>'
       +'<div class="big">💼 '+esc(S.occ.name)+'</div>'
-      +(S.won
-        ? '<div class="status"><span class="ok">🎉 Correct! '+S.used+' question'+(S.used===1?'':'s')+' used — score '+sc+'!</span></div>'
-        : '<div class="status"><span class="err">😞 Wrong guess — the panel stumps you!</span></div>')
-      +'<div id="wRes"></div></div>';
+      +(S.panelWon
+        ? '<div class="status"><span class="ok">🎉 The panel got it! '+(S.guesser==='YOU'?'YOU guessed the line!':esc(S.guesser)+' guessed it.')+' ('+askedN+' questions, '+S.flips+' cards flipped)</span></div>'
+        : '<div class="status"><span class="err">🎩 All 10 cards flipped — '+esc(S.guest)+' stumps the panel and wins $50!</span></div>')
+      +'<div id="wRes"></div></div>'+logHTML();
     var res=wl.querySelector('#wRes');
     if(isNet){
       res.innerHTML='<div class="muted">Waiting for opponent...</div>';
       pvpCtl.submit();
-    } else if(S.won){
-      await Wallet.add(Math.max(1,sc),'whatsmline');
+    } else if(S.panelWon){
       await Wallet.recordWin('whatsmline');
     }
+  }
+  function scoreNow(){
+    if(!S||!S.panelWon)return -1;
+    return Math.max(10,300-S.flips*20-Object.keys(S.asked).length*2);
   }
   if(isNet){
     pvpCtl=shgPvp(net,{
       share:function(){
         var o=occs[Math.floor(Math.random()*occs.length)];
-        var others=SHG.pickN(occs.filter(function(x){ return x.name!==o.name; }),3).map(function(x){ return x.name; });
-        return {occ:o,others:others};
+        return {occ:o};
       },
       onData:function(d){ start(d); },
-      submitPayload:function(){ return shgPayLoad(S.won?SHG.wmlScore(S.used):-1); },
+      submitPayload:function(){ return shgPayLoad(scoreNow()); },
       onSettle:function(iWon,room,w){
         var res=wl.querySelector('#wRes');
         shgResultBanner(res,iWon,w,
-          '🎉 You guessed it in '+S.used+' questions — you win!',
-          '😞 Opponent guessed in fewer questions.');
+          '🎉 Your panel figured out the line!',
+          '😞 Their panel got it faster.');
         Sound[iWon?'win':'lose']();
         shgAward(iWon);
       }
     });
   } else {
-    var o0=occs[Math.floor(Math.random()*occs.length)];
-    var ot0=SHG.pickN(occs.filter(function(x){ return x.name!==o0.name; }),3).map(function(x){ return x.name; });
-    start({occ:o0,others:ot0});
+    start({occ:occs[Math.floor(Math.random()*occs.length)]});
   }
 }});
 
