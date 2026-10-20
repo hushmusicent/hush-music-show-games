@@ -100,6 +100,19 @@ table.lb tr.me td{color:var(--gold); font-weight:800;}
 /* ===== Match Game 70s ===== */
 /* ===== Password classic ===== */
 /* ===== What's My Line studio ===== */
+/* ===== Hollywood Game Night marquee ===== */
+.hw-stage{background:linear-gradient(155deg,#3d0a2e,#1c1030 60%,#12081f);border:3px solid #c9973f;border-radius:12px;padding:10px;margin-bottom:10px;}
+.hw-bulbs{display:flex;justify-content:space-between;padding:0 2px;}
+.hw-bulb{width:7px;height:7px;border-radius:50%;background:#ffd873;box-shadow:0 0 6px 2px rgba(255,200,80,.75);}
+.hw-sign{font-weight:900;font-size:26px;color:#ffd873;text-align:center;letter-spacing:2px;line-height:1.25;padding:6px 0;text-shadow:0 0 14px rgba(255,190,60,.55);}
+.hw-teams{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+.hw-couch{border-radius:8px;padding:8px;font-size:12px;}
+.hw-couch.home{background:rgba(38,92,180,.35);border:2px solid #5b8fe0;}
+.hw-couch.away{background:rgba(190,44,90,.32);border:2px solid #e05b8a;}
+.hw-tname{font-weight:900;color:#fff;font-size:12px;margin-bottom:4px;}
+.hw-members{color:#e8e2f2;line-height:1.5;}
+.hw-score{display:flex;justify-content:space-between;align-items:center;background:#17122a;border:1px solid #5a4a86;border-radius:8px;padding:7px 10px;margin-bottom:8px;font-size:14px;}
+.hw-buzz{font-size:20px;padding:16px;}
 .wml-board{background:linear-gradient(#22301f,#141f12);border:5px solid #8a6b32;border-radius:8px;padding:14px 12px;text-align:center;margin-bottom:8px;}
 .wml-signlabel{color:#cbb26a;font-size:11px;font-weight:900;letter-spacing:3px;}
 .wml-sign{font-family:'Brush Script MT','Segoe Script',cursive;font-size:30px;color:#f3e9c8;padding:4px 0;text-shadow:0 1px 0 #000;}
@@ -3434,46 +3447,1008 @@ var BANKS2 = {
   ],
   hollywood: {
     celebClues: [
-      {name:"Dwayne Johnson", clues:["Former WWE wrestler known as The Rock","Starred in Jumanji and the Fast and Furious movies","Famous for raising one eyebrow"]},
-      {name:"Taylor Swift", clues:["Country-turned-pop superstar","Known for the Eras Tour","Re-recorded her albums as Taylor's Version"]},
-      {name:"Beyonce", clues:["Former member of Destiny's Child","Married to Jay-Z","Known as Queen Bey"]},
-      {name:"Tom Hanks", clues:["Starred in Forrest Gump and Toy Story","Won back-to-back Best Actor Oscars","Plays Woody's owner Andy's favorite toy's best friend"]},
-      {name:"Oprah Winfrey", clues:["Legendary talk show host","Founded the OWN network","Famous for her book club and Favorite Things list"]},
-      {name:"LeBron James", clues:["NBA superstar","Starred in Space Jam: A New Legacy","Nicknamed King James"]},
-      {name:"Ariana Grande", clues:["Started on Nickelodeon's Victorious","Known for her high ponytail","Sang Thank U, Next"]},
-      {name:"Will Smith", clues:["Starred in The Fresh Prince of Bel-Air","Played a boxer in Ali","Known for Men in Black"]},
-      {name:"Rihanna", clues:["Barbadian pop star","Founded Fenty Beauty","Sang Umbrella"]},
-      {name:"Leonardo DiCaprio", clues:["Starred in Titanic and Inception","Finally won an Oscar for The Revenant","Frequent Martin Scorsese collaborator"]},
-      {name:"Jennifer Lopez", clues:["Singer and actress known as J.Lo","Judge on American Idol","Starred in Selena"]},
-      {name:"Chris Hemsworth", clues:["Australian actor","Plays Thor in Marvel movies","Known for his hammer Mjolnir"]},
-      {name:"Selena Gomez", clues:["Disney Channel star from Wizards of Waverly Place","Founded Rare Beauty","Sang Lose You to Love Me"]},
-      {name:"Brad Pitt", clues:["Starred in Fight Club and Ocean's Eleven","Won an Oscar for Once Upon a Time in Hollywood","Formerly married to Angelina Jolie"]},
-      {name:"Zendaya", clues:["Disney star from Shake It Up","Plays MJ in Spider-Man movies","Won Emmys for Euphoria"]},
-      {name:"Drake", clues:["Canadian rapper","Started as an actor on Degrassi","Known for God's Plan and Hotline Bling"]},
-      {name:"Kim Kardashian", clues:["Reality star from Keeping Up with the Kardashians","Founded SKIMS","Famous for her contour makeup"]},
-      {name:"Morgan Freeman", clues:["Legendary narrator voice","Played God in Bruce Almighty","Won an Oscar for Million Dollar Baby"]},
-      {name:"Scarlett Johansson", clues:["Plays Black Widow in Marvel movies","Voiced the alien in Her","Starred in Lost in Translation"]},
-      {name:"Kevin Hart", clues:["Stand-up comedian","Starred in Jumanji and Central Intelligence","Known for being 5 foot 4"]},
-      {name:"Lady Gaga", clues:["Pop star known for meat dress","Starred in A Star Is Born","Sang Bad Romance"]},
-      {name:"Samuel L. Jackson", clues:["Plays Nick Fury in Marvel movies","Starred in Pulp Fiction","Known for his iconic voice and caps"]},
-      {name:"Miley Cyrus", clues:["Disney's Hannah Montana","Sang Wrecking Ball","Daughter of Billy Ray Cyrus"]},
-      {name:"Ryan Reynolds", clues:["Plays Deadpool","Married to Blake Lively","Owns a gin company called Aviation"]},
-      {name:"Adele", clues:["British soul singer","Sang Hello and Rolling in the Deep","Known for her powerful voice and comebacks"]},
-      {name:"Johnny Depp", clues:["Played Captain Jack Sparrow","Starred in Edward Scissorhands","Frequent Tim Burton collaborator"]},
-      {name:"Serena Williams", clues:["Tennis legend with 23 Grand Slams","Sister of Venus Williams","Known for her powerful serve"]},
-      {name:"Justin Bieber", clues:["Discovered on YouTube","Sang Baby","Married to Hailey Bieber"]},
-      {name:"Angelina Jolie", clues:["Starred as Lara Croft","Won an Oscar for Girl, Interrupted","UN humanitarian ambassador"]},
-      {name:"Eddie Murphy", clues:["Saturday Night Live legend","Voiced Donkey in Shrek","Starred in Coming to America"]},
-      {name:"Billie Eilish", clues:["Won Grammys as a teenager","Known for neon green hair phase","Sang Bad Guy"]},
-      {name:"Tom Cruise", clues:["Star of the Mission: Impossible series","Does his own stunts","Starred in Top Gun"]}
+      {name:"Dwayne Johnson", clues:["Former WWE wrestler known as The Rock", "Starred in Jumanji and the Fast and Furious movies", "Famous for raising one eyebrow"]},
+      {name:"Taylor Swift", clues:["Country-turned-pop superstar", "Known for the Eras Tour", "Re-recorded her albums as Taylor's Version"]},
+      {name:"Beyonce", clues:["Former member of Destiny's Child", "Married to Jay-Z", "Known as Queen Bey"]},
+      {name:"Tom Hanks", clues:["Starred in Forrest Gump and Toy Story", "Won back-to-back Best Actor Oscars", "Plays Woody's owner Andy's favorite toy's best friend"]},
+      {name:"Oprah Winfrey", clues:["Legendary talk show host", "Founded the OWN network", "Famous for her book club and Favorite Things list"]},
+      {name:"LeBron James", clues:["NBA superstar", "Starred in Space Jam: A New Legacy", "Nicknamed King James"]},
+      {name:"Ariana Grande", clues:["Started on Nickelodeon's Victorious", "Known for her high ponytail", "Sang Thank U, Next"]},
+      {name:"Will Smith", clues:["Starred in The Fresh Prince of Bel-Air", "Played a boxer in Ali", "Known for Men in Black"]},
+      {name:"Rihanna", clues:["Barbadian pop star", "Founded Fenty Beauty", "Sang Umbrella"]},
+      {name:"Leonardo DiCaprio", clues:["Starred in Titanic and Inception", "Finally won an Oscar for The Revenant", "Frequent Martin Scorsese collaborator"]},
+      {name:"Jennifer Lopez", clues:["Singer and actress known as J.Lo", "Judge on American Idol", "Starred in Selena"]},
+      {name:"Chris Hemsworth", clues:["Australian actor", "Plays Thor in Marvel movies", "Known for his hammer Mjolnir"]},
+      {name:"Selena Gomez", clues:["Disney Channel star from Wizards of Waverly Place", "Founded Rare Beauty", "Sang Lose You to Love Me"]},
+      {name:"Brad Pitt", clues:["Starred in Fight Club and Ocean's Eleven", "Won an Oscar for Once Upon a Time in Hollywood", "Formerly married to Angelina Jolie"]},
+      {name:"Zendaya", clues:["Disney star from Shake It Up", "Plays MJ in Spider-Man movies", "Won Emmys for Euphoria"]},
+      {name:"Drake", clues:["Canadian rapper", "Started as an actor on Degrassi", "Known for God's Plan and Hotline Bling"]},
+      {name:"Kim Kardashian", clues:["Reality star from Keeping Up with the Kardashians", "Founded SKIMS", "Famous for her contour makeup"]},
+      {name:"Morgan Freeman", clues:["Legendary narrator voice", "Played God in Bruce Almighty", "Won an Oscar for Million Dollar Baby"]},
+      {name:"Scarlett Johansson", clues:["Plays Black Widow in Marvel movies", "Voiced the alien in Her", "Starred in Lost in Translation"]},
+      {name:"Kevin Hart", clues:["Stand-up comedian", "Starred in Jumanji and Central Intelligence", "Known for being 5 foot 4"]},
+      {name:"Lady Gaga", clues:["Pop star known for meat dress", "Starred in A Star Is Born", "Sang Bad Romance"]},
+      {name:"Samuel L. Jackson", clues:["Plays Nick Fury in Marvel movies", "Starred in Pulp Fiction", "Known for his iconic voice and caps"]},
+      {name:"Miley Cyrus", clues:["Disney's Hannah Montana", "Sang Wrecking Ball", "Daughter of Billy Ray Cyrus"]},
+      {name:"Ryan Reynolds", clues:["Plays Deadpool", "Married to Blake Lively", "Owns a gin company called Aviation"]},
+      {name:"Adele", clues:["British soul singer", "Sang Hello and Rolling in the Deep", "Known for her powerful voice and comebacks"]},
+      {name:"Johnny Depp", clues:["Played Captain Jack Sparrow", "Starred in Edward Scissorhands", "Frequent Tim Burton collaborator"]},
+      {name:"Serena Williams", clues:["Tennis legend with 23 Grand Slams", "Sister of Venus Williams", "Known for her powerful serve"]},
+      {name:"Justin Bieber", clues:["Discovered on YouTube", "Sang Baby", "Married to Hailey Bieber"]},
+      {name:"Angelina Jolie", clues:["Starred as Lara Croft", "Won an Oscar for Girl, Interrupted", "UN humanitarian ambassador"]},
+      {name:"Eddie Murphy", clues:["Saturday Night Live legend", "Voiced Donkey in Shrek", "Starred in Coming to America"]},
+      {name:"Billie Eilish", clues:["Won Grammys as a teenager", "Known for neon green hair phase", "Sang Bad Guy"]},
+      {name:"Tom Cruise", clues:["Star of the Mission: Impossible series", "Does his own stunts", "Starred in Top Gun"]},
+      {name:"Marilyn Monroe", clues:["This blonde actress and singer became the defining sex symbol of 1950s Hollywood.", "She starred in Gentlemen Prefer Blondes and Some Like It Hot.", "Her white dress blew up over a subway grate in The Seven Year Itch."]},
+      {name:"Humphrey Bogart", clues:["This gravel-voiced actor was a top star of 1940s film noir.", "He played the detective Sam Spade in The Maltese Falcon.", "He said 'Here's looking at you, kid' in Casablanca."]},
+      {name:"Audrey Hepburn", clues:["This Belgian-born actress and humanitarian was a fashion icon known for her elegant style.", "She played a runaway princess in Roman Holiday, winning an Oscar.", "She wore a black dress and pearls as Holly Golightly in Breakfast at Tiffany's."]},
+      {name:"James Dean", clues:["This actor became a symbol of teenage rebellion despite making only three major films.", "He died in a car crash in 1955 at just 24 years old.", "He starred in Rebel Without a Cause and East of Eden."]},
+      {name:"Cary Grant", clues:["This debonair English-born leading man was famous for his wit and mid-Atlantic accent.", "Alfred Hitchcock cast him in thrillers like North by Northwest and To Catch a Thief.", "He was chased by a crop-duster plane in North by Northwest."]},
+      {name:"Katharine Hepburn", clues:["This fiercely independent actress won a record four Best Actress Oscars across six decades.", "She often sparred on screen with Spencer Tracy in nine films.", "She starred in The African Queen and On Golden Pond."]},
+      {name:"John Wayne", clues:["This tall, drawling actor defined the American Western for generations.", "Nicknamed 'The Duke,' he won an Oscar for True Grit.", "He starred in Stagecoach, The Searchers, and Rio Bravo."]},
+      {name:"Charlie Chaplin", clues:["This silent-film genius was a comedian, director, composer and co-founder of United Artists.", "His most famous character wore a bowler hat, cane and tiny mustache.", "He was the Little Tramp in classics like Modern Times and City Lights."]},
+      {name:"Elizabeth Taylor", clues:["This violet-eyed actress began as a child star and became one of Hollywood's biggest legends.", "She was married eight times and won Oscars for Butterfield 8 and Who's Afraid of Virginia Woolf.", "She played the title role in the epic Cleopatra."]},
+      {name:"Marlon Brando", clues:["This method-acting pioneer changed screen acting forever in the 1950s.", "He won Oscars for On the Waterfront and a mob saga decades later.", "He played Don Vito Corleone in The Godfather."]},
+      {name:"James Stewart", clues:["This folksy, stammering everyman starred for Hitchcock and Frank Capra.", "He played a wheelchair-bound photographer in Rear Window.", "He was George Bailey in It's a Wonderful Life."]},
+      {name:"Grace Kelly", clues:["This elegant Hitchcock blonde left Hollywood at the height of her fame.", "She won an Oscar for The Country Girl and starred in Rear Window and Dial M for Murder.", "She married Prince Rainier III and became Princess of Monaco."]},
+      {name:"Clark Gable", clues:["Dubbed the 'King of Hollywood,' this mustached leading man ruled the 1930s box office.", "He won an Oscar for the screwball comedy It Happened One Night.", "He played Rhett Butler in Gone with the Wind."]},
+      {name:"Ingrid Bergman", clues:["This Swedish actress charmed Hollywood with her natural beauty and talent.", "Hitchcock directed her in Notorious and Spellbound.", "She played Ilsa, the love interest in Casablanca."]},
+      {name:"Gregory Peck", clues:["This dignified actor was loved for playing honorable, principled men.", "He played a journalist in Gentleman's Agreement and a pilot in Twelve O'Clock High.", "He won an Oscar as Atticus Finch in To Kill a Mockingbird."]},
+      {name:"Judy Garland", clues:["This singer-actress had one of the most beloved voices in movie history.", "She got her start as a child star and starred in Meet Me in St. Louis.", "She played Dorothy, who sang 'Over the Rainbow' in The Wizard of Oz."]},
+      {name:"Bette Davis", clues:["This intense actress was famous for her distinctive eyes and fierce roles.", "She starred in All About Eve as the aging star Margo Channing.", "A hit Kim Carnes song in 1981 was titled after her famous eyes."]},
+      {name:"Paul Newman", clues:["This blue-eyed star later became a race car driver and salad dressing philanthropist.", "He played a pool hustler in The Hustler and its sequel.", "He was Butch Cassidy opposite Robert Redford in Butch Cassidy and the Sundance Kid."]},
+      {name:"Steve McQueen", clues:["Nicknamed the 'King of Cool,' this actor loved fast cars and motorcycles.", "He starred in The Great Escape and The Thomas Crown Affair.", "He drove a Ford Mustang through San Francisco in Bullitt."]},
+      {name:"Sidney Poitier", clues:["This Bahamian-American actor broke racial barriers as a leading man in the 1960s.", "He starred in Guess Who's Coming to Dinner and In the Heat of the Night.", "He was the first Black man to win the Best Actor Oscar, for Lilies of the Field."]},
+      {name:"Sean Connery", clues:["This rugged Scottish actor was a former milkman and bodybuilder.", "He defined suave spies on screen in the 1960s.", "He was the very first actor to play James Bond, starting with Dr. No."]},
+      {name:"Clint Eastwood", clues:["This squinting tough guy rose to fame in Italian spaghetti Westerns.", "He played the cop Dirty Harry, known for 'Go ahead, make my day.'", "He directed and starred in the Oscar-winning Million Dollar Baby and Unforgiven."]},
+      {name:"Jack Nicholson", clues:["This grinning actor holds a record 12 Oscar nominations for a male performer.", "He played a mental patient rebelling against Nurse Ratched.", "He shouted 'You can't handle the truth!' and played the Joker in 1989's Batman."]},
+      {name:"Robert De Niro", clues:["This method actor famously gained 60 pounds for a boxing role.", "He played boxer Jake LaMotta in Raging Bull and a young Vito Corleone.", "He asked 'You talkin' to me?' as Travis Bickle in Taxi Driver."]},
+      {name:"Al Pacino", clues:["This intense New York actor broke out in 1970s crime dramas.", "He played the hot-headed Sonny in Dog Day Afternoon.", "He was Michael Corleone in The Godfather and Tony Montana in Scarface."]},
+      {name:"Dustin Hoffman", clues:["This versatile actor broke the mold of the traditional leading man in 1967.", "He played an autistic savant in Rain Man and a dad fighting for custody in Kramer vs. Kramer.", "He starred as Benjamin, seduced by Mrs. Robinson, in The Graduate."]},
+      {name:"Barbra Streisand", clues:["This singer-actress-director is one of few EGOT winners in entertainment history.", "She directed and starred in Yentl and The Prince of the Tides.", "She played Fanny Brice in Funny Girl and starred in A Star Is Born (1976)."]},
+      {name:"Jane Fonda", clues:["This actress and activist is the daughter of a screen legend named Henry.", "She won Oscars for Klute and Coming Home.", "She became an 80s fitness icon and played a campy space heroine in Barbarella."]},
+      {name:"Sylvester Stallone", clues:["This deep-voiced action star wrote his own breakout film in three days.", "He played a Vietnam vet in the First Blood movies.", "He wrote and starred as boxer Rocky Balboa in Rocky."]},
+      {name:"Harrison Ford", clues:["This actor worked as a carpenter before fame, building cabinets for directors.", "He piloted the Millennium Falcon as a smuggler captain.", "He played whip-cracking archaeologist Indiana Jones."]},
+      {name:"Robin Williams", clues:["This manic comedian was a Juilliard-trained actor with a genius for impressions.", "He voiced a wisecracking blue Genie in the animated Aladdin.", "He played Mrs. Doubtfire and won an Oscar for Good Will Hunting."]},
+      {name:"Sigourney Weaver", clues:["This tall actress became science fiction's first great action heroine.", "She battled xenomorphs across a decades-long franchise.", "She played Ellen Ripley in Alien and its sequels."]},
+      {name:"Meryl Streep", clues:["This actress holds the record for Oscar nominations with more than twenty.", "She played a fashion editor rumored to be based on Anna Wintour.", "She starred in The Devil Wears Prada, Sophie's Choice, and Mamma Mia."]},
+      {name:"Denzel Washington", clues:["This commanding actor won Oscars for Glory and Training Day.", "He played Malcolm X in Spike Lee's 1992 biopic.", "His equalizer-style vigilante franchise and role as a corrupt LA cop made him an action star too."]},
+      {name:"Julia Roberts", clues:["This actress's thousand-watt smile made her the biggest female star of the 1990s.", "She won an Oscar for playing a real-life legal crusader in a push-up bra and miniskirts.", "She starred in Pretty Woman and Erin Brockovich."]},
+      {name:"Sandra Bullock", clues:["This actress mixes pratfall comedy with serious dramatic turns.", "She played a bus passenger in Speed and a stranded astronaut in Gravity.", "She won an Oscar as Leigh Anne Tuohy in The Blind Side."]},
+      {name:"Keanu Reeves", clues:["This Canadian actor is beloved for his humility, generosity, and action roles.", "He played a hacker who learns reality is a computer simulation.", "He is Neo in The Matrix and the unstoppable hitman John Wick."]},
+      {name:"Jim Carrey", clues:["This rubber-faced comedian was a master of physical comedy and celebrity impressions.", "He played a man whose whole life was a TV show in The Truman Show.", "He starred in Ace Ventura, The Mask, and Dumb and Dumber."]},
+      {name:"Arnold Schwarzenegger", clues:["This Austrian bodybuilder became an action superstar, then governor of California.", "He won Mr. Olympia seven times before conquering Hollywood.", "He played the T-800 cyborg in The Terminator, promising 'I'll be back.'"]},
+      {name:"Bruce Willis", clues:["This actor started as a wisecracking TV detective before becoming an action icon.", "He saw dead people alongside a young Haley Joel Osment.", "He played John McClane, the barefoot hero of Die Hard."]},
+      {name:"Danny DeVito", clues:["This short, bald actor-director got his start on the sitcom Taxi.", "He played the Penguin in Batman Returns and voiced a satyr in Hercules.", "He's Frank Reynolds on It's Always Sunny in Philadelphia and starred in Twins."]},
+      {name:"Whoopi Goldberg", clues:["This comedian-actress is an EGOT winner with a distinctive no-eyebrows look.", "She played a fake nun on the run in Sister Act.", "She won an Oscar as the psychic Oda Mae Brown in Ghost."]},
+      {name:"Goldie Hawn", clues:["This bubbly blonde comedian won an Oscar in her early film career.", "She was a ditzy dancer on TV's Laugh-In in the 1960s.", "She starred in Private Benjamin and played rivals with Bette Midler in The First Wives Club."]},
+      {name:"Kurt Russell", clues:["This actor began as a Disney child star and became an action hero.", "He played a one-eyed antihero escaping from a prison-city New York.", "He starred as Snake Plissken in Escape from New York and in The Thing."]},
+      {name:"Glenn Close", clues:["This actress has been nominated for eight Oscars and played Cruella de Vil.", "She played a spurned, dangerous lover in a 1987 thriller.", "She boiled a bunny as Alex Forrest in Fatal Attraction."]},
+      {name:"Christopher Walken", clues:["This actor is famous for his halting, offbeat speech and intense stare.", "He won an Oscar for The Deer Hunter and played a villain in A View to a Kill.", "He demanded 'more cowbell' in a famous Saturday Night Live sketch."]},
+      {name:"Willem Dafoe", clues:["This gaunt, intense actor has played heroes, villains, and Jesus.", "He was nominated for playing Vincent van Gogh in At Eternity's Gate.", "He played the Green Goblin opposite Tobey Maguire's Spider-Man."]},
+      {name:"Jeff Bridges", clues:["This laid-back actor comes from a famous acting family; his dad starred on Sea Hunt.", "He played a country singer in Crazy Heart, winning an Oscar.", "He is 'The Dude' in The Big Lebowski, forever after his rug."]},
+      {name:"Tommy Lee Jones", clues:["This craggy Texas actor is known for playing no-nonsense lawmen.", "He won an Oscar as the marshal hunting Dr. Kimble in The Fugitive.", "He played Agent K in Men in Black and a sheriff in No Country for Old Men."]},
+      {name:"Gene Hackman", clues:["This two-time Oscar winner retired from acting in 2004.", "He played coach Norman Dale in Hoosiers and Lex Luthor in Superman.", "He won his first Oscar as Popeye Doyle in The French Connection."]},
+      {name:"Anthony Hopkins", clues:["This Welsh actor is famed for playing a charming cannibal psychiatrist.", "He played the butler Stevens in The Remains of the Day.", "He won an Oscar as Hannibal Lecter in The Silence of the Lambs with barely 16 minutes on screen."]},
+      {name:"Jodie Foster", clues:["This actress was a child prodigy who attended Yale while acting.", "She played a young Iris opposite De Niro in Taxi Driver.", "She starred as FBI trainee Clarice Starling in The Silence of the Lambs."]},
+      {name:"Michelle Pfeiffer", clues:["This actress turned down the role that made Julia Roberts famous in Pretty Woman.", "She played a witch queen in Stardust and a mobster's widow in Married to the Mob.", "She played Catwoman in Batman Returns and Elvira in Scarface."]},
+      {name:"Sharon Stone", clues:["This actress became a 90s sensation with one very famous interrogation scene.", "She played a casino wife in Scorsese's Casino, earning an Oscar nomination.", "Her leg-crossing scene in Basic Instinct became one of the most famous in film history."]},
+      {name:"Demi Moore", clues:["This raspy-voiced actress was the highest-paid woman in Hollywood in the mid-90s.", "She famously shaved her head to play a Navy SEAL trainee in G.I. Jane.", "She played Molly, the grieving girlfriend, in Ghost."]},
+      {name:"Richard Gere", clues:["This silver-haired leading man is a practicing Buddhist and activist.", "He played a naval officer in An Officer and a Gentleman.", "He whisked Julia Roberts away in Pretty Woman and tap-danced in Chicago."]},
+      {name:"Kevin Costner", clues:["This actor-director bet big on a three-hour Western and won Best Picture.", "He protected Whitney Houston as a bodyguard in a hit 1992 film.", "He starred in and directed Dances with Wolves and played a farmer in Field of Dreams."]},
+      {name:"Patrick Swayze", clues:["This dancer-turned-actor trained as a professional ballet dancer.", "He played a surfing bank robber in Point Break.", "He taught Jennifer Grey to dance in Dirty Dancing and starred in Ghost."]},
+      {name:"Winona Ryder", clues:["This actress was a face of Generation X with dark, quirky roles in the late 80s.", "Johnny Depp once tattooed her name on his arm, later altered.", "She starred in Heathers, Beetlejuice, and plays Joyce Byers in Stranger Things."]},
+      {name:"Nicolas Cage", clues:["This actor, born with the last name Coppola, changed it to avoid nepotism claims.", "He won an Oscar playing a suicidal alcoholic in Leaving Las Vegas.", "He starred in Face/Off, Con Air, and National Treasure, and is famous for wildly intense performances."]},
+      {name:"John Travolta", clues:["This actor's career famously revived after a Quentin Tarantino film.", "He played a hitman named Vincent Vega.", "He danced in a white suit in Saturday Night Fever and sang in Grease."]},
+      {name:"Uma Thurman", clues:["This tall actress became Quentin Tarantino's muse in two franchises.", "She danced the twist contest scene opposite John Travolta.", "She played the sword-wielding Bride seeking revenge in Kill Bill."]},
+      {name:"Halle Berry", clues:["This former beauty queen became the first Black woman to win Best Actress.", "She played a weather-controlling mutant in the X-Men films.", "She won the Oscar for Monster's Ball and played a Bond girl in Die Another Day."]},
+      {name:"Hugh Jackman", clues:["This Australian actor sings, dances, and plays a clawed mutant.", "He hosted the Oscars and Tony Awards and starred in Les Miserables.", "He played Wolverine for 17 years and P.T. Barnum in The Greatest Showman."]},
+      {name:"Russell Crowe", clues:["This New Zealand-raised actor won an Oscar playing a Roman general.", "He played a schizophrenic math genius in A Beautiful Mind.", "He shouted 'Are you not entertained?' as Maximus in Gladiator."]},
+      {name:"Nicole Kidman", clues:["This Australian actress was once one half of Hollywood's most famous couple with Tom Cruise.", "She wore a prosthetic nose to play Virginia Woolf in The Hours, winning an Oscar.", "She sang and danced as Satine in Moulin Rouge."]},
+      {name:"Cate Blanchett", clues:["This Australian actress has played a queen, an elf, and Bob Dylan.", "She won Oscars for The Aviator and Blue Jasmine.", "She played Galadriel in The Lord of the Rings and Elizabeth I of England."]},
+      {name:"Kate Winslet", clues:["This English actress has been Oscar-nominated seven times, winning for The Reader.", "She played Clementine, with multicolored hair, in Eternal Sunshine of the Spotless Mind.", "She starred as Rose opposite Leonardo DiCaprio in Titanic."]},
+      {name:"Matt Damon", clues:["This actor co-wrote his breakout film with his childhood best friend.", "He played a stranded astronaut growing potatoes on Mars in The Martian.", "He is Jason Bourne and co-wrote and starred in Good Will Hunting."]},
+      {name:"Ben Affleck", clues:["This actor-director won Oscars for screenwriting and for producing a Best Picture.", "His film Argo, about a fake movie rescuing hostages, won Best Picture.", "He played Batman in the DC films and co-wrote Good Will Hunting."]},
+      {name:"George Clooney", clues:["This silver-haired star began as a heartthrob doctor on TV's ER.", "He won an Oscar for Syriana and directed Good Night, and Good Luck.", "He led the heist crew as Danny Ocean in Ocean's Eleven."]},
+      {name:"Robert Downey Jr.", clues:["This actor's career roared back from addiction and prison to make him Marvel's biggest star.", "He played Charlie Chaplin in a 1992 biopic, earning an Oscar nomination.", "He launched the MCU as Tony Stark, aka Iron Man, in 2008."]},
+      {name:"Gwyneth Paltrow", clues:["This actress founded the wellness brand Goop after her Oscar win.", "She won Best Actress playing Shakespeare's muse in disguise.", "She played Pepper Potts in Iron Man and won for Shakespeare in Love."]},
+      {name:"Reese Witherspoon", clues:["This Southern actress runs a book club that drives bestseller lists and adaptations.", "She won an Oscar playing June Carter Cash in Walk the Line.", "She played Elle Woods, the pink-loving Harvard law student, in Legally Blonde."]},
+      {name:"Jake Gyllenhaal", clues:["This actor, from a filmmaking family, played a time-looping teen cult favorite.", "He bulked up to play a boxer in Southpaw and creeped audiences in Nightcrawler.", "He starred in Donnie Darko and Brokeback Mountain."]},
+      {name:"Heath Ledger", clues:["This Australian actor's intense final roles made him a legend before his death at 28.", "He played a conflicted cowboy in Brokeback Mountain.", "He won a posthumous Oscar as the Joker in The Dark Knight."]},
+      {name:"Christian Bale", clues:["This Welsh actor is infamous for extreme body transformations for roles.", "He lost over 60 pounds for The Machinist and gained it back to play a superhero.", "He played Bruce Wayne in Christopher Nolan's Dark Knight trilogy."]},
+      {name:"Amy Adams", clues:["This redheaded actress has six Oscar nominations and played a Disney princess come to life.", "She played linguist Louise Banks communicating with aliens in Arrival.", "She charmed audiences as Giselle in Enchanted and starred in American Hustle."]},
+      {name:"Emma Stone", clues:["This raspy-voiced actress won an Oscar playing an aspiring actress in a musical.", "She played a resurrected Victorian woman in Poor Things, winning a second Oscar.", "She starred in La La Land, Easy A, and as Cruella de Vil."]},
+      {name:"Jennifer Lawrence", clues:["This actress became a superstar and Oscar winner before age 23.", "She played the mutant Mystique in the X-Men prequels.", "She played Katniss Everdeen, the bow-wielding heroine of The Hunger Games."]},
+      {name:"Chris Pratt", clues:["This actor went from pudgy TV goofball to a ripped Marvel leading man.", "He played a lovable slacker on Parks and Recreation.", "He is Star-Lord in Guardians of the Galaxy and voiced Mario in the animated film."]},
+      {name:"Chris Evans", clues:["This Boston-born actor played two different Marvel superheroes on screen.", "Before his shield days he was the Human Torch in Fantastic Four.", "He played Steve Rogers, Captain America, across ten Marvel films."]},
+      {name:"Robert Pattinson", clues:["This English actor's breakout role was as a doomed Hogwarts student.", "He played Cedric Diggory in Harry Potter and the Goblet of Fire.", "He sparkled as vampire Edward Cullen in Twilight and later played Batman."]},
+      {name:"Kristen Stewart", clues:["This actress was a child star in Panic Room before a vampire saga made her famous.", "She played Princess Diana in Spencer, earning an Oscar nomination.", "She played Bella Swan in the Twilight films."]},
+      {name:"Timothee Chalamet", clues:["This Franco-American actor became his generation's defining heartthrob.", "He earned an Oscar nomination at 22 for a summer romance in Italy.", "He played Paul Atreides in Dune and Willy Wonka in Wonka."]},
+      {name:"Florence Pugh", clues:["This English actress broke out in the wrestling drama Fighting with My Family.", "She starred in the folk-horror Midsommar and the thriller Don't Worry Darling.", "She played Yelena Belova in Marvel's Black Widow and Hawkeye."]},
+      {name:"Ana de Armas", clues:["This Cuban actress learned English as an adult after moving to Hollywood.", "She played a hologram girlfriend in Blade Runner 2049.", "She transformed into Marilyn Monroe in Blonde and played a Bond ally in No Time to Die."]},
+      {name:"Austin Butler", clues:["This actor was a Disney and Nickelodeon teen star before a dramatic reinvention.", "He spent two years perfecting a Southern drawl and hip shake for a music biopic.", "He played Elvis Presley in the 2022 film Elvis and a bald villain in Dune: Part Two."]},
+      {name:"Sydney Sweeney", clues:["This actress from Spokane rebuilds vintage cars as a hobby and trained in MMA.", "She broke out as Cassie on HBO's Euphoria.", "She starred in the hit rom-com Anyone But You and the horror film Immaculate."]},
+      {name:"Jenna Ortega", clues:["This actress began as young Jane Villanueva on Jane the Virgin.", "She learned to play cello for her biggest Netflix role.", "She plays Wednesday Addams in the hit series Wednesday."]},
+      {name:"Pedro Pascal", clues:["This Chilean-American actor became TV's favorite protective father figure.", "He played Oberyn Martell, whose head met the Mountain, on Game of Thrones.", "He is the Mandalorian and Joel in The Last of Us."]},
+      {name:"Oscar Isaac", clues:["This Guatemalan-born, Juilliard-trained actor is also a skilled musician.", "He played a folk singer in Inside Llewyn Davis.", "He is Poe Dameron in Star Wars and the Moon Knight in Marvel's series."]},
+      {name:"Adam Driver", clues:["This tall actor served in the Marines before studying at Juilliard.", "He played Lena Dunham's boyfriend on HBO's Girls.", "He is Kylo Ren in the Star Wars sequels and starred in Marriage Story."]},
+      {name:"Margot Robbie", clues:["This Australian actress produced many of her own biggest films through LuckyChap.", "She played a figure skater in I, Tonya, earning an Oscar nomination.", "She played Barbie in the billion-dollar 2023 film and Harley Quinn in Suicide Squad."]},
+      {name:"Ryan Gosling", clues:["This Canadian started on The Mickey Mouse Club with Britney and Justin.", "He played a stunt driver in Drive and a jazz pianist in a Los Angeles musical.", "He sang 'I'm Just Ken' as Ken in Barbie and starred in The Notebook."]},
+      {name:"Emily Blunt", clues:["This British actress broke out as a cutting fashion assistant in 2006.", "She played a time-traveling soldier alongside Tom Cruise in Edge of Tomorrow.", "She starred in A Quiet Place with her husband and played Mary Poppins in the 2018 sequel."]},
+      {name:"Anne Hathaway", clues:["This actress won an Oscar after cutting her hair and singing live on camera.", "She played a frazzled fashion assistant bullied by Meryl Streep.", "She was Fantine in Les Miserables and Mia Thermopolis in The Princess Diaries."]},
+      {name:"Hugh Grant", clues:["This floppy-haired English actor defined the 90s romantic comedy.", "He played a villainous actor in Paddington 2 to great acclaim.", "He starred in Four Weddings and a Funeral, Notting Hill, and Love Actually."]},
+      {name:"Emma Watson", clues:["This actress was cast at age nine from thousands of hopefuls for a magical franchise.", "She became a UN Women goodwill ambassador while still acting.", "She played Hermione Granger in Harry Potter and Belle in Beauty and the Beast."]},
+      {name:"Daniel Radcliffe", clues:["This actor has spent his post-franchise career choosing weird, indie roles.", "He played a farting corpse in Swiss Army Man and Weird Al on TV.", "He was Harry Potter in all eight films of the series."]},
+      {name:"Keira Knightley", clues:["This English actress became famous at 17 in a bendy soccer film.", "She earned Oscar nominations for Pride and Prejudice and The Imitation Game.", "She played Elizabeth Swann in Pirates of the Caribbean."]},
+      {name:"Orlando Bloom", clues:["This English actor broke his back falling from a window before his big break.", "He played a blacksmith-turned-knight in Kingdom of Heaven.", "He was the elf Legolas in The Lord of the Rings and Will Turner in Pirates of the Caribbean."]},
+      {name:"Helena Bonham Carter", clues:["This English actress is known for eccentric roles and for many Tim Burton films.", "She played the Red Queen bellowing 'Off with their heads!' in Alice in Wonderland.", "She was Bellatrix Lestrange in Harry Potter and Marla Singer in Fight Club."]},
+      {name:"Ralph Fiennes", clues:["This English actor played a Nazi commandant in Schindler's List.", "He played M, the spymaster, in recent James Bond films.", "He played Lord Voldemort, He Who Must Not Be Named, in Harry Potter."]},
+      {name:"Liam Neeson", clues:["This Irish actor became an unlikely action star in his late fifties.", "He played Oskar Schindler, earning an Oscar nomination.", "He threatened kidnappers with his 'particular set of skills' in Taken."]},
+      {name:"Pierce Brosnan", clues:["This Irish actor first found fame as TV's Remington Steele.", "He sang, bravely, in Mamma Mia with Meryl Streep.", "He played James Bond in GoldenEye and three more 007 films."]},
+      {name:"Daniel Craig", clues:["This blond, blue-eyed actor's casting as a spy icon caused a media storm in 2005.", "He played detective Benoit Blanc, with a thick Southern drawl, in Knives Out.", "He played James Bond from Casino Royale through No Time to Die."]},
+      {name:"Idris Elba", clues:["This London-born actor is also a DJ and kickboxer in his spare time.", "He played drug lord Stringer Bell on HBO's The Wire.", "He played Heimdall in Thor, Nelson Mandela on film, and voiced Knuckles in Sonic."]},
+      {name:"Lupita Nyong'o", clues:["This Kenyan-Mexican actress won an Oscar for her very first film role.", "She played dual roles as Adelaide and her tethered double in Us.", "She won for 12 Years a Slave and plays Nakia in Black Panther."]},
+      {name:"Viola Davis", clues:["This actress needed just one scene to earn her first Oscar nomination, in Doubt.", "She won an Oscar playing Denzel Washington's wife in Fences.", "She played lawyer Annalise Keating on How to Get Away with Murder and starred in The Woman King."]},
+      {name:"Octavia Spencer", clues:["This Alabama-born actress won an Oscar playing a sassy 1960s maid.", "She played a NASA mathematician in Hidden Figures.", "She played Minny Jackson, of the famous pie scene, in The Help."]},
+      {name:"Mahershala Ali", clues:["This actor played college basketball and was famous as Remy on House of Cards.", "He won two Best Supporting Actor Oscars in three years.", "He won for Moonlight and Green Book and voices Aaron in Spider-Verse."]},
+      {name:"Chadwick Boseman", clues:["This actor secretly battled cancer while filming a string of iconic biopics.", "He played Jackie Robinson, James Brown, and Thurgood Marshall on screen.", "He was King T'Challa, the Black Panther, in the Marvel films."]},
+      {name:"Charlize Theron", clues:["This South African actress gained 30 pounds and won an Oscar playing a serial killer.", "She played a one-armed wasteland warrior in a Mad Max film.", "She won for Monster and starred as Furiosa in Mad Max: Fury Road."]},
+      {name:"Salma Hayek", clues:["This Mexican actress nearly gave up on Hollywood before producing her own passion project.", "She played a Marvel immortal in Eternals and voiced Kitty Softpaws.", "She played painter Frida Kahlo, earning an Oscar nomination for Frida."]},
+      {name:"Penelope Cruz", clues:["This Spanish actress was the first from her country to win an Oscar.", "She frequently collaborates with director Pedro Almodovar.", "She won for Vicky Cristina Barcelona and played a Bond-style pirate in Pirates of the Caribbean 4."]},
+      {name:"Javier Bardem", clues:["This Spanish actor played one of cinema's scariest killers, with a pageboy haircut.", "He played a Bond villain with a ruined jaw in Skyfall.", "He won an Oscar as the cattle-gun killer Anton Chigurh in No Country for Old Men."]},
+      {name:"Antonio Banderas", clues:["This Spanish heartthrob was discovered by director Pedro Almodovar.", "He voiced a swashbuckling cat in boots in the Shrek films.", "He played Zorro and the mariachi gunslinger in Desperado."]},
+      {name:"Jackie Chan", clues:["This Hong Kong star does all his own stunts and has broken countless bones filming.", "He received an honorary Oscar in 2016 for a lifetime of action comedy.", "He starred in Rush Hour, Rumble in the Bronx, and voiced Master Monkey in Kung Fu Panda."]},
+      {name:"Bruce Lee", clues:["This martial arts legend died at 32, having completed only four major films.", "He founded his own fighting philosophy called Jeet Kune Do.", "He starred in Enter the Dragon and Fist of Fury, and played Kato on The Green Hornet."]},
+      {name:"Elvis Presley", clues:["Memphis singer who blended country, blues and gospel into a new sound in the 1950s", "His hip-shaking TV appearances scandalized America; hits include Hound Dog and Jailhouse Rock", "The King of Rock and Roll who lived at Graceland"]},
+      {name:"Frank Sinatra", clues:["New Jersey crooner who led the Rat Pack in Las Vegas", "He won an Oscar for From Here to Eternity and sang My Way", "Old Blue Eyes, the Chairman of the Board"]},
+      {name:"Bing Crosby", clues:["A mellow baritone crooner and movie star who dominated 1940s radio and film", "He starred in the Road movies with Bob Hope and invested in early tape recording", "His version of White Christmas is one of the best-selling singles of all time"]},
+      {name:"Chuck Berry", clues:["A St. Louis guitarist whose duckwalk influenced generations of rockers", "He wrote Johnny B. Goode, Roll Over Beethoven and Sweet Little Sixteen", "The Father of Rock and Roll guitar"]},
+      {name:"Little Richard", clues:["A flamboyant piano pounder from Georgia who screamed over boogie-woogie beats", "His hits include Tutti Frutti and Good Golly, Miss Molly", "The Architect of Rock and Roll with the famous 'a-wop-bop-a-loo-bop' shout"]},
+      {name:"Buddy Holly", clues:["A bespectacled Texas rocker whose career was cut tragically short in 1959", "With the Crickets he recorded Peggy Sue and That'll Be the Day", "His death in a plane crash was called the Day the Music Died"]},
+      {name:"Roy Orbison", clues:["A singer famous for dark sunglasses and a soaring three-octave voice", "He recorded Only the Lonely and Oh, Pretty Woman", "The Traveling Wilburys member known as the Caruso of Rock"]},
+      {name:"Billie Holiday", clues:["A jazz singer whose phrasing forever changed how vocalists interpret a song", "She recorded the haunting protest song Strange Fruit", "Lady Day, the gardenia-wearing icon behind God Bless the Child"]},
+      {name:"Ella Fitzgerald", clues:["A jazz singer famed for scat solos and perfect pitch across the Songbook series", "She won 13 Grammy Awards and recorded definitive versions of Gershwin and Cole Porter standards", "The First Lady of Song"]},
+      {name:"Louis Armstrong", clues:["A New Orleans trumpeter whose gravelly voice charmed the world", "He sang What a Wonderful World and Hello, Dolly!", "Satchmo, the jazz pioneer with the megawatt smile"]},
+      {name:"Nat King Cole", clues:["A smooth-voiced pianist who became one of the first Black hosts of a network TV variety show", "His hits include Unforgettable, Mona Lisa and The Christmas Song", "His daughter Natalie later sang a virtual duet with him on Unforgettable"]},
+      {name:"Tony Bennett", clues:["A New York crooner and painter whose career spanned eight decades", "He left his heart in San Francisco, his signature song from 1962", "He recorded hit duet albums with a new generation of stars well into his 90s"]},
+      {name:"Dean Martin", clues:["A relaxed crooner who hosted a long-running TV variety show and celebrity roasts", "He sang Everybody Loves Somebody and Volare, often with a drink in hand", "The Rat Pack's King of Cool and Jerry Lewis's former comedy partner"]},
+      {name:"Sammy Davis Jr.", clues:["A multitalented singer, dancer and impressionist in the Rat Pack", "He sang The Candy Man and Mr. Bojangles despite losing an eye in a car crash", "Often billed as the world's greatest entertainer"]},
+      {name:"Etta James", clues:["A powerhouse blues and soul singer discovered as a teenager in Los Angeles", "Her signature ballad At Last became a wedding standard", "The Matriarch of R&B who also recorded I'd Rather Go Blind"]},
+      {name:"Nina Simone", clues:["A classically trained pianist who fused jazz, blues and Bach", "She sang Feeling Good and the civil-rights anthem Mississippi Goddam", "The High Priestess of Soul"]},
+      {name:"Ray Charles", clues:["A blind pianist who fused gospel, blues and country into soul", "His hits include Georgia on My Mind and Hit the Road Jack", "The Genius of Soul, portrayed by Jamie Foxx in an Oscar-winning film"]},
+      {name:"James Brown", clues:["A Georgia singer whose explosive stage shows set the template for funk", "He shouted through I Got You (I Feel Good) and Papa's Got a Brand New Bag", "The Godfather of Soul and the Hardest Working Man in Show Business"]},
+      {name:"Aretha Franklin", clues:["A gospel prodigy raised in Detroit who signed with Atlantic Records in 1967", "Her hits include Respect, Chain of Fools and (You Make Me Feel Like) A Natural Woman", "The Queen of Soul who sang at three presidential inaugurations"]},
+      {name:"Marvin Gaye", clues:["A Motown star whose smooth falsetto tackled love and social issues", "He recorded What's Going On and Sexual Healing, plus duets with Tammi Terrell", "The Prince of Motown whose life ended tragically in 1984"]},
+      {name:"Barry White", clues:["A deep-voiced romantic whose orchestral soul defined 1970s slow jams", "His hits include Can't Get Enough of Your Love, Babe and You're the First, the Last, My Everything", "The Maestro of Love with the Love Unlimited Orchestra"]},
+      {name:"Diana Ross", clues:["A Detroit singer who fronted the most successful girl group of the 1960s", "With the Supremes she sang Stop! In the Name of Love, then starred in Lady Sings the Blues", "The Boss, a solo icon known for Upside Down and Endless Love"]},
+      {name:"Smokey Robinson", clues:["A Motown songwriter who led the Miracles and wrote hits for many other acts", "He sang Tracks of My Tears and Cruisin' with a silky falsetto", "Motown's poetic vice president behind Shop Around and Tears of a Clown"]},
+      {name:"Lionel Richie", clues:["An Alabama singer who fronted the Commodores before going solo", "He co-wrote We Are the World and sang Hello and All Night Long", "The American Idol judge famous for Dancing on the Ceiling"]},
+      {name:"Donna Summer", clues:["A Boston-born singer who worked with producer Giorgio Moroder in Munich", "Her hits include Love to Love You Baby, Hot Stuff and Last Dance", "The Queen of Disco"]},
+      {name:"Gloria Gaynor", clues:["A New Jersey singer whose disco anthem became a symbol of resilience", "She first found fame with Never Can Say Goodbye", "I Will Survive made her a legend"]},
+      {name:"Luther Vandross", clues:["A velvet-voiced R&B balladeer who began as an in-demand session singer", "His hits include Never Too Much, Here and Now and Dance with My Father", "He won eight Grammys and was famous for romantic slow jams and flawless runs"]},
+      {name:"Tina Turner", clues:["A Tennessee singer who rose to fame in a duo with her husband Ike", "Her 1984 comeback gave us What's Love Got to Do with It", "The Queen of Rock and Roll famous for River Deep - Mountain High"]},
+      {name:"John Lennon", clues:["A Liverpool songwriter who formed a legendary band while still a teenager", "He co-wrote most of the Beatles' catalog and later sang Imagine as a solo artist", "He was murdered outside the Dakota in New York in 1980"]},
+      {name:"Paul McCartney", clues:["A Liverpool bassist and songwriter in the most successful band ever", "He wrote Yesterday, Hey Jude and Let It Be", "Wings frontman and one of the wealthiest musicians in the world"]},
+      {name:"Mick Jagger", clues:["A darting, strutting frontman who co-founded a bluesy London band in 1962", "He sang Satisfaction, Paint It Black and Sympathy for the Devil", "The Rolling Stones singer whose moves were copied by Maroon 5"]},
+      {name:"David Bowie", clues:["A London chameleon who kept reinventing his image and sound", "His alter egos included Ziggy Stardust and the Thin White Duke", "Starman and Heroes singer who played the Goblin King in Labyrinth"]},
+      {name:"Freddie Mercury", clues:["A flamboyant frontman born in Zanzibar with a four-octave range", "He wrote Bohemian Rhapsody and led Queen's legendary Live Aid set", "The Queen frontman behind We Are the Champions and Don't Stop Me Now"]},
+      {name:"Elton John", clues:["A piano-playing showman famous for outrageous glasses and costumes", "With lyricist Bernie Taupin he created Your Song, Rocket Man and Tiny Dancer", "He sang Candle in the Wind at Princess Diana's funeral"]},
+      {name:"Billy Joel", clues:["A Long Island pianist who became one of the best-selling solo artists ever", "His hits include Uptown Girl, We Didn't Start the Fire and Scenes from an Italian Restaurant", "The Piano Man"]},
+      {name:"Bruce Springsteen", clues:["A New Jersey rocker whose songs chronicle working-class American life", "With the E Street Band he recorded Born to Run and Born in the U.S.A.", "The Boss"]},
+      {name:"Bob Dylan", clues:["A Minnesota folk singer whose lyrics won the Nobel Prize in Literature", "He wrote Blowin' in the Wind, Like a Rolling Stone and Mr. Tambourine Man", "The voice of a generation who went electric at Newport in 1965"]},
+      {name:"Stevie Wonder", clues:["A blind Motown prodigy who played piano, drums and harmonica as a child", "His 1970s run included Superstition, Sir Duke and Songs in the Key of Life", "Signed to Motown at 11, he grew into the genius behind Innervisions and Higher Ground"]},
+      {name:"Janis Joplin", clues:["A raspy Texas blues-rock singer who fronted Big Brother and the Holding Company", "Her hits include Piece of My Heart and Me and Bobby McGee", "The Pearl who died at 27 in 1970"]},
+      {name:"Jimi Hendrix", clues:["A left-handed guitarist who rewrote the rules of the electric guitar", "His hits include Purple Haze, Foxy Lady and a legendary Woodstock anthem", "The Experience frontman who set his guitar on fire at Monterey"]},
+      {name:"Jim Morrison", clues:["A poetic, unpredictable frontman who mixed rock with theater in 1960s Los Angeles", "With the Doors he sang Light My Fire, Riders on the Storm and Break On Through", "The Lizard King, buried in Paris at 27"]},
+      {name:"Kurt Cobain", clues:["A reluctant Seattle frontman who defined grunge in ripped jeans", "His band Nirvana exploded with Smells Like Teen Spirit", "He wrote Come as You Are and Heart-Shaped Box before his 1994 death at 27"]},
+      {name:"Ozzy Osbourne", clues:["A Birmingham singer who fronted a pioneering heavy metal band", "He bit the head off a bat onstage and later sang Crazy Train solo", "The Prince of Darkness who became a reality TV dad on MTV"]},
+      {name:"Steven Tyler", clues:["A flamboyant frontman known for scarves tied to his microphone stand", "With Aerosmith he sang Dream On, Walk This Way and I Don't Want to Miss a Thing", "The Demon of Screamin' and former American Idol judge"]},
+      {name:"Axl Rose", clues:["A volatile Indiana frontman with a famously wide vocal range", "He sang Sweet Child O' Mine, Welcome to the Jungle and November Rain", "His band's album Chinese Democracy took over a decade to finish"]},
+      {name:"Jon Bon Jovi", clues:["A New Jersey frontman who named his band after himself", "His hits include Livin' on a Prayer, You Give Love a Bad Name and Wanted Dead or Alive", "The heartthrob rocker behind Slippery When Wet"]},
+      {name:"Bono", clues:["An Irish frontman known for wraparound sunglasses and humanitarian work", "With U2 he recorded With or Without You, One and Sunday Bloody Sunday", "He co-founded the ONE Campaign and (RED) to fight poverty and disease"]},
+      {name:"Robert Plant", clues:["A wavy-haired English singer with a banshee wail", "With Led Zeppelin he sang Stairway to Heaven, Black Dog and Whole Lotta Love", "The Golden God of rock who later won a Grammy recording with Alison Krauss"]},
+      {name:"Madonna", clues:["A Michigan-born singer who constantly reinvented pop in the 1980s and beyond", "Her hits include Like a Virgin, Vogue and Hung Up", "The Queen of Pop and Material Girl"]},
+      {name:"Prince", clues:["A Minneapolis multi-instrumentalist who played nearly every note on his albums", "He starred in the film Purple Rain and sang When Doves Cry and Kiss", "The Purple One who changed his name to an unpronounceable symbol in the 1990s"]},
+      {name:"Michael Jackson", clues:["A Gary, Indiana child star who grew into the biggest pop star on Earth", "His Thriller is the best-selling album of all time", "The King of Pop famous for the moonwalk and one sequined glove"]},
+      {name:"Whitney Houston", clues:["A New Jersey gospel-raised singer with a once-in-a-generation voice", "She starred in The Bodyguard and sang I Will Always Love You", "Her rendition of the national anthem at Super Bowl XXV is considered the greatest ever"]},
+      {name:"Mariah Carey", clues:["A singer famous for a five-octave range and whistle register", "Her hits include Hero, Fantasy and Vision of Love", "The Queen of Christmas thanks to All I Want for Christmas Is You"]},
+      {name:"Celine Dion", clues:["A French-Canadian powerhouse discovered as a teenager in Quebec", "She sang the Titanic theme and held a record-breaking Las Vegas residency", "My Heart Will Go On made her a global megastar"]},
+      {name:"Cher", clues:["A singer-actress who has had hits in six different decades", "She won an Oscar for Moonstruck and sang Believe with pioneering Auto-Tune", "The Goddess of Pop, half of a famous duo with Sonny"]},
+      {name:"Janet Jackson", clues:["The youngest sibling of a famous musical family who broke out as a solo star", "Her albums Control and Rhythm Nation 1814 redefined pop and R&B", "She sang Escapade, That's the Way Love Goes and Together Again"]},
+      {name:"George Michael", clues:["An English singer who first found fame in a 1980s pop duo", "With Wham! he sang Wake Me Up Before You Go-Go, then went solo with Faith", "Careless Whisper and Freedom! '90 made him an icon"]},
+      {name:"Phil Collins", clues:["A drummer who stepped up to lead vocals in a progressive rock band", "With Genesis and solo he gave us In the Air Tonight and Sussudio", "His drum fill on In the Air Tonight is one of the most famous in rock"]},
+      {name:"Cyndi Lauper", clues:["A colorful New York singer with a four-octave range and punk style", "Her hits include Time After Time and True Colors", "Girls Just Want to Have Fun made her a star"]},
+      {name:"Britney Spears", clues:["A Louisiana teen idol who debuted in a schoolgirl outfit in 1998", "Her hits include Oops!... I Did It Again, Toxic and Womanizer", "The Princess of Pop"]},
+      {name:"Christina Aguilera", clues:["A former Mouseketeer with a huge voice and famous vocal runs", "Her hits include Genie in a Bottle, Beautiful and Dirrty", "She stripped down her image on the album Stripped and later coached on The Voice"]},
+      {name:"Shakira", clues:["A Colombian singer known for belly-dancing moves and a distinctive vibrato", "Her crossover hits include Whenever, Wherever and Underneath Your Clothes", "Hips Don't Lie made her a global superstar"]},
+      {name:"Ricky Martin", clues:["A Puerto Rican singer who started in the boy band Menudo", "He sang the 1998 World Cup anthem The Cup of Life", "Livin' la Vida Loca launched the Latin pop explosion of 1999"]},
+      {name:"Tupac Shakur", clues:["A rapper and actor whose mother was a Black Panther", "His albums include All Eyez on Me and a flood of posthumous releases", "The West Coast icon behind California Love and Dear Mama, killed in Las Vegas in 1996"]},
+      {name:"The Notorious B.I.G.", clues:["A Brooklyn rapper with a smooth, heavyweight flow", "His albums Ready to Die and Life After Death are hip-hop landmarks", "The King of New York behind Juicy, Hypnotize and Mo Money Mo Problems"]},
+      {name:"Jay-Z", clues:["A Brooklyn rapper who built a business empire beyond music", "His albums include Reasonable Doubt, The Blueprint and The Black Album", "He is married to Beyonce and became hip-hop's first billionaire"]},
+      {name:"Eminem", clues:["A Detroit rapper discovered by Dr. Dre", "He starred in the semi-autobiographical film 8 Mile and won an Oscar for Lose Yourself", "Rap's best-selling artist ever, famous for Stan, Without Me and Rap God"]},
+      {name:"Snoop Dogg", clues:["A laid-back Long Beach rapper with a drawl and a love of cooking shows", "His 1993 debut topped the charts and made G-funk mainstream", "He carried the Olympic torch in Paris and commentates alongside Martha Stewart"]},
+      {name:"Dr. Dre", clues:["A Compton producer who co-founded N.W.A and later launched Beats headphones", "His solo albums The Chronic and 2001 defined West Coast rap", "He discovered Eminem and Kendrick Lamar"]},
+      {name:"Ice Cube", clues:["A Compton rapper who wrote most of N.W.A's early lyrics", "He became a movie star in Friday, Barbershop and Ride Along", "His solo hits include It Was a Good Day and Check Yo Self"]},
+      {name:"50 Cent", clues:["A Queens rapper who survived being shot nine times before fame", "His debut Get Rich or Die Tryin' dominated 2003", "In Da Club and Candy Shop made him a star; he later produced the TV hit Power"]},
+      {name:"Nas", clues:["A Queensbridge rapper hailed as a street poet", "His 1994 debut Illmatic is often called the greatest rap album ever", "He feuded famously with Jay-Z and recorded the diss track Ether"]},
+      {name:"Queen Latifah", clues:["A New Jersey rapper who demanded respect on U.N.I.T.Y.", "She starred in the sitcom Living Single and the film Chicago", "She hosted her own talk show and fronts the crime series The Equalizer"]},
+      {name:"Missy Elliott", clues:["A Virginia rapper-producer known for surreal, futuristic music videos", "Her hits include Get Ur Freak On, Work It and Lose Control", "The first female rapper inducted into the Rock and Roll Hall of Fame"]},
+      {name:"Lauryn Hill", clues:["A New Jersey singer-rapper who rose to fame with the Fugees", "Her only solo studio album won five Grammys including Album of the Year", "She sang Doo Wop (That Thing) and Ex-Factor on a landmark 1998 album"]},
+      {name:"Mary J. Blige", clues:["A Bronx singer who fused hip-hop beats with soul vocals", "Her hits include Real Love, Family Affair and Be Without You", "The Queen of Hip-Hop Soul"]},
+      {name:"LL Cool J", clues:["A Queens rapper who became one of Def Jam's first stars", "His hits include I Need Love, Mama Said Knock You Out and Rock the Bells", "He crossed over to TV as a star of NCIS: Los Angeles"]},
+      {name:"Kanye West", clues:["A Chicago producer-turned-rapper famous for soul samples and bold statements", "His albums include The College Dropout, Graduation and My Beautiful Dark Twisted Fantasy", "The Yeezy founder behind Gold Digger, Stronger and Jesus Walks"]},
+      {name:"Kendrick Lamar", clues:["A Compton rapper praised for dense, poetic storytelling", "He won the Pulitzer Prize for Music for his album DAMN.", "His hits include Humble, Alright and the record-breaking Not Like Us"]},
+      {name:"Nicki Minaj", clues:["A Trinidad-born, Queens-raised rapper known for animated flows", "Her hits include Super Bass, Anaconda and Starships", "The leader of the Barbz behind the album Pink Friday"]},
+      {name:"Cardi B", clues:["A Bronx rapper who went viral on social media before topping charts", "Her debut single Bodak Yellow hit number one in 2017", "She won a Grammy for Invasion of Privacy and starred in Hustlers"]},
+      {name:"Lil Wayne", clues:["A New Orleans rapper who started with Cash Money Records as a kid", "His album Tha Carter III sold a million copies in its first week", "He is famous for A Milli, Lollipop and hundreds of guest verses"]},
+      {name:"Megan Thee Stallion", clues:["A Houston rapper who coined the phrase Hot Girl Summer", "Her hits include Savage, WAP with Cardi B and Hiss", "She won three Grammys in 2021 including Best New Artist"]},
+      {name:"Johnny Cash", clues:["An Arkansas singer whose baritone tackled prison, faith and redemption", "He performed famous concerts inside Folsom Prison and San Quentin", "The Man in Black behind Ring of Fire and I Walk the Line"]},
+      {name:"Patsy Cline", clues:["A Virginia country singer with a rich, aching voice", "Her hits include Walking After Midnight and I Fall to Pieces", "Crazy, written by Willie Nelson, became her signature before her 1963 plane-crash death"]},
+      {name:"Loretta Lynn", clues:["A Kentucky coal miner's daughter who sang frank songs about women's lives", "Her hits include You Ain't Woman Enough and the controversial The Pill", "The Coal Miner's Daughter, portrayed by Sissy Spacek in her life story"]},
+      {name:"Dolly Parton", clues:["A Tennessee singer-songwriter from a one-room cabin in the Smokies", "She wrote Jolene and I Will Always Love You on the same day, legend says", "The theme-park owner and literacy philanthropist behind 9 to 5"]},
+      {name:"Willie Nelson", clues:["A Texas songwriter famous for braids, bandanas and a battered guitar named Trigger", "He co-founded Farm Aid and sang On the Road Again and Always on My Mind", "The Red Headed Stranger of outlaw country"]},
+      {name:"Kenny Rogers", clues:["A Houston singer who crossed over from country to pop superstardom", "His story-song about a card player became a catchphrase: know when to hold 'em", "The Gambler who also sang Islands in the Stream with Dolly Parton"]},
+      {name:"Garth Brooks", clues:["An Oklahoma singer who brought arena-rock staging to country music", "His hits include Friends in Low Places and The Dance", "He is the best-selling solo artist in US history and sometimes performed as Chris Gaines"]},
+      {name:"Shania Twain", clues:["A Canadian country-pop star raised in Timmins, Ontario", "Her album Come On Over is the best-selling by a female country artist", "Man! I Feel Like a Woman! and You're Still the One made her a superstar"]},
+      {name:"Carrie Underwood", clues:["An Oklahoma singer who won American Idol's fourth season", "Her hits include Jesus, Take the Wheel, Before He Cheats and Blown Away", "She performs the Sunday Night Football theme"]},
+      {name:"Morgan Wallen", clues:["A Tennessee country star who competed on The Voice before breaking out", "His hits include Whiskey Glasses, Last Night and Sand in My Boots", "His double album Dangerous broke streaming records in 2021"]},
+      {name:"Usher", clues:["An Atlanta R&B star discovered as a teenager in the 1990s", "His album Confessions sold over a million copies in one week", "Yeah!, Burn and U Got It Bad made him a superstar; he headlined the 2024 Super Bowl halftime show"]},
+      {name:"Alicia Keys", clues:["A classically trained New York pianist who writes her own songs", "Her debut Songs in A Minor won five Grammys", "Fallin', No One and Girl on Fire made her a star"]},
+      {name:"John Legend", clues:["An Ohio singer-pianist who is an EGOT winner", "His hits include Ordinary People, Green Light and All of Me", "He coached on The Voice and wrote All of Me for his wife Chrissy Teigen"]},
+      {name:"Bruno Mars", clues:["A Hawaiian-born singer known for retro showmanship and tight choreography", "With Silk Sonic he won Grammys, and solo he sang Grenade and Locked Out of Heaven", "Uptown Funk and Just the Way You Are made him a superstar"]},
+      {name:"Ed Sheeran", clues:["An English singer-songwriter who builds stadium-sized sound with a loop pedal", "His first albums are named after math symbols: plus, multiply, divide and equals", "Shape of You and Thinking Out Loud made him a global star"]},
+      {name:"Harry Styles", clues:["An English singer who rose in a world-famous boy band on The X Factor", "His solo hits include Sign of the Times, Watermelon Sugar and As It Was", "The former boy-band star turned solo icon known for feather boas and sold-out arena residencies"]},
+      {name:"Dua Lipa", clues:["A London-born singer of Albanian heritage who modeled before music", "Her album Future Nostalgia won the Grammy for Best Pop Vocal Album", "Levitating, Don't Start Now and New Rules made her a star"]},
+      {name:"Olivia Rodrigo", clues:["A California singer-actress who started on Disney Channel", "Her debut single drivers license broke streaming records in 2021", "good 4 u and vampire topped the charts from her albums Sour and Guts"]},
+      {name:"Post Malone", clues:["A tattooed New York-born, Texas-raised genre-blending star", "His hits include Rockstar, Circles and Sunflower from Spider-Verse", "He debuted with White Iverson and later crossed into country with F-1 Trillion"]},
+      {name:"The Weeknd", clues:["A Toronto singer known for dark R&B and a mysterious early image", "His After Hours era produced Blinding Lights, one of the biggest songs of all time", "He headlined the Super Bowl LV halftime show and sang Earned It and Starboy"]},
+      {name:"Travis Scott", clues:["A Houston rapper known for psychedelic production and wild live shows", "His album Astroworld is named after a closed Houston theme park", "Sicko Mode, Goosebumps and the Cactus Jack label made him a star"]},
+      {name:"Sam Smith", clues:["A London singer with a soaring falsetto who broke out on Disclosure's Latch", "Their debut album In the Lonely Hour won four Grammys", "Stay with Me and Too Good at Goodbyes made them a star, plus the Spectre theme Writing's on the Wall"]},
+      {name:"Lizzo", clues:["A Detroit-born, Houston-raised singer and classically trained flutist", "Her hits include Truth Hurts, Good as Hell and About Damn Time", "She plays the flute she named Sasha Flute while performing onstage"]},
+      {name:"Shawn Mendes", clues:["A Canadian singer who was discovered posting covers on Vine", "His hits include Stitches, Treat You Better and Senorita", "He headlined arenas behind There's Nothing Holdin' Me Back"]},
+      {name:"Camila Cabello", clues:["A Cuban-born singer who left a famous girl group in 2016", "Her debut solo smash was named after the capital of her birth country", "Havana and Senorita made her a star"]},
+      {name:"Katy Perry", clues:["A California pastor's kid who became a candy-colored pop superstar", "Her album Teenage Dream tied the record for five number-one singles", "I Kissed a Girl, Firework and Roar made her a star; she judged American Idol"]},
+      {name:"Pink", clues:["A Pennsylvania singer known for aerial acrobatics during concerts", "Her hits include Get the Party Started, So What and Just Give Me a Reason", "Her real name is Alecia Moore"]},
+      {name:"Kelly Clarkson", clues:["A Texas singer who became the very first American Idol winner", "Her hits include Breakaway, Since U Been Gone and Stronger", "She now hosts an Emmy-winning daytime talk show"]},
+      {name:"Adam Levine", clues:["A Los Angeles singer who fronts a long-running pop-rock band", "His hits include Sugar, Moves Like Jagger and Girls Like You", "The longtime coach on The Voice with the falsetto behind Payphone"]},
+      {name:"Amy Winehouse", clues:["A London singer with a beehive hairstyle and a voice from another era", "Her album Back to Black won five Grammys", "Rehab and Valerie made her a star before her death at 27"]},
+      {name:"Bad Bunny", clues:["A Puerto Rican star who records almost entirely in Spanish", "His album Un Verano Sin Ti was the most-streamed in the world in 2022", "The reggaeton and Latin trap giant behind Titi Me Pregunto and surprise WWE ring appearances"]},
+      {name:"Daddy Yankee", clues:["A Puerto Rican pioneer of reggaeton from San Juan", "His 2004 hit Gasolina took reggaeton worldwide", "The Big Boss of reggaeton behind Con Calma and the original Despacito"]},
+      {name:"Gloria Estefan", clues:["A Cuban-American singer who survived a near-fatal tour bus crash", "With Miami Sound Machine she sang Conga and Rhythm Is Gonna Get You", "The Queen of Latin Pop behind Anything for You and Coming Out of the Dark"]},
+      {name:"Celia Cruz", clues:["A Cuban singer who fled to the US and became salsa royalty", "Her signature cry was a single joyful word: Azucar!", "The Queen of Salsa behind La Vida Es Un Carnaval"]},
+      {name:"PSY", clues:["A South Korean singer whose horse-riding dance broke YouTube in 2012", "His viral hit was named after a wealthy Seoul district, Gangnam", "Gangnam Style was the first video to reach one billion views"]},
+      {name:"Michael Jordan", clues:["He is a retired basketball legend who won six NBA championships in the 1990s.", "He wore number 23 for the Chicago Bulls and starred in the movie Space Jam.", "His Air sneakers and tongue-out dunking made him the most famous basketball player ever."]},
+      {name:"Shaquille O'Neal", clues:["This giant former basketball center is now a funny TV sports analyst.", "He played for the Lakers and Magic and acted as a genie in the movie Kazaam.", "Standing 7 foot 1, this giant raps, DJs, and stars in commercials everywhere."]},
+      {name:"Kobe Bryant", clues:["This Lakers shooting guard won five NBA titles and scored 81 points in one game.", "He was known for his Mamba Mentality and won an Oscar for a short film.", "He wore numbers 8 and 24 in Los Angeles before his tragic death in a 2020 helicopter crash."]},
+      {name:"Tiger Woods", clues:["He is the most famous golfer of his generation with 15 major titles.", "He wears a red shirt on Sundays and won the Masters five times.", "This golf icon made a famous comeback to win the 2019 Masters after years of injuries."]},
+      {name:"Tom Brady", clues:["This quarterback won seven Super Bowl rings, more than any single NFL team.", "He led the Patriots dynasty, then won a title with Tampa Bay at age 43.", "Called the GOAT, he was picked 199th in the draft and played until age 45."]},
+      {name:"Patrick Mahomes", clues:["This quarterback throws no-look passes for the Kansas City Chiefs.", "He signed one of the biggest contracts in sports and won multiple Super Bowls in his twenties.", "His curly hair, headband, and sidearm throws made him the face of the NFL."]},
+      {name:"Simone Biles", clues:["She is the most decorated gymnast in history.", "She has moves named after her and won four gold medals at the 2016 Olympics.", "This tiny 4 foot 8 powerhouse is called the GOAT of gymnastics."]},
+      {name:"Michael Phelps", clues:["He is the most decorated Olympian of all time with 28 medals.", "This swimmer won eight gold medals at the 2008 Beijing Olympics.", "Nicknamed the Baltimore Bullet, his huge wingspan made him a fish in the pool."]},
+      {name:"Usain Bolt", clues:["He is the fastest man ever recorded over 100 meters.", "This Jamaican sprinter won gold in the 100m at three straight Olympics.", "His lightning pose and 6 foot 5 frame made sprinting look easy."]},
+      {name:"Muhammad Ali", clues:["He was a heavyweight boxing champion and global civil rights icon.", "He won the Rumble in the Jungle in Zaire in 1974.", "He floated like a butterfly and stung like a bee, calling himself The Greatest."]},
+      {name:"Mike Tyson", clues:["This boxer became the youngest heavyweight champion at age 20.", "He bit an opponent's ear in a famous 1997 rematch.", "His face tattoo and soft lisp made him one of boxing's scariest stars."]},
+      {name:"Stephen Curry", clues:["He changed basketball forever with his three-point shooting.", "This Warriors guard is the NBA's all-time leader in made three-pointers.", "The Baby-Faced Assassin chews his mouthguard while draining shots from the logo."]},
+      {name:"Kevin Durant", clues:["This 7-foot scoring machine won titles with the Golden State Warriors.", "He is a two-time Finals MVP from Texas who later played in Brooklyn and Phoenix.", "The Slim Reaper's pull-up jumper is nearly unguardable."]},
+      {name:"Shohei Ohtani", clues:["This baseball star both pitches and hits at an elite level.", "He came from Japan to star for the Angels and then the Dodgers.", "A 700 million dollar contract made this two-way phenom the richest name in baseball."]},
+      {name:"Lionel Messi", clues:["This Argentine soccer star won the 2022 World Cup.", "He scored over 800 career goals, mostly for Barcelona.", "The little magician with the golden left foot won a record eight Ballon d'Or awards."]},
+      {name:"Cristiano Ronaldo", clues:["This Portuguese soccer star is famous for his Siuuu celebration.", "He starred for Manchester United, Real Madrid, and Juventus.", "The most-followed man on Instagram built his legend on goals and gravity-defying headers."]},
+      {name:"Neymar", clues:["This Brazilian soccer star became the most expensive transfer ever in 2017.", "His flashy dribbling and rainbow flicks made him a YouTube sensation at Santos.", "He left Barcelona for PSG in a 222 million euro deal that shocked the world."]},
+      {name:"Venus Williams", clues:["She is a seven-time Grand Slam tennis champion and Olympic gold medalist.", "She paved the way for her younger sister and fought for equal prize money.", "This elder sister changed tennis fashion with her bold on-court outfits."]},
+      {name:"Naomi Osaka", clues:["This tennis star won four Grand Slam singles titles before age 24.", "Born in Japan, she beat her idol in a dramatic 2018 US Open final.", "She lit the Olympic cauldron in Tokyo and speaks openly about mental health."]},
+      {name:"Caitlin Clark", clues:["She became the NCAA's all-time leading scorer in basketball.", "Her deep three-pointers at Iowa packed arenas across America.", "Drafted first by the Indiana Fever, she sparked a boom in women's basketball."]},
+      {name:"Travis Kelce", clues:["This Chiefs tight end hosts a hit podcast with his brother.", "He won multiple Super Bowls catching passes from his star quarterback.", "His pop star girlfriend turned his games into the biggest show in sports."]},
+      {name:"Aaron Judge", clues:["This Yankees slugger hit 62 home runs in 2022 to break an American League record.", "He stands 6 foot 7 and captains the most famous team in baseball.", "Fans wear robes and white wigs in his special cheering section at Yankee Stadium."]},
+      {name:"Derek Jeter", clues:["He was the captain of the New York Yankees for two decades.", "He won five World Series titles and got his 3,000th hit with a home run.", "Number 2's jump throw from shortstop became a baseball signature."]},
+      {name:"Wayne Gretzky", clues:["He holds nearly every major NHL scoring record.", "He won four Stanley Cups with the Edmonton Oilers in the 1980s.", "Called The Great One, his 2,857 career points may never be touched."]},
+      {name:"Sidney Crosby", clues:["This Penguins captain won three Stanley Cups and two Olympic golds.", "He scored the Golden Goal for Canada at the 2010 Vancouver Olympics.", "The most hyped hockey prospect ever delivered three Cups to Pittsburgh."]},
+      {name:"Floyd Mayweather", clues:["This boxer retired undefeated at 50 and 0.", "He headlined the richest fights in history against Pacquiao and a famous UFC star.", "Money is his nickname, and he flaunts private jets and stacks of cash."]},
+      {name:"Conor McGregor", clues:["This Irish UFC star became the first fighter to hold two belts at once.", "His trash talk and left hand made him MMA's biggest pay-per-view draw.", "The Notorious one crossed over to box an undefeated legend in a 2017 mega-fight."]},
+      {name:"Ronda Rousey", clues:["She was the first female star of the UFC.", "Her armbar finishes often ended fights in under a minute.", "Rowdy went from Olympic judo medalist to WWE champion."]},
+      {name:"Katie Ledecky", clues:["She is the most dominant distance swimmer in history.", "She has won Olympic gold from age 15 and holds world records in the 800 and 1500 freestyle.", "Racing her usually means everyone else is fighting for second place."]},
+      {name:"Shaun White", clues:["This snowboarder won three Olympic gold medals in the halfpipe.", "He also competed as a pro skateboarder and built a fashion career.", "The Flying Tomato's red hair made him snowboarding's first superstar."]},
+      {name:"Tony Hawk", clues:["He landed the first 900 spin in skateboarding history.", "His Pro Skater video games introduced a generation to skate culture.", "The Birdman kept skating professionally into his fifties."]},
+      {name:"Magic Johnson", clues:["This 6 foot 9 point guard led the Showtime Lakers to five titles.", "His rivalry with a Celtics star helped save the NBA in the 1980s.", "His no-look passes and huge smile later made him a billionaire businessman."]},
+      {name:"Larry Bird", clues:["This Celtics legend won three straight MVP awards in the 1980s.", "He was a trash-talking sharpshooter from French Lick, Indiana.", "The Hick from French Lick led Boston to three championships with clutch shooting."]},
+      {name:"Charles Barkley", clues:["This former power forward is now TV's funniest basketball analyst.", "The Round Mound of Rebound won MVP in 1993 with the Phoenix Suns.", "His golf swing is famously terrible, and his Inside the NBA rants go viral."]},
+      {name:"Giannis Antetokounmpo", clues:["This Milwaukee Bucks star won back-to-back MVP awards.", "Born in Greece to Nigerian parents, he sold goods on the street as a kid.", "The Greek Freak scored 50 points to deliver Milwaukee the 2021 title."]},
+      {name:"Aaron Rodgers", clues:["This quarterback won four NFL MVP awards with Green Bay.", "His Hail Mary throws and championship belt celebration are legendary.", "He left the Packers for the Jets and tore his Achilles four plays into the season."]},
+      {name:"Kylian Mbappe", clues:["This French striker won the World Cup as a teenager in 2018.", "His blistering speed makes him the most feared counterattacker in soccer.", "He scored a hat trick in the 2022 World Cup final and later joined Real Madrid."]},
+      {name:"Dale Earnhardt Jr.", clues:["He is NASCAR's most popular driver of his era.", "He won the Daytona 500 twice and later became a beloved TV analyst.", "He carried the legacy of his legendary father, known as The Intimidator."]},
+      {name:"Alex Ovechkin", clues:["This Russian winger broke the NHL's all-time goals record in 2025.", "He captains the Washington Capitals and fires one-timers from his office.", "The Great Eight chased down a record once thought untouchable."]},
+      {name:"Russell Wilson", clues:["This quarterback won a Super Bowl with the Seattle Seahawks.", "His era in Seattle ended after a famous goal-line interception loss in another Super Bowl.", "Mr. Unlimited's 'Let's Ride' catchphrase became an internet meme in Denver."]},
+      {name:"Jimmy Fallon", clues:["He hosts a late-night talk show full of games and lip sync battles.", "He broke out on Saturday Night Live, often cracking up during sketches.", "His Tonight Show Thank You Notes and classroom instrument covers are viral staples."]},
+      {name:"Jimmy Kimmel", clues:["He hosts a late-night show famous for its Mean Tweets segment.", "Parents send him videos of kids crying over eaten Halloween candy.", "His long prank feud with a famous actor plays out on his ABC show."]},
+      {name:"Stephen Colbert", clues:["He played a fake conservative pundit before taking over a late-night desk.", "He is a huge Lord of the Rings nerd who can speak some Elvish.", "His Late Show monologues made him a top-rated host in late night."]},
+      {name:"Conan O'Brien", clues:["This tall redhead hosted late-night TV for nearly three decades.", "He wrote for The Simpsons and for Harvard's humor magazine.", "His travel specials and hit podcast carry on his famous string dance."]},
+      {name:"Ellen DeGeneres", clues:["She hosted a daytime talk show famous for dancing and scaring guests.", "She voiced a forgetful blue fish in a beloved Pixar movie.", "Her 2014 Oscar selfie broke Twitter, and her show ended amid a workplace scandal."]},
+      {name:"Trevor Noah", clues:["This South African comedian hosted The Daily Show for seven years.", "His memoir Born a Crime tells of growing up under apartheid.", "His impressions of world leaders made him a global comedy star."]},
+      {name:"John Oliver", clues:["This British comedian hosts an HBO show mixing jokes with deep investigations.", "His segment on net neutrality crashed the FCC website with comments.", "His show's mascot costumes and stadium giveaways are legendary."]},
+      {name:"David Letterman", clues:["He hosted late-night TV for 33 years with his famous Top Ten lists.", "His gap-toothed grin and Stupid Pet Tricks defined a comedy era.", "He grew a giant beard and now interviews stars on a Netflix show."]},
+      {name:"Jay Leno", clues:["This comedian hosted The Tonight Show for over two decades.", "His chin and denim shirts are as famous as his huge car collection.", "A late-night war with a redheaded rival became TV history and a TV movie."]},
+      {name:"Steve Harvey", clues:["He hosts Family Feud, asking questions that make contestants blush.", "His wrong-winner announcement at Miss Universe 2015 went instantly viral.", "This mustached host also wrote relationship books and hosted a courtroom show."]},
+      {name:"Pat Sajak", clues:["He hosted a famous letter-guessing game show for over 40 years.", "Contestants spun a giant wheel and bought vowels beside his elegant co-host.", "He retired in 2024 as the longest-running game show host ever."]},
+      {name:"Alex Trebek", clues:["He hosted a quiz show where answers must come in the form of a question.", "His calm voice guided Jeopardy contestants for 37 seasons.", "Fans mourned this Canadian host worldwide when he died in 2020."]},
+      {name:"Ryan Seacrest", clues:["He hosts American Idol and a New Year's Eve special every year.", "He built a reality TV empire as a producer behind the scenes.", "This workaholic host stepped into a legend's shoes on Wheel of Fortune."]},
+      {name:"Wendy Williams", clues:["Her daytime show opened with the famous question, 'How you doin'?'.", "Her Hot Topics gossip segment and purple chair were daytime staples.", "This former radio shock jock built an empire spilling celebrity tea."]},
+      {name:"James Corden", clues:["This British host turned car rides into karaoke gold.", "His in-car singing segment with a famous pop star broke the internet.", "He crossed the pond from Gavin and Stacey to CBS late night."]},
+      {name:"Seth Meyers", clues:["He anchored Weekend Update before taking over a late-night show.", "His 'A Closer Look' segments dissect politics with rapid-fire jokes.", "He corrects his own jokes in a recurring segment when viewers write in."]},
+      {name:"Drew Carey", clues:["This comedian took over a famous pricing game show in 2007.", "He starred in a sitcom set in Cleveland that carried his name.", "His improv show asked the question, 'Whose line is it anyway?'"]},
+      {name:"Gordon Ramsay", clues:["This shouting chef hosts cooking shows full of bleeps and slammed plates.", "His restaurants have earned Michelin stars across the globe.", "He calls bad cooks 'idiot sandwiches' on Hell's Kitchen."]},
+      {name:"Tyra Banks", clues:["She hosted a modeling competition with fierce makeovers and a made-up word for smiling with your eyes.", "She taught America to 'smize' on America's Next Top Model.", "This supermodel also hosted America's Got Talent and Dancing with the Stars."]},
+      {name:"Jennifer Aniston", clues:["She played Rachel on the most famous sitcom of the 1990s.", "Her haircut became a global phenomenon copied in salons everywhere.", "She now stars in a morning news drama on Apple TV."]},
+      {name:"Bryan Cranston", clues:["He went from goofy sitcom dad to TV's most feared drug kingpin.", "His Walter White transformation is called the greatest in TV history.", "Say his character's other name: Heisenberg, from Breaking Bad."]},
+      {name:"Jon Hamm", clues:["He played a suave 1960s ad man with a dark past.", "Don Draper's suits and Old Fashioneds made him a style icon.", "He struggled for years before landing his career-making role at age 36."]},
+      {name:"Steve Carell", clues:["He played the world's worst boss on a hit workplace sitcom.", "Michael Scott's 'That's what she said' became a comedy catchphrase.", "He left the show to star in films like The 40-Year-Old Virgin."]},
+      {name:"Jim Parsons", clues:["He played a genius physicist with zero social skills on a hit sitcom.", "His character's triple knock ritual became iconic.", "Sheldon's 'Bazinga!' catchphrase ruled The Big Bang Theory for 12 seasons."]},
+      {name:"Kaley Cuoco", clues:["She played Penny, the waitress across the hall from two physicists.", "She voiced Harley Quinn and starred in The Flight Attendant.", "She grew up on screen from 8 Simple Rules to the highest-paid actress lists."]},
+      {name:"Sofia Vergara", clues:["Her thick Colombian accent made her a scene-stealer on a hit family sitcom.", "She played Gloria, married to a much older closet mogul.", "She became a judge on America's Got Talent after her sitcom ended."]},
+      {name:"Julia Louis-Dreyfus", clues:["She played Elaine, who danced terribly on a legendary sitcom.", "She later won Emmys as a foul-mouthed vice president on Veep.", "With 11 acting Emmys, she is the most awarded comedy performer in TV history."]},
+      {name:"Jerry Seinfeld", clues:["He played a version of himself on a show famously about nothing.", "His observational jokes often start with 'What's the deal with...'", "He now interviews comedians in cars while getting coffee."]},
+      {name:"Jason Alexander", clues:["He played George, the short, stocky, bald best friend on a hit sitcom.", "His character was based on the show's co-creator.", "George's lie about being a marine biologist became TV legend."]},
+      {name:"David Schwimmer", clues:["He played the dinosaur-loving Ross on a beloved sitcom.", "His 'We were on a break!' line is quoted endlessly.", "He voiced a giraffe in Madagascar and played a lawyer in a famous true-crime miniseries."]},
+      {name:"Matthew Perry", clues:["He played the sarcastic Chandler on a 90s sitcom phenomenon.", "His odd sentence emphasis became a comedy signature.", "He wrote a raw memoir about addiction before his death in 2023."]},
+      {name:"Courteney Cox", clues:["She played the obsessively neat Monica on a hit sitcom.", "She screamed through the Scream movies as reporter Gale Weathers.", "Bruce Springsteen pulled her onstage in a famous 1984 music video."]},
+      {name:"Lisa Kudrow", clues:["She played the quirky, guitar-playing Phoebe on a hit sitcom.", "'Smelly Cat' is her character's beloved terrible song.", "Her ditzy charm made Phoebe a fan favorite for ten seasons."]},
+      {name:"Matt LeBlanc", clues:["He played Joey, the lovable actor who adored sandwiches.", "His pickup line 'How you doin'?' became a global catchphrase.", "His spinoff flopped, but he later co-hosted Top Gear in Britain."]},
+      {name:"Neil Patrick Harris", clues:["He played a teenage doctor before reinventing himself as a womanizing legend in a suit.", "His character Barney made the word 'legendary' a catchphrase.", "This song-and-dance man has hosted the Tonys, Emmys, and Oscars."]},
+      {name:"Millie Bobby Brown", clues:["She played a girl with psychokinetic powers and a shaved head.", "Eleven ate frozen waffles and fought monsters from the Upside Down.", "She launched a beauty empire while still a teenager."]},
+      {name:"David Harbour", clues:["He plays the gruff police chief in a small town with a portal problem.", "Hopper's love of coffee and dad dancing won hearts on Stranger Things.", "He later bulked up to play Red Guardian in the Marvel universe."]},
+      {name:"Jason Bateman", clues:["He plays the calm center of a wildly dysfunctional TV family.", "He laundered money for a cartel in the dark drama Ozark.", "A child star of the 80s, he rebooted his career with Arrested Development."]},
+      {name:"Michael J. Fox", clues:["He filmed a sitcom by day and a time-travel movie by night in 1985.", "Alex P. Keaton made him a star before Marty McFly made him a legend.", "He became a hero off screen for his fight against Parkinson's disease."]},
+      {name:"Kelsey Grammer", clues:["He played a snobbish psychiatrist on TV for 20 straight years.", "His character moved from a Boston bar to a Seattle radio show.", "Frasier's tossed salads and scrambled eggs were calling again in a revival."]},
+      {name:"Ted Danson", clues:["He played bartender Sam in the bar where everybody knows your name.", "He later ran the neighborhood in an afterlife comedy, The Good Place.", "His silver hair has graced TV hits across five decades."]},
+      {name:"Kerry Washington", clues:["She played Olivia Pope, the fixer in the white coat, on Scandal.", "'It's handled' became her character's iconic catchphrase.", "She glided through the capital in designer outfits, saving politicians' secrets."]},
+      {name:"Ellen Pompeo", clues:["She narrated her own medical drama for nearly two decades.", "Meredith's voiceovers open episodes with life lessons from a hospital.", "She became one of TV's highest-paid stars as the surgeon named Grey."]},
+      {name:"Larry David", clues:["He co-created a show about nothing, then starred as himself in an HBO comedy.", "His real-life quirks became George Costanza's entire personality.", "This bald comedy legend turns social awkwardness into art."]},
+      {name:"Jason Sudeikis", clues:["He plays a relentlessly optimistic American football coach hired in England.", "His mustache and homemade biscuits won hearts coaching AFC Richmond.", "Ted Lasso's kindness turned a commercial character into an Emmy machine."]},
+      {name:"Bob Odenkirk", clues:["He played a shady lawyer who earned his own tragic prequel series.", "Saul Goodman's colorful suits hid a heartbreaking downfall.", "He surprised everyone by becoming an action star in the movie Nobody."]},
+      {name:"Zooey Deschanel", clues:["She played the adorkable Jess in a loft full of oddball roommates.", "The theme song of her show asked, 'Who's that girl?'", "Her bangs and vintage dresses defined New Girl style."]},
+      {name:"Mindy Kaling", clues:["She wrote for and played Kelly, the most dramatic employee in a famous office.", "She created a hit series about an Indian-American teen navigating high school.", "Her own show cast her as a rom-com obsessed doctor."]},
+      {name:"Quinta Brunson", clues:["She created and stars in a mockumentary set in an underfunded elementary school.", "Her teachers at Abbott Elementary became America's favorites.", "A viral internet star first, she made Emmy history as a creator and star."]},
+      {name:"Donald Glover", clues:["He writes, directs, and stars in the surreal FX series Atlanta.", "He also makes hit music, and one of his videos became a cultural moment in 2018.", "He played a young Lando and voiced Simba in a Lion King remake."]},
+      {name:"Kris Jenner", clues:["She is the momager who built a reality TV empire out of her own family.", "She manages her five daughters' billion-dollar brands.", "'You're doing amazing, sweetie' is her famous line from behind a camera."]},
+      {name:"Kylie Jenner", clues:["She built a cosmetics empire and became a billionaire while still a teenager.", "Her lip kits sold out in minutes after her famous lip transformation.", "The youngest of her famous family became a beauty mogul and social media queen."]},
+      {name:"Kendall Jenner", clues:["This supermodel sister walks runways for Vogue and Victoria's Secret.", "She is the tallest and most private member of her famous reality family.", "Her soda commercial controversy made headlines around the world."]},
+      {name:"Khloe Kardashian", clues:["She hosted a makeover show helping people get revenge-body transformations.", "Her denim brand made size inclusivity its mission.", "This third sister is famous for brutal honesty and epic clapbacks."]},
+      {name:"Kourtney Kardashian", clues:["The eldest sister is known for deadpan one-liners and a health obsession.", "She married a punk drummer in a surprise Las Vegas ceremony.", "Fans quote her dry, unbothered delivery more than anyone else on the show."]},
+      {name:"Paris Hilton", clues:["This hotel heiress invented the modern reality star on The Simple Life.", "'That's hot' was her catchphrase while working farm jobs on TV.", "She later opened up about her past and became a DJ and business mogul."]},
+      {name:"Simon Cowell", clues:["This British judge is famous for brutal honesty on talent shows.", "His tight black T-shirts and eye rolls launched Idol and Got Talent franchises worldwide.", "He assembled one of the biggest boy bands ever from five solo singers on his show."]},
+      {name:"Paula Abdul", clues:["She was the kind judge on American Idol's original panel.", "Before judging, she was a pop star who danced with an animated cat in a video.", "The 'Straight Up' singer started out as a Lakers cheerleader and choreographer."]},
+      {name:"Blake Shelton", clues:["This country singer coached more winners than anyone on The Voice.", "His playful feuds with a Maroon 5 frontman stole the show for years.", "He spins his red chair for country singers and fires off wisecracks."]},
+      {name:"Nicole Polizzi", clues:["She is a tiny reality star famous for a giant hair pouf.", "'Where's the beach?!' she cried in a classic Jersey Shore moment.", "This self-proclaimed meatball went from party girl to mom and business owner."]},
+      {name:"Bethenny Frankel", clues:["This sharp-tongued Housewife built the Skinnygirl drinks empire.", "She sold her cocktail brand for a reported 100 million dollars.", "Her disaster relief work earned praise far beyond reality TV."]},
+      {name:"NeNe Leakes", clues:["This Atlanta Housewife coined 'bloop' and a dozen other catchphrases.", "'I said what I said' is her legendary reunion mic drop.", "She went from reality star to Broadway and sitcom roles."]},
+      {name:"Dave Chappelle", clues:["His sketch show created some of the most quoted comedy characters ever.", "He walked away from a reported 50 million dollar deal at his peak.", "His stand-up specials spark debate and sell out arenas worldwide."]},
+      {name:"Chris Rock", clues:["He hosted the Oscars the night a slap was heard around the world.", "His stand-up specials are ranked among the greatest of all time.", "He narrated a sitcom about his own Brooklyn childhood in the 1980s."]},
+      {name:"John Mulaney", clues:["This clean-cut comic jokes about his Catholic upbringing and his stint in rehab.", "He co-created the Stefon character for Saturday Night Live.", "His 'horse in a hospital' bit is a modern stand-up classic."]},
+      {name:"Ali Wong", clues:["She filmed a hit stand-up special while seven months pregnant.", "She starred in a romantic comedy she also wrote, and in the road-rage drama Beef.", "Her glasses and leather dresses became a signature stage look."]},
+      {name:"Amy Schumer", clues:["Her sketch show turned bold feminist humor into viral gold.", "She wrote and starred in Trainwreck, a hit movie about a commitment-phobe.", "Her stand-up tackles body image with zero filter."]},
+      {name:"Tiffany Haddish", clues:["She broke out by stealing every scene in the movie Girls Trip.", "Her wild talk-show fruit story became late-night legend.", "She wrote a memoir called The Last Black Unicorn."]},
+      {name:"Katt Williams", clues:["This pint-sized comic's swaggering persona made his Pimp Chronicles special iconic.", "His permed hair and rapid-fire delivery are unmistakable.", "His explosive podcast interview broke the internet in 2024."]},
+      {name:"Adam Sandler", clues:["He makes hit comedies with his friends through his Happy Madison company.", "His songs about a lunch lady and Hanukkah became comedy staples.", "He stunned critics with a dramatic turn in Uncut Gems."]},
+      {name:"Steve Martin", clues:["This white-haired comic played banjo and wore a fake arrow through his head.", "'Wild and crazy guy' was his famous 70s catchphrase.", "He now solves murders in a New York building alongside two co-stars."]},
+      {name:"George Carlin", clues:["His 'seven words you can never say on television' routine reached the Supreme Court.", "This dark philosopher-comic hosted the very first episode of Saturday Night Live.", "His rants about stuff and soft language still circulate daily."]},
+      {name:"Martha Stewart", clues:["This businesswoman built a media empire around cooking, crafts and elegant home living.", "She became America's best-known lifestyle expert through magazines, TV shows and product lines.", "This homemaking icon became unlikely best friends with rapper Snoop Dogg, even hosting a show with him."]},
+      {name:"Julia Child", clues:["This tall, cheerful chef taught Americans to master French cooking from their own kitchens.", "Her TV show The French Chef and her famous cookbook made beef bourguignon a household dish.", "This legendary chef is known for her warbly voice, love of butter and signing off with 'Bon appetit!'"]},
+      {name:"Emeril Lagasse", clues:["This TV chef brought New Orleans Creole and Cajun flavor to home kitchens everywhere.", "His Food Network shows made 'kick it up a notch' a national catchphrase.", "Bam! This chef yells his famous one-word catchphrase every time he seasons a dish."]},
+      {name:"Bobby Flay", clues:["This red-headed chef is a master of the grill and Southwestern flavors.", "He starred on Iron Chef America and challenges cooks to surprise throwdowns.", "This Food Network grill master owns Mesa Grill, and ambitious challengers line up for the chance to beat him at his own game."]},
+      {name:"Anthony Bourdain", clues:["This chef-turned-writer traveled the world eating street food and telling raw, honest stories.", "His book Kitchen Confidential blew the lid off restaurant secrets before he hosted Parts Unknown.", "This beloved traveling chef shared a famous plastic-stool noodle meal with President Obama in Vietnam."]},
+      {name:"Jamie Oliver", clues:["This British chef campaigns for healthier school lunches and simpler home cooking.", "Known as The Naked Chef, he made 15-minute and 5-ingredient meals famous.", "This cheeky British cook went to war against the chicken nugget in American school cafeterias."]},
+      {name:"Rachael Ray", clues:["This bubbly TV cook promises a full homemade meal faster than takeout delivery.", "Her 30 Minute Meals show and magazine made weeknight cooking feel easy for everyone.", "She made 'EVOO' - her shortcut for extra virgin olive oil - part of everyday cooking talk."]},
+      {name:"Guy Fieri", clues:["This spiky-haired food host road-trips to small-town diners in a red convertible.", "He hunts down funky joints on Diners, Drive-Ins and Dives.", "With frosted tips and sunglasses worn backwards, this self-appointed mayor of Flavortown is unmistakable."]},
+      {name:"Giada De Laurentiis", clues:["This Italian-American chef is known for elegant Italian dishes and a huge TV smile.", "Her show Everyday Italian made pasta night feel glamorous.", "Fans love joking about how perfectly this petite chef pronounces Italian words like spaghetti and prosciutto."]},
+      {name:"Wolfgang Puck", clues:["This Austrian-born chef brought gourmet pizza and fine dining to Hollywood's biggest stars.", "His Beverly Hills restaurant Spago became the place to eat in Los Angeles.", "This celebrity chef has catered the official Oscars Governors Ball after-party for decades."]},
+      {name:"Masaharu Morimoto", clues:["This Japanese master chef is famous for lightning-fast knife skills and artistic plating.", "He was an Iron Chef in Japan before joining the American version of the show.", "On Iron Chef America, this quiet chef's dazzling knife work made him a fan favorite."]},
+      {name:"Jose Andres", clues:["This Spanish-born chef is as famous for feeding disaster victims as for his restaurants.", "His nonprofit World Central Kitchen rushes hot meals to hurricanes, earthquakes and war zones.", "This chef was nominated for a Nobel Peace Prize for feeding millions of people after disasters."]},
+      {name:"Nigella Lawson", clues:["This British food writer is famous for indulgent comfort food and a glamorous TV style.", "Her TV shows and bestselling cookbooks made midnight fridge raids look elegant.", "This self-described domestic goddess insists she is not a chef - just a home cook who adores chocolate."]},
+      {name:"Ina Garten", clues:["This Hamptons host is beloved for calm, elegant dinner parties and foolproof recipes.", "Her show Barefoot Contessa is named after the specialty food store she once owned.", "Her most famous cooking rule: if you cannot make it fresh, store-bought is fine."]},
+      {name:"Ree Drummond", clues:["This Oklahoma food blogger turned ranch cooking into a TV, magazine and Walmart empire.", "Known as The Pioneer Woman, she cooks hearty meals for cowboys and hungry kids.", "This red-haired ranch wife films her show on a working cattle ranch with her husband Ladd."]},
+      {name:"Buddy Valastro", clues:["This New Jersey baker builds towering, over-the-top cakes that look like works of art.", "His family's Hoboken bakery became famous on the TLC show Cake Boss.", "This Cake Boss once built a life-size race car cake out of sponge and fondant."]},
+      {name:"Duff Goldman", clues:["This bald, goateed pastry chef makes cakes shaped like guitars, robots and fire trucks.", "His Baltimore shop Charm City Cakes starred on the show Ace of Cakes.", "This edgy cake artist is also a metal sculptor who makes desserts with power tools."]},
+      {name:"Padma Lakshmi", clues:["This model-turned-host spent years judging dishes on TV's most famous cooking competition.", "She hosted Top Chef for 17 seasons and has written cookbooks about global flavors.", "Her famous send-off to losing chefs was: 'Please pack your knives and go.'"]},
+      {name:"Paula Deen", clues:["This Southern TV cook is famous for comfort food and an absolutely serious love of butter.", "Her Savannah restaurant The Lady and Sons turned her into a Food Network star.", "This silver-haired Southern cook starts many recipes by melting a whole stick of butter, y'all."]},
+      {name:"Cindy Crawford", clues:["This supermodel became one of the most recognizable faces of the 1990s.", "A small mole above her lip became her trademark across hundreds of magazine covers.", "This Pepsi-commercial icon's daughter Kaia Gerber followed her onto the runway."]},
+      {name:"Naomi Campbell", clues:["This British supermodel ruled the runways of the late 80s and 90s with a famous strut.", "She was one of the original supermodels and broke barriers as the first Black model on many major covers.", "This supermodel's fierce walk - and a headline-making thrown phone - made her a pop culture legend."]},
+      {name:"Heidi Klum", clues:["This German supermodel hosts hit fashion and talent shows in two countries.", "She hosted Project Runway for years and judges on America's Got Talent.", "Her over-the-top Halloween costumes - a giant worm, a peacock, an old lady - go viral every single year."]},
+      {name:"Gisele Bundchen", clues:["This Brazilian supermodel was the highest-paid model in the world for over a decade.", "She was a Victoria's Secret Angel famous for her powerful horse walk.", "This supermodel was married to NFL quarterback Tom Brady for over ten years."]},
+      {name:"Kate Moss", clues:["This British model defined the waif-thin look that shook up fashion in the 1990s.", "At just 5 foot 7, she broke the tall supermodel mold and fronted endless Calvin Klein campaigns.", "Her quote 'Nothing tastes as good as skinny feels' sparked a huge controversy."]},
+      {name:"Claudia Schiffer", clues:["This German supermodel's blonde beauty drew endless comparisons to Brigitte Bardot.", "She shot to fame in Guess jeans campaigns at the end of the 1980s.", "With over a thousand magazine covers, this 90s icon once held the record for the most covers ever."]},
+      {name:"Linda Evangelista", clues:["This Canadian supermodel was the ultimate chameleon, reinventing her hair and look for every era.", "She formed the supermodel Trinity with Naomi Campbell and Christy Turlington.", "This supermodel famously declared she would not get out of bed for less than $10,000 a day."]},
+      {name:"Christy Turlington", clues:["This American supermodel was known for classic, timeless beauty and a calm, healthy image.", "She fronted Calvin Klein's Eternity campaign for more than twenty years.", "This model balanced the runway with yoga, charity work in Central America and a degree from NYU."]},
+      {name:"Gigi Hadid", clues:["This model of Palestinian and Dutch heritage became a defining face of the social-media modeling era.", "She has walked the Victoria's Secret Fashion Show and covered Vogue editions around the world.", "This supermodel's little sister Bella is also a runway star - and their mom Yolanda was a model too."]},
+      {name:"Bella Hadid", clues:["This supermodel's fox-eye look launched a thousand beauty trends and copycat makeup tutorials.", "She was named Model of the Year and became a face of Dior beauty.", "Her spray-on dress at Paris Fashion Week - fabric sprayed live onto her body - broke the internet."]},
+      {name:"Karlie Kloss", clues:["This tall American model also runs a camp that teaches teenage girls to code.", "A former Victoria's Secret Angel, she went on to host Project Runway.", "This model is best friends with Taylor Swift and married into the Kushner family."]},
+      {name:"Adriana Lima", clues:["This Brazilian model was the longest-serving Victoria's Secret Angel in the brand's history.", "She wore the million-dollar Fantasy Bra multiple times across nearly two decades.", "This Angel trained like a boxer and cried on the runway during her farewell show in 2018."]},
+      {name:"Alessandra Ambrosio", clues:["This Brazilian beauty was a Victoria's Secret Angel for 17 years.", "She was the very first spokesmodel for the brand's PINK line.", "This model walked her final Victoria's Secret show in 2017 after 17 years as one of its most famous Angels."]},
+      {name:"Miranda Kerr", clues:["This Australian model is known for her dimples and a sunny, wellness-focused image.", "She was the first Australian ever chosen as a Victoria's Secret Angel.", "This model founded the skincare brand KORA Organics and was once married to actor Orlando Bloom."]},
+      {name:"Christie Brinkley", clues:["This all-American model appeared on the Sports Illustrated swimsuit cover three years in a row.", "She was the face of CoverGirl for 25 years - one of the longest contracts in modeling history.", "This 'Uptown Girl' was the inspiration for her ex-husband Billy Joel's famous hit song."]},
+      {name:"Twiggy", clues:["This skinny British teenager became the face of swinging 1960s London.", "Her huge painted eyelashes, pixie haircut and tiny frame changed modeling forever.", "This mod icon earned her nickname from how stick-thin she was and was named The Face of 1966."]},
+      {name:"Iman", clues:["This Somali-born supermodel was a muse to designers including Yves Saint Laurent.", "She built a cosmetics empire designed for women of color long before it was fashionable.", "This elegant model was married to rock legend David Bowie until his death in 2016."]},
+      {name:"Cara Delevingne", clues:["This British model is famous for bold eyebrows and a goofy, rebellious attitude.", "She crossed into acting with roles in Paper Towns, Suicide Squad and Valerian.", "This model's eyebrows became so famous they changed beauty trends all over the world."]},
+      {name:"Elon Musk", clues:["This billionaire runs companies building electric cars and rockets at the same time.", "He founded SpaceX, leads Tesla and bought Twitter, renaming it X.", "This richest man in the world wants to colonize Mars and gave his son the name X AE A-Xii."]},
+      {name:"Jeff Bezos", clues:["This bald billionaire started an online bookstore in his garage that grew to sell everything.", "He founded Amazon and later flew to the edge of space on his own company's rocket.", "This Amazon founder's space company Blue Origin sent Captain Kirk actor William Shatner into space."]},
+      {name:"Bill Gates", clues:["This computer pioneer dropped out of Harvard to build a software empire.", "He co-founded Microsoft and became one of the biggest philanthropists in history.", "This billionaire's foundation fights malaria and polio, and his 2015 TED talk warned the world about pandemics."]},
+      {name:"Warren Buffett", clues:["This folksy investor became one of the richest people alive by patiently buying undervalued companies.", "Known as the Oracle of Omaha, he runs the giant holding company Berkshire Hathaway.", "This billionaire still lives in the same modest Omaha house he bought in 1958 and eats at Dairy Queen."]},
+      {name:"Mark Zuckerberg", clues:["This hoodie-wearing tech founder built a social network from his Harvard dorm room.", "He created Facebook and bought Instagram and WhatsApp along the way.", "This Meta CEO has testified before Congress and bet his whole company on the metaverse."]},
+      {name:"Steve Jobs", clues:["This visionary co-founded a tech giant in a California garage and changed phones forever.", "He led Apple through the iMac, iPod and iPhone revolutions after being fired and rehired.", "This black-turtleneck icon told Stanford graduates to 'stay hungry, stay foolish.'"]},
+      {name:"Richard Branson", clues:["This British daredevil billionaire built an empire of airlines, record stores and trains under one brand.", "His Virgin Group has spanned more than 400 companies.", "This thrill-seeking tycoon flew to the edge of space aboard his own rocket plane at age 70."]},
+      {name:"Mark Cuban", clues:["This loud, courtside billionaire bought a famous NBA team and stars on a TV investment show.", "He owned the Dallas Mavericks for over twenty years and sits as a shark on Shark Tank.", "This Shark made his fortune selling his streaming company Broadcast.com to Yahoo for billions."]},
+      {name:"Barbara Corcoran", clues:["This real estate queen turned a $1,000 loan into a New York property empire.", "She is a longtime shark on Shark Tank, known for sharp instincts and quick humor.", "This Shark famously bought herself a coffin and throws herself a living funeral party."]},
+      {name:"Daymond John", clues:["This Shark Tank investor built a hip-hop clothing empire from his mother's house in Queens.", "He founded the streetwear brand FUBU - short for For Us, By Us.", "This branding guru wrote The Power of Broke about starting a business with nothing."]},
+      {name:"Sara Blakely", clues:["This self-made billionaire had her big idea while getting dressed for work selling fax machines.", "She invented Spanx shapewear with $5,000 and wrote her own patent to save money.", "This founder became the youngest self-made female billionaire with her footless pantyhose idea."]},
+      {name:"Jack Ma", clues:["This former English teacher was rejected from dozens of jobs - even KFC - before striking gold.", "He founded Alibaba, China's answer to Amazon.", "This Chinese billionaire loves performing on stage at company parties in wild costumes and wigs."]},
+      {name:"Larry Page", clues:["This quiet computer scientist co-created the world's most-used search engine.", "He co-founded Google as a Stanford student and later ran its parent company Alphabet.", "This Google co-founder funds flying car startups and almost never gives interviews."]},
+      {name:"Phil Knight", clues:["This shoe mogul started out selling Japanese running shoes from the trunk of his car.", "He co-founded Nike, which grew into the biggest sportswear brand on Earth.", "This 'Shoe Dog' author turned a swoosh logo bought for $35 into a global empire."]},
+      {name:"Howard Schultz", clues:["This businessman turned a small Seattle coffee chain into a cafe on every corner.", "As Starbucks CEO, he copied Italy's espresso bar culture for American customers.", "This coffee king grew up in Brooklyn public housing and once considered running for president."]},
+      {name:"Ralph Lauren", clues:["This fashion billionaire built an empire on the polo-playing, country-club look.", "His brand's little polo player logo became a global symbol of preppy luxury.", "This designer started out selling neckties and now designs Team USA's Olympic outfits."]},
+      {name:"Giorgio Armani", clues:["This Italian designer made the relaxed, elegant suit a global symbol of power.", "His suits dressed Richard Gere in American Gigolo and decades of red carpets after that.", "This silver-haired fashion legend ran his own empire into his nineties and dressed countless Oscar winners."]},
+      {name:"Donatella Versace", clues:["This platinum-blonde designer took charge of her family's fashion house after a family tragedy.", "She became the face of her family's fashion house after her brother Gianni was killed in 1997.", "This designer dressed Jennifer Lopez in the green jungle dress so searched-for that it inspired Google Images."]},
+      {name:"Bernard Arnault", clues:["This French tycoon is frequently ranked the richest person in the world thanks to luxury goods.", "His LVMH empire owns Louis Vuitton, Dior, Tiffany and dozens of other luxury houses.", "Nicknamed the 'wolf in cashmere,' this businessman turned luxury shopping into Europe's most valuable company."]},
+      {name:"J.K. Rowling", clues:["This British author wrote the best-selling book series in history, about a young wizard.", "She wrote the first Harry Potter book as a struggling single mother in Edinburgh cafes.", "This author became a billionaire thanks to a boy wizard with a lightning-shaped scar."]},
+      {name:"Stephen King", clues:["This Maine author has terrified readers for fifty years with haunted hotels and killer clowns.", "He wrote The Shining, Carrie and It, and sometimes publishes as Richard Bachman.", "This master of horror has sold over 350 million books and writes at his home in Bangor, Maine."]},
+      {name:"James Patterson", clues:["This author sells more books than almost anyone alive, with short chapters and endless thrillers.", "He created detective Alex Cross and co-writes many of his books with a team of writers.", "This former advertising man holds the record for the most New York Times bestsellers in history."]},
+      {name:"John Grisham", clues:["This former lawyer writes legal thrillers that dominate bestseller lists and movie screens.", "He wrote The Firm, A Time to Kill and The Pelican Brief.", "This Mississippi storyteller practiced law for a decade before Tom Cruise starred in the movie of The Firm."]},
+      {name:"Nicholas Sparks", clues:["This author makes millions of readers cry with love stories set in coastal North Carolina.", "He wrote The Notebook, A Walk to Remember and Dear John.", "This romance king's most famous movie scene is a rain-soaked kiss between Ryan Gosling and Rachel McAdams."]},
+      {name:"Dr. Seuss", clues:["This beloved children's author filled his books with rhymes, Whos and fantastical creatures.", "He wrote The Cat in the Hat and How the Grinch Stole Christmas.", "This author took a bet that he could write a book using only 50 different words - and produced Green Eggs and Ham."]},
+      {name:"Mark Twain", clues:["This white-suited American humorist is often called the father of American literature.", "He wrote The Adventures of Tom Sawyer and Adventures of Huckleberry Finn.", "This humorist was born the year Halley's Comet appeared and died the year it returned - just as he predicted."]},
+      {name:"William Shakespeare", clues:["This English playwright wrote Hamlet, Macbeth and Romeo and Juliet over 400 years ago.", "Known as the Bard of Avon, he invented hundreds of English words and phrases we still use.", "This glove-maker's son from Stratford became the most famous writer in the English language."]},
+      {name:"Agatha Christie", clues:["This British writer is the best-selling novelist of all time thanks to her murder mysteries.", "She created the detectives Hercule Poirot and Miss Marple.", "This mystery queen's play The Mousetrap has been running in London for over 70 years."]},
+      {name:"J.R.R. Tolkien", clues:["This Oxford professor invented entire languages for a fantasy world of hobbits and elves.", "He wrote The Hobbit and The Lord of the Rings.", "This author served in the trenches of World War I before creating Middle-earth."]},
+      {name:"George R.R. Martin", clues:["This bearded author is famous for killing off beloved characters in his epic fantasy saga.", "His A Song of Ice and Fire books became HBO's Game of Thrones.", "This New Jersey author types on an old DOS computer while fans beg him to finish The Winds of Winter."]},
+      {name:"Dan Brown", clues:["This author turned art, codes and secret societies into blockbuster thrillers.", "He wrote The Da Vinci Code, starring symbologist Robert Langdon.", "This author's novels send readers on treasure hunts through the Louvre, Rome and the Vatican."]},
+      {name:"Suzanne Collins", clues:["This author imagined a televised fight to the death between teenagers in a grim future nation.", "She wrote The Hunger Games trilogy about archer Katniss Everdeen.", "This former children's TV writer created the blessing 'May the odds be ever in your favor.'"]},
+      {name:"Stephenie Meyer", clues:["This Arizona mother of three dreamed of a sparkling vampire and turned it into a phenomenon.", "Her Twilight saga made Bella Swan and Edward Cullen household names.", "This author drafted her vampire debut in just three months while raising three young sons."]},
+      {name:"Maya Angelou", clues:["This poet and memoirist rose from a difficult childhood to become a defining voice of her generation.", "Her memoir I Know Why the Caged Bird Sings is an American classic.", "This poet recited 'On the Pulse of Morning' at President Bill Clinton's inauguration in 1993."]},
+      {name:"Danielle Steel", clues:["This author has written nearly 200 romance and drama novels, sometimes several in a single year.", "She is among the best-selling authors alive, with more than 800 million copies sold.", "This reclusive writer works up to 22 hours a day on a vintage typewriter, splitting time between Paris and San Francisco."]},
+      {name:"Ernest Hemingway", clues:["This hard-living American novelist wrote in short, punchy sentences and loved bullfights and safaris.", "He wrote The Old Man and the Sea and A Farewell to Arms.", "This Nobel Prize winner kept six-toed cats at his Key West home - and their descendants still live there today."]},
+      {name:"Roald Dahl", clues:["This British author delighted children with wicked humor and magical mischief.", "He wrote Charlie and the Chocolate Factory, Matilda, James and the Giant Peach and The BFG.", "This former fighter pilot wrote his stories in a little hut at the bottom of his garden."]},
+      {name:"Margaret Atwood", clues:["This Canadian author imagined a dystopia where women are forced to wear red robes and white bonnets.", "She wrote The Handmaid's Tale, which became a hit TV series more than thirty years later.", "This two-time Booker Prize winner also invented a remote book-signing machine so she could skip touring."]},
+      {name:"Stan Lee", clues:["This comic book legend made a cameo appearance in nearly every movie based on his characters.", "He co-created Spider-Man, the X-Men, Iron Man, the Hulk and the Avengers at Marvel Comics.", "This mustached Marvel icon greeted fans with his trademark send-off: 'Excelsior!'"]},
+      {name:"Steven Spielberg", clues:["This director defined the summer blockbuster with sharks, aliens and dinosaurs.", "He directed Jaws, E.T. the Extra-Terrestrial and Jurassic Park.", "This filmmaker co-founded DreamWorks and won Best Director Oscars for Schindler's List and Saving Private Ryan."]},
+      {name:"Martin Scorsese", clues:["This New York director makes gritty crime films full of wiseguys and classic rock soundtracks.", "He directed Goodfellas, Taxi Driver and The Wolf of Wall Street.", "This director's long partnerships with Robert De Niro and later Leonardo DiCaprio defined American cinema."]},
+      {name:"Quentin Tarantino", clues:["This former video store clerk became famous for razor-sharp dialogue and stylish movie violence.", "He wrote and directed Pulp Fiction, Kill Bill and Django Unchained.", "This director has long sworn he will retire after making exactly ten films."]},
+      {name:"Alfred Hitchcock", clues:["This British director became known as the Master of Suspense with carefully plotted thrillers.", "He directed Psycho, Vertigo, Rear Window and a string of films starring icy blonde heroines.", "This director's shower scene in Psycho is the most famous murder in movie history."]},
+      {name:"Stanley Kubrick", clues:["This perfectionist director demanded dozens of takes and reinvented himself with every genre.", "He made 2001: A Space Odyssey, The Shining and A Clockwork Orange.", "This director's moon landing footage was so convincing that conspiracy theorists claim he faked the real one."]},
+      {name:"Christopher Nolan", clues:["This British director bends time, dreams and memory into puzzle-box blockbusters.", "He directed Inception, Interstellar and The Dark Knight trilogy.", "This director avoids CGI whenever possible - he crashed a real 747 airplane for Tenet."]},
+      {name:"James Cameron", clues:["This director made era-defining hits about a doomed ocean liner and tall blue aliens.", "He directed Titanic and Avatar and has explored the real Titanic wreck many times.", "This filmmaker dove solo to Challenger Deep, the deepest point in the ocean."]},
+      {name:"Peter Jackson", clues:["This New Zealand director spent years of his life bringing Middle-earth to the screen.", "His Lord of the Rings trilogy won 17 Academy Awards in total.", "This barefoot, bearded Kiwi director started out making low-budget horror movies in his backyard."]},
+      {name:"Tim Burton", clues:["This director's gothic, spooky-but-sweet visual style is recognizable in a single frame.", "He directed Edward Scissorhands, Beetlejuice and The Nightmare Before Christmas.", "This director cast Johnny Depp in eight of his films and shares his dark fairytale style with Helena Bonham Carter."]},
+      {name:"David Fincher", clues:["This meticulous director makes dark thrillers about killers, fight clubs and missing wives.", "He directed Se7en, Fight Club, Zodiac and Gone Girl.", "This director started out shooting Madonna music videos before co-creating House of Cards and Mindhunter."]},
+      {name:"Ridley Scott", clues:["This British director launched two of the most legendary science fiction franchises ever.", "He directed Alien, Blade Runner and Gladiator.", "This director was nearly 80 when he reshot an entire role in a finished film in just nine days."]},
+      {name:"George Lucas", clues:["This filmmaker built a galaxy far, far away - and a special effects empire to match.", "He created Star Wars and, with Steven Spielberg, the Indiana Jones adventures.", "This director sold his production company to Disney in 2012 for four billion dollars."]},
+      {name:"Francis Ford Coppola", clues:["This director risked his fortune and health to make the definitive American mafia epic.", "He directed The Godfather trilogy and the Vietnam epic Apocalypse Now.", "This filmmaker's daughter Sofia also became an Oscar-winning director, and his Napa winery is nearly as famous as his films."]},
+      {name:"Spike Lee", clues:["This Brooklyn director tells bold stories about race and city life, calling his films 'joints.'", "He directed Do the Right Thing, Malcolm X and BlacKkKlansman.", "This director sits courtside at nearly every New York Knicks home game, dressed loud and arguing with referees."]},
+      {name:"Guillermo del Toro", clues:["This Mexican director makes beautiful monster movies filled with clockwork, ghosts and fairy tales.", "He directed Pan's Labyrinth, Hellboy and the Oscar-winning The Shape of Water.", "This director fills notebooks with monster sketches and keeps a whole house of horror art called Bleak House."]},
+      {name:"Wes Anderson", clues:["This director's films look like pastel dollhouses, with perfectly centered shots and vintage costumes.", "He directed The Grand Budapest Hotel, Fantastic Mr. Fox and The Royal Tenenbaums.", "This director reuses the same quirky acting troupe - Bill Murray, Tilda Swinton and Owen Wilson - in nearly every film."]},
+      {name:"Neil Armstrong", clues:["This astronaut became the most famous explorer of the 20th century with one small step.", "He commanded Apollo 11, the first mission ever to land humans on the Moon.", "This quiet Ohio pilot told the world in 1969: 'That's one small step for man, one giant leap for mankind.'"]},
+      {name:"Buzz Aldrin", clues:["This astronaut is the second most famous moonwalker in history.", "He stepped onto the Moon's surface minutes after his Apollo 11 crewmate in July 1969.", "This astronaut inspired a Toy Story space ranger and once punched a moon-landing denier who harassed him."]},
+      {name:"Albert Einstein", clues:["This wild-haired physicist rewrote our understanding of space, time and energy.", "His equation E=mc2 is the most famous formula in the world.", "This Nobel winner fled Nazi Germany and stuck his tongue out in the most famous photograph of any scientist."]},
+      {name:"Stephen Hawking", clues:["This physicist unraveled the secrets of black holes from a wheelchair he used for more than fifty years.", "His book A Brief History of Time has sold more than ten million copies.", "This scientist spoke through a computerized voice and appeared as himself on The Simpsons and Star Trek."]},
+      {name:"Neil deGrasse Tyson", clues:["This astrophysicist became television's favorite explainer of the universe.", "He hosted Cosmos: A Spacetime Odyssey, following in the footsteps of Carl Sagan.", "This director of New York's Hayden Planetarium famously helped get Pluto demoted from planet status."]},
+      {name:"Bill Nye", clues:["This bow-tie-wearing TV scientist taught a generation of kids that science rules.", "His 1990s TV show mixed comedy sketches with loud, wild experiments.", "This 'Science Guy' worked as a mechanical engineer at Boeing before becoming a TV star."]},
+      {name:"David Attenborough", clues:["This British broadcaster has narrated nature documentaries for more than seventy years.", "His calm, hushed voice guides Planet Earth and Blue Planet.", "Britain named its polar research ship after this broadcaster, even though the public voted for Boaty McBoatface."]},
+      {name:"Steve Irwin", clues:["This khaki-clad Australian leapt on crocodiles while teaching the world to love dangerous wildlife.", "Known worldwide as the Crocodile Hunter, he ran Australia Zoo with his wife Terri and their kids.", "This wildlife star shouted 'Crikey!' at everything, and his daughter Bindi followed in his boots."]},
+      {name:"Jane Goodall", clues:["This primatologist lived among wild chimpanzees in Africa for decades.", "Her work at Gombe in Tanzania proved that chimps make and use tools, just like humans.", "This scientist arrived in Africa at 26 with no university degree - and changed science forever."]},
+      {name:"Marie Curie", clues:["This Polish-French physicist pioneered the study of radioactivity.", "She is still the only person ever to win Nobel Prizes in two different scientific fields.", "This scientist discovered the elements polonium and radium - and her old notebooks remain radioactive today."]},
+      {name:"Mother Teresa", clues:["This tiny nun in a white sari with blue borders devoted her life to the poorest of the poor.", "She founded the Missionaries of Charity order in Calcutta, India.", "This Nobel Peace Prize winner was declared a Catholic saint in 2016."]},
+      {name:"Mahatma Gandhi", clues:["This Indian leader helped free his country using nonviolent protest instead of armies.", "His Salt March and hunger strikes defied British colonial rule.", "This lawyer-turned-activist wore simple homespun cloth and inspired civil rights leaders around the world."]},
+      {name:"Nelson Mandela", clues:["This South African leader spent 27 years in prison before leading his entire nation.", "He became his country's first Black president after apartheid fell.", "This freedom icon walked out of prison in 1990 with his fist raised high beside his wife Winnie."]},
+      {name:"Martin Luther King Jr.", clues:["This Baptist preacher became the defining voice of the American civil rights movement.", "His 'I Have a Dream' speech drew a quarter of a million people to Washington in 1963.", "This Nobel Peace Prize winner is honored with a United States national holiday every January."]},
+      {name:"Princess Diana", clues:["This shy former kindergarten teacher became the most photographed woman in the world.", "Known as the People's Princess, she championed landmine victims, AIDS patients and the homeless.", "This royal's death in a 1997 Paris car crash left an ocean of flowers outside Kensington Palace."]},
+      {name:"Queen Elizabeth II", clues:["This monarch reigned longer than any other British king or queen in history.", "She served seventy years on the throne, working with fifteen British prime ministers.", "This queen adored corgis, wore rainbow-bright coats and met every American president from Truman to Biden."]},
+      {name:"Barack Obama", clues:["This Hawaii-born politician made history at the ballot box in 2008.", "He served two terms as the 44th president of the United States.", "This former president campaigned on 'Yes We Can' and received the Nobel Peace Prize in his first year in office."]},
+      {name:"Pope Francis", clues:["This religious leader from Argentina chose his papal name to honor a saint of the poor.", "He became the first pope from the Americas and the first Jesuit pope in 2013.", "This pope lives in a simple guesthouse instead of the papal palace and famously asked, 'Who am I to judge?'"]},
+      {name:"Amelia Earhart", clues:["This daring pilot vanished over the Pacific while attempting to fly around the world.", "She was the first woman to fly solo nonstop across the Atlantic Ocean, in 1932.", "This aviator's disappearance in 1937 remains one of the greatest mysteries in history."]},
+      {name:"Rosa Parks", clues:["This seamstress changed America by refusing to give up her seat and move to the back of a bus.", "Her 1955 arrest in Montgomery, Alabama sparked a year-long bus boycott.", "This quiet civil rights icon is remembered as the mother of the freedom movement."]},
+      {name:"Malala Yousafzai", clues:["This Pakistani activist survived being shot simply for insisting that girls deserve an education.", "She became the youngest Nobel Prize laureate in history, at just seventeen.", "This activist addressed the United Nations on her sixteenth birthday, less than a year after the attack on her life."]},
+      {name:"Leonardo da Vinci", clues:["This Renaissance genius painted masterpieces and sketched flying machines centuries ahead of his time.", "He painted the Mona Lisa and The Last Supper.", "This left-handed master wrote his notebooks backwards, in mirror writing."]},
+      {name:"Pablo Picasso", clues:["This Spanish artist co-invented Cubism and painted faces from two angles at the same time.", "His giant anti-war mural Guernica is one of the most famous paintings ever created.", "This endlessly inventive artist produced an estimated 50,000 works before his death at age 91."]},
+      {name:"Bob Ross", clues:["This soft-spoken painter convinced millions of viewers that anyone could paint a landscape in thirty minutes.", "His PBS show The Joy of Painting ran for eleven years.", "This afro-haired artist called his mistakes 'happy little accidents' and loved painting happy little trees."]},
+      {name:"Pitbull", clues:["Miami rapper known as Mr. Worldwide", "His catchphrase is Dale!", "Sang Give Me Everything and Timber with Kesha"]},
+      {name:"Tina Fey", clues:["Comedy writer who created 30 Rock", "She played Sarah Palin on Saturday Night Live", "She wrote and starred in Mean Girls"]}
     ],
     wordBank: [
-      "guitar","dance","swim","airplane","pizza","bicycle","elephant","book",
-      "jump","sing","soccer","beach","camera","dog","run","movie",
-      "telephone","cook","basketball","tree","car","sleep","birthday","fish",
-      "football","climb","house","bird","write","television","shoe","cat",
-      "box","laugh","school","sun","moon","rain","snow","music",
-      "paint","drive","baby","balloon","chair","table","door","window"
+      "guitar",
+      "dance",
+      "swim",
+      "airplane",
+      "pizza",
+      "bicycle",
+      "elephant",
+      "book",
+      "jump",
+      "sing",
+      "soccer",
+      "beach",
+      "camera",
+      "dog",
+      "run",
+      "movie",
+      "telephone",
+      "cook",
+      "basketball",
+      "tree",
+      "car",
+      "sleep",
+      "birthday",
+      "fish",
+      "football",
+      "climb",
+      "house",
+      "bird",
+      "write",
+      "television",
+      "shoe",
+      "cat",
+      "box",
+      "laugh",
+      "school",
+      "sun",
+      "moon",
+      "rain",
+      "snow",
+      "music",
+      "paint",
+      "drive",
+      "baby",
+      "balloon",
+      "chair",
+      "table",
+      "door",
+      "window",
+      "penguin",
+      "tiger",
+      "zebra",
+      "giraffe",
+      "monkey",
+      "rabbit",
+      "turtle",
+      "dolphin",
+      "whale",
+      "shark",
+      "octopus",
+      "kangaroo",
+      "panda",
+      "koala",
+      "cheetah",
+      "leopard",
+      "jaguar",
+      "buffalo",
+      "crocodile",
+      "snake",
+      "frog",
+      "spider",
+      "butterfly",
+      "eagle",
+      "owl",
+      "parrot",
+      "flamingo",
+      "ostrich",
+      "chicken",
+      "duck",
+      "goose",
+      "turkey",
+      "horse",
+      "cow",
+      "pig",
+      "sheep",
+      "goat",
+      "donkey",
+      "camel",
+      "llama",
+      "deer",
+      "moose",
+      "bear",
+      "wolf",
+      "fox",
+      "raccoon",
+      "skunk",
+      "beaver",
+      "otter",
+      "squirrel",
+      "hamster",
+      "ferret",
+      "hedgehog",
+      "porcupine",
+      "hippo",
+      "rhino",
+      "beetle",
+      "mosquito",
+      "chipmunk",
+      "mouse",
+      "alpaca",
+      "coyote",
+      "train",
+      "truck",
+      "motorcycle",
+      "scooter",
+      "helicopter",
+      "boat",
+      "ship",
+      "submarine",
+      "rocket",
+      "tractor",
+      "ambulance",
+      "firetruck",
+      "taxi",
+      "limousine",
+      "camper",
+      "forklift",
+      "bulldozer",
+      "crane",
+      "wagon",
+      "stroller",
+      "skateboard",
+      "violin",
+      "trumpet",
+      "trombone",
+      "saxophone",
+      "clarinet",
+      "flute",
+      "oboe",
+      "bassoon",
+      "cello",
+      "viola",
+      "harp",
+      "banjo",
+      "mandolin",
+      "ukulele",
+      "accordion",
+      "harmonica",
+      "xylophone",
+      "tambourine",
+      "maraca",
+      "drum",
+      "cymbal",
+      "whistle",
+      "tuba",
+      "bugle",
+      "hammer",
+      "screwdriver",
+      "wrench",
+      "pliers",
+      "saw",
+      "drill",
+      "ladder",
+      "rope",
+      "chain",
+      "shovel",
+      "rake",
+      "broom",
+      "bucket",
+      "mop",
+      "sponge",
+      "towel",
+      "soap",
+      "shampoo",
+      "toothbrush",
+      "toothpaste",
+      "razor",
+      "scissors",
+      "needle",
+      "thread",
+      "button",
+      "zipper",
+      "pocket",
+      "wallet",
+      "purse",
+      "backpack",
+      "suitcase",
+      "umbrella",
+      "sunglasses",
+      "glove",
+      "scarf",
+      "coat",
+      "jacket",
+      "sweater",
+      "pants",
+      "dress",
+      "skirt",
+      "shirt",
+      "blouse",
+      "vest",
+      "belt",
+      "tie",
+      "sock",
+      "boot",
+      "sneaker",
+      "sandal",
+      "slipper",
+      "mitten",
+      "nail",
+      "screw",
+      "bolt",
+      "hoe",
+      "stove",
+      "fridge",
+      "freezer",
+      "oven",
+      "microwave",
+      "toaster",
+      "blender",
+      "mixer",
+      "kettle",
+      "teapot",
+      "coffeemaker",
+      "dishwasher",
+      "iron",
+      "vacuum",
+      "lamp",
+      "candle",
+      "mirror",
+      "clock",
+      "watch",
+      "calendar",
+      "computer",
+      "laptop",
+      "tablet",
+      "phone",
+      "keyboard",
+      "printer",
+      "radio",
+      "speaker",
+      "headphone",
+      "microphone",
+      "flashlight",
+      "battery",
+      "charger",
+      "cable",
+      "faucet",
+      "shower",
+      "bathtub",
+      "toilet",
+      "sink",
+      "counter",
+      "cabinet",
+      "drawer",
+      "shelf",
+      "couch",
+      "sofa",
+      "armchair",
+      "bed",
+      "pillow",
+      "blanket",
+      "mattress",
+      "curtain",
+      "carpet",
+      "stairs",
+      "mailbox",
+      "fence",
+      "gate",
+      "garden",
+      "sprinkler",
+      "trashcan",
+      "apple",
+      "banana",
+      "orange",
+      "grape",
+      "strawberry",
+      "blueberry",
+      "raspberry",
+      "peach",
+      "hopping",
+      "skipping",
+      "crawling",
+      "walking",
+      "jogging",
+      "sprinting",
+      "stretching",
+      "yawning",
+      "sneezing",
+      "coughing",
+      "whistling",
+      "humming",
+      "clapping",
+      "waving",
+      "pointing",
+      "shrugging",
+      "nodding",
+      "blinking",
+      "winking",
+      "smiling",
+      "frowning",
+      "crying",
+      "shouting",
+      "whispering",
+      "giggling",
+      "tickling",
+      "hugging",
+      "kissing",
+      "shaking",
+      "spinning",
+      "twirling",
+      "sliding",
+      "swinging",
+      "bouncing",
+      "kicking",
+      "throwing",
+      "catching",
+      "hitting",
+      "pushing",
+      "pulling",
+      "lifting",
+      "carrying",
+      "digging",
+      "building",
+      "drawing",
+      "coloring",
+      "cutting",
+      "gluing",
+      "folding",
+      "tying",
+      "brushing",
+      "combing",
+      "washing",
+      "drying",
+      "wiping",
+      "sweeping",
+      "mopping",
+      "dusting",
+      "ironing",
+      "sewing",
+      "knitting",
+      "typing",
+      "texting",
+      "reading",
+      "studying",
+      "teaching",
+      "learning",
+      "counting",
+      "measuring",
+      "pouring",
+      "stirring",
+      "mixing",
+      "baking",
+      "frying",
+      "boiling",
+      "melting",
+      "peeling",
+      "slicing",
+      "chopping",
+      "tasting",
+      "smelling",
+      "listening",
+      "watching",
+      "waiting",
+      "happy",
+      "sad",
+      "angry",
+      "scared",
+      "excited",
+      "nervous",
+      "shy",
+      "proud",
+      "jealous",
+      "bored",
+      "tired",
+      "hungry",
+      "thirsty",
+      "silly",
+      "brave",
+      "calm",
+      "curious",
+      "surprised",
+      "confused",
+      "embarrassed",
+      "grumpy",
+      "cheerful",
+      "lonely",
+      "thankful",
+      "hopeful",
+      "thunder",
+      "lightning",
+      "rainbow",
+      "cloudy",
+      "windy",
+      "stormy",
+      "foggy",
+      "sunny",
+      "snowy",
+      "rainy",
+      "hail",
+      "breeze",
+      "hurricane",
+      "tornado",
+      "blizzard",
+      "drizzle",
+      "sunshine",
+      "frost",
+      "icicle",
+      "mountain",
+      "river",
+      "ocean",
+      "lake",
+      "forest",
+      "desert",
+      "island",
+      "valley",
+      "waterfall",
+      "volcano",
+      "cave",
+      "cliff",
+      "meadow",
+      "flower",
+      "grass",
+      "leaf",
+      "rock",
+      "sand",
+      "shell",
+      "wave",
+      "star",
+      "planet",
+      "comet",
+      "eclipse",
+      "sunrise",
+      "sunset",
+      "autumn",
+      "spring",
+      "winter",
+      "christmas",
+      "halloween",
+      "thanksgiving",
+      "easter",
+      "valentine",
+      "fireworks",
+      "parade",
+      "party",
+      "wedding",
+      "graduation",
+      "vacation",
+      "picnic",
+      "camping",
+      "carnival",
+      "concert",
+      "festival",
+      "anniversary",
+      "reunion",
+      "sleepover",
+      "bonfire",
+      "barbecue",
+      "costume",
+      "elbow",
+      "knee",
+      "shoulder",
+      "ankle",
+      "wrist",
+      "thumb",
+      "toe",
+      "heel",
+      "chin",
+      "cheek",
+      "forehead",
+      "eyebrow",
+      "eyelash",
+      "nostril",
+      "tongue",
+      "teeth",
+      "stomach",
+      "back",
+      "neck",
+      "finger",
+      "pencil",
+      "eraser",
+      "ruler",
+      "notebook",
+      "homework",
+      "teacher",
+      "student",
+      "classroom",
+      "library",
+      "playground",
+      "lunchbox",
+      "crayon",
+      "globe",
+      "recess",
+      "shopping",
+      "gardening",
+      "fishing",
+      "hiking",
+      "skating",
+      "skiing",
+      "surfing",
+      "sailing",
+      "rowing"
     ],
     quickFire: [
       {q:"Who is known as the King of Pop?", choices:["Prince","Elvis Presley","Justin Timberlake","Michael Jackson"], correct:3},
@@ -9287,149 +10262,283 @@ render(c,ctx){
 }});
 
 /* ================= HOLLYWOOD GAME NIGHT ================= */
-regGame('hollywood',{howto:"3 party games, one total score. 1) Celebrity Clues - guess the star from the clues (fewer clues = more points). 2) In Other Words - 60 seconds of word guessing. 3) Quick Fire - 60 seconds of rapid trivia. Beat the target score to win!",name:'Hollywood Game Night',icon:'🎬',tags:'Game Show',pvp:true,seats:2,
+regGame('hollywood',{howto:"Official Hollywood Game Night: two teams of celebrities and a captain battle through party games.\n\nROUND 1 - CELEBRITY NAME GAME: your celebrity teammate gives you clues one at a time. Guess the star - 2 points if you need 1-2 clues, 1 point if you need all 3. Pass if you're stuck.\n\nROUND 2 - IN OTHER WORDS: 45 seconds. Guess each word as hints drip in - more words, more points (1 each).\n\nROUND 3 - SMASH THE BUZZER: head-to-head trivia. Smash the buzzer before the rival captain, then answer right for 1 point. Buzz and miss, and they get a free shot.\n\nWin the night and you play the CELEBRITY NAME GAME bonus: pick one celebrity partner, 10 names in 90 seconds, $1,000 a name - all 10 wins $25,000!",name:'Hollywood Game Night',icon:'🎬',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   var hw=BANKS2.hollywood||{};
   var celebs=(hw.celebClues||[]).map(SHG.hollywoodNormCeleb).filter(function(x){ return x.name&&x.clues.length>=1; });
   var words=(hw.wordBank||[]).map(SHG.hollywoodNormWord).filter(function(x){ return !!x.word; });
   var fire=(hw.quickFire||[]).map(SHG.hollywoodNormFire).filter(function(x){ return x.q&&x.choices.length>=2; });
-  if(shgGuard(celebs.length>=3&&words.length>=5&&fire.length>=5,'Hollywood Game Night content is still loading')) return;
+  if(shgGuard(celebs.length>=20&&words.length>=20&&fire.length>=5,'Hollywood Game Night content is still loading')) return;
   var S=null, pvpCtl=null, hw2, timer=null;
-  c.innerHTML='<h2>🎬 Hollywood Game Night</h2><div class="muted">3 party games, one total score. Beat '+SHG.hollywoodTarget()+' points to win!</div><div id="hw2"></div>';
+  c.innerHTML='<h2>🎬 Hollywood Game Night</h2><div id="hw2"></div>';
   hw2=c.querySelector('#hw2');
+  function stopTimer(){ if(timer){ clearInterval(timer); timer=null; } }
+  function bulbs(n){ var s=''; for(var i=0;i<(n||18);i++)s+='<span class="hw-bulb"></span>'; return '<div class="hw-bulbs">'+s+'</div>'; }
+  function stage(inner){ return '<div class="hw-stage">'+bulbs()+inner+bulbs()+'</div>'; }
+  function teamsHTML(){
+    return '<div class="hw-teams">'
+      +'<div class="hw-couch home"><div class="hw-tname">🛋️ YOUR TEAM — '+S.mine+'</div><div class="hw-members">⭐ YOU (captain)<br>🌟 '+esc(S.mates[0])+'<br>🌟 '+esc(S.mates[1])+'</div></div>'
+      +'<div class="hw-couch away"><div class="hw-tname">🛋️ RIVALS — '+S.theirs+'</div><div class="hw-members">🎤 '+esc(S.rival)+' (captain)<br>🌟 '+esc(S.rivMates[0])+'<br>🌟 '+esc(S.rivMates[1])+'</div></div>'
+      +'</div>';
+  }
   function start(shared){
     stopTimer();
-    S={celebs:shared.celebs,words:shared.words,fire:shared.fire,phase:'celeb',ci:0,shown:1,wi:0,fi:0,score:0,time:60,done:false};
-    drawCeleb();
+    var names=SHG.botNames?SHG.botNames(5):['Ruby','Max','Ivy','Leo','Zoe'];
+    S={celebDeck:shared.celebs,wordDeck:shared.words,fireDeck:shared.fire,
+       mates:[names[0],names[1]],rival:names[2],rivMates:[names[3],names[4]],
+       mine:0,theirs:0,phase:'intro',done:false,
+       ci:0,shown:1,wi:0,got:0,time:0,fi:0,buzzed:null,
+       bonusDeck:[],bi:0,bGot:0,partner:null};
+    drawIntro();
   }
-  function stopTimer(){ if(timer){ clearInterval(timer); timer=null; } }
-  function hud(phaseName){
-    return '<div class="row"><div class="grow center"><b>'+phaseName+'</b></div>'
-      +'<div class="grow center">⭐ Score: <b style="color:#eab676">'+S.score+'</b> / '+SHG.hollywoodTarget()+'</div></div>';
+  function drawIntro(){
+    hw2.innerHTML=stage('<div class="hw-sign">HOLLYWOOD<br>GAME NIGHT</div>'
+      +'<div class="center" style="color:#ffe9b0;font-size:13px;padding:0 10px">Two teams. Three party games. One bonus round for $25,000.</div>'
+      +teamsHTML()
+      +'<button class="btn" id="hwGo" style="margin-top:10px">🎉 Start Game Night!</button>');
+    hw2.querySelector('#hwGo').onclick=function(){ Sound.click(); round1Intro(); };
   }
-  /* ---- Game 1: Celebrity Clues ---- */
+  function scoreLine(){
+    return '<div class="hw-score"><span>YOUR TEAM <b>'+S.mine+'</b></span><span class="muted">vs</span><span>RIVALS <b>'+S.theirs+'</b></span></div>';
+  }
+  /* ---- ROUND 1: Celebrity Name Game ---- */
+  function round1Intro(){
+    S.phase='r1';
+    hw2.innerHTML=stage('<div class="hw-sign" style="font-size:22px">ROUND 1</div><div class="center" style="color:#ffe9b0">🌟 CELEBRITY NAME GAME<br>'+esc(S.mates[0])+' gives you the clues — guess 6 stars!</div>'+scoreLine())
+      +'<button class="btn" id="hwR1">▶ Play Round 1</button>';
+    hw2.querySelector('#hwR1').onclick=function(){ Sound.click(); S.ci=0; S.shown=1; drawCeleb(); };
+  }
   function drawCeleb(){
-    if(S.ci>=S.celebs.length){ S.phase='words'; S.wi=0; S.time=60; drawWords(); return; }
-    var cb=S.celebs[S.ci];
-    var h=hud('🌟 Celebrity Clues '+(S.ci+1)+'/'+S.celebs.length)
-      +'<div class="card"><div class="muted center">Guess the celebrity — fewer clues = more points (300/200/100)</div>';
+    if(S.ci>=S.celebDeck.length){ rivalBeat(1); return; }
+    var cb=S.celebDeck[S.ci];
+    var h=scoreLine()+'<div class="card"><div class="muted center">🌟 '+esc(S.mates[0])+' is clueing… ('+(S.ci+1)+'/'+S.celebDeck.length+')</div>';
     for(var i=0;i<S.shown&&i<cb.clues.length;i++){ h+='<div class="center" style="margin:6px 0">💡 '+esc(cb.clues[i])+'</div>'; }
     h+='<div class="row"><input id="hAns" class="grow" placeholder="Who is it?…" autocomplete="off">'
-      +'<button class="btn small" id="hGo">Guess</button></div>'
-      +'<div class="row" style="margin-top:6px"><button class="btn small secondary grow" id="hMore" '+(S.shown>=cb.clues.length?'disabled':'')+'>💡 Reveal another clue</button></div>'
-      +'<div class="status" id="hMsg"></div></div>';
+      +'<button class="btn" id="hGo">Guess</button></div>'
+      +'<div class="row" style="margin-top:6px;gap:6px">'
+      +'<button class="btn secondary grow" id="hMore" '+(S.shown>=cb.clues.length?'disabled':'')+'>💡 Another clue</button>'
+      +'<button class="btn secondary grow" id="hPass">⏭ Pass</button></div>'
+      +'<div class="muted center" style="font-size:12px;margin-top:4px">2 pts with 1-2 clues · 1 pt with all 3</div></div>';
     hw2.innerHTML=h;
-    var inp=hw2.querySelector('#hAns'); inp.focus();
+    var inp=hw2.querySelector('#hAns'); if(inp.focus)inp.focus();
     function guess(){
-      var g=inp.value;
-      if(!g.trim()) return;
+      var g=inp.value; if(!g.trim())return;
       if(SHG.fuzzy(g,cb.name)){
-        var pts=SHG.hollywoodCluePts(S.shown);
-        S.score+=pts; Sound.win();
-        toast('🌟 Correct! '+cb.name+' +'+pts);
-        S.ci++; S.shown=1; drawCeleb();
+        var pts=S.shown>=3?1:2; S.mine+=pts; Sound.win();
+        toast('🌟 '+cb.name+' +'+pts); S.ci++; S.shown=1; drawCeleb();
       } else {
         Sound.beep(200,.15,'sawtooth');
         if(S.shown<cb.clues.length){ S.shown++; drawCeleb(); }
-        else { toast('It was '+cb.name+' — no points'); S.ci++; S.shown=1; drawCeleb(); }
+        else { toast('It was '+cb.name); S.ci++; S.shown=1; drawCeleb(); }
       }
     }
     hw2.querySelector('#hGo').onclick=guess;
-    inp.onkeydown=function(e){ if(e.key==='Enter') guess(); };
+    inp.onkeydown=function(e){ if(e.key==='Enter')guess(); };
     hw2.querySelector('#hMore').onclick=function(){ Sound.click(); S.shown=Math.min(S.shown+1,cb.clues.length); drawCeleb(); };
+    hw2.querySelector('#hPass').onclick=function(){ Sound.click(); toast('Passed — it was '+cb.name); S.ci++; S.shown=1; drawCeleb(); };
   }
-  /* ---- Game 2: In Other Words (60s) ---- */
-  function drawWords(){
-    S.phase='words';
-    drawWordQ();
+  /* ---- ROUND 2: In Other Words (45s) ---- */
+  function round2Intro(){
+    S.phase='r2';
+    hw2.innerHTML=stage('<div class="hw-sign" style="font-size:22px">ROUND 2</div><div class="center" style="color:#ffe9b0">🗣️ IN OTHER WORDS<br>45 seconds — how many words can your team get?</div>'+scoreLine())
+      +'<button class="btn" id="hwR2">▶ Play Round 2</button>';
+    hw2.querySelector('#hwR2').onclick=function(){ Sound.click(); S.wi=0; S.got=0; S.time=45; drawWordQ(); startWordTimer(); };
+  }
+  function startWordTimer(){
+    stopTimer();
     timer=setInterval(function(){
+      if(!hw2.isConnected){ stopTimer(); return; }
       S.time--;
-      var t=hw2.querySelector('#tLeft'); if(t) t.textContent=S.time;
-      if(S.time<=0){ stopTimer(); S.phase='fire'; S.fi=0; S.time=60; drawFire(); }
+      var t=hw2.querySelector('#tLeft'); if(t)t.textContent=S.time;
+      var hint=hw2.querySelector('#wHint');
+      if(S.time===30&&hint)hint.innerHTML=wordHint(2);
+      if(S.time===15&&hint)hint.innerHTML=wordHint(3);
+      if(S.time<=0){ stopTimer(); rivalBeat(2); }
     },1000);
+  }
+  function wordHint(stageN){
+    var w=S.wordDeck[S.wi].word;
+    if(stageN===1)return '💬 Starts with "'+esc(w.charAt(0).toUpperCase())+'" · '+w.length+' letters';
+    if(stageN===2)return '💬 '+esc(w.split('').map(function(ch,i){ return i%2===0?ch:'_'; }).join(' '))+'';
+    return '💬 Ends with "'+esc(w.charAt(w.length-1).toUpperCase())+'" · '+w.length+' letters';
   }
   function drawWordQ(){
-    if(S.wi>=S.words.length){ stopTimer(); S.phase='fire'; S.fi=0; S.time=60; drawFire(); return; }
-    var w=S.words[S.wi];
-    hw2.innerHTML=hud('🗣 In Other Words')+'<div class="card"><div class="center muted">⏱ <b id="tLeft">'+S.time+'</b>s — guess the word from the hints! (+'+SHG.hollywoodWordPts()+' each)</div>'
-      +'<div class="center" style="margin:6px 0">💬 Starts with "'+esc(w.word.charAt(0).toUpperCase())+'" · '+w.word.length+' letters</div>'
+    if(S.wi>=S.wordDeck.length){ stopTimer(); rivalBeat(2); return; }
+    hw2.innerHTML=scoreLine()+'<div class="card"><div class="center muted">⏱ <b id="tLeft">'+S.time+'</b>s · words: <b>'+S.got+'</b></div>'
+      +'<div class="center" id="wHint" style="margin:8px 0;font-size:16px">'+wordHint(S.time>30?1:(S.time>15?2:3))+'</div>'
       +'<div class="row"><input id="hAns" class="grow" placeholder="The word is…" autocomplete="off" autocapitalize="off">'
-      +'<button class="btn small" id="hGo">Guess</button>'
-      +'<button class="btn small secondary" id="hSkip">Skip</button></div>'
+      +'<button class="btn" id="hGo">Guess</button><button class="btn secondary" id="hSkip">Skip</button></div>'
       +'<div class="status" id="hMsg"></div></div>';
-    var inp=hw2.querySelector('#hAns'); inp.focus();
+    var inp=hw2.querySelector('#hAns'); if(inp.focus)inp.focus();
+    var w=S.wordDeck[S.wi];
     function guess(){
-      var g=inp.value;
-      if(!g.trim()) return;
-      if(SHG.fuzzy(g,w.word)){ S.score+=SHG.hollywoodWordPts(); Sound.beep(880,.08); S.wi++; drawWordQ(); }
-      else { Sound.beep(200,.12,'sawtooth'); hw2.querySelector('#hMsg').innerHTML='<span class="err">Nope — keep guessing!</span>'; inp.select(); }
+      var g=inp.value; if(!g.trim())return;
+      if(SHG.fuzzy(g,w.word)){ S.mine++; S.got++; Sound.beep(880,.08); S.wi++; drawWordQ(); }
+      else { Sound.beep(200,.12,'sawtooth'); var m=hw2.querySelector('#hMsg'); if(m)m.innerHTML='<span class="err">Nope — keep going!</span>'; inp.select(); }
     }
     hw2.querySelector('#hGo').onclick=guess;
-    inp.onkeydown=function(e){ if(e.key==='Enter') guess(); };
+    inp.onkeydown=function(e){ if(e.key==='Enter')guess(); };
     hw2.querySelector('#hSkip').onclick=function(){ Sound.click(); S.wi++; drawWordQ(); };
   }
-  /* ---- Game 3: Quick Fire Trivia (60s) ---- */
-  function drawFire(){
-    S.phase='fire';
-    drawFireQ();
-    timer=setInterval(function(){
-      S.time--;
-      var t=hw2.querySelector('#tLeft'); if(t) t.textContent=S.time;
-      if(S.time<=0){ stopTimer(); S.done=true; drawDone(); }
-    },1000);
+  /* ---- ROUND 3: Smash the Buzzer ---- */
+  function round3Intro(){
+    S.phase='r3';
+    hw2.innerHTML=stage('<div class="hw-sign" style="font-size:22px">ROUND 3</div><div class="center" style="color:#ffe9b0">🔔 SMASH THE BUZZER<br>Buzz before '+esc(S.rival)+', answer right, score. 5 questions.</div>'+scoreLine())
+      +'<button class="btn" id="hwR3">▶ Play Round 3</button>';
+    hw2.querySelector('#hwR3').onclick=function(){ Sound.click(); S.fi=0; drawBuzzQ(); };
   }
-  function drawFireQ(){
-    if(S.fi>=S.fire.length){ stopTimer(); S.done=true; drawDone(); return; }
-    var q=S.fire[S.fi];
-    hw2.innerHTML=hud('⚡ Quick Fire')+'<div class="card"><div class="center muted">⏱ <b id="tLeft">'+S.time+'</b>s — rapid fire! (+'+SHG.hollywoodFirePts()+' each)</div>'
-      +'<h3>'+esc(q.q)+'</h3><div id="ch"></div></div>';
-    var ch=hw2.querySelector('#ch');
+  function drawBuzzQ(){
+    if(S.fi>=S.fireDeck.length){ finishMain(); return; }
+    var q=S.fireDeck[S.fi];
+    S.buzzed=null;
+    hw2.innerHTML=scoreLine()+'<div class="card center"><div class="muted">Question '+(S.fi+1)+'/'+S.fireDeck.length+'</div>'
+      +'<h3 style="margin:8px 0">'+esc(q.q)+'</h3>'
+      +'<div id="bzZone"><button class="btn hw-buzz" id="hwBuzz">🔔 BUZZ!</button><div class="muted" id="bzMsg" style="margin-top:6px">Hands on buzzers…</div></div></div>';
+    var rivalAt=setTimeout(function(){
+      if(S.buzzed||!hw2.isConnected||S.done)return;
+      rivalBuzz(q);
+    }, 1400+Math.random()*2600);
+    hw2.querySelector('#hwBuzz').onclick=function(){
+      if(S.buzzed)return;
+      S.buzzed='me'; clearTimeout(rivalAt); Sound.beep(990,.15);
+      showChoices(q,true);
+    };
+  }
+  function rivalBuzz(q){
+    S.buzzed='rival'; Sound.beep(330,.15);
+    var zone=hw2.querySelector('#bzZone');
+    if(Math.random()<0.55){
+      S.theirs++;
+      if(zone)zone.innerHTML='<div class="status"><span class="err">🔔 '+esc(S.rival)+' buzzed first and got it! The answer was '+esc(q.choices[q.correct])+'.</span></div><button class="btn" id="bzNext">Next ▶</button>';
+      var nb=hw2.querySelector('#bzNext'); if(nb)nb.onclick=function(){ S.fi++; drawBuzzQ(); };
+    } else {
+      if(zone)zone.innerHTML='<div class="status"><span class="ok">🔔 '+esc(S.rival)+' buzzed… and MISSED! Free shot for you:</span></div><div id="bzCh"></div>';
+      showChoices(q,false);
+    }
+  }
+  function showChoices(q,myBuzz){
+    var zone=hw2.querySelector('#bzZone');
+    if(zone&&myBuzz)zone.innerHTML='<div class="muted">You buzzed first — answer it:</div><div id="bzCh"></div>';
+    var ch=hw2.querySelector('#bzCh'); if(!ch)return;
     q.choices.forEach(function(t,i){
       ch.appendChild(shgQBtn(esc(t),function(){
-        if(i===q.correct){ S.score+=SHG.hollywoodFirePts(); Sound.beep(880,.06); }
-        else Sound.beep(200,.1,'sawtooth');
-        S.fi++; drawFireQ();
+        if(i===q.correct){ S.mine++; Sound.win(); toast('🔔 Correct +1'); }
+        else { Sound.lose(); toast('The answer was '+q.choices[q.correct]); }
+        S.fi++; setTimeout(drawBuzzQ,650);
       }));
     });
   }
-  async function drawDone(){
+  /* ---- rival team interludes ---- */
+  function rivalBeat(round){
     stopTimer();
-    var win=S.score>=SHG.hollywoodTarget();
-    hw2.innerHTML='<div class="card center"><div class="muted">🎬 Hollywood Game Night — final score</div>'
-      +'<div class="big" style="color:#eab676">'+S.score+'</div>'
-      +'<div class="muted">Target: '+SHG.hollywoodTarget()+'</div><div id="hRes"></div></div>';
-    var res=hw2.querySelector('#hRes');
-    if(isNet){
-      res.innerHTML='<div class="muted">Waiting for opponent...</div>';
-      pvpCtl.submit();
-    } else if(win){
-      Sound.win();
-      res.innerHTML='<div class="status"><span class="ok">🎉 You beat the target — Hollywood champion!</span></div>';
-      await Wallet.recordWin('hollywood');
-    } else {
-      Sound.lose();
-      res.innerHTML='<div class="status"><span class="err">😞 So close! You needed '+SHG.hollywoodTarget()+'.</span></div>';
+    var gain=0, note='';
+    if(round===1){ for(var i=0;i<6;i++){ if(Math.random()<0.55)gain+=(Math.random()<0.45?2:1); } note='The rivals played Celebrity Name Game.'; }
+    if(round===2){ gain=3+Math.floor(Math.random()*5); note='The rivals played In Other Words ('+gain+' words).'; }
+    S.theirs+=gain;
+    var next=round===1?round2Intro:round3Intro;
+    hw2.innerHTML=stage('<div class="center" style="color:#ffe9b0;font-size:15px;padding:6px">'+note+'<br>They scored <b>+'+gain+'</b>.</div>'+scoreLine())
+      +'<button class="btn" id="hwNx">▶ '+(round===1?'Round 2':'Round 3')+'</button>';
+    hw2.querySelector('#hwNx').onclick=function(){ Sound.click(); next(); };
+  }
+  /* ---- finish + bonus ---- */
+  function finishMain(){
+    S.phase='done'; S.done=true;
+    if(isNet){ drawNetDone(); return; }
+    var won=S.mine>S.theirs;
+    hw2.innerHTML=stage('<div class="hw-sign" style="font-size:22px">GAME NIGHT<br>RESULTS</div>'+scoreLine())
+      +(won
+        ? '<div class="card center"><div class="status"><span class="ok">🎉 YOUR TEAM WINS GAME NIGHT!</span></div><div class="muted">Pick your celebrity partner for the bonus round:</div>'
+          +'<div class="row" style="gap:6px;margin-top:6px"><button class="btn grow" id="bp0">🌟 '+esc(S.mates[0])+'</button><button class="btn grow" id="bp1">🌟 '+esc(S.mates[1])+'</button></div></div>'
+        : '<div class="card center"><div class="status"><span class="err">😞 The rivals take Game Night. Better luck next party!</span></div></div>');
+    if(won){
+      Wallet.recordWin('hollywood');
+      hw2.querySelector('#bp0').onclick=function(){ startBonus(S.mates[0]); };
+      hw2.querySelector('#bp1').onclick=function(){ startBonus(S.mates[1]); };
     }
+  }
+  function startBonus(partner){
+    S.partner=partner; S.bonusDeck=SHG.pickN(celebs,10);
+    S.bi=0; S.bGot=0; S.time=90; S.shown=1; S.done=false; S.phase='bonus';
+    hw2.innerHTML=stage('<div class="hw-sign" style="font-size:22px">⭐ BONUS ROUND</div><div class="center" style="color:#ffe9b0">CELEBRITY NAME GAME with '+esc(partner)+'<br>10 names · 90 seconds · $1,000 a name · all 10 = $25,000!</div>')
+      +'<button class="btn" id="hwBGo">▶ Start the clock</button>';
+    hw2.querySelector('#hwBGo').onclick=function(){ Sound.click(); drawBonusQ(); startBonusTimer(); };
+  }
+  function startBonusTimer(){
+    stopTimer();
+    var drip=0;
+    timer=setInterval(function(){
+      if(!hw2.isConnected){ stopTimer(); return; }
+      S.time--;
+      var t=hw2.querySelector('#tLeft'); if(t)t.textContent=S.time;
+      drip++;
+      if(drip===3||drip===6){ S.shown=Math.min(3,S.shown+1); paintClues(); }
+      if(S.time<=0){ stopTimer(); drawBonusDone(); }
+    },1000);
+    S._dripReset=function(){ drip=0; };
+  }
+  function paintClues(){
+    var box=hw2.querySelector('#bClues'); if(!box)return;
+    var cb=S.bonusDeck[S.bi]; if(!cb)return;
+    var h='';
+    for(var i=0;i<S.shown&&i<cb.clues.length;i++){ h+='<div class="center" style="margin:6px 0">💡 '+esc(cb.clues[i])+'</div>'; }
+    box.innerHTML=h;
+  }
+  function drawBonusQ(){
+    if(S.bi>=S.bonusDeck.length){ stopTimer(); drawBonusDone(); return; }
+    var cb=S.bonusDeck[S.bi];
+    var h='<div class="hw-score"><span>⏱ <b id="tLeft">'+S.time+'</b>s</span><span>💰 $'+(S.bGot*1000).toLocaleString()+'</span><span>Name '+(S.bi+1)+'/10</span></div>'
+      +'<div class="card"><div class="muted center">🌟 '+esc(S.partner)+' is clueing…</div><div id="bClues"></div>'
+      +'<div class="row"><input id="hAns" class="grow" placeholder="Who is it?…" autocomplete="off">'
+      +'<button class="btn" id="hGo">Guess</button><button class="btn secondary" id="hPass">Pass</button></div></div>';
+    hw2.innerHTML=h;
+    paintClues();
+    var inp=hw2.querySelector('#hAns'); if(inp&&inp.focus)inp.focus();
+    function guess(){
+      var g=inp.value; if(!g.trim())return;
+      if(SHG.fuzzy(g,cb.name)){ S.bGot++; Sound.win(); S.bi++; S.shown=1; if(S._dripReset)S._dripReset(); drawBonusQ(); }
+      else Sound.beep(200,.12,'sawtooth');
+    }
+    hw2.querySelector('#hGo').onclick=guess;
+    if(inp)inp.onkeydown=function(e){ if(e.key==='Enter')guess(); };
+    hw2.querySelector('#hPass').onclick=function(){ Sound.click(); S.bi++; S.shown=1; if(S._dripReset)S._dripReset(); drawBonusQ(); };
+  }
+  async function drawBonusDone(){
+    stopTimer();
+    var perfect=S.bGot>=10;
+    hw2.innerHTML=stage('<div class="hw-sign" style="font-size:22px">BONUS ROUND<br>OVER</div>')
+      +'<div class="card center"><div class="muted">You and '+esc(S.partner)+' named</div><div class="big" style="color:#eab676">'+S.bGot+' / 10</div>'
+      +'<div class="big">💰 $'+(perfect?25000:S.bGot*1000).toLocaleString()+'</div>'
+      +(perfect?'<div class="status"><span class="ok">🏆 PERFECT GAME — $25,000!</span></div>':'<div class="muted">Every name was worth $1,000.</div>')
+      +'</div>';
+    Sound[perfect?'win':'click']();
+    if(S.bGot>0)await Wallet.add(S.bGot*10,'hollywood');
+  }
+  async function drawNetDone(){
+    hw2.innerHTML=stage('<div class="hw-sign" style="font-size:22px">GAME NIGHT<br>RESULTS</div>')
+      +'<div class="card center"><div class="muted">Your team scored</div><div class="big" style="color:#eab676">'+S.mine+'</div><div id="hRes"></div></div>';
+    var res=hw2.querySelector('#hRes');
+    res.innerHTML='<div class="muted">Waiting for opponent...</div>';
+    pvpCtl.submit();
   }
   if(isNet){
     pvpCtl=shgPvp(net,{
       share:function(){
-        return {celebs:SHG.pickN(celebs,3),words:SHG.pickN(words,12),fire:SHG.pickN(fire,15)};
+        return {celebs:SHG.pickN(celebs,6),words:SHG.pickN(words,40),fire:SHG.pickN(fire,5)};
       },
       onData:function(d){ start(d); },
-      submitPayload:function(){ return shgPayLoad(S.score); },
+      submitPayload:function(){ return shgPayLoad(S.mine); },
       onSettle:function(iWon,room,w){
         var res=hw2.querySelector('#hRes');
         shgResultBanner(res,iWon,w,
-          '🎉 You win Game Night with '+S.score+' points!',
-          '😞 Opponent scored higher. You had '+S.score+'.');
+          '🎉 Your team wins Game Night with '+S.mine+' points!',
+          '😞 Their team scored higher. You had '+S.mine+'.');
         Sound[iWon?'win':'lose']();
         shgAward(iWon);
       }
     });
   } else {
-    start({celebs:SHG.pickN(celebs,3),words:SHG.pickN(words,12),fire:SHG.pickN(fire,15)});
+    start({celebs:SHG.pickN(celebs,6),words:SHG.pickN(words,40),fire:SHG.pickN(fire,5)});
   }
 }});
 
