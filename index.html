@@ -62,6 +62,54 @@ table.lb tr.me td{color:var(--gold); font-weight:800;}
 .status{font-size:15px; margin:8px 0; min-height:22px; font-weight:600;}
 .turn-banner{background:rgba(245,185,66,.15); border:1px solid var(--gold); color:var(--gold2); border-radius:10px; padding:8px; text-align:center; font-weight:700; margin:8px 0;}
 .voicebar{background:#1d2b1d; border:1px solid var(--green); border-radius:12px; padding:8px; margin:8px 0; font-size:14px;}
+/* ================= VOICE PANEL (board widget) ================= */
+.vp-card{background:rgba(15,23,42,.95);border:1px solid rgba(16,185,129,.4);border-radius:16px;padding:12px;box-shadow:0 8px 30px rgba(0,0,0,.45);color:#fff;}
+.vp-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;}
+.vp-head-left{display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap;}
+.vp-dot{position:relative;width:10px;height:10px;flex:0 0 auto;}
+.vp-dot i{position:absolute;inset:0;border-radius:50%;}
+.vp-dot i:first-child{background:#34d399;animation:vp-ping 1.5s cubic-bezier(0,0,.2,1) infinite;}
+.vp-dot i:last-child{background:#10b981;}
+@keyframes vp-ping{75%,100%{transform:scale(2);opacity:0;}}
+.vp-title{font-weight:700;font-size:14px;white-space:nowrap;}
+.vp-pill{font-size:10px;font-weight:600;color:#6ee7b7;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.4);padding:2px 8px;border-radius:999px;white-space:nowrap;}
+.vp-actions{display:flex;gap:6px;flex-wrap:wrap;}
+.vp-btn{display:inline-flex;align-items:center;gap:4px;border:1px solid rgba(255,255,255,.15);border-radius:999px;background:rgba(255,255,255,.08);color:#fff;font-size:13px;padding:6px 10px;cursor:pointer;line-height:1;}
+.vp-btn.mic-on{background:rgba(16,185,129,.85);border-color:rgba(16,185,129,.9);}
+.vp-btn.mic-off{background:rgba(244,63,94,.85);border-color:rgba(244,63,94,.9);}
+.vp-btn.deaf{background:rgba(245,158,11,.85);border-color:rgba(245,158,11,.9);}
+.vp-btn.leave{background:rgba(244,63,94,.15);border-color:rgba(244,63,94,.4);}
+@media (max-width:480px){.vp-btn-label{display:none;}}
+.vp-err{display:flex;gap:6px;align-items:flex-start;margin-top:10px;padding:8px 10px;border-radius:10px;background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.4);color:#fda4af;font-size:12px;line-height:1.4;word-break:break-word;}
+.vp-parts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.vp-part{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:6px 10px 6px 6px;min-width:0;}
+.vp-part.speaking{background:rgba(6,78,59,.6);border-color:rgba(16,185,129,.6);box-shadow:0 0 0 1px rgba(16,185,129,.35),0 0 16px rgba(16,185,129,.25);}
+.vp-av{position:relative;flex:0 0 auto;}
+.vp-av-circle{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.1);font-size:18px;border:2px solid rgba(255,255,255,.15);}
+.vp-part.speaking .vp-av-circle{border-color:#10b981;}
+.vp-muted-badge{position:absolute;right:-3px;bottom:-3px;font-size:12px;line-height:1;}
+.vp-name{font-weight:600;font-size:13px;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.vp-you{font-size:11px;color:#94a3b8;}
+.vp-status{display:flex;align-items:center;gap:4px;font-size:11px;color:#94a3b8;}
+.vp-status.speaking{color:#6ee7b7;font-weight:700;}
+.vp-status.muted{color:#fda4af;}
+.vp-bars{display:inline-flex;gap:2px;align-items:flex-end;height:12px;}
+.vp-bars i{display:inline-block;width:3px;border-radius:2px;background:#34d399;animation:vp-bar 1s ease-in-out infinite;}
+.vp-bars i:nth-child(1){height:6px;}
+.vp-bars i:nth-child(2){height:12px;animation-delay:.15s;}
+.vp-bars i:nth-child(3){height:8px;animation-delay:.3s;}
+@keyframes vp-bar{0%,100%{transform:scaleY(.6);}50%{transform:scaleY(1);}}
+.vp-join-wrap{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+.vp-join-left{display:flex;align-items:center;gap:10px;min-width:0;}
+.vp-radio{width:40px;height:40px;border-radius:10px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:20px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.35);}
+.vp-join-title{font-weight:700;font-size:14px;}
+.vp-join-sub{font-size:12px;color:#94a3b8;}
+.vp-join-btn{border:none;border-radius:999px;cursor:pointer;white-space:nowrap;padding:9px 16px;font-size:13px;font-weight:700;color:#fff;background:linear-gradient(135deg,#10b981,#0d9488);box-shadow:0 4px 14px rgba(16,185,129,.35);}
+.vp-connecting{display:flex;align-items:center;gap:10px;font-size:13px;color:#fcd34d;}
+.vp-spinner{width:18px;height:18px;flex:0 0 auto;border-radius:50%;border:2px solid rgba(245,158,11,.3);border-top-color:#f59e0b;animation:vp-spin 1s linear infinite;}
+@keyframes vp-spin{to{transform:rotate(360deg);}}
+.vp-media{font-size:10px;color:#94a3b8;margin-top:2px;}
+.vp-diag{font-size:12px;opacity:.85;padding:2px 10px;}
 .codechip{display:inline-block; background:var(--bg2); border:1px dashed var(--gold); color:var(--gold2); border-radius:10px; padding:6px 14px; font-size:20px; font-weight:800; letter-spacing:4px;}
 .kbd{font-size:12px; color:var(--muted);}
 /* ===== Family Feud show board ===== */
@@ -276,8 +324,7 @@ button.mg-seat{cursor:pointer;font-family:inherit;text-align:center;}
    Firebase: console.firebase.google.com → create project (free Spark plan,
    NO credit card) → Authentication → enable Email/Password → Realtime
    Database → Create database. Paste the 5 web-config keys in Setup.
-   Voice: a Cloudflare Worker mints LiveKit tokens (its LIVEKIT_API_KEY and
-   LIVEKIT_API_SECRET env vars stay on the worker, never in this file).
+   Voice: built-in WebRTC voice talk over Firebase (no token server, no keys).
    The app works in DEMO MODE (this device only) until Setup is filled in.
    ===================================================================== */
 const CONFIG = {
@@ -288,11 +335,6 @@ const CONFIG = {
     projectId: "",
     appId: ""
   },
-  livekit: {
-    url: "",        // e.g. wss://your-project.livekit.cloud (fallback; the token server can also return it)
-    apiKey: ""
-    // NOTE: no secret here — the Cloudflare Worker holds it server-side.
-  }
 };
 const DAILY_BONUS = 500, START_POINTS = 1000, PVP_WIN = 200;
 const CPU_PAYOUTS = {jeopardy:150,wheel:150,millionaire:200,price:120,feud:150,chase:150,matchgame:80,password:80,whatsmline:100,hollywood:120,deal:150,pressluck:150,pyramid:150,weakestlink:120,'1v100':200,fifthgrader:120};
@@ -612,7 +654,7 @@ const Net = {
     const code=String(rnd(9000)+1000);
     const room={code, game, seatsNeeded:seats, seats:[Auth.user.uid], names:{[Auth.user.uid]:Auth.user.username}, state:null, turn:0, status:'waiting', host:Auth.user.uid, created:Date.now()};
     await Backend.db.ref('shg_rooms/'+code).set(room);
-    this.room=room; this._listen(code);
+    this.room=room; this._listen(code); Voice.syncPanel();
     return code;
   },
   async join(code){
@@ -628,7 +670,7 @@ const Net = {
       await Backend.db.ref('shg_rooms/'+code+'/seats').set(room.seats);
       await Backend.db.ref('shg_rooms/'+code+'/names').set(room.names);
     }
-    this.room=room; this._listen(code);
+    this.room=room; this._listen(code); Voice.syncPanel();
     return code;
   },
   mySeat(){ return this.room? this.room.seats.indexOf(Auth.user.uid) : -1; },
@@ -663,43 +705,477 @@ const Net = {
   }
 };
 
-/* ---------------- VOICE (Cloudflare Worker token server; NO client secret) ---
-   The worker URL is pasted once in Setup (Profile) → localStorage
-   'shg_voice_worker'. Voice.join fetches a token:
-   GET <workerUrl>?room=<room>&identity=<username>
-   The server answers JSON {"token":"..."} (optionally with "url") or a
-   raw-text token. livekit-client loads from jsdelivr. Voice room name
-   pattern: 'shg-'+roomCode.                                          */
+/* ---------------- VOICE (pure WebRTC over Firebase RTDB — the board/hand-game wiring) ---
+   Same engine as the board hub: audio-only mesh, signaling under
+   shg_rooms/<code>/voice_presence + voice_signals, Google STUN + TURN fallback, session
+   ids, overwrite-not-merge, signalingState guards, lower uid offers.
+   Panel matches the board widget: a Live Voice Conversation card with Join Voice Talk
+   before joining, and the Voice Connected card (Mic / Speaker / Test / Leave / Collapse
+   + participant cards with Speaking / Muted / Connected states) while connected.
+   Speaking is presence-driven: the local analyser (freq avg > 14, 3-tick hold) writes
+   isSpeaking to presence; remote Speaking comes from presence.
+   Remote audio plays through the AudioContext (speaker/media path) plus a muted
+   <audio> bridge element per peer (audioBridge) so Chromium's WebRTC audio sink stays
+   active — the fix that finally made board voice audible. Re-wired on track.onunmute.
+   No LiveKit, no token server, no keys to paste: voice works whenever Firebase is
+   connected. */
 const Voice = {
-  room:null, micMuted:false, active:false,
-  workerUrl(){ return store.get('voice_worker',''); },
-  configured(){ return !!this.workerUrl(); },
-  async join(roomName){
-    if(!this.configured()){ toast('Voice needs a token server — paste your Cloudflare Worker URL in Profile → Setup.'); return false; }
-    if(this.active) return true;
-    try{
-      await loadScript('https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js');
-      const res=await fetch(this.workerUrl()+'?room='+encodeURIComponent(roomName)+'&identity='+encodeURIComponent(Auth.user.username));
-      if(!res.ok) throw new Error('token server HTTP '+res.status);
-      const txt=(await res.text()).trim();
-      let token=txt, lkUrl=CONFIG.livekit.url||'';
-      try{ const j=JSON.parse(txt); if(j&&j.token){ token=String(j.token); if(j.url) lkUrl=String(j.url); } }catch(e){}
-      if(!token) throw new Error('empty token');
-      if(!lkUrl) throw new Error('token server did not return a LiveKit URL');
-      const r=new LivekitClient.Room();
-      await r.connect(lkUrl, token);
-      await r.localParticipant.setMicrophoneEnabled(true);
-      this.room=r; this.active=true; this.micMuted=false;
-      $('#micBtn').classList.remove('hidden'); this._micIcon();
-      toast('🎤 Voice connected — talk to your opponent');
-      return true;
-    }catch(e){ console.warn(e); toast('Voice failed to connect'); return false; }
+  active:false, connecting:false, micMuted:false, speakerOff:false,
+  stream:null, session:'', code:'', myUid:'', peers:{}, present:{}, presenceInfo:{},
+  ctx:null, remoteGain:null, localAnalyser:null, _localSrc:null,
+  speakTimer:null, _speakHold:0, _mySpeaking:false, _panelCollapsed:false,
+  voiceError:'', sigError:'', _off:[],
+  configured(){ return Backend.mode==='firebase'; },
+  _pairId(a,b){ return [a,b].sort().join('_'); },
+  _sigRef(pair){ return Backend.db.ref('shg_rooms/'+this.code+'/voice_signals/'+pair); },
+  _presRef(uid){ return Backend.db.ref('shg_rooms/'+this.code+'/voice_presence/'+(uid||this.myUid)); },
+  _micBtn(){
+    var b=$('#micBtn'); if(!b) return;
+    if(this.active) b.classList.remove('hidden'); else b.classList.add('hidden');
+    b.textContent=this.micMuted?'🚫':'🎤'; b.classList.toggle('off',this.micMuted);
   },
-  _micIcon(){ $('#micBtn').textContent=this.micMuted?'🚫':'🎤'; $('#micBtn').classList.toggle('off',this.micMuted); },
-  toggleMic(){ if(!this.room) return; this.micMuted=!this.micMuted; this.room.localParticipant.setMicrophoneEnabled(!this.micMuted); this._micIcon(); },
+  async join(){
+    if(this.active) return true;
+    if(!this.configured()){ toast('Voice talk needs Firebase (Profile → Setup).'); return false; }
+    if(!Net.room || !Net.room.code){ toast('Join a room first.'); return false; }
+    if(!Auth.user || !Auth.user.uid){ toast('Not signed in.'); return false; }
+    this.connecting=true; this.voiceError=''; this.sigError='';
+    this.code=String(Net.room.code); this.myUid=String(Auth.user.uid);
+    this.session=Date.now()+'-'+Math.random().toString(36).slice(2,8);
+    this.syncPanel();
+    try{
+      // Capture ONCE and share that one stream with every peer connection.
+      this.stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      try{ if(navigator.audioSession) navigator.audioSession.type='play-and-record'; }catch(e){}
+      // AudioContext, created inside the tap gesture: feeds the local speaking
+      // analyser and plays remote audio on the speaker/media path.
+      try{
+        var AC=window.AudioContext||window.webkitAudioContext;
+        this.ctx=new AC();
+        if(this.ctx.resume){ var r=this.ctx.resume(); if(r&&r.catch) r.catch(function(){}); }
+        this._localSrc=this.ctx.createMediaStreamSource(this.stream);
+        this.localAnalyser=this.ctx.createAnalyser();
+        this.localAnalyser.fftSize=256;
+        this._localSrc.connect(this.localAnalyser);
+        this.remoteGain=this.ctx.createGain();
+        this.remoteGain.gain.value=2.5;
+        this.remoteGain.connect(this.ctx.destination);
+        if(!window._voiceResumeHooked){
+          window._voiceResumeHooked=true;
+          var res=function(){ try{ if(this.ctx&&this.ctx.state==='suspended'&&this.ctx.resume) this.ctx.resume(); }catch(e){} }.bind(this);
+          window.addEventListener('touchstart',res,{passive:true});
+          window.addEventListener('click',res,{passive:true});
+        }
+      }catch(e){ console.warn(e); }
+      var pres=this._presRef();
+      await pres.set({name:Auth.user.username||'Player', session:this.session, muted:false, isSpeaking:false, ts:Date.now()});
+      try{ pres.onDisconnect().remove(); }catch(e){}
+      var self=this;
+      var pr=Backend.db.ref('shg_rooms/'+this.code+'/voice_presence');
+      var addH=function(snap){
+        var uid=String(snap.key); var v=snap.val()||{};
+        self.present[uid]=true;
+        self.presenceInfo[uid]={name:v.name||'Player', muted:!!v.muted, isSpeaking:!!v.isSpeaking};
+        if(uid!==self.myUid) self._onPeerSeen(uid,v.session);
+        self._renderPanel();
+      };
+      var chgH=function(snap){
+        var uid=String(snap.key); var v=snap.val()||{};
+        if(uid===self.myUid) return;
+        self.presenceInfo[uid]={name:v.name||'Player', muted:!!v.muted, isSpeaking:!!v.isSpeaking};
+        var old=self.peers[uid];
+        if(old&&old.session!==v.session) self._dropPeer(uid);
+        self._onPeerSeen(uid,v.session);
+        self._renderPanel();
+      };
+      var remH=function(snap){
+        var uid=String(snap.key);
+        delete self.present[uid]; delete self.presenceInfo[uid];
+        if(uid!==self.myUid) self._dropPeer(uid);
+        self._renderPanel();
+      };
+      pr.on('child_added',addH); pr.on('child_changed',chgH); pr.on('child_removed',remH);
+      this._off.push(function(){ pr.off('child_added',addH); });
+      this._off.push(function(){ pr.off('child_changed',chgH); });
+      this._off.push(function(){ pr.off('child_removed',remH); });
+      this.active=true; this.connecting=false; this.micMuted=false; this.speakerOff=false;
+      this._panelCollapsed=false;
+      this.syncPanel(); this._startSpeakPoll(); this._micBtn();
+      toast('Voice connected — talk to your opponent');
+      return true;
+    }catch(e){
+      console.warn(e);
+      var raw='Voice error: '+(e&&e.name?e.name+': ':'')+(e&&e.message?e.message:e);
+      var hint=(e&&e.name==='NotAllowedError')?' — allow the microphone for this site in your browser settings, reload, then try again.':'';
+      var diag='';
+      try{
+        var inFrame=window.self!==window.top?'iframe':'top';
+        var secure=window.isSecureContext?'secure':'not-secure';
+        var pol='?';
+        try{ var pp=document.permissionsPolicy; if(pp&&pp.allowsFeature) pol=pp.allowsFeature('microphone')?'allowed':'blocked'; }catch(e2){}
+        var perm='?';
+        try{ var q=await navigator.permissions.query({name:'microphone'}); perm=q.state; }catch(e2){}
+        diag=' [frame:'+inFrame+' '+secure+' mic-policy:'+pol+' perm:'+perm+']';
+      }catch(e2){}
+      toast(raw+hint);
+      this._teardown();
+      this.voiceError=raw+hint+diag;
+      this.syncPanel();
+      return false;
+    }
+  },
+  _onPeerSeen(uid,session){
+    if(!session) return;
+    var old=this.peers[uid];
+    if(old){
+      if(old.session===session) return;
+      this._dropPeer(uid);
+    }
+    this._createPeer(uid,session);
+  },
+  _createPeer(uid,session){
+    var self=this;
+    var pair=this._pairId(this.myUid,uid);
+    // ICE: Google STUN first (direct phone-to-phone whenever possible), plus a free
+    // public TURN relay as fallback, used ONLY if the two phones cannot reach each
+    // other directly. If a browser rejects the full list, fall back to STUN-only
+    // rather than dying silently with no peer, no answer, and no candidates.
+    var pc=null;
+    try{
+      pc=new RTCPeerConnection({iceServers:[
+        {urls:'stun:stun.l.google.com:19302'},
+        {urls:'turn:openrelay.metered.ca:80', username:'openrelayproject', credential:'openrelayproject'},
+        {urls:'turn:openrelay.metered.ca:443', username:'openrelayproject', credential:'openrelayproject'}
+      ]});
+    }catch(e1){
+      try{
+        pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
+      }catch(e2){
+        this.sigError='peer connection failed: '+(e2&&e2.message?e2.message:e2);
+        this._renderPanel(); return;
+      }
+    }
+    var peer={pc:pc, session:session, pending:[]};
+    this.peers[uid]=peer;
+    try{
+      this.stream.getAudioTracks().forEach(function(t){ t.enabled=!self.micMuted; pc.addTrack(t,self.stream); });
+      if(pc.getTransceivers){
+        pc.getTransceivers().forEach(function(tc){ if(tc.direction&&tc.direction!=='sendrecv') tc.direction='sendrecv'; });
+      }
+    }catch(e){}
+    pc.onicecandidate=function(ev){
+      if(ev.candidate){
+        try{
+          var rr=self._sigRef(pair).child('cands').push({from:self.myUid, session:self.session, cand:ev.candidate.toJSON()});
+          if(rr&&rr.catch) rr.catch(function(e){ self.sigError='signal write failed: '+(e&&e.message?e.message:e); self._renderPanel(); });
+        }catch(e){}
+      }
+    };
+    // Remote audio goes through the shared remote gain (speaker path) so the
+    // speaker/deafen button can silence it. Wired through _wireRemoteAudio,
+    // re-wired on track.onunmute when RTP packets arrive, with a playing
+    // HTML media bridge element to activate Chromium's WebRTC audio sink.
+    pc.ontrack=function(ev){
+      try{
+        var track=ev.track;
+        var rs=(ev.streams&&ev.streams[0])?ev.streams[0]:null;
+        if(!rs) rs=new MediaStream([track]);
+        else if(track&&!rs.getAudioTracks().some(function(t){ return t.id===track.id; })){
+          try{ rs.addTrack(track); }catch(e){}
+        }
+        peer.remoteStream=rs; peer.remoteTrack=track;
+        if(track){
+          track.onunmute=function(){ self._wireRemoteAudio(peer); self._renderPanel(); };
+          track.onended=function(){ self._renderPanel(); };
+        }
+        self._wireRemoteAudio(peer);
+        self._renderPanel();
+      }catch(e){ console.warn(e); }
+    };
+    pc.oniceconnectionstatechange=function(){ try{ self._renderPanel(); }catch(e){} };
+    var sig=this._sigRef(pair);
+    var valH=async function(snap){
+      var v=snap.val()||{};
+      if(peer._sigBusy) return;
+      try{
+        if(v.offer&&v.offer.from!==self.myUid&&v.offer.session===peer.session&&pc.signalingState==='stable'&&!peer.offerAnswered){
+          peer._sigBusy=true;
+          await pc.setRemoteDescription(new RTCSessionDescription({type:v.offer.type, sdp:v.offer.sdp}));
+          var ans=await pc.createAnswer();
+          await pc.setLocalDescription(ans);
+          try{
+            await sig.child('answer').set({from:self.myUid, session:self.session, sdp:ans.sdp, type:ans.type});
+            peer.offerAnswered=true;
+          }catch(e){ self.sigError='answer write failed: '+(e&&e.message?e.message:e); self._renderPanel(); }
+          self._flushPending(peer);
+        }else if(v.answer&&v.answer.from!==self.myUid&&v.answer.session===peer.session&&pc.signalingState==='have-local-offer'){
+          peer._sigBusy=true;
+          await pc.setRemoteDescription(new RTCSessionDescription({type:v.answer.type, sdp:v.answer.sdp}));
+          self._flushPending(peer);
+        }
+      }catch(e){ self.sigError='voice negotiation failed: '+(e&&e.message?e.message:e); self._renderPanel(); console.warn(e); }
+      finally{ peer._sigBusy=false; }
+    };
+    sig.on('value',valH);
+    var candH=function(snap){
+      var c=snap.val()||{};
+      if(c.from===self.myUid) return;
+      if(c.session&&c.session!==peer.session) return;
+      if(!c.cand) return;
+      if(pc.remoteDescription) pc.addIceCandidate(new RTCIceCandidate(c.cand)).catch(function(){});
+      else peer.pending.push(c.cand);
+    };
+    sig.child('cands').on('child_added',candH);
+    peer._off=function(){
+      try{ sig.off('value',valH); }catch(e){}
+      try{ sig.child('cands').off('child_added',candH); }catch(e){}
+    };
+    // Only the lower uid offers — the other side answers. Deterministic,
+    // so a race can never leave both sides in have-local-offer.
+    if(this.myUid<uid){
+      (async function(){
+        try{
+          var off=await pc.createOffer({offerToReceiveAudio:true});
+          await pc.setLocalDescription(off);
+          await sig.child('offer').set({from:self.myUid, session:self.session, sdp:off.sdp, type:off.type});
+        }catch(e){ self.sigError='offer write failed: '+(e&&e.message?e.message:e); self._renderPanel(); console.warn(e); }
+      })();
+    }
+    this._renderPanel();
+  },
+  _wireRemoteAudio(peer){
+    if(!peer||!peer.remoteStream) return;
+    if(!this.ctx||!this.remoteGain) return;
+    if(this.ctx.state==='suspended'&&this.ctx.resume){
+      var r=this.ctx.resume(); if(r&&r.catch) r.catch(function(){});
+    }
+    // Chromium WebRTC bug workaround: Chromium only starts decoding incoming WebRTC
+    // RTP audio packets into createMediaStreamSource if an HTMLMediaElement is
+    // attached and playing.
+    var isChromium=!!window.chrome||/Chrome|Chromium|Android|CriOS/i.test(navigator.userAgent);
+    if(isChromium){
+      if(!peer.audioBridge){
+        var el=document.createElement('audio');
+        el.autoplay=true; el.playsInline=true;
+        el.setAttribute('playsinline','true');
+        el.muted=true;
+        el.style.cssText='position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0.01;pointer-events:none;';
+        document.body.appendChild(el);
+        peer.audioBridge=el;
+      }
+      try{
+        if(peer.audioBridge.srcObject!==peer.remoteStream) peer.audioBridge.srcObject=peer.remoteStream;
+        var p=peer.audioBridge.play();
+        if(p&&p.catch) p.catch(function(){});
+      }catch(e){}
+    }
+    try{ if(peer.audioNodes&&peer.audioNodes.src) peer.audioNodes.src.disconnect(); }catch(e){}
+    try{
+      var rsrc=this.ctx.createMediaStreamSource(peer.remoteStream);
+      rsrc.connect(this.remoteGain);
+      peer.audioNodes={src:rsrc};
+    }catch(e){ console.warn(e); }
+  },
+  // Truth signal for "is the mic hooked to the speakers": presence and Speaking bars
+  // say nothing about the audio path, so each remote row reports the actual media
+  // state — peer, track, wiring, ICE.
+  _mediaState(uid){
+    var peer=this.peers[uid];
+    if(!peer) return 'no peer yet';
+    var ice=(peer.pc&&peer.pc.iceConnectionState)||'?';
+    if(!peer.remoteStream) return 'waiting for audio · ice: '+ice;
+    if(!peer.audioNodes) return 'track arrived, NOT wired to speakers';
+    var ts='';
+    try{
+      var tr=peer.remoteStream.getAudioTracks?peer.remoteStream.getAudioTracks()[0]:null;
+      if(tr) ts=' · track: '+(tr.enabled?(tr.muted?'muted':'live'):'disabled')+'/'+tr.readyState;
+      else ts=' · track: none';
+    }catch(e){}
+    return 'audio wired to speakers · ice: '+ice+ts;
+  },
+  _flushPending(peer){
+    var list=peer.pending||[]; peer.pending=[];
+    list.forEach(function(c){ try{ peer.pc.addIceCandidate(new RTCIceCandidate(c)).catch(function(){}); }catch(e){} });
+  },
+  _dropPeer(uid){
+    var peer=this.peers[uid]; if(!peer) return;
+    try{ if(peer._off) peer._off(); }catch(e){}
+    try{ peer.pc.close(); }catch(e){}
+    try{ if(peer.audioNodes&&peer.audioNodes.src) peer.audioNodes.src.disconnect(); }catch(e){}
+    try{
+      if(peer.audioBridge){
+        peer.audioBridge.pause(); peer.audioBridge.srcObject=null;
+        if(peer.audioBridge.parentNode) peer.audioBridge.parentNode.removeChild(peer.audioBridge);
+      }
+    }catch(e){}
+    delete this.peers[uid];
+    this._renderPanel();
+  },
+  toggleMic(){
+    if(!this.active||!this.stream) return;
+    this.micMuted=!this.micMuted;
+    if(this.micMuted) this._mySpeaking=false;
+    try{ this.stream.getAudioTracks().forEach(function(t){ t.enabled=!this.micMuted; }.bind(this)); }catch(e){}
+    try{ this._presRef().update({muted:this.micMuted, isSpeaking:false}); }catch(e){}
+    this._micBtn(); this._renderPanel();
+  },
+  toggleDeafen(){
+    if(!this.active) return;
+    this.speakerOff=!this.speakerOff;
+    try{ if(this.remoteGain) this.remoteGain.gain.value=this.speakerOff?0:2.5; }catch(e){}
+    this._renderPanel();
+  },
+  _testVoiceTone(){
+    try{
+      if(!this.ctx) return;
+      if(this.ctx.resume){ var r=this.ctx.resume(); if(r&&r.catch) r.catch(function(){}); }
+      var o=this.ctx.createOscillator(), g=this.ctx.createGain();
+      o.type='sine'; o.frequency.value=880;
+      g.gain.setValueAtTime(.25,this.ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,this.ctx.currentTime+.6);
+      o.connect(g); g.connect(this.ctx.destination);
+      o.start(); o.stop(this.ctx.currentTime+.6);
+      this._renderPanel();
+    }catch(e){}
+  },
+  // Panel: the board widget, rendered into a fixed card above the bottom nav so game
+  // re-renders never wipe it. Visible whenever the player is in a room: Join card
+  // before connecting, Voice Connected card while connected. One delegated click
+  // handler, so re-renders never drop button bindings.
+  _ensurePanel(){
+    var p=document.getElementById('voicePanel');
+    if(p) return p;
+    p=document.createElement('div');
+    p.id='voicePanel'; p.className='hidden';
+    var nav=document.getElementById('bottomNav');
+    p.style.cssText='position:fixed;left:10px;right:10px;bottom:'+((nav?nav.offsetHeight:60)+8)+'px;z-index:90;';
+    document.body.appendChild(p);
+    var self=this;
+    p.addEventListener('click',function(ev){
+      try{ if(self.ctx&&self.ctx.state==='suspended'&&self.ctx.resume) self.ctx.resume(); }catch(e){}
+      var t=ev.target.closest?ev.target.closest('[data-vp-action]'):null;
+      if(!t) return;
+      try{ Sound.click(); }catch(e){}
+      var a=t.getAttribute('data-vp-action');
+      if(a==='join') self.join();
+      else if(a==='mic') self.toggleMic();
+      else if(a==='speaker') self.toggleDeafen();
+      else if(a==='test') self._testVoiceTone();
+      else if(a==='leave') self.leave();
+      else if(a==='collapse'){ self._panelCollapsed=!self._panelCollapsed; self._renderPanel(); }
+    });
+    return p;
+  },
+  syncPanel(){
+    var p=this._ensurePanel();
+    if(!Net.room||!Net.room.code){ p.classList.add('hidden'); return; }
+    p.classList.remove('hidden');
+    this._renderPanel();
+  },
+  _errHtml(){
+    return this.voiceError?'<div class="vp-err"><span>⚠️</span><span>'+esc(this.voiceError)+'</span></div>':'';
+  },
+  _partRow(uid,name,isMe,muted,speaking,media){
+    var status=speaking
+      ?'<span class="vp-bars"><i></i><i></i><i></i></span><span>Speaking</span>'
+      :(muted?'Muted':'Connected');
+    var cls=speaking?'vp-status speaking':(muted?'vp-status muted':'vp-status idle');
+    return '<div class="vp-part'+(speaking?' speaking':'')+'">'
+      +'<div class="vp-av"><div class="vp-av-circle">🎧</div>'+(muted?'<span class="vp-muted-badge">🚫</span>':'')+'</div>'
+      +'<div style="min-width:0"><div style="display:flex;align-items:center;gap:4px"><span class="vp-name">'+esc(name)+'</span>'+(isMe?'<span class="vp-you">(You)</span>':'')+'</div>'
+      +'<div class="'+cls+'">'+status+'</div>'
+      +(media?'<div class="vp-media">'+esc(media)+'</div>':'')+'</div></div>';
+  },
+  _renderPanel(){
+    var p=document.getElementById('voicePanel');
+    if(!p||p.classList.contains('hidden')) return;
+    var n=Object.keys(this.present).length;
+    if(this.connecting){
+      p.innerHTML='<div class="vp-card" style="border-color:rgba(245,158,11,.3)"><div class="vp-connecting"><span class="vp-spinner"></span><span>Accessing microphone &amp; connecting voice...</span></div></div>';
+      return;
+    }
+    if(!this.active){
+      p.innerHTML='<div class="vp-card"><div class="vp-join-wrap"><div class="vp-join-left"><div class="vp-radio">📻</div><div><div class="vp-join-title">Live Voice Conversation</div><div class="vp-join-sub">Talk in real-time with other humans at the table</div></div></div><button class="vp-join-btn" data-vp-action="join">🎤 Join Voice Talk</button></div>'+this._errHtml()+'</div>';
+      return;
+    }
+    var rows=[];
+    var me=this.presenceInfo[this.myUid];
+    if(me) rows.push(this._partRow(this.myUid,me.name,true,!!me.muted,this._mySpeaking,this.stream?'mic live':''));
+    var self=this;
+    Object.keys(this.presenceInfo).forEach(function(uid){
+      if(uid===self.myUid) return;
+      var info=self.presenceInfo[uid];
+      rows.push(self._partRow(uid,info.name||'Player',false,!!info.muted,!!info.isSpeaking,self._mediaState(uid)));
+    });
+    p.innerHTML='<div class="vp-card"><div class="vp-head"><div class="vp-head-left"><span class="vp-dot"><i class="ping"></i><i></i></span><span class="vp-title">📻 Voice Connected</span><span class="vp-pill">'+n+' in call</span></div><div class="vp-actions">'
+      +'<button class="vp-btn '+(this.micMuted?'mic-off':'mic-on')+'" data-vp-action="mic" title="'+(this.micMuted?'Unmute Microphone':'Mute Microphone')+'">'+(this.micMuted?'🚫':'🎤')+'<span class="vp-btn-label">'+(this.micMuted?'Muted':'Mic On')+'</span></button>'
+      +'<button class="vp-btn '+(this.speakerOff?'deaf':'')+'" data-vp-action="speaker" title="'+(this.speakerOff?'Undeafen Audio':'Deafen (Mute Incoming)')+'">'+(this.speakerOff?'🔇':'🔊')+'</button>'
+      +'<button class="vp-btn" data-vp-action="test" title="Play a test tone through the voice audio path">🔔<span class="vp-btn-label">Test</span></button>'
+      +'<button class="vp-btn leave" data-vp-action="leave" title="Disconnect Voice Talk">📴</button>'
+      +'<button class="vp-btn collapse" data-vp-action="collapse" title="'+(this._panelCollapsed?'Expand voice list':'Collapse voice list')+'">'+(this._panelCollapsed?'⌃':'⌄')+'</button>'
+      +'</div></div><div class="vp-diag" style="font-size:12px;opacity:.85;padding:2px 10px;">ctx: '+(this.ctx?this.ctx.state:'none')+' · gain: '+(this.remoteGain?this.remoteGain.gain.value:'none')+'</div>'+this._errHtml()
+      +(this.sigError?'<div class="vp-err"><span>⚠️</span><span>'+esc(this.sigError)+'</span></div>':'')
+      +(this._panelCollapsed?'':'<div class="vp-parts">'+(rows.join('')||'<div class="muted">Waiting for others to join voice…</div>')+'</div>')
+      +'</div>';
+  },
+  _setSpeaking(on){
+    if(on===this._mySpeaking) return;
+    this._mySpeaking=on;
+    try{ this._presRef().update({isSpeaking:on}); }catch(e){}
+    this._renderPanel();
+  },
+  _startSpeakPoll(){
+    this._stopSpeakPoll();
+    var self=this;
+    this.speakTimer=setInterval(function(){
+      if(!self.active||!self.localAnalyser) return;
+      if(self.micMuted){ if(self._mySpeaking) self._setSpeaking(false); return; }
+      try{
+        var buf=new Uint8Array(self.localAnalyser.frequencyBinCount);
+        self.localAnalyser.getByteFrequencyData(buf);
+        var sum=0; for(var i=0;i<buf.length;i++) sum+=buf[i];
+        var avg=sum/buf.length;
+        if(avg>14) self._speakHold=3;
+        else if(self._speakHold>0) self._speakHold--;
+        self._setSpeaking(self._speakHold>0);
+      }catch(e){}
+    },150);
+  },
+  _stopSpeakPoll(){
+    if(this.speakTimer){ try{ clearInterval(this.speakTimer); }catch(e){} }
+    this.speakTimer=null;
+  },
+  _teardown(){
+    this._off.forEach(function(f){ try{ f(); }catch(e){} });
+    this._off=[];
+    var uids=Object.keys(this.peers);
+    var self=this;
+    uids.forEach(function(u){ self._dropPeer(u); });
+    this.peers={}; this.present={}; this.presenceInfo={};
+    this._stopSpeakPoll();
+    try{ if(this._localSrc) this._localSrc.disconnect(); }catch(e){}
+    try{ if(this.ctx&&this.ctx.close) this.ctx.close(); }catch(e){}
+    this.ctx=null; this.remoteGain=null; this.localAnalyser=null; this._localSrc=null;
+    this._speakHold=0; this._mySpeaking=false; this.sigError='';
+    // Best effort: remove my presence + the signal docs I took part in, so
+    // nothing stale survives into the next session.
+    if(Backend.db&&this.code&&this.myUid){
+      var code=this.code, me=this.myUid;
+      try{ Backend.db.ref('shg_rooms/'+code+'/voice_presence/'+me).remove(); }catch(e){}
+      uids.forEach(function(u){
+        try{ Backend.db.ref('shg_rooms/'+code+'/voice_signals/'+this._pairId(me,u)).remove(); }catch(e){}
+      }.bind(this));
+    }
+    if(this.stream){ try{ this.stream.getTracks().forEach(function(t){ t.stop(); }); }catch(e){} }
+    this.stream=null;
+    this.active=false; this.connecting=false; this.micMuted=false; this.speakerOff=false;
+    this.code=''; this.session='';
+  },
   leave(){
-    if(this.room){ try{this.room.disconnect();}catch(e){} }
-    this.room=null; this.active=false; $('#micBtn').classList.add('hidden');
+    this._teardown();
+    this.voiceError='';
+    this._micBtn();
+    this.syncPanel();
   }
 };
 $('#micBtn').addEventListener('click', ()=>Voice.toggleMic());
@@ -15523,7 +15999,7 @@ function showGame(id){
     if(typeof g.render!=='function'){ play.innerHTML='<div class="msg">This game show is still being built — check back soon.</div>'; return; }
     if(ctx.mode==='pvp'){
       const vb=document.createElement('button'); vb.className='btn small secondary'; vb.textContent='🎤 Join voice chat';
-      vb.onclick=async()=>{ const ok=await Voice.join('shg-'+Net.room.code); if(ok){ vb.textContent='🎤 Voice on — header mic button mutes you'; vb.disabled=true; } };
+      vb.onclick=async()=>{ const ok=await Voice.join(); if(ok){ vb.textContent='🎤 Voice on — see the voice panel below'; vb.disabled=true; } };
       play.appendChild(vb);
       const cv=document.createElement('div'); play.appendChild(cv);
       g.render(cv, ctx); // room cleanup already registered above; don't re-register
@@ -15596,16 +16072,14 @@ function showProfile(){
     +'<label>Firebase projectId</label><input id="fb_projectId" value="'+esc(fb.projectId||'')+'" placeholder="your-project">'
     +'<label>Firebase appId</label><input id="fb_appId" value="'+esc(fb.appId||'')+'" placeholder="1:123:web:abc">'
     +'<button class="btn" id="saveFb">Save Firebase keys</button>'
-    +'<label>Cloudflare Worker URL (LiveKit token server)</label><input id="lk_worker" value="'+esc(store.get('voice_worker',''))+'" placeholder="https://your-worker.workers.dev">'
-    +'<button class="btn" id="saveVoice">Save token server URL</button>'
+    +'<div class="msg">🎙️ <b>Voice Talk — built in.</b> No token server, no extra keys: once Firebase is connected, tap 🎤 Join Voice Talk in any room.</div>'
     +'<button class="btn secondary" id="reloadApp">Reload app</button>'
     +'<div class="muted"><b>1.</b> Go to <b>console.firebase.google.com</b> → create a project (free <b>Spark</b> plan, no card) → Build → Authentication → Sign-in method → enable <b>Email/Password</b> → Build → Realtime Database → Create database.<br>'
     +'<b>2.</b> Project settings → Your apps → web app → copy the <b>firebaseConfig</b> values into the 5 fields above → Save.<br>'
-    +'<b>3.</b> Deploy the <b>Cloudflare Worker</b> token server (it mints LiveKit tokens using its own LIVEKIT_API_KEY + LIVEKIT_API_SECRET env vars — the secret never goes in this app).<br>'
-    +'<b>4.</b> Paste the worker URL above → Save.<br>'
-    +'<b>5.</b> Reload the app and log in again. Firebase: logins, friends, online PvP. Worker: voice chat.</div></div>';
+    +'<b>3.</b> In Firebase console → Realtime Database → Rules, add the <b>shg_*</b> paths from the README (shg_users, shg_codes, shg_friends, shg_requests, shg_presence, shg_chat, shg_rooms) → Publish. Without this, friends/PvP/chat/voice get permission-denied.<br>'
+    +'<b>4.</b> Reload the app and log in again. Firebase on = real logins, friends, online PvP, chat, and voice talk (built in, no extra setup).</div></div>';
   const st=v.querySelector('#setupStatus');
-  st.innerHTML='<div class="msg">Firebase: '+(Backend.configured()?'<span class="ok">connected ✅</span>':'<span class="err">not connected — demo mode</span>')+'<br>Voice token server: '+(Voice.configured()?'<span class="ok">URL saved ✅</span>':'<span class="err">no URL — voice disabled</span>')+'</div>';
+  st.innerHTML='<div class="msg">Firebase: '+(Backend.configured()?'<span class="ok">connected ✅</span>':'<span class="err">not connected — demo mode</span>')+'<br>Voice talk: '+(Voice.configured()?'<span class="ok">built in ✅</span>':'<span class="err">needs Firebase connected</span>')+'</div>';
   const d=v.querySelector('#daily'); if(d) d.onclick=async()=>{ if(await Wallet.claimDaily()){ toast('Bonus claimed!'); showProfile(); } };
   v.querySelector('#logout').onclick=async()=>{ await Friends.setOnline(false); await Auth.logout(); location.reload(); };
   v.querySelector('#saveFb').onclick=()=>{
@@ -15614,11 +16088,6 @@ function showProfile(){
       appId:v.querySelector('#fb_appId').value.trim()};
     store.set('fb_config', cfg);
     toast('Firebase keys saved — reload the app'); showProfile();
-  };
-  v.querySelector('#saveVoice').onclick=()=>{
-    const url=v.querySelector('#lk_worker').value.trim();
-    store.set('voice_worker', url);
-    toast('Token server URL saved'); showProfile();
   };
   v.querySelector('#reloadApp').onclick=()=>location.reload();
 }
