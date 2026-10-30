@@ -10362,12 +10362,12 @@ render:function(c,ctx){
 }});
 
 /* ================= WHEEL OF FORTUNE ================= */
-regGame('wheel',{howto:"Tap SPIN, then guess a consonant - you win the wedge value for every one in the puzzle. Buy vowels for $250, or solve the puzzle anytime. BANKRUPT wipes your round bank, LOSE A TURN skips you, and FREE SPIN tokens save you from a miss. Most cash at the end wins.",name:'Wheel of Fortune',icon:'🎡',tags:'Game Show',pvp:true,seats:2,
+regGame('wheel',{howto:"Tap SPIN, then guess a consonant - you win the wedge value for every one in the puzzle. Buy vowels for $250, or solve the puzzle anytime. BANKRUPT wipes your round bank, LOSE A TURN skips you, and FREE SPIN tokens save you from a miss. Most cash at the end wins.",name:'Wheel of Luck',icon:'🎡',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS1.wheel.length))return;
   var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS1.wheel,net?1:3)));};
-  if(net)g1Pvp(net,share,function(d,fin){playW(d,fin);},function(iw,sc){g1Settle(c,iw,sc,'Wheel of Fortune');});
+  if(net)g1Pvp(net,share,function(d,fin){playW(d,fin);},function(iw,sc){g1Settle(c,iw,sc,'Wheel of Luck');});
   else playW(share(),null);
   function playW(puzs,fin){
     var useBots=!fin,bots=useBots?g1Bots(2):[];
@@ -10378,7 +10378,7 @@ render:function(c,ctx){
     var WHEEL_LOGO='data:image/webp;base64,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';
     var wheelLogoImg=new Image();wheelLogoImg.src=WHEEL_LOGO;
     wheelLogoImg.onload=function(){try{paintWheel();}catch(e){}};
-    /* ---- Wheel of Fortune visuals: canvas spinner + classic tile board ---- */
+    /* ---- Wheel of Luck visuals: canvas spinner + classic tile board ---- */
     var WHEEL_CSS='.wheelwrap{display:flex;justify-content:center;margin:4px 0}'
       +'.wboard{background:#081426;border:3px solid #1e3a5f;border-radius:10px;padding:10px 4px;margin:8px 0}'
       +'.wrow{display:flex;justify-content:center;gap:1.2%;margin:1% 0}'
@@ -10613,7 +10613,7 @@ render:function(c,ctx){
         fin(score);return;
       }
       var iWon=win==='You'&&tot.You>0;
-      h+='<div class="status">'+(iWon?'<span class="ok">🏆 You win Wheel of Fortune!</span>':'<span class="err">😞 '+esc(win)+' wins.</span>')+'</div></div>';
+      h+='<div class="status">'+(iWon?'<span class="ok">🏆 You win Wheel of Luck!</span>':'<span class="err">😞 '+esc(win)+' wins.</span>')+'</div></div>';
       c.innerHTML=h;
       if(iWon){Sound.win();(async function(){var p=await Wallet.recordWin('wheel');toast('+'+p+' ⭐ banked!');})();}
       else Sound.lose();
@@ -11727,12 +11727,12 @@ PG.clockgame=function(c,items,done){
 };
 
 /* ================= THE PRICE IS RIGHT ================= */
-regGame('price',{howto:"Bid closest without going over in Contestant's Row, then play 3 pricing games to win cash and prizes. Spin the Showdown wheel (closest to $1.00 without going over wins), then bid the total of your Showcase - closest without going over takes it all.",name:'The Price Is Right',icon:'🏷️',tags:'Game Show',pvp:true,seats:2,
+regGame('price',{howto:"Bid closest without going over in Contestant's Row, then play 3 pricing games to win cash and prizes. Spin the Showdown wheel (closest to $1.00 without going over wins), then bid the total of your Showcase - closest without going over takes it all.",name:'The Right Price',icon:'🏷️',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS1.priceItems.length>=6))return;
   var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS1.priceItems,6)));};
-  if(net)g1Pvp(net,share,function(d,fin){pvpSolo(d,fin);},function(iw,sc){g1Settle(c,iw,sc,'The Price Is Right');});
+  if(net)g1Pvp(net,share,function(d,fin){pvpSolo(d,fin);},function(iw,sc){g1Settle(c,iw,sc,'The Right Price');});
   else cpuPlay(share());
   function pvpSolo(items,fin){
     var i=0,total=0;
@@ -11925,13 +11925,13 @@ render:function(c,ctx){
 });
 
 /* ================= FAMILY FEUD ================= */
-regGame('feud',{howto:"Two families of five face off. We surveyed 100 people - come up with the top answers!\n\nFACE-OFF: One player from each family faces off on each question. Buzz in first with the higher-ranked answer to win control. If it's the #1 answer your family plays automatically - otherwise your family chooses to PLAY or PASS.\n\nTHE ROUND: The playing family names answers one at a time. Every correct answer is revealed and its points go into the round bank. A miss is a STRIKE - three strikes and the other family gets one chance to STEAL. Name a remaining answer and they steal the whole bank; miss and the playing family keeps it.\n\nPOINTS: Round 1 is single points, Round 2 is DOUBLE, Round 3 and on is TRIPLE. First family to 300 points wins the game!\n\nFAST MONEY: Two players, 5 questions. Player 1 gets 20 seconds; Player 2 gets 25 seconds and can't repeat Player 1's answers. Score 200 points combined to win the grand prize!",name:'Family Feud',icon:'👪',tags:'Game Show',pvp:true,seats:2,
+regGame('feud',{howto:"Two families of five face off. We surveyed 100 people - come up with the top answers!\n\nFACE-OFF: One player from each family faces off on each question. Buzz in first with the higher-ranked answer to win control. If it's the #1 answer your family plays automatically - otherwise your family chooses to PLAY or PASS.\n\nTHE ROUND: The playing family names answers one at a time. Every correct answer is revealed and its points go into the round bank. A miss is a STRIKE - three strikes and the other family gets one chance to STEAL. Name a remaining answer and they steal the whole bank; miss and the playing family keeps it.\n\nPOINTS: Round 1 is single points, Round 2 is DOUBLE, Round 3 and on is TRIPLE. First family to 300 points wins the game!\n\nFAST MONEY: Two players, 5 questions. Player 1 gets 20 seconds; Player 2 gets 25 seconds and can't repeat Player 1's answers. Score 200 points combined to win the grand prize!",name:'Family vs Family',icon:'👪',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS2.feud.length>=14))return;
   var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS2.feud,14)));};
   var playerFam=(typeof Auth!=='undefined'&&Auth.user&&Auth.user.username)||'You';
-  if(net)g1Pvp(net,share,function(d,fin){pvpPlay(d.slice(0,3),fin);},function(iw,sc){g1Settle(c,iw,sc,'Family Feud');});
+  if(net)g1Pvp(net,share,function(d,fin){pvpPlay(d.slice(0,3),fin);},function(iw,sc){g1Settle(c,iw,sc,'Family vs Family');});
   else cpuPlay(share());
   function boardHTML(s,revealed,strikes,rp){
     /* show-style board: arched frame, LED score, blue answer panels (all answers, count shown) */
@@ -12291,13 +12291,13 @@ render:function(c,ctx){
 }});
 
 /* ================= THE CHASE ================= */
-regGame('chase',{howto:"60-second CASH BUILDER: $1,000 for every right answer.\n\nTHE OFFERS: The Chaser gives you three deals - a LOW offer that starts you closer to the bank, your built money in the MIDDLE, or a HIGH offer with big money but further away.\n\nTHE CHASE: Go head-to-head down the 7-step tower. Answer right to move down toward the BANK - the Chaser answers right too and hunts you from above. Get caught and you leave with nothing.\n\nFINAL CHASE: Escape and you get 60 seconds to build a head start - every right answer is a step. Then the Chaser gets their questions to run you down. Survive and the money is yours!",name:'The Chase',icon:'🏃',tags:'Game Show',pvp:true,seats:2,
+regGame('chase',{howto:"60-second CASH BUILDER: $1,000 for every right answer.\n\nTHE OFFERS: The Chaser gives you three deals - a LOW offer that starts you closer to the bank, your built money in the MIDDLE, or a HIGH offer with big money but further away.\n\nCHASE: Go head-to-head down the 7-step tower. Answer right to move down toward the BANK - the Chaser answers right too and hunts you from above. Get caught and you leave with nothing.\n\nFINAL CHASE: Escape and you get 60 seconds to build a head start - every right answer is a step. Then the Chaser gets their questions to run you down. Survive and the money is yours!",name:'Chase',icon:'🏃',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS2.chase.length>=10))return;
   var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS2.chase,150)));};
   var chaser=g1Bots(1)[0];
-  if(net)g1Pvp(net,share,function(d,fin){solo(d,fin);},function(iw,sc){g1Settle(c,iw,sc,'The Chase');});
+  if(net)g1Pvp(net,share,function(d,fin){solo(d,fin);},function(iw,sc){g1Settle(c,iw,sc,'Chase');});
   else solo(share(),null);
   /* tower: steps 7(top)..1, bank at 0. red = chaser zone, green = your step */
   function towerHTML(P,C,money){
@@ -12317,7 +12317,7 @@ render:function(c,ctx){
   function tagsHTML(){
     return '<div class="ch-tags"><span class="ch-tag c">CHASER</span><span class="ch-tag p">PLAYER</span></div>';
   }
-  /* The Chase uses 3 answers: drop one wrong choice */
+  /* Chase uses 3 answers: drop one wrong choice */
   function threeChoices(q){
     var wrongs=[];q.choices.forEach(function(_,i){if(i!==q.correct)wrongs.push(i);});
     var drop=wrongs[Math.floor(Math.random()*wrongs.length)];
@@ -12370,7 +12370,7 @@ render:function(c,ctx){
       var P=start,C=7,turn=0;
       qTurn();
       function shell(qhtml,chtml){
-        return '<h2>🏃 The Chase</h2>'+tagsHTML()
+        return '<h2>🏃 Chase</h2>'+tagsHTML()
           +'<div class="ch-wrap">'+towerHTML(P,C,money)
           +'<div class="ch-q"><div class="ch-qtext">'+qhtml+'</div><div id="chA">'+chtml+'</div></div></div>';
       }
@@ -12413,7 +12413,7 @@ render:function(c,ctx){
         },950);
       }
       function caught(){
-        c.innerHTML='<h2>🏃 The Chase</h2><div class="card center"><div class="big">😈 CAUGHT!</div><div class="muted">'+esc(chaser)+' got you — you leave with nothing.</div></div>';Sound.lose();
+        c.innerHTML='<h2>🏃 Chase</h2><div class="card center"><div class="big">😈 CAUGHT!</div><div class="muted">'+esc(chaser)+' got you — you leave with nothing.</div></div>';Sound.lose();
         if(fin)fin(correct*100);
       }
       function escaped(money){
@@ -12467,12 +12467,12 @@ render:function(c,ctx){
 }});
 
 /* ================= MATCH GAME ================= */
-regGame('matchgame',{howto:"Official Match Game: 2 rounds against a rival. Each turn pick question A or B, fill in the blank, and match the 6 celebrities on the panel - 1 point per match.\n\nWin the game and you play the AUDIENCE MATCH: a phrase our studio audience was polled on. Ask up to 3 celebrities for suggestions, then give your answer. Match the audience's #1 answer for $500, #2 for $250, #3 for $100.\n\nThen the HEAD-TO-HEAD: pick one celebrity and match them exactly to win 10x your Audience Match money!",name:'Match Game',icon:'✏️',tags:'Game Show',pvp:true,seats:2,
+regGame('matchgame',{howto:"Official Match Up Game: 2 rounds against a rival. Each turn pick question A or B, fill in the blank, and match the 6 celebrities on the panel - 1 point per match.\n\nWin the game and you play the AUDIENCE MATCH: a phrase our studio audience was polled on. Ask up to 3 celebrities for suggestions, then give your answer. Match the audience's #1 answer for $500, #2 for $250, #3 for $100.\n\nThen the HEAD-TO-HEAD: pick one celebrity and match them exactly to win 10x your Audience Match money!",name:'Match Up Game',icon:'✏️',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS2.matchgame.length>=4))return;
   var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS2.matchgame,14)));};
-  if(net)g1Pvp(net,share,function(d,fin){playGame(d,false,fin);},function(iw,sc){g1Settle(c,iw,sc,'Match Game');});
+  if(net)g1Pvp(net,share,function(d,fin){playGame(d,false,fin);},function(iw,sc){g1Settle(c,iw,sc,'Match Up Game');});
   else playGame(share(),true,null);
   var WILD=['pickles','my left shoe','a ham sandwich','underwear','Tuesday','the phone book','burp','my grandma'];
   function qcard(prompt){
@@ -12504,18 +12504,18 @@ render:function(c,ctx){
     var celebs=g1Bots(6),rival=vsBot?g1Bots(1)[0]:null;
     var ptr=0,myM=0,botM=0,round=1;
     function nextP(){return prompts[ptr++%prompts.length];}
-    function scoreLine(){return '<div class="status" style="margin-top:8px">You: <b>'+myM+'</b> · '+(vsBot?esc(rival)+': <b>'+botM+'</b>':'<b>Match Game</b>')+'</div>';}
+    function scoreLine(){return '<div class="status" style="margin-top:8px">You: <b>'+myM+'</b> · '+(vsBot?esc(rival)+': <b>'+botM+'</b>':'<b>Match Up Game</b>')+'</div>';}
     myTurn();
     function myTurn(){
       if(round>2){decide();return;}
       var pA=nextP(),pB=nextP();
-      c.innerHTML='<h2>✏️ Match Game — Round '+round+'</h2><div class="mg-wrap"><div class="muted center" style="color:#ffd9a0">Pick your question:</div><div class="row" style="gap:10px;margin-top:8px"><button class="btn grow" id="cA">❓ Question A</button><button class="btn secondary grow" id="cB">❓ Question B</button></div>'+panelHTML(celebs,null,null)+scoreLine()+'</div>';
+      c.innerHTML='<h2>✏️ Match Up Game — Round '+round+'</h2><div class="mg-wrap"><div class="muted center" style="color:#ffd9a0">Pick your question:</div><div class="row" style="gap:10px;margin-top:8px"><button class="btn grow" id="cA">❓ Question A</button><button class="btn secondary grow" id="cB">❓ Question B</button></div>'+panelHTML(celebs,null,null)+scoreLine()+'</div>';
       c.querySelector('#cA').onclick=function(){Sound.click();answerTurn(pA,'you');};
       c.querySelector('#cB').onclick=function(){Sound.click();answerTurn(pB,'you');};
     }
     function answerTurn(p,who){
       if(who==='you'){
-        c.innerHTML='<h2>✏️ Match Game — Round '+round+'</h2><div class="mg-wrap">'+qcard(p.prompt)
+        c.innerHTML='<h2>✏️ Match Up Game — Round '+round+'</h2><div class="mg-wrap">'+qcard(p.prompt)
           +'<div class="row" style="gap:8px;margin-top:10px"><input id="a" class="grow" placeholder="Your answer…" autocomplete="off"><button class="btn" id="go">Lock in</button></div>'
           +panelHTML(celebs,null,null)+scoreLine()+'</div>';
         var inp=c.querySelector('#a');
@@ -12527,7 +12527,7 @@ render:function(c,ctx){
         c.querySelector('#go').onclick=lock;
         inp.addEventListener('keydown',function(e){if(e.key==='Enter')lock();});
       }else{
-        c.innerHTML='<h2>✏️ Match Game — Round '+round+'</h2><div class="mg-wrap">'+qcard(p.prompt)
+        c.innerHTML='<h2>✏️ Match Up Game — Round '+round+'</h2><div class="mg-wrap">'+qcard(p.prompt)
           +'<div class="muted center" style="color:#ffd9a0">'+esc(rival)+' is answering…</div>'+panelHTML(celebs,null,null)+scoreLine()+'</div>';
         setTimeout(function(){if(c.isConnected)reveal(p,rivalAnswer(p),'bot');},1100);
       }
@@ -12536,7 +12536,7 @@ render:function(c,ctx){
       var ans=panelAnswers(p),matches=0;
       ans.forEach(function(a){if(SHG.feudMatch(a,v))matches++;});
       if(who==='you')myM+=matches;else botM+=matches;
-      c.innerHTML='<h2>✏️ Match Game — Round '+round+'</h2><div class="mg-wrap">'+qcard(p.prompt)
+      c.innerHTML='<h2>✏️ Match Up Game — Round '+round+'</h2><div class="mg-wrap">'+qcard(p.prompt)
         +'<div class="center" style="color:#fff;font-weight:800;margin-top:6px">'+(who==='you'?'You':esc(rival))+' said: "'+esc(v)+'" — <b>'+matches+'</b> match'+(matches===1?'':'es')+'!</div>'
         +panelHTML(celebs,ans,v)+scoreLine()
         +'<button class="btn" id="nx" style="margin-top:10px">Continue</button></div>';
@@ -12556,7 +12556,7 @@ render:function(c,ctx){
       }
       var win=myM>botM;
       if(!win){
-        c.innerHTML='<div class="card center"><div class="big">You: '+myM+' · '+esc(rival)+': '+botM+'</div><div class="err">😞 '+esc(rival)+' wins Match Game.</div></div>';
+        c.innerHTML='<div class="card center"><div class="big">You: '+myM+' · '+esc(rival)+': '+botM+'</div><div class="err">😞 '+esc(rival)+' wins Match Up Game.</div></div>';
         Sound.lose();return;
       }
       Sound.win();
@@ -13116,11 +13116,11 @@ function shgQBtn(label,fn,cls){
 }
 
 /* ================= DEAL OR NO DEAL ================= */
-regGame('deal',{howto:"Official Deal or No Deal: 26 cases hold $0.01 to $1,000,000, shuffled so nobody knows what's where.\n\nPick ONE case to keep - it's yours to the end. Then open the others in rounds: 6, then 5, 4, 3, 2, then one at a time.\n\nAfter each round THE BANKER calls with an offer to buy your case. The offer follows what's left on the board - knock out the big money and offers crash; knock out pennies and they soar.\n\nHit the red button for DEAL and take his money, or say NO DEAL and play on. Down to two cases, you may SWAP or stick - then your case is opened and you win what's inside. Took a deal? We'll still open your case to see if you made a GOOD DEAL!",name:'Deal or No Deal',icon:'💼',tags:'Game Show',pvp:true,seats:2,
+regGame('deal',{howto:"Official A Deal Is A Deal: 26 cases hold $0.01 to $1,000,000, shuffled so nobody knows what's where.\n\nPick ONE case to keep - it's yours to the end. Then open the others in rounds: 6, then 5, 4, 3, 2, then one at a time.\n\nAfter each round THE BANKER calls with an offer to buy your case. The offer follows what's left on the board - knock out the big money and offers crash; knock out pennies and they soar.\n\nHit the red button for DEAL and take his money, or say NO DEAL and play on. Down to two cases, you may SWAP or stick - then your case is opened and you win what's inside. Took a deal? We'll still open your case to see if you made a GOOD DEAL!",name:'A Deal Is A Deal',icon:'💼',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   var S=null, pvpCtl=null, dz, callTimer=null;
-  c.innerHTML='<h2>💼 Deal or No Deal</h2><div id="dz"></div>';
+  c.innerHTML='<h2>💼 A Deal Is A Deal</h2><div id="dz"></div>';
   dz=c.querySelector('#dz');
   function start(shared){
     var names=SHG.botNames?SHG.botNames(3):['Mom','Uncle Ray','Bestie'];
@@ -13290,13 +13290,13 @@ render(c,ctx){
 }});
 
 /* ================= PRESS YOUR LUCK ================= */
-regGame('pressluck',{howto:"Official Press Your Luck: 3 players, 2 question rounds and 2 Big Board rounds. No Whammies, no Whammies, STOP!\n\nQUESTION ROUNDS: buzz in first and answer right for 3 SPINS. If a rival buzzes first, you can still pick the right answer from the 3 choices for 1 spin.\n\nTHE BIG BOARD: 18 squares of cash, prizes and Whammies, always changing. On your turn, SPIN and slam STOP! - or PASS your earned spins to a rival and make THEM risk it. Passed spins must be played, and a Whammy on passed spins turns the rest into earned spins.\n\nA Whammy wipes your bank. 4 Whammies and you're OUT. Big Bucks jumps you to the biggest cash on the board. After Round 2, the biggest bank wins!",name:'Press Your Luck',icon:'🍀',tags:'Game Show',pvp:true,seats:2,
+regGame('pressluck',{howto:"Official Push For Luck: 3 players, 2 question rounds and 2 Big Board rounds. No Whammies, no Whammies, STOP!\n\nQUESTION ROUNDS: buzz in first and answer right for 3 SPINS. If a rival buzzes first, you can still pick the right answer from the 3 choices for 1 spin.\n\nTHE BIG BOARD: 18 squares of cash, prizes and Whammies, always changing. On your turn, SPIN and slam STOP! - or PASS your earned spins to a rival and make THEM risk it. Passed spins must be played, and a Whammy on passed spins turns the rest into earned spins.\n\nA Whammy wipes your bank. 4 Whammies and you're OUT. Big Bucks jumps you to the biggest cash on the board. After Round 2, the biggest bank wins!",name:'Push For Luck',icon:'🍀',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   var bank=(BANKS2.pressluck||[]);
-  if(shgGuard(bank.length>=8,'Press Your Luck questions are still loading')) return;
+  if(shgGuard(bank.length>=8,'Push For Luck questions are still loading')) return;
   var S=null, pvpCtl=null, pz, raceIv=null, buzzTo=null, botTo=null;
-  c.innerHTML='<h2>🍀 Press Your Luck</h2><div id="pz"></div>';
+  c.innerHTML='<h2>🍀 Push For Luck</h2><div id="pz"></div>';
   pz=c.querySelector('#pz');
   function C(a,s){ return {t:'cash',a:a,s:s||0}; }
   function PR(n,e,a){ return {t:'prize',name:n,e:e,a:a}; }
@@ -13681,13 +13681,13 @@ render(c,ctx){
 }});
 
 /* ================= THE $100,000 PYRAMID ================= */
-regGame('pyramid',{howto:"Official $100,000 Pyramid:\n\nMAIN GAME: two teams. Six categories sit on the pyramid ($50 boxes on the bottom row, $100 in the middle, $200 on top). Teams take turns picking one - you get 30 seconds to name as many of its 7 words as you can from your partner's hints. Every word is worth $10. Sweep all 7 and you also bank the box value!\n\nHidden behind one box each round: the MYSTERY 7 (round 1) and the 7-11 (round 2). Sweep that category for the bonus prize.\n\nTwo rounds - the team with more money goes to the WINNER'S CIRCLE: 60 seconds, 6 categories up the pyramid. Your partner lists things, you name the category. Bottom boxes pay $1,000, middle $2,000, the top $5,000 - get all six for $100,000!",name:'The $100,000 Pyramid',icon:'🔺',tags:'Game Show',pvp:true,seats:2,
+regGame('pyramid',{howto:"Official The Pyramid:\n\nMAIN GAME: two teams. Six categories sit on the pyramid ($50 boxes on the bottom row, $100 in the middle, $200 on top). Teams take turns picking one - you get 30 seconds to name as many of its 7 words as you can from your partner's hints. Every word is worth $10. Sweep all 7 and you also bank the box value!\n\nHidden behind one box each round: the MYSTERY 7 (round 1) and the 7-11 (round 2). Sweep that category for the bonus prize.\n\nTwo rounds - the team with more money goes to the WINNER'S CIRCLE: 60 seconds, 6 categories up the pyramid. Your partner lists things, you name the category. Bottom boxes pay $1,000, middle $2,000, the top $5,000 - get all six for $100,000!",name:'The Pyramid',icon:'🔺',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   var allLists=(BANKS2.pyramid||[]).map(SHG.pyramidNorm).filter(function(l){ return l.title&&l.items.length>=7; });
   if(shgGuard(allLists.length>=18,'Pyramid word lists are still loading')) return;
   var S=null, pvpCtl=null, py, timer=null, dripIv=null;
-  c.innerHTML='<h2>🔺 The $100,000 Pyramid</h2><div id="py"></div>';
+  c.innerHTML='<h2>🔺 The Pyramid</h2><div id="py"></div>';
   py=c.querySelector('#py');
   var ROWVAL=[50,50,50,100,100,200]; /* board positions 0-2 bottom, 3-4 middle, 5 top */
   var WCVAL=[1000,1000,1000,2000,2000,5000];
@@ -13986,12 +13986,12 @@ render(c,ctx){
 }});
 
 /* ================= WEAKEST LINK ================= */
-regGame('weakestlink',{howto:"Official Weakest Link:\n\nEight players stand at the podiums and answer in turn around the team. Correct answers build a CHAIN up the money ladder: $1,000, $2,500, $5,000, $10,000, $25,000, $50,000, $125,000, $250,000, $1,000,000.\n\nBefore your question you may shout BANK - that locks the chain's money into the team total and the chain starts again. A wrong answer anywhere BREAKS the chain and the unbanked money is lost. When the clock runs out, only banked money survives.\n\nAfter every round the team VOTES. The player with the most votes is the weakest link and leaves with nothing - and yes, the team can vote YOU off. Ties are decided by the round's strongest link.\n\nThe last two players go HEAD-TO-HEAD: five questions each, most correct takes the whole bank. Tied? Sudden death. You are NOT the weakest link... goodbye!",name:'Weakest Link',icon:'🔗',tags:'Game Show',pvp:true,seats:2,
+regGame('weakestlink',{howto:"Official The Worst Player:\n\nEight players stand at the podiums and answer in turn around the team. Correct answers build a CHAIN up the money ladder: $1,000, $2,500, $5,000, $10,000, $25,000, $50,000, $125,000, $250,000, $1,000,000.\n\nBefore your question you may shout BANK - that locks the chain's money into the team total and the chain starts again. A wrong answer anywhere BREAKS the chain and the unbanked money is lost. When the clock runs out, only banked money survives.\n\nAfter every round the team VOTES. The player with the most votes is the worst player and leaves with nothing - and yes, the team can vote YOU off. Ties are decided by the round's strongest link.\n\nThe last two players go HEAD-TO-HEAD: five questions each, most correct takes the whole bank. Tied? Sudden death. You are NOT the worst player... goodbye!",name:'The Worst Player',icon:'🔗',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
-  if(shgGuard(BANKS2.weakestlink&&BANKS2.weakestlink.length>=12,'Weakest Link questions are still loading')) return;
+  if(shgGuard(BANKS2.weakestlink&&BANKS2.weakestlink.length>=12,'The Worst Player questions are still loading')) return;
   var S=null, pvpCtl=null, wk, clockIv=null, turnTimer=null;
-  c.innerHTML='<h2>🔗 Weakest Link</h2><div id="wk"></div>';
+  c.innerHTML='<h2>🔗 The Worst Player</h2><div id="wk"></div>';
   wk=c.querySelector('#wk');
   function money(n){ return '$'+n.toLocaleString('en-US'); }
   function stopTimers(){ if(clockIv){clearInterval(clockIv);clockIv=null;} if(turnTimer){clearTimeout(turnTimer);turnTimer=null;} }
@@ -14005,7 +14005,7 @@ render(c,ctx){
     S={mode:'cpu',team:newTeam(),round:1,chain:0,roundBank:0,total:0,deck:SHG.pickN(BANKS2.weakestlink,300),
       turnIdx:0,phase:'chain',log:[],timeLeft:0,starter:0,lastStrong:null,
       finalQ:0,finalMe:0,finalBot:0,sudden:false,done:false,win:false,outReason:''};
-    log('Welcome to the Weakest Link. Eight players, one bank — let\'s play!');
+    log('Welcome to the The Worst Player. Eight players, one bank — let\'s play!');
     startRound();
   }
   function log(m){ S.log.push(m); if(S.log.length>9) S.log.shift(); }
@@ -14174,7 +14174,7 @@ render(c,ctx){
     S.team=S.team.filter(function(m){ return m.n!==out; });
     S.starter=S.team.indexOf(S.lastStrong)>=0?S.team.indexOf(S.lastStrong):0;
     var pl=wk.querySelector('#wplay');
-    if(pl) pl.innerHTML='<div class="card center"><div style="font-size:16px">'+esc(out)+'… you ARE the weakest link. <b>Goodbye.</b></div><button class="btn" id="wNext" style="margin-top:8px">▶ Round '+S.round+'</button></div>';
+    if(pl) pl.innerHTML='<div class="card center"><div style="font-size:16px">'+esc(out)+'… you ARE the worst player. <b>Goodbye.</b></div><button class="btn" id="wNext" style="margin-top:8px">▶ Round '+S.round+'</button></div>';
     Sound.lose();
     toast(out+' voted off!');
     var nx=wk.querySelector('#wNext');
@@ -14212,8 +14212,8 @@ render(c,ctx){
     stopTimers();
     var line, cls;
     if(S.win){ line='🏆 You won the head-to-head — you take the whole bank!'; cls='ok'; }
-    else if(S.outReason==='voted'){ line='The team voted you off. You ARE the weakest link. Goodbye.'; cls='err'; }
-    else { line='You lost the head-to-head — the bank goes to your rival. You ARE the weakest link. Goodbye.'; cls='err'; }
+    else if(S.outReason==='voted'){ line='The team voted you off. You ARE the worst player. Goodbye.'; cls='err'; }
+    else { line='You lost the head-to-head — the bank goes to your rival. You ARE the worst player. Goodbye.'; cls='err'; }
     wk.innerHTML='<div class="wl-stage"><div class="center" style="font-size:18px;font-weight:900">GAME OVER</div>'
       +'<div class="center" style="color:#ffd873;font-size:24px;font-weight:900">'+money(S.total)+'</div>'
       +'<div class="center muted">team bank</div></div>'
@@ -14223,7 +14223,7 @@ render(c,ctx){
       await Wallet.add(Math.max(1,Math.min(2000,Math.round(S.total/200))),'weakestlink');
       await Wallet.recordWin('weakestlink');
       var res=wk.querySelector('#wRes');
-      if(res)res.innerHTML='<div class="muted">You are NOT the weakest link. 🏆</div>';
+      if(res)res.innerHTML='<div class="muted">You are NOT the worst player. 🏆</div>';
     }
   }
   /* ---------- PVP: solo chain sprint on shared questions ---------- */
@@ -14280,7 +14280,7 @@ render(c,ctx){
       onSettle:function(iWon,room,w){
         var res=wk.querySelector('#wRes');
         shgResultBanner(res,iWon,w,
-          '🎉 You win the Weakest Link sprint with '+money(S.total)+'!',
+          '🎉 You win the The Worst Player sprint with '+money(S.total)+'!',
           '😞 Opponent banked more. You had '+money(S.total)+'.');
         Sound[iWon?'win':'lose']();
         shgAward(iWon);
@@ -14573,13 +14573,13 @@ render(c,ctx){
 }});
 
 /* ================= ARE YOU SMARTER THAN A 5TH GRADER ================= */
-regGame('fifthgrader',{howto:"Official rules - Are You Smarter Than a 5th Grader?\n\nThe chalkboard holds 10 subjects - two for each grade, 1st through 5th. Pick them in ANY order. Each correct answer climbs the ladder: $1,000, $2,000, $5,000, $10,000, $25,000, $50,000, $100,000, $175,000, $300,000, $500,000. Get 5 right and $25,000 is GUARANTEED whatever happens.\n\nYou are not alone: pick a 5th-grade CLASSMATE to help. A classmate stays with you for 2 questions, then you pick another. Every kid has favorite subjects on their nameplate - they're sharper on those!\n\nThree cheats, once each:\n👀 PEEK - see your classmate's answer, then decide for yourself.\n📋 COPY - your answer becomes your classmate's, like it or not.\n💾 SAVE - miss a question and if your classmate had it right, you're saved.\n\nYou can DROP OUT after seeing any question and keep your money. Flunk out and you fall to your guaranteed $25,000 (or nothing)... and you must say it: \"I am NOT smarter than a 5th grader.\"\n\nClear all 10 subjects and you face the MILLION DOLLAR QUESTION - one 5th-grade question. Take the $500,000... or risk it all. Get it right: $1,000,000 and you ARE smarter than a 5th grader!",name:'Are You Smarter Than a 5th Grader?',icon:'🎒',tags:'Game Show',pvp:true,seats:2,
+regGame('fifthgrader',{howto:"Official rules - Smarter Than a Grade Schooler\n\nThe chalkboard holds 10 subjects - two for each grade, 1st through 5th. Pick them in ANY order. Each correct answer climbs the ladder: $1,000, $2,000, $5,000, $10,000, $25,000, $50,000, $100,000, $175,000, $300,000, $500,000. Get 5 right and $25,000 is GUARANTEED whatever happens.\n\nYou are not alone: pick a 5th-grade CLASSMATE to help. A classmate stays with you for 2 questions, then you pick another. Every kid has favorite subjects on their nameplate - they're sharper on those!\n\nThree cheats, once each:\n👀 PEEK - see your classmate's answer, then decide for yourself.\n📋 COPY - your answer becomes your classmate's, like it or not.\n💾 SAVE - miss a question and if your classmate had it right, you're saved.\n\nYou can DROP OUT after seeing any question and keep your money. Flunk out and you fall to your guaranteed $25,000 (or nothing)... and you must say it: \"I am NOT smarter than a grade schooler.\"\n\nClear all 10 subjects and you face the MILLION DOLLAR QUESTION - one 5th-grade question. Take the $500,000... or risk it all. Get it right: $1,000,000 and you ARE smarter than a grade schooler!",name:'Smarter Than a Grade Schooler',icon:'🎒',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   var ALLQ=SHG.fifthGraderNorm(BANKS2.fifthgrader);
-  if(shgGuard(ALLQ.length>=50,'5th Grader questions are still loading')) return;
+  if(shgGuard(ALLQ.length>=50,'Grade Schooler questions are still loading')) return;
   var S=null, pvpCtl=null, fg;
-  c.innerHTML='<h2>🎒 Are You Smarter Than a 5th Grader?</h2><div id="fg"></div>';
+  c.innerHTML='<h2>🎒 Smarter Than a Grade Schooler</h2><div id="fg"></div>';
   fg=c.querySelector('#fg');
   var LAD=SHG.fifthGraderLadder();
   var SUBJECTS=['Math','English','Spelling','Science','Geography','History','Art','Music','Health'];
@@ -14635,7 +14635,7 @@ render(c,ctx){
     }).join('')+'</div>';
   }
   function stageHTML(){
-    return '<div class="fg-board"><div class="fg-title">✏️ ARE YOU SMARTER THAN A 5TH GRADER?</div>'
+    return '<div class="fg-board"><div class="fg-title">✏️ SMARTER THAN A GRADE SCHOOLER</div>'
       +'<div class="row"><div class="grow center">✅ <b>'+S.correct+'</b>/10</div>'
       +'<div class="grow center">💰 <b style="color:#ffd873">'+money(S.win)+'</b></div>'
       +'<div class="grow center">🛟 Guaranteed: <b>'+money(S.guaranteed)+'</b></div></div>'
@@ -14810,11 +14810,11 @@ render(c,ctx){
     var h='<div class="fg-board"><div class="fg-title">✏️ CLASS DISMISSED</div></div><div class="card center">';
     var pts=Math.max(0,Math.round(S.win/1000));
     if(S.millionMode){
-      h+='<div class="big">🎓🏆</div><div class="ok" style="font-size:19px">"I AM smarter than a 5th grader!"</div>'
+      h+='<div class="big">🎓🏆</div><div class="ok" style="font-size:19px">"I AM smarter than a grade schooler!"</div>'
         +'<div class="big" style="color:#ffd873">$1,000,000</div>';
     } else if(S.flunked){
       h+='<div style="font-size:17px">📚 Say it with the class…</div>'
-        +'<div class="err" style="font-size:19px;font-weight:900">"I am NOT smarter than a 5th grader."</div>'
+        +'<div class="err" style="font-size:19px;font-weight:900">"I am NOT smarter than a grade schooler."</div>'
         +'<div class="muted">You flunked out on a '+gradeWord(S.cur?S.cur.grade:5)+' grade question. You keep your guaranteed money.</div>'
         +'<div class="big" style="color:#ffd873">'+money(S.win===1000000?25000:(S.correct>=5?25000:0))+'</div>';
       S.win=(S.correct>=5||S.win===25000)?25000:0;
@@ -14866,11 +14866,11 @@ render(c,ctx){
 }});
 
 /* ================= WHAT'S MY LINE ================= */
-regGame('whatsmline',{howto:"Official What's My Line?: a mystery guest signs in with a secret occupation. You lead a panel of 4 asking YES/NO questions.\n\nA panelist keeps asking while the answers are YES. A NO answer flips a $5 card and passes the questioning to the next panelist. Flip all 10 cards ($50) and the guest stumps the panel and wins!\n\nOn your turn you can ask a question, PASS, call a CONFERENCE once to hear the panel's thinking, or GUESS the occupation. A wrong guess flips a card too. Guess it right and the panel wins!",name:"What's My Line?",icon:'🕵️',tags:'Game Show',pvp:true,seats:2,
+regGame('whatsmline',{howto:"Official What Is My Line: a mystery guest signs in with a secret occupation. You lead a panel of 4 asking YES/NO questions.\n\nA panelist keeps asking while the answers are YES. A NO answer flips a $5 card and passes the questioning to the next panelist. Flip all 10 cards ($50) and the guest stumps the panel and wins!\n\nOn your turn you can ask a question, PASS, call a CONFERENCE once to hear the panel's thinking, or GUESS the occupation. A wrong guess flips a card too. Guess it right and the panel wins!",name:"What Is My Line",icon:'🕵️',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   var occs=(BANKS2.whatsmline.occupations||[]).map(SHG.wmlNormOcc).filter(function(o){ return o.name; });
-  if(shgGuard(occs.length>=4,"What's My Line occupations are still loading")) return;
+  if(shgGuard(occs.length>=4,"What Is My Line occupations are still loading")) return;
   var S=null, pvpCtl=null, wl;
   c.innerHTML='<h2>🕵️ What\'s My Line?</h2><div id="wl"></div>';
   wl=c.querySelector('#wl');
@@ -15053,16 +15053,16 @@ render(c,ctx){
 }});
 
 /* ================= HOLLYWOOD GAME NIGHT ================= */
-regGame('hollywood',{howto:"Official Hollywood Game Night: two teams of celebrities and a captain battle through party games.\n\nROUND 1 - CELEBRITY NAME GAME: your celebrity teammate gives you clues one at a time. Guess the star - 2 points if you need 1-2 clues, 1 point if you need all 3. Pass if you're stuck.\n\nROUND 2 - IN OTHER WORDS: 45 seconds. Guess each word as hints drip in - more words, more points (1 each).\n\nROUND 3 - SMASH THE BUZZER: head-to-head trivia. Smash the buzzer before the rival captain, then answer right for 1 point. Buzz and miss, and they get a free shot.\n\nWin the night and you play the CELEBRITY NAME GAME bonus: pick one celebrity partner, 10 names in 90 seconds, $1,000 a name - all 10 wins $25,000!",name:'Hollywood Game Night',icon:'🎬',tags:'Game Show',pvp:true,seats:2,
+regGame('hollywood',{howto:"Official Celebrity Game Night: two teams of celebrities and a captain battle through party games.\n\nROUND 1 - CELEBRITY NAME GAME: your celebrity teammate gives you clues one at a time. Guess the star - 2 points if you need 1-2 clues, 1 point if you need all 3. Pass if you're stuck.\n\nROUND 2 - IN OTHER WORDS: 45 seconds. Guess each word as hints drip in - more words, more points (1 each).\n\nROUND 3 - SMASH THE BUZZER: head-to-head trivia. Smash the buzzer before the rival captain, then answer right for 1 point. Buzz and miss, and they get a free shot.\n\nWin the night and you play the CELEBRITY NAME GAME bonus: pick one celebrity partner, 10 names in 90 seconds, $1,000 a name - all 10 wins $25,000!",name:'Celebrity Game Night',icon:'🎬',tags:'Game Show',pvp:true,seats:2,
 render(c,ctx){
   ctx=ctx||{mode:'cpu'}; var net=(ctx.mode==='pvp')?ctx.net:null; var isNet=!!(net&&net.room);
   var hw=BANKS2.hollywood||{};
   var celebs=(hw.celebClues||[]).map(SHG.hollywoodNormCeleb).filter(function(x){ return x.name&&x.clues.length>=1; });
   var words=(hw.wordBank||[]).map(SHG.hollywoodNormWord).filter(function(x){ return !!x.word; });
   var fire=(hw.quickFire||[]).map(SHG.hollywoodNormFire).filter(function(x){ return x.q&&x.choices.length>=2; });
-  if(shgGuard(celebs.length>=20&&words.length>=20&&fire.length>=5,'Hollywood Game Night content is still loading')) return;
+  if(shgGuard(celebs.length>=20&&words.length>=20&&fire.length>=5,'Celebrity Game Night content is still loading')) return;
   var S=null, pvpCtl=null, hw2, timer=null;
-  c.innerHTML='<h2>🎬 Hollywood Game Night</h2><div id="hw2"></div>';
+  c.innerHTML='<h2>🎬 Celebrity Game Night</h2><div id="hw2"></div>';
   hw2=c.querySelector('#hw2');
   function stopTimer(){ if(timer){ clearInterval(timer); timer=null; } }
   function bulbs(n){ var s=''; for(var i=0;i<(n||18);i++)s+='<span class="hw-bulb"></span>'; return '<div class="hw-bulbs">'+s+'</div>'; }
@@ -15339,22 +15339,22 @@ render(c,ctx){
 /* ---------------- game order & fallback meta (injected games use regGame) ---------------- */
 const GAME_ORDER=['jeopardy','wheel','millionaire','price','feud','chase','matchgame','password','whatsmline','hollywood','deal','pressluck','pyramid','weakestlink','1v100','fifthgrader'];
 const GAME_META={
-  jeopardy:{name:'Jeopardy!',icon:'🧠',pvp:true},
-  wheel:{name:'Wheel of Fortune',icon:'🎡',pvp:true},
+  jeopardy:{name:'Jeopardize!',icon:'🧠',pvp:true},
+  wheel:{name:'Wheel of Luck',icon:'🎡',pvp:true},
   millionaire:{name:'Millionaire',icon:'💰',pvp:true},
-  price:{name:'The Price Is Right',icon:'🏷️',pvp:true},
-  feud:{name:'Family Feud',icon:'👪',pvp:true},
-  chase:{name:'The Chase',icon:'🏃',pvp:true},
-  matchgame:{name:'Match Game',icon:'🧩',pvp:true},
+  price:{name:'The Right Price',icon:'🏷️',pvp:true},
+  feud:{name:'Family vs Family',icon:'👪',pvp:true},
+  chase:{name:'Chase',icon:'🏃',pvp:true},
+  matchgame:{name:'Match Up Game',icon:'🧩',pvp:true},
   password:{name:'Password',icon:'🔐',pvp:true},
-  whatsmline:{name:"What's My Line?",icon:'❓',pvp:true},
-  hollywood:{name:'Hollywood Game Night',icon:'🎬',pvp:true},
-  deal:{name:'Deal or No Deal',icon:'💼',pvp:true},
-  pressluck:{name:'Press Your Luck',icon:'😈',pvp:true},
-  pyramid:{name:'$100,000 Pyramid',icon:'🔺',pvp:true},
-  weakestlink:{name:'Weakest Link',icon:'🔗',pvp:true},
+  whatsmline:{name:"What Is My Line",icon:'❓',pvp:true},
+  hollywood:{name:'Celebrity Game Night',icon:'🎬',pvp:true},
+  deal:{name:'A Deal Is A Deal',icon:'💼',pvp:true},
+  pressluck:{name:'Push For Luck',icon:'😈',pvp:true},
+  pyramid:{name:'The Pyramid',icon:'🔺',pvp:true},
+  weakestlink:{name:'The Worst Player',icon:'🔗',pvp:true},
   '1v100':{name:'1 vs 100',icon:'💯',pvp:true},
-  fifthgrader:{name:'5th Grader',icon:'🎒',pvp:true}
+  fifthgrader:{name:'Smarter Than a Grade Schooler',icon:'🎒',pvp:true}
 };
 
 /* ---------------- game registry ---------------- */
