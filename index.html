@@ -10263,12 +10263,12 @@ function g1Choices(c,q,onPick){
 }
 
 /* ================= JEOPARDY ================= */
-regGame('jeopardy',{howto:"Pick a clue from the board. You get 12 seconds to type your answer - close spelling counts! A right answer adds the clue value, a wrong one subtracts it. Watch for Daily Doubles where you wager, and the Final Jeopardy wager at the end. Highest score wins.",name:'Jeopardy!',icon:'🧠',tags:'Game Show',pvp:true,seats:2,
+regGame('jeopardy',{howto:"Pick a clue from the board. You get 12 seconds to type your answer - close spelling counts! A right answer adds the clue value, a wrong one subtracts it. Watch for Daily Doubles where you wager, and the Final Jeopardize wager at the end. Highest score wins.",name:'Jeopardize!',icon:'🧠',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS1.jeopardy.sets.length))return;
   var share=function(){var s=BANKS1.jeopardy.sets;return JSON.parse(JSON.stringify(s[Math.floor(Math.random()*s.length)]));};
-  if(net)g1Pvp(net,share,function(d,fin){playJ(d,fin);},function(iw,sc){g1Settle(c,iw,sc,'Jeopardy!');});
+  if(net)g1Pvp(net,share,function(d,fin){playJ(d,fin);},function(iw,sc){g1Settle(c,iw,sc,'Jeopardize!');});
   else playJ(share(),null);
   function playJ(set,fin){
     var useBots=!fin,bots=useBots?g1Bots(2):[];
@@ -10278,7 +10278,7 @@ render:function(c,ctx){
     var ddI=clues[Math.floor(Math.random()*clues.length)].i;
     function scoreLine(){var s='<b>You:</b> '+g1Money(scores.You);bots.forEach(function(b){s+=' · <b>'+esc(b)+':</b> '+g1Money(scores[b]);});return s;}
     function board(){
-      var h='<h2>🧠 Jeopardy! — '+esc(set.name||'Board')+'</h2><div class="card"><div class="status">'+scoreLine()+'</div>';
+      var h='<h2>🧠 Jeopardize! — '+esc(set.name||'Board')+'</h2><div class="card"><div class="status">'+scoreLine()+'</div>';
       h+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px">';
       set.categories.forEach(function(cat){h+='<div class="muted center" style="font-size:10px;font-weight:700">'+esc(cat)+'</div>';});
       for(r=0;r<5;r++)for(col=0;col<6;col++){
@@ -10331,7 +10331,7 @@ render:function(c,ctx){
     }
     function finalJ(){
       var f=set.final,maxW=Math.max(1000,scores.You);
-      c.innerHTML='<h2>🏁 Final Jeopardy</h2><div class="card"><div class="muted">Category: <b>'+esc(f.cat)+'</b></div><div class="muted">Wager up to '+g1Money(maxW)+':</div><input id="w" type="number" value="0"><button class="btn" id="go">Wager</button></div>';
+      c.innerHTML='<h2>🏁 Final Jeopardize</h2><div class="card"><div class="muted">Category: <b>'+esc(f.cat)+'</b></div><div class="muted">Wager up to '+g1Money(maxW)+':</div><input id="w" type="number" value="0"><button class="btn" id="go">Wager</button></div>';
       c.querySelector('#go').onclick=function(){
         var w=Math.max(0,Math.min(maxW,Math.round(+c.querySelector('#w').value||0)));Sound.click();
         c.innerHTML='<h2>🏁 '+esc(f.cat)+'</h2><div class="card"><div class="big" style="font-size:19px">'+esc(f.q)+'</div><input id="a" placeholder="Final answer…" autocomplete="off"><button class="btn" id="go2">Answer</button></div>';
@@ -10352,7 +10352,7 @@ render:function(c,ctx){
       var iWon=win==='You'&&scores.You>0;
       var h='<h2>🏁 Final scores</h2><div class="card"><table class="lb">'+names.map(function(n){return '<tr><td>'+esc(n)+'</td><td>'+g1Money(scores[n])+'</td></tr>';}).join('')+'</table>';
       if(fin){c.innerHTML=h+'<div class="muted">Waiting for opponent…</div></div>';fin(scores.You);return;}
-      h+='<div class="status">'+(iWon?'<span class="ok">🏆 You win Jeopardy!</span>':'<span class="err">😞 '+esc(win)+' wins.</span>')+'</div></div>';
+      h+='<div class="status">'+(iWon?'<span class="ok">🏆 You win Jeopardize!</span>':'<span class="err">😞 '+esc(win)+' wins.</span>')+'</div></div>';
       c.innerHTML=h;
       if(iWon){Sound.win();(async function(){var p=await Wallet.recordWin('jeopardy');toast('+'+p+' ⭐ banked!');})();}
       else Sound.lose();
