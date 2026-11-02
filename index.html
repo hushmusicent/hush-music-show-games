@@ -689,12 +689,16 @@ const Net = {
     this.leave(true);
     let first=true;
     const ref=Backend.db.ref('shg_rooms/'+code);
-    const h=snap=>{ const r=snap.val(); if(!r) return; const st=JSON.stringify(r.state);
+    const h=snap=>{ const r=snap.val(); if(!r) return;
+      // Firebase deletes null-valued keys on write, so a room created with state:null
+      // comes back with NO state key: treat missing state as null, or the first delivery
+      // still looks like a change and the game starts the moment the room is created.
+      const normS=s=>JSON.stringify(s==null?null:s);
       // First delivery reports the room we already know (create set it / join fetched it):
       // compare against the pre-listen room, not the wiped null, or it looks like a change
       // and the game starts the moment the room is created, before anyone joins.
       const old=first ? (prev || r) : this.room;
-      const changed = st!==JSON.stringify(old?old.state:null) || r.turn!==(old?old.turn:-1) || r.status!==(old?old.status:'');
+      const changed = normS(r.state)!==normS(old?old.state:null) || r.turn!==(old?old.turn:-1) || r.status!==(old?old.status:'');
       this.room=r; if(changed && this._onUpdate) this._onUpdate(r); first=false;
     };
     ref.on('value', h); this._off.push(()=>ref.off('value',h));
