@@ -685,11 +685,17 @@ const Net = {
   mySeat(){ return this.room? this.room.seats.indexOf(Auth.user.uid) : -1; },
   isHost(){ return this.room && this.room.host===Auth.user.uid; },
   _listen(code){
+    const prev=this.room;
     this.leave(true);
+    let first=true;
     const ref=Backend.db.ref('shg_rooms/'+code);
     const h=snap=>{ const r=snap.val(); if(!r) return; const st=JSON.stringify(r.state);
-      const changed = st!==JSON.stringify(this.room?this.room.state:null) || r.turn!==(this.room?this.room.turn:-1) || r.status!==(this.room?this.room.status:'');
-      this.room=r; if(changed && this._onUpdate) this._onUpdate(r);
+      // First delivery reports the room we already know (create set it / join fetched it):
+      // compare against the pre-listen room, not the wiped null, or it looks like a change
+      // and the game starts the moment the room is created, before anyone joins.
+      const old=first ? (prev || r) : this.room;
+      const changed = st!==JSON.stringify(old?old.state:null) || r.turn!==(old?old.turn:-1) || r.status!==(old?old.status:'');
+      this.room=r; if(changed && this._onUpdate) this._onUpdate(r); first=false;
     };
     ref.on('value', h); this._off.push(()=>ref.off('value',h));
   },
@@ -16007,6 +16013,7 @@ function showGame(id){
     const play=stage.querySelector('#play');
     if(typeof g.render!=='function'){ play.innerHTML='<div class="msg">This game show is still being built — check back soon.</div>'; return; }
     if(ctx.mode==='pvp'){
+      play.innerHTML=''; // start() re-runs on every room update: replace, never stack boards
       const vb=document.createElement('button'); vb.className='btn small secondary'; vb.textContent='🎤 Join voice chat';
       vb.onclick=async()=>{ const ok=await Voice.join(); if(ok){ vb.textContent='🎤 Voice on — see the voice panel below'; vb.disabled=true; } };
       play.appendChild(vb);
