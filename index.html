@@ -330,11 +330,11 @@ button.mg-seat{cursor:pointer;font-family:inherit;text-align:center;}
    ===================================================================== */
 const CONFIG = {
   firebase: {
-    apiKey: "PASTE_YOUR_API_KEY_HERE",
+    apiKey: "AIzaSyAhT_oPTtMTlUvHaSOf7zWvnUwTGyJf4sk",
     authDomain: "project-556676b3-bbce-4e02-8ce.firebaseapp.com",
     databaseURL: "https://project-556676b3-bbce-4e02-8ce-default-rtdb.firebaseio.com",
     projectId: "project-556676b3-bbce-4e02-8ce",
-    appId: "1:1043698485585:web:a96258740de685c5f88b0"
+    appId: "1:1043689485585:web:a96258740de6856c5f88b0"
   },
 };
 const DAILY_BONUS = 500, START_POINTS = 1000, PVP_WIN = 200;
@@ -454,8 +454,8 @@ const Auth = {
         await Backend.db.ref('shg_users/'+cred.user.uid+'/code').set(code);
         await Backend.db.ref('shg_codes/'+code).set(cred.user.uid);
       }
-      if(!d.username){ // older/partial account: backfill username so friends see a name, not '?'
-        try{ await Backend.db.ref('shg_users/'+cred.user.uid+'/username').set(email.split('@')[0]); d.username=email.split('@')[0]; }catch(e){}
+      if(!d.username){
+        await Backend.db.ref('shg_users/'+cred.user.uid+'/username').set(email.split('@')[0]);
       }
       this.user={uid:cred.user.uid, username:d.username||email.split('@')[0], email, code};
       return this.user;
@@ -489,8 +489,8 @@ const Auth = {
               await Backend.db.ref('shg_users/'+u.uid+'/code').set(code);
               await Backend.db.ref('shg_codes/'+code).set(u.uid);
             }
-            if(!d.username && u.email){ // older/partial account: backfill username so friends see a name, not '?'
-              try{ await Backend.db.ref('shg_users/'+u.uid+'/username').set(u.email.split('@')[0]); d.username=u.email.split('@')[0]; }catch(e){}
+            if(!d.username && u.email){
+              await Backend.db.ref('shg_users/'+u.uid+'/username').set(u.email.split('@')[0]);
             }
             this.user={uid:u.uid, username:d.username||(u.email?u.email.split('@')[0]:'Player'), email:u.email||'', code};
             cb(this.user);
