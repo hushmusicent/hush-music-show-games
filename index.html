@@ -320,20 +320,21 @@ button.mg-seat{cursor:pointer;font-family:inherit;text-align:center;}
 <script>
 'use strict';
 /* =====================================================================
-   CONFIG — paste keys via the Setup card (Profile) instead of here.
-   Firebase: console.firebase.google.com → create project (free Spark plan,
-   NO credit card) → Authentication → enable Email/Password → Realtime
-   Database → Create database. Paste the 5 web-config keys in Setup.
+   CONFIG — Firebase is BAKED IN, like the hand game. Players never paste
+   keys and never see Firebase fields (Setup hides them).
+   Project: 'My First Project' (web app ai-studio-applet-webapp).
+   To change projects, edit these 5 values here in code — never in Setup.
+   The apiKey slot is filled ONCE from the Firebase console config; until
+   it is filled, the app stays in DEMO MODE (this device only).
    Voice: built-in WebRTC voice talk over Firebase (no token server, no keys).
-   The app works in DEMO MODE (this device only) until Setup is filled in.
    ===================================================================== */
 const CONFIG = {
   firebase: {
-    apiKey: "",
-    authDomain: "",
-    databaseURL: "",
-    projectId: "",
-    appId: ""
+    apiKey: "PASTE_YOUR_API_KEY_HERE",
+    authDomain: "project-556676b3-bbce-4e02-8ce.firebaseapp.com",
+    databaseURL: "https://project-556676b3-bbce-4e02-8ce-default-rtdb.firebaseio.com",
+    projectId: "project-556676b3-bbce-4e02-8ce",
+    appId: "1:1043698485585:web:a96258740de685c5f88b0"
   },
 };
 const DAILY_BONUS = 500, START_POINTS = 1000, PVP_WIN = 200;
@@ -372,21 +373,23 @@ const store = {
 };
 
 /* =====================================================================
-   BACKEND — DEMO MODE (localStorage, this device only) until the user
-   pastes Firebase keys into Setup (Profile). Firebase config is read from
-   localStorage 'shg_fb_config' FIRST, falling back to CONFIG.firebase.
+   BACKEND — Firebase is baked into CONFIG.firebase (see above). A saved
+   localStorage 'shg_fb_config' still wins if present (older installs that
+   pasted keys keep working), but Setup no longer shows the fields.
+   A placeholder apiKey (PASTE_...) counts as NOT configured.
    ===================================================================== */
 const Backend = {
   mode: 'local', fb: null, db: null, auth: null, fbCfg: null,
+  realKey(v){ return !!(v && String(v).trim() && !String(v).trim().startsWith('PASTE_')); },
   readConfig(){
     let cfg = CONFIG.firebase;
     try{
       const raw = localStorage.getItem('shg_fb_config');
-      if(raw){ const j=JSON.parse(raw); if(j && j.apiKey && String(j.apiKey).trim()) cfg=j; }
+      if(raw){ const j=JSON.parse(raw); if(j && this.realKey(j.apiKey)) cfg=j; }
     }catch(e){}
     this.fbCfg = cfg; return cfg;
   },
-  configured(){ const f=this.readConfig(); return !!(f && f.apiKey && f.databaseURL && f.projectId); },
+  configured(){ const f=this.readConfig(); return !!(f && this.realKey(f.apiKey) && f.databaseURL && f.projectId); },
   async init(){
     const f = this.readConfig();
     if(this.configured()){
@@ -575,7 +578,7 @@ const Board = {
 
 /* ---------------- FRIENDS (needs Firebase; graceful in demo) ---------------- */
 const Friends = {
-  needNet(){ if(Backend.mode!=='firebase'){ toast('Friends need Firebase connected (see Setup in Profile).'); return false; } return true; },
+  needNet(){ if(Backend.mode!=='firebase'){ toast('Friends need Firebase connected.'); return false; } return true; },
   async list(){
     if(!this.needNet()) return [];
     const s=await Backend.db.ref('shg_friends/'+Auth.user.uid).get();
@@ -648,7 +651,7 @@ const Chat = {
 const Net = {
   room: null, // {code, game, seatsNeeded, seats:[uids], names:{}, state, turn, status, host, created}
   _off: [],
-  needNet(){ if(Backend.mode!=='firebase'){ toast('Online PvP needs Firebase connected (see Setup in Profile).'); return false; } return true; },
+  needNet(){ if(Backend.mode!=='firebase'){ toast('Online PvP needs Firebase connected.'); return false; } return true; },
   async create(game, seats){
     if(!this.needNet()) return null;
     const code=String(rnd(9000)+1000);
@@ -736,7 +739,7 @@ const Voice = {
   },
   async join(){
     if(this.active) return true;
-    if(!this.configured()){ toast('Voice talk needs Firebase (Profile → Setup).'); return false; }
+    if(!this.configured()){ toast('Voice talk needs Firebase connected.'); return false; }
     if(!Net.room || !Net.room.code){ toast('Join a room first.'); return false; }
     if(!Auth.user || !Auth.user.uid){ toast('Not signed in.'); return false; }
     this.connecting=true; this.voiceError=''; this.sigError='';
@@ -15941,7 +15944,7 @@ function showAuth(){
   setCleanup(null);
   const v=$('#view');
   v.innerHTML='<div class="card"><h2>🎙️ Welcome to Hush Music Show Games</h2><div class="muted">16 game shows · win points · challenge friends</div>'
-    +(!Backend.configured()?'<div class="msg">Demo mode: accounts live on this device only. Connect Firebase in Profile → Setup for real logins, friends & online play.</div>':'')
+    +(!Backend.configured()?'<div class="msg">Demo mode: accounts live on this device only.</div>':'')
     +'<div class="betrow" id="tabs"><button class="sel" data-t="login">Log in</button><button data-t="signup">Sign up</button><button data-t="forgot">Forgot password</button></div><div id="form"></div><div class="err" id="err"></div></div>';
   let tab='login';
   const form=()=>{ const f=v.querySelector('#form');
@@ -16015,7 +16018,7 @@ function showGame(id){
 async function showFriends(){
   const v=$('#view'); v.innerHTML='<h2>👥 Friends</h2><div class="card" id="box"><div class="muted">Loading...</div></div>';
   const box=v.querySelector('#box');
-  if(Backend.mode!=='firebase'){ box.innerHTML='<div class="msg">Friends need Firebase connected.<br><br>Go to <b>Profile → Setup</b>, paste your free Firebase keys, save, reload, and come back.</div>'; return; }
+  if(Backend.mode!=='firebase'){ box.innerHTML='<div class="msg">Friends need Firebase connected.<br><br>Reload the app and come back.</div>'; return; }
   const reqs=await Friends.requests();
   const list=await Friends.list();
   let h='<div class="row"><input id="fq" class="grow" placeholder="Player code (6 letters)" maxlength="6" style="text-transform:uppercase" autocapitalize="characters"><button class="btn small" id="fadd">Add</button></div>'
@@ -16058,37 +16061,20 @@ async function showBoard(){
 function showProfile(){
   const v=$('#view');
   const wins=Wallet.wins; const wlist=Object.keys(wins).map(k=>k+': '+wins[k]).join(' · ')||'No wins yet';
-  const fb=store.get('fb_config',{});
   v.innerHTML='<h2>👤 Profile</h2><div class="card"><div class="big">'+esc(Auth.user.username)+'</div><div class="muted">'+esc(Auth.user.email)+'</div>'
     +'<div class="muted" style="margin-top:6px">Player code: <span class="codechip">'+esc(Auth.user.code||'?')+'</span></div>'
     +'<div class="row" style="margin-top:8px"><div class="pill gold grow">⭐ '+Wallet.balance.toLocaleString()+' points</div></div>'
     +'<div class="muted" style="margin-top:8px">Wins: '+esc(wlist)+'</div>'
     +(Wallet.canDaily()?'<button class="btn" id="daily">🎁 Claim daily +'+DAILY_BONUS+'</button>':'')
     +'<button class="btn secondary" id="logout">Log out</button></div>'
-    +'<div class="card"><h3>⚙️ Setup — unlock online play</h3><div id="setupStatus"></div>'
-    +'<label>Firebase apiKey</label><input id="fb_apiKey" value="'+esc(fb.apiKey||'')+'" placeholder="AIza...">'
-    +'<label>Firebase authDomain</label><input id="fb_authDomain" value="'+esc(fb.authDomain||'')+'" placeholder="your-project.firebaseapp.com">'
-    +'<label>Firebase databaseURL</label><input id="fb_databaseURL" value="'+esc(fb.databaseURL||'')+'" placeholder="https://your-project-default-rtdb.firebaseio.com">'
-    +'<label>Firebase projectId</label><input id="fb_projectId" value="'+esc(fb.projectId||'')+'" placeholder="your-project">'
-    +'<label>Firebase appId</label><input id="fb_appId" value="'+esc(fb.appId||'')+'" placeholder="1:123:web:abc">'
-    +'<button class="btn" id="saveFb">Save Firebase keys</button>'
+    +'<div class="card"><h3>⚙️ Setup</h3><div id="setupStatus"></div>'
     +'<div class="msg">🎙️ <b>Voice Talk — built in.</b> No token server, no extra keys: once Firebase is connected, tap 🎤 Join Voice Talk in any room.</div>'
     +'<button class="btn secondary" id="reloadApp">Reload app</button>'
-    +'<div class="muted"><b>1.</b> Go to <b>console.firebase.google.com</b> → create a project (free <b>Spark</b> plan, no card) → Build → Authentication → Sign-in method → enable <b>Email/Password</b> → Build → Realtime Database → Create database.<br>'
-    +'<b>2.</b> Project settings → Your apps → web app → copy the <b>firebaseConfig</b> values into the 5 fields above → Save.<br>'
-    +'<b>3.</b> In Firebase console → Realtime Database → Rules, add the <b>shg_*</b> paths from the README (shg_users, shg_codes, shg_friends, shg_requests, shg_presence, shg_chat, shg_rooms) → Publish. Without this, friends/PvP/chat/voice get permission-denied.<br>'
-    +'<b>4.</b> Reload the app and log in again. Firebase on = real logins, friends, online PvP, chat, and voice talk (built in, no extra setup).</div></div>';
+    +'<div class="muted">Online play is <b>built in</b> — just sign up and play. No setup needed: logins, friends, online PvP, chat, and voice talk all run on the built-in connection.</div></div>';
   const st=v.querySelector('#setupStatus');
-  st.innerHTML='<div class="msg">Firebase: '+(Backend.configured()?'<span class="ok">connected ✅</span>':'<span class="err">not connected — demo mode</span>')+'<br>Voice talk: '+(Voice.configured()?'<span class="ok">built in ✅</span>':'<span class="err">needs Firebase connected</span>')+'</div>';
+  st.innerHTML='<div class="msg">Firebase: '+(Backend.configured()?'<span class="ok">connected ✅ (built in)</span>':'<span class="err">not connected — demo mode</span>')+'<br>Voice talk: '+(Voice.configured()?'<span class="ok">built in ✅</span>':'<span class="err">needs Firebase connected</span>')+'</div>';
   const d=v.querySelector('#daily'); if(d) d.onclick=async()=>{ if(await Wallet.claimDaily()){ toast('Bonus claimed!'); showProfile(); } };
   v.querySelector('#logout').onclick=async()=>{ await Friends.setOnline(false); await Auth.logout(); location.reload(); };
-  v.querySelector('#saveFb').onclick=()=>{
-    const cfg={apiKey:v.querySelector('#fb_apiKey').value.trim(), authDomain:v.querySelector('#fb_authDomain').value.trim(),
-      databaseURL:v.querySelector('#fb_databaseURL').value.trim(), projectId:v.querySelector('#fb_projectId').value.trim(),
-      appId:v.querySelector('#fb_appId').value.trim()};
-    store.set('fb_config', cfg);
-    toast('Firebase keys saved — reload the app'); showProfile();
-  };
   v.querySelector('#reloadApp').onclick=()=>location.reload();
 }
 
