@@ -687,6 +687,10 @@ const Net = {
   _listen(code){
     const prev=this.room;
     this.leave(true);
+    // leave() nulls this.room, but the room is still known (just created/fetched):
+    // keep it, or a push() right after join (doJoin's status:'playing') silently
+    // no-ops on the null room and the host never learns the guest arrived.
+    this.room=prev;
     let first=true;
     const ref=Backend.db.ref('shg_rooms/'+code);
     const h=snap=>{ const r=snap.val(); if(!r) return;
