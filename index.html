@@ -656,6 +656,7 @@ const Chat = {
 /* ---------------- PVP ROOMS (needs Firebase) ---------------- */
 const Net = {
   room: null, // {code, game, seatsNeeded, seats:[uids], names:{}, state, turn, status, host, created}
+  _created:false, // true only on the client that created this room (not a joiner, even same uid)
   _off: [],
   needNet(){ if(Backend.mode!=='firebase'){ toast('Online PvP needs Firebase connected.'); return false; } return true; },
   async create(game, seats){
@@ -663,7 +664,7 @@ const Net = {
     const code=String(rnd(9000)+1000);
     const room={code, game, seatsNeeded:seats, seats:[Auth.user.uid], names:{[Auth.user.uid]:Auth.user.username}, state:null, turn:0, status:'waiting', host:Auth.user.uid, created:Date.now()};
     await Backend.db.ref('shg_rooms/'+code).set(room);
-    this.room=room; this._listen(code); Voice.syncPanel();
+    this.room=room; this._listen(code); this._created=true; Voice.syncPanel();
     return code;
   },
   async join(code){
@@ -679,7 +680,7 @@ const Net = {
       await Backend.db.ref('shg_rooms/'+code+'/seats').set(room.seats);
       await Backend.db.ref('shg_rooms/'+code+'/names').set(room.names);
     }
-    this.room=room; this._listen(code); Voice.syncPanel();
+    this.room=room; this._listen(code); this._created=false; Voice.syncPanel();
     return code;
   },
   mySeat(){ return this.room? this.room.seats.indexOf(Auth.user.uid) : -1; },
@@ -721,9 +722,9 @@ const Net = {
   async leave(silent){
     this._off.forEach(f=>{try{f()}catch(e){}}); this._off=[];
     if(!silent && this.room && Backend.mode==='firebase'){
-      try{ if(this.isHost()) await Backend.db.ref('shg_rooms/'+this.room.code).remove(); }catch(e){}
+      try{ if(this.isHost() && this._created) await Backend.db.ref('shg_rooms/'+this.room.code).remove(); }catch(e){}
     }
-    this.room=null; this._onUpdate=null;
+    this.room=null; this._onUpdate=null; this._created=false;
     Voice.leave();
   }
 };
@@ -10725,7 +10726,7 @@ function g1Guard(c,ok){if(!ok){c.innerHTML='<div class="msg">Question bank is st
    solo, each submits a numeric score, then settle(iWon, scores). */
 function g1Pvp(net,share,play,settle){
   var data=null;
-  try{if(net.isHost()){data=share();QuizPVP.hostSet(net,data);}}catch(e){}
+  try{if(net.isHost() && net._created){data=share();QuizPVP.hostSet(net,data);}}catch(e){}
   var started=false,submitted=false,over=false;
   function submit(myScore){if(submitted||over)return;submitted=true;try{QuizPVP.submit(net,Math.round(myScore));}catch(e){}}
   function onRoom(room){
@@ -13571,13 +13572,13 @@ function shgPvp(net,opt){
   }
   net.onUpdate(function(room){
     if(!room) return;
-    if(room.shgNeedQuiz&&net.isHost()&&st.data){
+    if(room.shgNeedQuiz&&net.isHost()&&net._created&&st.data){
       try{ QuizPVP.hostSet(net,st.data); }catch(e){ try{ net.push({quiz:st.data,status:'playing'}); }catch(e2){} }
       return;
     }
     maybeStart(room); checkDone(room);
   });
-  if(net.isHost()){
+  if(net.isHost() && net._created){
     var data=opt.share();
     st.data=data;
     try{ QuizPVP.hostSet(net,data); }catch(e){ try{ net.push({quiz:data,status:'playing'}); }catch(e2){} }
@@ -15908,7 +15909,7 @@ function netTurn(net, state, nextTurn){
 }
 function netInit(net, seats, initialState){
   // Host creates the initial state and broadcasts it.
-  if(net.isHost()){ net.push({state:initialState, turn:0, status:'playing'}); }
+  if(net.isHost() && net._created){ net.push({state:initialState, turn:0, status:'playing'}); }
 }
 
 /* ---------------- QuizPVP: simultaneous quiz PvP helper ----------------
@@ -15921,7 +15922,7 @@ function netInit(net, seats, initialState){
      const w = QuizPVP.winnerUid(state.scores);
      await QuizPVP.award(w===Auth.user.uid);                              */
 const QuizPVP = {
-  hostSet(net, items){ if(net && net.isHost()) net.push({state:{items, scores:{}, done:{}}}); },
+  hostSet(net, items){ if(net && net.isHost() && net._created) net.push({state:{items, scores:{}, done:{}}}); },
   submit(net, score){
     const u=Auth.user.uid;
     net.set('state/scores/'+u, score);
