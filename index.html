@@ -338,7 +338,7 @@ const CONFIG = {
   },
 };
 const DAILY_BONUS = 500, START_POINTS = 1000, PVP_WIN = 200;
-const BUILD_VERSION = 'v2026.11.16.1';
+const BUILD_VERSION = 'v2026.11.16.2';
 const CPU_PAYOUTS = {jeopardy:150,wheel:150,millionaire:200,price:120,feud:150,chase:150,matchgame:80,password:80,whatsmline:100,hollywood:120,deal:150,pressluck:150,pyramid:150,weakestlink:120,'1v100':200,fifthgrader:120};
 
 /* ---------------- utils ---------------- */
@@ -10775,16 +10775,34 @@ function g1Pvp(net,share,play,settle,container){
     if(!target||started||over)return;
     target.innerHTML='<div class="card center"><div class="big">⏳ Waiting for host\'s board…</div><div class="muted" style="margin-top:6px">Room <b>'+esc(roomCode)+'</b> · Build '+esc(BUILD_VERSION)+'</div></div>';
   }
+  function showTurnWaiting(){
+    if(!target||started||over)return;
+    target.innerHTML='<div class="card center"><div class="big">⏳ Player 1 is playing…</div><div class="muted" style="margin-top:6px">Your turn is next · Room <b>'+esc(roomCode)+'</b> · Build '+esc(BUILD_VERSION)+'</div></div>';
+  }
+  function someoneElseDone(state){
+    var me=Auth.user&&Auth.user.uid, done=state&&state.done;
+    if(!done) return false;
+    for(var k in done){ if(k!==me&&done[k]) return true; }
+    return false;
+  }
+  function myTurn(room){
+    if(isCreator) return true;
+    var st=room&&room.state;
+    if(!st) return false;
+    if(st.turn===(Auth.user&&Auth.user.uid)) return true;
+    return someoneElseDone(st);
+  }
   function submit(s){
     if(submitted||over)return; submitted=true; myScore=Math.round(s);
     try{QuizPVP.submit(net,myScore);}catch(e){}
+    try{QuizPVP.passTurn(net);}catch(e){}
     setTimeout(function(){
       if(over||!submitted)return;
       var r=net.room, st=r&&r.state, me=Auth.user&&Auth.user.uid;
       var scores=(st&&st.scores)||{};
       if(!(me in scores)){ try{QuizPVP.submit(net,myScore);}catch(e){} scores[me]=myScore; }
       doSettle(scores);
-    },60000);
+    },600000);
   }
   function onRoom(room){
     if(!room||over)return;
@@ -10795,6 +10813,7 @@ function g1Pvp(net,share,play,settle,container){
     }
     if(!d){ showWaiting(); return; }
     if(d&&!started){
+      if(!myTurn(room)){ showTurnWaiting(); return; }
       started=true;
       try{play(d,submit);}catch(e){
         console.error('g1Pvp play error:',e);
@@ -13922,11 +13941,30 @@ function shgPvp(net,opt){
     if(!target||st.started) return;
     target.innerHTML='<div class="card center"><div class="big">⏳ Waiting for host\'s board…</div><div class="muted" style="margin-top:6px">Room <b>'+esc(roomCode)+'</b> · Build '+esc(BUILD_VERSION)+'</div></div>';
   }
+  function showTurnWaiting(){
+    var target=net&&net._activeContainer;
+    if(!target||st.started||st.settled) return;
+    target.innerHTML='<div class="card center"><div class="big">⏳ Player 1 is playing…</div><div class="muted" style="margin-top:6px">Your turn is next · Room <b>'+esc(roomCode)+'</b> · Build '+esc(BUILD_VERSION)+'</div></div>';
+  }
+  function someoneElseDone(state){
+    var me=shgMyUid(), done=state&&state.done;
+    if(!done) return false;
+    for(var k in done){ if(k!==me&&done[k]) return true; }
+    return false;
+  }
+  function myTurn(room){
+    if(isCreator) return true;
+    var st=room&&room.state;
+    if(!st) return false;
+    if(st.turn===shgMyUid()) return true;
+    return someoneElseDone(st);
+  }
   function maybeStart(room){
     if(st.started) return;
     var d=st.data||shgQuizData(room)||shgQuizData(net.room);
-    if(d){ st.started=true; st.data=d; opt.onData(d); }
-    else { showWaiting(); }
+    if(!d){ showWaiting(); return; }
+    if(!myTurn(room)){ showTurnWaiting(); return; }
+    st.started=true; st.data=d; opt.onData(d);
   }
   function doSettle(room,scores){
     if(st.settled) return;
@@ -13979,13 +14017,14 @@ function shgPvp(net,opt){
       var sc=(p&&typeof p==='object')?(+p.score||0):(+p||0);
       st.myScore=sc;
       try{ QuizPVP.submit(net, sc); }catch(e2){ toast('Score submit failed'); }
+      try{ QuizPVP.passTurn(net); }catch(e3){}
       setTimeout(function(){
         if(st.settled||!st.submitted) return;
         var r=net.room, s=r&&r.state, me=shgMyUid();
         var scores=(s&&s.scores)||{};
         if(!(me in scores)){ try{QuizPVP.submit(net, st.myScore);}catch(e){} scores[me]=st.myScore; }
         doSettle(r||{}, scores);
-      },60000);
+      },600000);
     }
   };
 }
@@ -16325,6 +16364,11 @@ const QuizPVP = {
     const u=Auth.user.uid;
     net.set('state/scores/'+u, score);
     net.set('state/done/'+u, true);
+  },
+  passTurn(net){
+    if(!net||!net.room) return;
+    const me=Auth.user&&Auth.user.uid, seats=net.room.seats||[];
+    for(let i=0;i<seats.length;i++){ if(seats[i]!==me){ try{ net.set('state/turn', seats[i]); }catch(e){} return; } }
   },
   allDone(state, seats){
     if(!state || !state.done || !Array.isArray(seats)) return false;
