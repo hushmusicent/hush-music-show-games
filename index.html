@@ -338,7 +338,7 @@ const CONFIG = {
   },
 };
 const DAILY_BONUS = 500, START_POINTS = 1000, PVP_WIN = 200;
-const BUILD_VERSION = 'v2026.11.15.1';
+const BUILD_VERSION = 'v2026.11.16.1';
 const CPU_PAYOUTS = {jeopardy:150,wheel:150,millionaire:200,price:120,feud:150,chase:150,matchgame:80,password:80,whatsmline:100,hollywood:120,deal:150,pressluck:150,pyramid:150,weakestlink:120,'1v100':200,fifthgrader:120};
 
 /* ---------------- utils ---------------- */
@@ -533,8 +533,11 @@ const Wallet = {
   },
   async save(){
     if(!Auth.user) return;
-    if(Backend.mode==='firebase'){ await Backend.db.ref('shg_users/'+Auth.user.uid).update({points:this.balance, wins:this.wins, lastDaily:this.lastDaily}); }
-    else { const w=store.get('wallets',{}); w[Auth.user.uid]={points:this.balance,wins:this.wins,lastDaily:this.lastDaily}; store.set('wallets',w); }
+    this.render();
+    try{
+      if(Backend.mode==='firebase'){ await Backend.db.ref('shg_users/'+Auth.user.uid).update({points:this.balance, wins:this.wins, lastDaily:this.lastDaily}); }
+      else { const w=store.get('wallets',{}); w[Auth.user.uid]={points:this.balance,wins:this.wins,lastDaily:this.lastDaily}; store.set('wallets',w); }
+    }catch(e){ try{toast('⚠️ Points did not save — check connection.');}catch(e2){} }
     this.render();
   },
   render(){ $('#pointsPill').textContent='⭐ '+this.balance.toLocaleString(); },
@@ -10692,7 +10695,8 @@ SHG.jeopardyGrade=function(pa,ca){
   return false;
 };
 /* --- WHEEL (official layout, clockwise from top) --- */
-SHG.wheelLayout=function(){return [
+SHG.wheelLayout=function(round){
+  var L=[
  {v:'LOSE A TURN',c:'#eef0f2'},
  {v:800,c:'#e23b3b'},{v:350,c:'#8e6fc0'},{v:450,c:'#f2a4c0'},{v:700,c:'#2aa198'},
  {v:300,c:'#ef7d2a'},{v:600,c:'#8e6fc0'},{v:5000,c:'#c9ccd4'},{v:600,c:'#f2e13c'},
@@ -10701,9 +10705,13 @@ SHG.wheelLayout=function(){return [
  {v:500,c:'#f2e13c'},{v:'FREE SPIN',cash:500,c:'#2aa198'},{v:900,c:'#ef7d2a'},
  {v:'BANKRUPT',c:'#141414'},
  {v:600,c:'#8e6fc0'},{v:400,c:'#f2e13c'},{v:300,c:'#f2a4c0'}
-];};
-SHG.wheelSegments=function(){return SHG.wheelLayout().map(function(w){return w.v;});};
-SHG.wheelSpin=function(rng){rng=rng||Math.random;var s=SHG.wheelSegments();return s[Math.floor(rng()*s.length)];};
+  ];
+  if(round===2){ L[6]={v:'MYSTERY',c:'#ffd700'}; }
+  if(round===3){ L[6]={v:'EXPRESS',c:'#00e5b0'}; }
+  return L;
+};
+SHG.wheelSegments=function(round){return SHG.wheelLayout(round).map(function(w){return w.v;});};
+SHG.wheelSpin=function(round){var s=SHG.wheelSegments(round);return s[Math.floor(Math.random()*s.length)];};
 /* --- MILLIONAIRE --- */
 SHG.millionaireLadder=function(){return [100,200,300,500,1000,2000,4000,8000,16000,32000,64000,125000,250000,500000,1000000];};
 SHG.millionaireFifty=function(choices,correct){
@@ -10753,12 +10761,31 @@ function g1Pvp(net,share,play,settle,container){
       }
     }
   }catch(e){console.error('g1Pvp share error:',e);}
-  var started=false,submitted=false,over=false;
+  var started=false,submitted=false,over=false,myScore=0;
+  function doSettle(scores){
+    if(over)return; over=true;
+    scores=scores||{};
+    var w=QuizPVP.winnerUid(scores),iWon=w===(Auth.user&&Auth.user.uid);
+    try{settle(iWon,scores);}catch(e){}
+    try{QuizPVP.award(iWon);}catch(e2){}
+    try{Net.push({status:'done'});}catch(e3){}
+    try{Voice.leave();}catch(e4){}
+  }
   function showWaiting(){
     if(!target||started||over)return;
     target.innerHTML='<div class="card center"><div class="big">⏳ Waiting for host\'s board…</div><div class="muted" style="margin-top:6px">Room <b>'+esc(roomCode)+'</b> · Build '+esc(BUILD_VERSION)+'</div></div>';
   }
-  function submit(myScore){if(submitted||over)return;submitted=true;try{QuizPVP.submit(net,Math.round(myScore));}catch(e){}}
+  function submit(s){
+    if(submitted||over)return; submitted=true; myScore=Math.round(s);
+    try{QuizPVP.submit(net,myScore);}catch(e){}
+    setTimeout(function(){
+      if(over||!submitted)return;
+      var r=net.room, st=r&&r.state, me=Auth.user&&Auth.user.uid;
+      var scores=(st&&st.scores)||{};
+      if(!(me in scores)){ try{QuizPVP.submit(net,myScore);}catch(e){} scores[me]=myScore; }
+      doSettle(scores);
+    },60000);
+  }
   function onRoom(room){
     if(!room||over)return;
     var d=(room.state&&room.state.items)||null;
@@ -10776,12 +10803,7 @@ function g1Pvp(net,share,play,settle,container){
     }
     var st=room.state;
     if(st&&submitted&&QuizPVP.allDone(st,room.seats||[])){
-      over=true;
-      var w=QuizPVP.winnerUid(st.scores),iWon=w===(Auth.user&&Auth.user.uid);
-      try{settle(iWon,st.scores);}catch(e){}
-      try{QuizPVP.award(iWon);}catch(e2){}
-      try{Net.push({status:'done'});}catch(e3){}
-      try{Voice.leave();}catch(e4){}
+      doSettle(st.scores);
     }
   }
   try{net.onUpdate(onRoom);if(net.room)onRoom(net.room);else showWaiting();}catch(e){console.error('g1Pvp init error:',e);}
@@ -10993,14 +11015,27 @@ regGame('wheel',{howto:"Tap SPIN, then guess a consonant - you win the wedge val
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS1.wheel.length))return;
-  var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS1.wheel,net?1:3)));};
+  var share=function(){return JSON.parse(JSON.stringify(g1PickN(BANKS1.wheel,8)));}; /* official: [Toss-Up x3, Round 1-4, Bonus] */
   if(net)g1Pvp(net,share,function(d,fin){playW(d,fin);},function(iw,sc){g1Settle(c,iw,sc,'Wheel of Luck');},c);
   else playW(share(),null);
   function playW(puzs,fin){
     puzs=Array.isArray(puzs)?puzs:Object.values(puzs||{});
     var useBots=!fin,bots=useBots?g1Bots(2):[];
     var tot={You:0};bots.forEach(function(b){tot[b]=0;});
-    var ri=0,revealed,guessed,bank,bbank,turn,misses=0,puz;
+    var revealed,guessed,bank,bbank,turn,misses=0,puz;
+    /* OFFICIAL FORMAT: 8 puzzles = 3 Toss-Ups, Rounds 1-4, Bonus. Older shared sets (<8) play as plain rounds. */
+    var official=puzs.length>=8;
+    var PH=official?[
+      {t:'toss',i:0,v:1000,label:'Toss-Up 1 — $1,000'},
+      {t:'toss',i:1,v:2000,label:'Toss-Up 2 — $2,000'},
+      {t:'toss',i:2,v:3000,label:'Toss-Up 3 — $3,000'},
+      {t:'round',i:3,r:1,label:'Round 1'},
+      {t:'round',i:4,r:2,label:'Round 2 — Mystery Round'},
+      {t:'round',i:5,r:3,label:'Round 3 — Prize Puzzle'},
+      {t:'round',i:6,r:4,label:'Round 4 — Final Spin'},
+      {t:'bonus',i:7,label:'Bonus Round'}
+    ]:puzs.map(function(p,i){return {t:'round',i:i,r:i+1,label:'Round '+(i+1)+' of '+puzs.length};});
+    var pi=0,curPhase=null,wheelRound=0,finalVal=0,finalSpinMode=false,expr=[0,0,0];
     var VOW='aeiou';
     var wheelRot=0,spinning=false,ftok=[0,0,0];
     var WHEEL_LOGO='data:image/webp;base64,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';
@@ -11016,7 +11051,7 @@ render:function(c,ctx){
     function paintWheel(){
       var cv=c.querySelector('#wheelcv');if(!cv)return;
       var g=cv.getContext('2d'),W=cv.width,cx=W/2,cy=W/2,R=W/2-8;
-      var layout=SHG.wheelLayout(),n=layout.length,arc=Math.PI*2/n,i,a0;
+      var layout=SHG.wheelLayout(wheelRound),n=layout.length,arc=Math.PI*2/n,i,a0;
       g.clearRect(0,0,W,W);
       for(i=0;i<n;i++){
         a0=wheelRot+i*arc;
@@ -11045,7 +11080,7 @@ render:function(c,ctx){
       g.fillStyle='#cf8f3f';g.fill();g.lineWidth=2;g.strokeStyle='#0d1420';g.stroke();
     }
     function animateWheel(seg,done){
-      var segs=SHG.wheelSegments(),n=segs.length,arc=Math.PI*2/n,i,cands=[];
+      var segs=SHG.wheelSegments(wheelRound),n=segs.length,arc=Math.PI*2/n,i,cands=[];
       for(i=0;i<n;i++)if(segs[i]===seg)cands.push(i);
       var t=cands[Math.floor(Math.random()*cands.length)];
       var jitter=(Math.random()*0.7-0.35)*arc;
@@ -11066,7 +11101,7 @@ render:function(c,ctx){
     }
     function doSpin(who){
       if(spinning)return;
-      var seg=SHG.wheelSpin();
+      var seg=SHG.wheelSpin(wheelRound);
       var el=c.querySelector('#ctl');
       if(el&&who===0)el.innerHTML='<div class="status">🌀 Spinning…</div>';
       animateWheel(seg,function(){if(c.isConnected)resolveSpin(who,seg);});
@@ -11106,14 +11141,176 @@ render:function(c,ctx){
       });
       return h;
     }
-    function newRound(){
-      if(ri>=puzs.length){endGame();return;}
-      puz=puzs[ri];revealed={};guessed={};bank=0;bbank=[0,0];turn=0;spinning=false;ftok=[0,0,0];
-      c.innerHTML='<h2>🎡 Round '+(ri+1)+' of '+puzs.length+' — '+esc(puz.cat)+'</h2><style>'+WHEEL_CSS+'</style>'
+    function nextPhase(){
+      if(pi>=PH.length){endGame();return;}
+      curPhase=PH[pi]; puz=puzs[curPhase.i]; revealed={}; guessed={}; bank=0; bbank=[0,0]; turn=0; spinning=false; ftok=[0,0,0]; expr=[0,0,0]; finalSpinMode=false; finalVal=0;
+      if(curPhase.t==='toss'){ playTossup(curPhase); return; }
+      if(curPhase.t==='bonus'){ playBonus(curPhase); return; }
+      wheelRound=curPhase.r||0;
+      if(curPhase.r===4){ startFinalSpin(); return; }
+      c.innerHTML='<h2>🎡 '+esc(curPhase.label)+' — '+esc(puz.cat)+'</h2><style>'+WHEEL_CSS+'</style>'
         +'<div class="wheelwrap"><canvas id="wheelcv" width="320" height="320"></canvas></div>'
         +'<div class="wboard" id="bd"></div><div id="ctl"></div>';
       paintWheel();
       takeTurn();
+    }
+    function playTossup(ph){
+      puz=puzs[ph.i]; revealed={}; guessed={}; bank=0;
+      var done=false, myOut=false, botOut={};
+      c.innerHTML='<h2>🎡 '+esc(ph.label)+' — '+esc(puz.cat)+'</h2><style>'+WHEEL_CSS+'</style>'
+        +'<div class="wboard" id="bd"></div><div id="ctl"></div>';
+      draw();
+      var ctl=c.querySelector('#ctl');
+      ctl.innerHTML='<div class="status">⏱️ Toss-Up! Letters reveal one at a time — solve it first to win '+g1Money(ph.v)+'!</div><div class="row"><input id="sl" class="grow" placeholder="Solve the puzzle…"><button class="btn small" id="sg">Buzz In!</button></div><div id="tm" class="muted">10s</div>';
+      var timeLeft=10;
+      var timer=setInterval(function(){
+        timeLeft--;
+        var tm=c.querySelector('#tm'); if(tm) tm.textContent=timeLeft+'s';
+        if(timeLeft<=0){ clearInterval(timer); clearInterval(rev); finish(null); }
+      },1000);
+      var rev=setInterval(function(){
+        var pl=puz.puzzle.toLowerCase(), hidden=[];
+        for(var i=0;i<pl.length;i++){ var l=pl[i]; if(/[a-z]/.test(l)&&!revealed[l]&&hidden.indexOf(l)<0) hidden.push(l); }
+        if(!hidden.length){ clearInterval(rev); return; }
+        var l=hidden[Math.floor(Math.random()*hidden.length)];
+        revealed[l]=1; draw();
+      },700);
+      bots.forEach(function(b){
+        setTimeout(function(){
+          if(done||botOut[b])return;
+          if(Math.random()<0.6){ tot[b]+=ph.v; finish(b); }
+          else{ botOut[b]=1; msg('🤖 '+esc(b)+' buzzes… wrong!'); }
+        },2000+Math.random()*7000);
+      });
+      ctl.querySelector('#sg').onclick=function(){
+        if(done||myOut)return;
+        var s=ctl.querySelector('#sl').value;
+        if(SHG.jeopardyGrade(s,puz.puzzle)){ tot.You+=ph.v; finish('You'); }
+        else{ myOut=true; Sound.lose(); msg('❌ Not quite — you are out for this Toss-Up.'); ctl.querySelector('#sg').disabled=true; }
+      };
+      function finish(winner){
+        if(done)return; done=true;
+        clearInterval(timer); clearInterval(rev);
+        var el=c.querySelector('#ctl');
+        if(el) el.innerHTML=winner?'<div class="ok">🎉 '+esc(winner)+' wins the Toss-Up — '+g1Money(ph.v)+'!</div>':'<div class="status">No one solved the Toss-Up.</div>';
+        if(winner) Sound.win();
+        setTimeout(function(){ if(c.isConnected){ pi++; nextPhase(); } },2000);
+      }
+    }
+    function playBonus(ph){
+      puz=puzs[ph.i]; revealed={}; guessed={};
+      var leader='You', best=tot.You;
+      Object.keys(tot).forEach(function(n){ if(tot[n]>best){best=tot[n];leader=n;} });
+      var playing=useBots?leader:'You';
+      var done=false;
+      c.innerHTML='<h2>🎡 '+esc(ph.label)+' — '+esc(puz.cat)+'</h2><style>'+WHEEL_CSS+'</style>'
+        +'<div class="wboard" id="bd"></div><div id="ctl"></div>';
+      'rstlne'.split('').forEach(function(l){ revealed[l]=1; });
+      draw();
+      function bonusDone(won){
+        if(done)return; done=true;
+        if(won){ tot[playing]+=25000; Sound.win(); }
+        var el=c.querySelector('#ctl');
+        if(el) el.innerHTML=won?'<div class="ok">🎉 GRAND PRIZE! '+esc(playing)+' solves the Bonus Round — +$25,000!</div>':'<div class="status">😞 No grand prize this time. The puzzle was: "'+esc(puz.puzzle)+'"</div>';
+        setTimeout(function(){ if(c.isConnected){ pi++; nextPhase(); } },2200);
+      }
+      if(playing==='You'){
+        var ctl=c.querySelector('#ctl');
+        ctl.innerHTML='<div class="status">🏆 Bonus Round! R, S, T, L, N, E are given. Pick 3 more consonants + 1 vowel, then solve in 10 seconds for a $25,000 grand prize!</div>'
+          +'<div class="row"><input id="c1" maxlength="1" class="grow" placeholder="Consonant 1"><input id="c2" maxlength="1" class="grow" placeholder="Consonant 2"><input id="c3" maxlength="1" class="grow" placeholder="Consonant 3"><input id="v1" maxlength="1" class="grow" placeholder="Vowel"></div>'
+          +'<div class="row"><button class="btn small grow" id="pk">Reveal my letters</button></div><div id="inp"></div><div id="tm" class="muted"></div>';
+        ctl.querySelector('#pk').onclick=function(){
+          var cs=[ctl.querySelector('#c1').value,ctl.querySelector('#c2').value,ctl.querySelector('#c3').value].map(function(x){return String(x||'').toLowerCase();});
+          var v=String(ctl.querySelector('#v1').value||'').toLowerCase();
+          var ok=true;
+          cs.forEach(function(l){ if(!/[a-z]/.test(l)||VOW.indexOf(l)>=0||guessed[l]||revealed[l]) ok=false; });
+          if(!/[aeiou]/.test(v)||guessed[v]||revealed[v]) ok=false;
+          if(!ok){ msg('Pick 3 new consonants and 1 new vowel.'); return; }
+          cs.forEach(function(l){ guessed[l]=1; if(puz.puzzle.toLowerCase().indexOf(l)>=0) revealed[l]=1; });
+          guessed[v]=1; if(puz.puzzle.toLowerCase().indexOf(v)>=0) revealed[v]=1;
+          draw();
+          ctl.querySelector('#pk').disabled=true;
+          var inp=ctl.querySelector('#inp');
+          inp.innerHTML='<div class="row"><input id="sl" class="grow" placeholder="Solve the Bonus puzzle…"><button class="btn small" id="sg">Solve!</button></div>';
+          var timeLeft=10, tm=ctl.querySelector('#tm');
+          var timer=setInterval(function(){ timeLeft--; if(tm) tm.textContent=timeLeft+'s left'; if(timeLeft<=0){ clearInterval(timer); bonusDone(false); } },1000);
+          inp.querySelector('#sg').onclick=function(){
+            var s=inp.querySelector('#sl').value;
+            clearInterval(timer);
+            bonusDone(SHG.jeopardyGrade(s,puz.puzzle));
+          };
+        };
+      }else{
+        var ctl2=c.querySelector('#ctl');
+        ctl2.innerHTML='<div class="status">🤖 '+esc(playing)+' plays the Bonus Round…</div>';
+        g1Delay(1500).then(function(){
+          if(!c.isConnected)return;
+          bonusDone(Math.random()<0.5);
+        });
+      }
+    }
+    function startFinalSpin(){
+      c.innerHTML='<h2>🎡 '+esc(curPhase.label)+' — '+esc(puz.cat)+'</h2><style>'+WHEEL_CSS+'</style>'
+        +'<div class="wheelwrap"><canvas id="wheelcv" width="320" height="320"></canvas></div>'
+        +'<div class="wboard" id="bd"></div><div id="ctl"></div>';
+      paintWheel();
+      draw();
+      var el=c.querySelector('#ctl');
+      el.innerHTML='<div class="status">⚡ Final Spin! One spin sets the consonant value — then it is a speed-up race to solve.</div>';
+      var seg=SHG.wheelSpin(wheelRound), tries=0;
+      while(typeof seg!=='number'&&tries<10){ seg=SHG.wheelSpin(wheelRound); tries++; }
+      if(typeof seg!=='number') seg=1000;
+      animateWheel(seg,function(){
+        if(!c.isConnected)return;
+        finalVal=seg+1000; finalSpinMode=true;
+        msg('⚡ Final Spin: '+g1Money(seg)+' + $1,000 bonus = '+g1Money(finalVal)+' per consonant!');
+        setTimeout(takeTurn,1200);
+      });
+    }
+    function mysterySpin(who){
+      var name=who===0?'You':bots[who-1];
+      if(who===0){
+        var el=c.querySelector('#ctl');
+        el.innerHTML='<div class="status">🎲 MYSTERY WEDGE! Guess a consonant — get it right and choose: take $1,000 or risk it!</div><div class="row"><input id="cl" maxlength="1" class="grow" placeholder="Consonant"><button class="btn small" id="cg">Guess</button></div>';
+        el.querySelector('#cg').onclick=function(){
+          var l=el.querySelector('#cl').value.toLowerCase();Sound.click();
+          if(!/[a-z]/.test(l)||VOW.indexOf(l)>=0||guessed[l]){msg('Enter an uncalled consonant.');return;}
+          mysteryGuess(0,l);
+        };
+      }else{
+        var l=botCons();
+        msg('🎲 '+esc(name)+' hits the MYSTERY wedge and calls <b>'+l.toUpperCase()+'</b>…');
+        g1Delay(900).then(function(){if(c.isConnected)mysteryGuess(who,l);});
+      }
+    }
+    function mysteryGuess(who,l){
+      var name=who===0?'You':bots[who-1];
+      guessed[l]=1;
+      var pl=puz.puzzle.toLowerCase(),count=0,i;
+      for(i=0;i<pl.length;i++)if(pl[i]===l)count++;
+      if(count>0){
+        revealed[l]=1;
+        if(solved()){ if(who===0)bank+=1000;else bbank[who-1]+=1000; solveRound(who); return; }
+        if(who===0){
+          var el=c.querySelector('#ctl');
+          el.innerHTML='<div class="status">✅ '+count+'× '+l.toUpperCase()+'! Take $1,000 or risk it for $10,000 (or BANKRUPT)?</div><div class="row"><button class="btn small grow" id="tk">Take $1,000</button><button class="btn small grow" id="rk">🎲 Risk it!</button></div>';
+          el.querySelector('#tk').onclick=function(){ bank+=1000; Sound.win(); msg('💰 You take $1,000.'); setTimeout(takeTurn,1100); };
+          el.querySelector('#rk').onclick=function(){
+            if(Math.random()<0.5){ bank+=10000; Sound.win(); msg('🎉 $10,000! The wedge was good!'); setTimeout(takeTurn,1100); }
+            else{ bank=0; ftok[0]=0; Sound.lose(); msg('💥 BANKRUPT! The wedge was bad.'); setTimeout(nextTurn,1300); }
+          };
+        }else{
+          if(Math.random()<0.5){ bbank[who-1]+=1000; msg('🤖 '+esc(name)+' takes $1,000.'); botCont(who); }
+          else{
+            if(Math.random()<0.5){ bbank[who-1]+=10000; msg('🤖 '+esc(name)+' risks it — $10,000!'); botCont(who); }
+            else{ bbank[who-1]=0; ftok[who]=0; msg('🤖 '+esc(name)+' risks it — BANKRUPT!'); setTimeout(nextTurn,1300); }
+          }
+        }
+      }else{
+        if(ftok[who]>0){ftok[who]--;Sound.win();msg('🆓 '+esc(name)+' uses a FREE SPIN — turn saved!');setTimeout(takeTurn,1100);return;}
+        if(who===0)misses++;
+        Sound.lose();msg('❌ No '+l.toUpperCase()+'.');setTimeout(nextTurn,1100);
+      }
     }
     function scoreLine(){
       var s='<b>You:</b> '+g1Money(tot.You)+' <span class="muted">(round '+g1Money(bank)+')</span>'+(ftok[0]?' 🆓×'+ftok[0]:'');
@@ -11128,8 +11325,34 @@ render:function(c,ctx){
     function solved(){var pl=puz.puzzle.toLowerCase();for(var i=0;i<pl.length;i++){var l=pl[i];if(/[a-z]/.test(l)&&!revealed[l])return false;}return true;}
     function takeTurn(){draw();if(turn===0)playerCtl();else botCtl(bots[turn-1],turn-1);}
     function nextTurn(){turn=useBots?(turn+1)%3:0;takeTurn();}
+    function wireSolve(el){
+      var sv=el.querySelector('#sv'); if(!sv)return;
+      sv.onclick=function(){
+        Sound.click();
+        var inp=el.querySelector('#inp');
+        inp.innerHTML='<div class="row"><input id="sl" class="grow" placeholder="Solve the puzzle…"><button class="btn small" id="sg">Solve</button></div>';
+        inp.querySelector('#sg').onclick=function(){
+          var s=inp.querySelector('#sl').value;
+          if(SHG.jeopardyGrade(s,puz.puzzle))solveRound(0);
+          else if(ftok[0]>0){ftok[0]--;Sound.win();msg('🆓 FREE SPIN saves your turn!');setTimeout(takeTurn,1100);}
+          else{misses++;Sound.lose();msg('❌ Not quite!');setTimeout(nextTurn,1100);}
+        };
+      };
+    }
     function playerCtl(){
       var el=c.querySelector('#ctl');
+      if(finalSpinMode){
+        el.innerHTML='<div class="status">⚡ Final Spin — consonants worth '+g1Money(finalVal)+' each. No more spinning!</div><div class="row"><input id="cl" maxlength="1" class="grow" placeholder="Consonant"><button class="btn small" id="cg">Guess</button></div><div class="row"><button class="btn small grow" id="sv">Solve</button></div><div id="inp"></div>';
+        el.querySelector('#cg').onclick=function(){ var l=el.querySelector('#cl').value.toLowerCase();Sound.click(); if(!/[a-z]/.test(l)||VOW.indexOf(l)>=0||guessed[l]){msg('Enter an uncalled consonant.');return;} guessLetter(0,l,finalVal); };
+        wireSolve(el);
+        return;
+      }
+      if(expr[0]>0){
+        el.innerHTML='<div class="status">🚀 EXPRESS — free consonants at $1,000 each ('+expr[0]+' left). No spin needed!</div><div class="row"><input id="cl" maxlength="1" class="grow" placeholder="Consonant"><button class="btn small" id="cg">Guess $1,000</button></div><div class="row"><button class="btn small grow" id="sv">Solve</button></div><div id="inp"></div>';
+        el.querySelector('#cg').onclick=function(){ var l=el.querySelector('#cl').value.toLowerCase();Sound.click(); if(!/[a-z]/.test(l)||VOW.indexOf(l)>=0||guessed[l]){msg('Enter an uncalled consonant.');return;} guessLetter(0,l,1000); };
+        wireSolve(el);
+        return;
+      }
       el.innerHTML='<div class="row"><button class="btn small grow" id="sp">🌀 SPIN</button><button class="btn small grow" id="vw">Buy vowel $250</button><button class="btn small grow" id="sv">Solve</button></div><div id="inp"></div>';
       el.querySelector('#sp').onclick=function(){Sound.click();doSpin(0);};
       el.querySelector('#vw').onclick=function(){
@@ -11146,17 +11369,7 @@ render:function(c,ctx){
           takeTurn();
         };
       };
-      el.querySelector('#sv').onclick=function(){
-        Sound.click();
-        var inp=el.querySelector('#inp');
-        inp.innerHTML='<div class="row"><input id="sl" class="grow" placeholder="Solve the puzzle…"><button class="btn small" id="sg">Solve</button></div>';
-        inp.querySelector('#sg').onclick=function(){
-          var s=inp.querySelector('#sl').value;
-          if(SHG.jeopardyGrade(s,puz.puzzle))solveRound(0);
-          else if(ftok[0]>0){ftok[0]--;Sound.win();msg('🆓 FREE SPIN saves your turn!');setTimeout(takeTurn,1100);}
-          else{misses++;Sound.lose();msg('❌ Not quite!');setTimeout(nextTurn,1100);}
-        };
-      };
+      wireSolve(el);
     }
     function resolveSpin(who,seg){
       var name=who===0?'You':bots[who-1];
@@ -11164,6 +11377,8 @@ render:function(c,ctx){
       if(seg==='FREE SPIN'){ftok[who]++;seg=500;fsNote='🆓 FREE SPIN token banked! ';}
       if(seg==='BANKRUPT'){if(who===0)bank=0;else bbank[who-1]=0;ftok[who]=0;Sound.lose();msg('💥 '+esc(name)+' hit BANKRUPT!');setTimeout(nextTurn,1300);return;}
       if(seg==='LOSE A TURN'){Sound.beep(300,.2);msg('⏭ '+esc(name)+' loses a turn.');setTimeout(nextTurn,1300);return;}
+      if(seg==='MYSTERY'){ mysterySpin(who); return; }
+      if(seg==='EXPRESS'){ expr[who]=3; Sound.win(); msg('🚀 '+esc(name)+' hits EXPRESS — 3 free consonants at $1,000 each!'); setTimeout(takeTurn,1300); return; }
       if(who===0){
         var el=c.querySelector('#ctl');
         el.innerHTML='<div class="status">'+fsNote+g1Money(seg)+' per consonant</div><div class="row"><input id="cl" maxlength="1" class="grow" placeholder="Consonant"><button class="btn small" id="cg">Guess</button></div>';
@@ -11186,10 +11401,12 @@ render:function(c,ctx){
       if(count>0){
         revealed[l]=1;var amt=seg*count;
         if(who===0)bank+=amt;else bbank[who-1]+=amt;
+        if(expr[who]>0)expr[who]--;
         Sound.win();msg('✅ '+count+'× '+l.toUpperCase()+'! +'+g1Money(amt)+' to '+esc(name));
         if(solved()){solveRound(who);return;}
         if(who===0)setTimeout(takeTurn,1100);else botCont(who);
       }else{
+        expr[who]=0;
         if(ftok[who]>0){ftok[who]--;Sound.win();msg('🆓 '+esc(name)+' uses a FREE SPIN — turn saved!');setTimeout(takeTurn,1100);return;}
         if(who===0)misses++;
         Sound.lose();msg('❌ No '+l.toUpperCase()+'.');setTimeout(nextTurn,1100);
@@ -11201,6 +11418,22 @@ render:function(c,ctx){
       c.querySelector('#ctl').innerHTML='<div class="status">🤖 '+esc(name)+' is thinking…</div>';
       g1Delay(1000).then(function(){
         if(!c.isConnected)return;
+        if(finalSpinMode){
+          if(revFrac()>0.55&&Math.random()<0.5){
+            if(Math.random()<0.6){solveRound(bi+1);return;}
+            msg('🤖 '+esc(name)+' tries to solve… wrong!');setTimeout(nextTurn,1100);return;
+          }
+          var lf=botCons();
+          msg('⚡ '+esc(name)+' calls <b>'+lf.toUpperCase()+'</b>…');
+          g1Delay(900).then(function(){if(c.isConnected)guessLetter(bi+1,lf,finalVal);});
+          return;
+        }
+        if(expr[bi+1]>0){
+          var le=botCons();
+          msg('🚀 '+esc(name)+' (EXPRESS) calls <b>'+le.toUpperCase()+'</b>…');
+          g1Delay(900).then(function(){if(c.isConnected)guessLetter(bi+1,le,1000);});
+          return;
+        }
         if(revFrac()>0.55&&Math.random()<0.5){
           if(Math.random()<0.6){solveRound(bi+1);return;}
           if(ftok[bi+1]>0){ftok[bi+1]--;msg('🆓 '+esc(name)+' uses a FREE SPIN — turn saved!');setTimeout(takeTurn,1100);return;}
@@ -11213,7 +11446,7 @@ render:function(c,ctx){
       var bi=who-1,name=bots[bi];
       g1Delay(900).then(function(){
         if(!c.isConnected)return;
-        if(bbank[bi]>=250&&Math.random()<0.35){
+        if(!finalSpinMode&&expr[bi+1]<=0&&bbank[bi]>=250&&Math.random()<0.35){
           var vw='aeiou'.split('').filter(function(v){return !guessed[v];});
           if(vw.length){
             var v=vw[Math.floor(Math.random()*vw.length)];guessed[v]=1;bbank[bi]-=250;
@@ -11227,9 +11460,10 @@ render:function(c,ctx){
     function solveRound(who){
       var name=who===0?'You':bots[who-1];
       var amt=who===0?bank:bbank[who-1];
+      if(curPhase&&curPhase.r===3) amt+=5000;
       tot[name]+=amt;Sound.win();
-      var ctl=c.querySelector('#ctl');if(ctl)ctl.innerHTML='<div class="ok">🎉 '+esc(name)+' solves it: "'+esc(puz.puzzle)+'" — banks '+g1Money(amt)+'!</div>';
-      ri++;setTimeout(function(){if(c.isConnected)newRound();},2000);
+      var ctl=c.querySelector('#ctl');if(ctl)ctl.innerHTML='<div class="ok">🎉 '+esc(name)+' solves it: "'+esc(puz.puzzle)+'" — banks '+g1Money(amt)+'!'+(curPhase&&curPhase.r===3?' 🎁 Prize Puzzle bonus included!':'')+'</div>';
+      pi++;setTimeout(function(){if(c.isConnected)nextPhase();},2000);
     }
     function endGame(){
       var names=Object.keys(tot),win=names[0];
@@ -11246,7 +11480,7 @@ render:function(c,ctx){
       if(iWon){Sound.win();(async function(){var p=await Wallet.recordWin('wheel');toast('+'+p+' ⭐ banked!');})();}
       else Sound.lose();
     }
-    newRound();
+    nextPhase();
   }
 }});
 
@@ -13680,7 +13914,7 @@ function shgQuizData(room){
 function shgMyUid(){ return (typeof Auth!=='undefined'&&Auth.user)?Auth.user.uid:null; }
 /* QuizPVP flow: host shares content, everyone plays solo, scores submitted, winner settled. */
 function shgPvp(net,opt){
-  var st={data:null,submitted:false,settled:false,started:false};
+  var st={data:null,submitted:false,settled:false,started:false,myScore:0};
   var isCreator=!!(net&&net.isHost()&&net._created);
   var roomCode=(net&&net.room&&net.room.code)||'?';
   function showWaiting(){
@@ -13694,19 +13928,22 @@ function shgPvp(net,opt){
     if(d){ st.started=true; st.data=d; opt.onData(d); }
     else { showWaiting(); }
   }
+  function doSettle(room,scores){
+    if(st.settled) return;
+    st.settled=true;
+    var sc=scores||(room&&room.state?room.state.scores:null);
+    var w=null;
+    try{ w=QuizPVP.winnerUid(sc); }catch(e){}
+    var iWon=!!w&&!!shgMyUid()&&w===shgMyUid();
+    try{ opt.onSettle(iWon,room||{},w); }catch(e){}
+    try{ Net.push({status:'done'}); }catch(e2){}
+    try{ Voice.leave(); }catch(e3){}
+  }
   function checkDone(room){
     if(st.settled||!st.submitted||!room) return;
     var done=false;
     try{ done=QuizPVP.allDone(room.state, room.seats||[]); }catch(e){}
-    if(done){
-      st.settled=true;
-      var w=null;
-      try{ w=QuizPVP.winnerUid(room.state?room.state.scores:null); }catch(e){}
-      var iWon=!!w&&!!shgMyUid()&&w===shgMyUid();
-      try{ opt.onSettle(iWon,room,w); }catch(e){}
-      try{ Net.push({status:'done'}); }catch(e2){}
-      try{ Voice.leave(); }catch(e3){}
-    }
+    if(done) doSettle(room);
   }
   net.onUpdate(function(room){
     if(!room) return;
@@ -13740,7 +13977,15 @@ function shgPvp(net,opt){
       var p=null;
       try{ p=opt.submitPayload(); }catch(e){}
       var sc=(p&&typeof p==='object')?(+p.score||0):(+p||0);
+      st.myScore=sc;
       try{ QuizPVP.submit(net, sc); }catch(e2){ toast('Score submit failed'); }
+      setTimeout(function(){
+        if(st.settled||!st.submitted) return;
+        var r=net.room, s=r&&r.state, me=shgMyUid();
+        var scores=(s&&s.scores)||{};
+        if(!(me in scores)){ try{QuizPVP.submit(net, st.myScore);}catch(e){} scores[me]=st.myScore; }
+        doSettle(r||{}, scores);
+      },60000);
     }
   };
 }
