@@ -338,7 +338,7 @@ const CONFIG = {
   },
 };
 const DAILY_BONUS = 500, START_POINTS = 1000, PVP_WIN = 200;
-const BUILD_VERSION = 'v2026.11.16.4';
+const BUILD_VERSION = 'v2026.11.16.5';
 const CPU_PAYOUTS = {jeopardy:150,wheel:150,millionaire:200,price:120,feud:150,chase:150,matchgame:80,password:80,whatsmline:100,hollywood:120,deal:150,pressluck:150,pyramid:150,weakestlink:120,'1v100':200,fifthgrader:120};
 
 /* ---------------- utils ---------------- */
@@ -673,6 +673,7 @@ const Net = {
     await Backend.db.ref('shg_rooms/'+code).set(room);
     this._sharedRoomCode=null; this._sharedData=null;
     this.room=room; this._listen(code); this._created=true; Voice.syncPanel();
+    try{ localStorage.setItem('shg_lastRoom', JSON.stringify({code:code, game:game})); }catch(e){}
     return code;
   },
   async join(code, expectedGame){
@@ -686,8 +687,10 @@ const Net = {
       toast('Room '+code+' is for '+gn);
       return null;
     }
-    if(room.status!=='waiting'){ toast('Game already started'); return null; }
-    if(!room.seats.includes(Auth.user.uid)){
+    const alreadyIn=room.seats.includes(Auth.user.uid);
+    if(room.status==='done'){ toast('Game already finished'); return null; }
+    if(!alreadyIn&&room.status!=='waiting'){ toast('Game already started'); return null; }
+    if(!alreadyIn){
       if(room.seats.length>=room.seatsNeeded){ toast('Room is full'); return null; }
       room.seats.push(Auth.user.uid); room.names[Auth.user.uid]=Auth.user.username;
       await Backend.db.ref('shg_rooms/'+code+'/seats').set(room.seats);
@@ -695,6 +698,7 @@ const Net = {
     }
     this._sharedRoomCode=null; this._sharedData=null;
     this.room=room; this._listen(code); this._created=false; Voice.syncPanel();
+    try{ localStorage.setItem('shg_lastRoom', JSON.stringify({code:code, game:room.game||expectedGame||null})); }catch(e){}
     return code;
   },
   mySeat(){ return this.room? this.room.seats.indexOf(Auth.user.uid) : -1; },
@@ -10786,7 +10790,7 @@ function g1Pvp(net,share,play,settle,container,opts){
     return false;
   }
   function myTurn(room){
-    if(isCreator) return true;
+    if(net&&net.isHost()) return true;
     var st=room&&room.state;
     if(!st) return false;
     if(st.turn===(Auth.user&&Auth.user.uid)) return true;
@@ -10813,14 +10817,26 @@ function g1Pvp(net,share,play,settle,container,opts){
     }
     if(!d){ showWaiting(); return; }
     if(d&&!started){
-      if(!(opts&&opts.shared)&&!myTurn(room)){ showTurnWaiting(); return; }
-      started=true;
-      try{
-        var h=play(d,submit);
-        if(typeof h==='function') roomHandler=h;
-      }catch(e){
-        console.error('g1Pvp play error:',e);
-        if(target)target.innerHTML='<div class="card"><div class="err">Failed to load game board: '+esc(e&&e.message?e.message:e)+'</div></div>';
+      var meUid=Auth.user&&Auth.user.uid;
+      if(meUid&&room.state&&room.state.done&&room.state.done[meUid]){
+        started=true; submitted=true; myScore=Math.round(+(room.state.scores[meUid]||0));
+        if(target)target.innerHTML='<div class="card center"><div class="big">⏳ Waiting for opponent…</div><div class="muted" style="margin-top:6px">You already finished — Room <b>'+esc(roomCode)+'</b> · Build '+esc(BUILD_VERSION)+'</div></div>';
+        setTimeout(function(){
+          if(over||!submitted)return;
+          var r2=net.room, st2=r2&&r2.state;
+          var scores2=(st2&&st2.scores)||{};
+          doSettle(scores2);
+        },600000);
+      } else {
+        if(!(opts&&opts.shared)&&!myTurn(room)){ showTurnWaiting(); return; }
+        started=true;
+        try{
+          var h=play(d,submit);
+          if(typeof h==='function') roomHandler=h;
+        }catch(e){
+          console.error('g1Pvp play error:',e);
+          if(target)target.innerHTML='<div class="card"><div class="err">Failed to load game board: '+esc(e&&e.message?e.message:e)+'</div></div>';
+        }
       }
     }
     var st=room.state;
@@ -14187,14 +14203,14 @@ function shgPvp(net,opt){
     return false;
   }
   function myTurn(room){
-    if(isCreator) return true;
+    if(net&&net.isHost()) return true;
     var st=room&&room.state;
     if(!st) return false;
     if(st.turn===shgMyUid()) return true;
     return someoneElseDone(st);
   }
   function maybeStart(room){
-    if(st.started) return;
+    if(st.started||st.submitted) return;
     var d=st.data||shgQuizData(room)||shgQuizData(net.room);
     if(!d){ showWaiting(); return; }
     if(!myTurn(room)){ showTurnWaiting(); return; }
@@ -14222,6 +14238,18 @@ function shgPvp(net,opt){
     if(room.shgNeedQuiz&&isCreator&&st.data&&!(room.state&&room.state.items)){
       try{ net.push({state:{items:st.data,scores:(room.state&&room.state.scores)||{},done:(room.state&&room.state.done)||{}}}); }catch(e){}
       return;
+    }
+    var meUid=shgMyUid();
+    if(meUid&&room.state&&room.state.done&&room.state.done[meUid]&&!st.submitted){
+      st.submitted=true; st.myScore=Math.round(+(room.state.scores[meUid]||0));
+      var tgt2=net&&net._activeContainer;
+      if(tgt2&&!st.settled) tgt2.innerHTML='<div class="card center"><div class="big">⏳ Waiting for opponent…</div><div class="muted">You already finished.</div></div>';
+      setTimeout(function(){
+        if(st.settled||!st.submitted) return;
+        var r2=net.room, s2=r2&&r2.state;
+        var scores2=(s2&&s2.scores)||{};
+        doSettle(r2||{}, scores2);
+      },600000);
     }
     maybeStart(room); checkDone(room);
   });
@@ -16550,7 +16578,13 @@ function wireModes(container, gameId, start){
     if(m==='cpu'){ start({mode:'cpu'}); }
     else{
       const box=container.querySelector('#pvpBox');
-      box.innerHTML='<div class="card"><h3>Online play</h3><div class="row"><button class="btn small grow" id="mkRoom">Create room</button><input id="joinCode" class="grow" placeholder="Code" maxlength="4" inputmode="numeric"><button class="btn small" id="doJoin">Join</button></div><div class="muted">Share the 4-digit code with your opponent. First to join plays.</div></div>';
+      var lr=null;
+      try{ lr=JSON.parse(localStorage.getItem('shg_lastRoom')||'null'); }catch(e){ lr=null; }
+      var rejoinHTML='';
+      if(lr&&lr.code&&lr.game===gameId){ rejoinHTML='<div class="row" style="margin-top:8px"><button class="btn secondary grow" id="reJoin">↩️ Rejoin Room '+esc(lr.code)+'</button></div><div class="muted">Got booted out? Tap to get back in.</div>'; }
+      box.innerHTML='<div class="card"><h3>Online play</h3><div class="row"><button class="btn small grow" id="mkRoom">Create room</button><input id="joinCode" class="grow" placeholder="Code" maxlength="4" inputmode="numeric"><button class="btn small" id="doJoin">Join</button></div>'+rejoinHTML+'<div class="muted">Share the 4-digit code with your opponent. First to join plays.</div></div>';
+      var rj=box.querySelector('#reJoin');
+      if(rj) rj.onclick=async()=>{ Sound.click(); const ok=await Net.join(String(lr.code), gameId); if(ok){ if(Net.room&&Net.room.status!=='playing'){ await Net.push({status:'playing'}); } start({mode:'pvp', net:Net}); } };
       box.querySelector('#mkRoom').onclick=async()=>{
         const seats=(Games[gameId]&&Games[gameId].seats)||2;
         const code=await Net.create(gameId, seats);
@@ -16562,7 +16596,7 @@ function wireModes(container, gameId, start){
       box.querySelector('#doJoin').onclick=async()=>{
         const code=box.querySelector('#joinCode').value;
         const ok=await Net.join(code, gameId);
-        if(ok){ await Net.push({status:'playing'}); start({mode:'pvp', net:Net}); }
+        if(ok){ if(Net.room&&Net.room.status!=='playing'){ await Net.push({status:'playing'}); } start({mode:'pvp', net:Net}); }
       };
     }
   });
