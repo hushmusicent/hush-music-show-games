@@ -1,0 +1,25 @@
+Fix these Show Games bugs in the live app (the single-file index.html — that is the app users see; the src/ React files are not the entry point, do not fix the bug there).
+
+BUG 1 — PvP puts the two phones on DIFFERENT boards (verified in code, still happening live):
+- Jeopardize: one phone shows Board Set 20, the other Board Set 33. Wheel of Luck: one phone gets a "Phrase" puzzle, the other a "Song Title" puzzle.
+- How it works now (index.html, g1Pvp + QuizPVP): only the room creator shares, via share() picking a RANDOM set (Jeopardy) or random puzzle (Wheel), then QuizPVP.hostSet writes it to room.state.items, and the guest plays room.state.items. That path is correct when it runs, but the two phones still diverge — so a phone is starting on a local pick instead of the host's shared set (different room, a re-share after the guest started, or a stale preview build).
+- Fix: the guest must NEVER start on a local random pick in PvP — if room.state.items is empty, show "Waiting for host's board…" and wait. The host must share exactly once per room (guard against re-sharing on re-render or re-open, which overwrites the set after the guest already started). Show the room code AND a build version number on the game screen, so two phones can be confirmed to be in the same room on the same build.
+- Do not change the question banks, the board sets, or the scoring.
+
+BUG 2 — Jeopardize does not take turns with the computer:
+- In a vs-computer game the computer never takes a turn. Verified in code: playJ only creates bots (g1Bots) that "buzz in" after the player answers a clue wrong (botBuzz). The bots never pick a clue, never answer on their own turn — the player picks every clue. That is not taking turns.
+- Fix: give Jeopardize real alternating computer turns, like the Price and Family vs Family games already have with cpuPlay: the computer picks a clue, answers it (right or wrong, with a fair accuracy), its score updates, then the turn passes back to the player. Same for Wheel of Luck if its bots also only react instead of taking turns. Keep the existing buzz-in steal on a wrong answer as well.
+
+BUG 3 — Family vs Family and Millionaire do not pop up in the preview:
+- In the AI Studio preview these two games show a blank dark screen, while the same games load fine on the other phone. Wheel and Jeopardize render in the same preview, so it is not the whole app.
+- Fix: reproduce it in the preview, find why those two render blank there (check the preview console for the error), and fix it so they load in the preview too.
+
+BUG 4 — the app still fails to deploy:
+- The production container ran npm start with no start script / server entry, exited immediately, and Cloud Run's health probe failed on port 3000 (DEADLINE_EXCEEDED). server.cjs, server.js and the package.json start script were already added and the build passed, but the run was canceled before the deploy finished.
+- Fix: finish the deploy so the published app is live. Do not change the game code to fix the deploy.
+
+ACCEPTANCE TESTS (only these count as done):
+1. Two phones join the SAME room code in Jeopardize and in Wheel of Luck: both phones show the SAME board set / the SAME puzzle. Different boards = not fixed.
+2. Jeopardize vs computer: the computer picks a clue and answers on its own turn, and turns alternate between player and computer.
+3. Family vs Family and Millionaire load and play in the AI Studio preview.
+4. The app deploys successfully with no health-probe failure.
