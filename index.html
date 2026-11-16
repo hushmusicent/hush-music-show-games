@@ -13058,7 +13058,7 @@ render:function(c,ctx){
 });
 
 /* ================= FAMILY FEUD ================= */
-regGame('feud',{howto:"Two families of five face off. We surveyed 100 people - come up with the top answers!\n\nFACE-OFF: One player from each family faces off on each question. Buzz in first with the higher-ranked answer to win control. If it's the #1 answer your family plays automatically - otherwise your family chooses to PLAY or PASS.\n\nTHE ROUND: The playing family names answers one at a time. Every correct answer is revealed and its points go into the round bank. A miss is a STRIKE - three strikes and the other family gets one chance to STEAL. Name a remaining answer and they steal the whole bank; miss and the playing family keeps it.\n\nPOINTS: Round 1 is single points, Round 2 is DOUBLE, Round 3 and on is TRIPLE. First family to 300 points wins the game!\n\nFAST MONEY: Two players, 5 questions. Player 1 gets 20 seconds; Player 2 gets 25 seconds and can't repeat Player 1's answers. Score 200 points combined to win the grand prize!",name:'Family vs Family',icon:'👪',tags:'Game Show',pvp:true,seats:2,
+regGame('feud',{howto:"Two families of five face off. We surveyed 100 people - come up with the top answers!\n\nFACE-OFF: One player from each family faces off on each question. Buzz in first with the higher-ranked answer to win control. If it's the #1 answer your family plays automatically - otherwise your family chooses to PLAY or PASS.\n\nTHE ROUND: The playing family names answers one at a time. Every correct answer is revealed and its points go into the round bank. Face-off answers stay revealed on the board for the whole round. Each answer gets 30 seconds on the clock — run out of time and it's a strike. A miss is a STRIKE - three strikes and the other family gets one chance to STEAL. Name a remaining answer and they steal the whole bank; miss and the playing family keeps it.\n\nPOINTS: Round 1 is single points, Round 2 is DOUBLE, Round 3 and on is TRIPLE. First family to 300 points wins the game!\n\nFAST MONEY: Two players, 5 questions. Player 1 gets 20 seconds; Player 2 gets 25 seconds and can't repeat Player 1's answers. Score 200 points combined to win the grand prize!",name:'Family vs Family',icon:'👪',tags:'Game Show',pvp:true,seats:2,
 render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS2.feud.length>=14))return;
@@ -13186,18 +13186,19 @@ render:function(c,ctx){
           c.querySelector('#bz2').onclick=function(){if(o2)return;o2=true;clearTimeout(t2);Sound.click();playerBuzzed();};
           return;
         }
+        var faceIdx=[];[pRank,bRank].forEach(function(r){if(r>=0&&faceIdx.indexOf(r)<0)faceIdx.push(r);});
         var wName=winner==='me'?myChamp:botChamp;
         if(wrank===0){
           note('<div class="ok">🏆 '+esc(wName)+' hit the #1 answer — '+(winner==='me'?'your':'their')+' family PLAYS!</div>');
-          setTimeout(function(){if(c.isConnected)playRound(s,winner==='me'?myFam:botFam,winner==='me'?botFam:myFam);},1600);
+          setTimeout(function(){if(c.isConnected)playRound(s,winner==='me'?myFam:botFam,winner==='me'?botFam:myFam,faceIdx);},1600);
         }else if(winner==='me'){
           note('<div class="ok">You won the face-off with #'+(wrank+1)+'!</div><div class="row" style="margin-top:8px"><button class="btn grow" id="pPlay">▶ PLAY</button><button class="btn secondary grow" id="pPass">⏭ PASS</button></div>');
-          c.querySelector('#pPlay').onclick=function(){Sound.click();playRound(s,myFam,botFam);};
-          c.querySelector('#pPass').onclick=function(){Sound.click();note('<div class="muted">You pass — the '+esc(botFam.name)+' plays.</div>');setTimeout(function(){if(c.isConnected)playRound(s,botFam,myFam);},1200);};
+          c.querySelector('#pPlay').onclick=function(){Sound.click();playRound(s,myFam,botFam,faceIdx);};
+          c.querySelector('#pPass').onclick=function(){Sound.click();note('<div class="muted">You pass — the '+esc(botFam.name)+' plays.</div>');setTimeout(function(){if(c.isConnected)playRound(s,botFam,myFam,faceIdx);},1200);};
         }else{
           var plays=Math.random()<0.85;
           note('<div class="status">🤖 '+esc(botChamp)+' won with #'+(wrank+1)+' — the '+esc(botFam.name)+' '+(plays?'will PLAY.':'PASSES! Your family plays.')+'</div>');
-          setTimeout(function(){if(c.isConnected)playRound(s,plays?botFam:myFam,plays?myFam:botFam);},1600);
+          setTimeout(function(){if(c.isConnected)playRound(s,plays?botFam:myFam,plays?myFam:botFam,faceIdx);},1600);
         }
       }
     }
@@ -13208,10 +13209,15 @@ render:function(c,ctx){
       return -1;
     }
     /* ----- main round ----- */
-    function playRound(s,playing,other){
-      var revealed=[],strikes=0,bank=0,mi=0,m=mult();
+    function playRound(s,playing,other,faceIdx){
+      var revealed=(faceIdx||[]).slice(),strikes=0,bank=0,mi=0,m=mult();
+      revealed.forEach(function(i){bank+=s.answers[i].pts*m;});
+      var askSeq=0,turnTimer=null;
+      function clearTurnTimer(){if(turnTimer){clearInterval(turnTimer);turnTimer=null;}}
       ask();
       function ask(msg){
+        clearTurnTimer();
+        var mySeq=++askSeq;
         podiumScores={a:{name:myFam.name,score:myFam.score},b:{name:botFam.name,score:botFam.score}};
         var isMe=playing===myFam;
         var who=playing.members[mi%playing.members.length];mi++;
@@ -13219,12 +13225,17 @@ render:function(c,ctx){
         if(isMe){
           c.innerHTML=head+'<div class="card">'+boardHTML(s,revealed,strikes,bank)+famPodiums()
             +'<div class="muted">'+esc(who)+' answers for the family:</div>'
+            +(strikes<3?'<div class="muted">⏱ <span id="tmr">30s</span> to answer</div>':'')
             +(msg?'<div class="msg">'+msg+'</div>':'')
             +'<div class="row"><input id="g" class="grow" placeholder="Your guess…" autocomplete="off"><button class="btn small" id="go">Guess</button></div></div>';
           var inp=c.querySelector('#g');
           function go(){var v=inp.value.trim();if(!v)return;Sound.click();onGuess(v);}
           c.querySelector('#go').onclick=go;
           inp.addEventListener('keydown',function(e){if(e.key==='Enter')go();});
+          if(strikes<3){
+            var tel=c.querySelector('#tmr');
+            if(tel)turnTimer=g1Timer(c,30,tel,function(){if(mySeq!==askSeq||!c.isConnected)return;turnTimer=null;onGuess('zzz-no-match-zzz',true);});
+          }
         }else{
           c.innerHTML=head+'<div class="card">'+boardHTML(s,revealed,strikes,bank)+famPodiums()
             +'<div class="muted">🤖 '+esc(who)+' is thinking…</div>'+(msg?'<div class="msg">'+msg+'</div>':'')+'</div>';
@@ -13234,7 +13245,8 @@ render:function(c,ctx){
           },1200);
         }
       }
-      function onGuess(v){
+      function onGuess(v,timedOut){
+        clearTurnTimer();
         var idx=findMatch(v,s,revealed,false);
         if(idx>=0){
           revealed.push(idx);var pts=s.answers[idx].pts*m;bank+=pts;Sound.win();
@@ -13249,10 +13261,11 @@ render:function(c,ctx){
             setTimeout(function(){if(c.isConnected)steal();},1700);
             return;
           }
-          ask('❌ Strike '+strikes+'!');
+          ask(timedOut?"⏱ Time's up! Strike "+strikes+"!":'❌ Strike '+strikes+'!');
         }
       }
       function steal(){
+        clearTurnTimer();
         var isMe=other===myFam;
         var h='<h2>🥷 STEAL ATTEMPT — '+esc(other.name)+'</h2><div class="card">'+boardHTML(s,revealed,strikes,bank)+famPodiums()
           +'<div class="muted">One answer to steal the '+bank+'-pt bank!</div>';
@@ -13279,6 +13292,7 @@ render:function(c,ctx){
         }
       }
       function endRound(){
+        clearTurnTimer();
         playing.score+=bank;
         c.innerHTML='<div class="card center"><div class="big">🎉 '+esc(playing.name)+' cleared the board! +'+bank+' pts</div><div class="muted">'+esc(myFam.name)+': '+myFam.score+' · '+esc(botFam.name)+': '+botFam.score+'</div></div>';
         setTimeout(nextRound,1800);
@@ -13387,7 +13401,8 @@ render:function(c,ctx){
   }
   /* ================= PVP: solo rounds, higher total wins ================= */
   function pvpPlay(survs,fin){
-    var ri=0,total=0;
+    var ri=0,total=0,askSeq=0,turnTimer=null;
+    function clearTurnTimer(){if(turnTimer){clearInterval(turnTimer);turnTimer=null;}}
     round();
     function round(){
       if(ri>=3){
@@ -13398,9 +13413,17 @@ render:function(c,ctx){
       podiumScores={a:{name:famName(playerFam),score:total},b:{name:famName('Rival'),score:'?'}};
       ask();
       function ask(msg){
-        askRound('👪 Round '+(ri+1)+' of 3',s,revealed,strikes,rp,(msg?'<div class="msg">'+msg+'</div>':'')+'<div class="muted">Total: '+total+'</div>',onGuess);
+        clearTurnTimer();
+        var mySeq=++askSeq;
+        askRound('👪 Round '+(ri+1)+' of 3',s,revealed,strikes,rp,(msg?'<div class="msg">'+msg+'</div>':'')+(strikes<3?'<div class="muted">⏱ <span id="tmr">30s</span> to answer</div>':'')+'<div class="muted">Total: '+total+'</div>',onGuess);
+        if(strikes<3){
+          var gi=c.querySelector('#g');
+          var tel=c.querySelector('#tmr');
+          if(gi&&!gi.disabled&&tel)turnTimer=g1Timer(c,30,tel,function(){if(mySeq!==askSeq||!c.isConnected)return;turnTimer=null;onGuess('zzz-no-match-zzz',true);});
+        }
       }
-      function onGuess(v){
+      function onGuess(v,timedOut){
+        clearTurnTimer();
         var idx=findMatch(v,s,revealed,false);
         if(idx>=0){
           revealed.push(idx);rp+=s.answers[idx].pts;Sound.win();
@@ -13416,7 +13439,7 @@ render:function(c,ctx){
             setTimeout(function(){if(c.isConnected)round();},1700);
             return;
           }
-          ask('❌ Strike '+strikes);
+          ask(timedOut?"⏱ Time's up! Strike "+strikes:'❌ Strike '+strikes);
         }
       }
     }
