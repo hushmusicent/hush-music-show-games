@@ -338,7 +338,7 @@ const CONFIG = {
   },
 };
 const DAILY_BONUS = 500, START_POINTS = 1000, PVP_WIN = 200;
-const BUILD_VERSION = 'v2026.11.16.2';
+const BUILD_VERSION = 'v2026.11.16.3';
 const CPU_PAYOUTS = {jeopardy:150,wheel:150,millionaire:200,price:120,feud:150,chase:150,matchgame:80,password:80,whatsmline:100,hollywood:120,deal:150,pressluck:150,pyramid:150,weakestlink:120,'1v100':200,fifthgrader:120};
 
 /* ---------------- utils ---------------- */
@@ -10744,7 +10744,7 @@ function g1Timer(c,secs,el,onEnd){var t=secs;var id=setInterval(function(){if(!c
 function g1Guard(c,ok){if(!ok){c.innerHTML='<div class="msg">Question bank is still loading — try again shortly.</div>';return true;}return false;}
 /* Simultaneous-quiz PvP wiring (QuizPVP pattern): host shares items, both play
    solo, each submits a numeric score, then settle(iWon, scores). */
-function g1Pvp(net,share,play,settle,container){
+function g1Pvp(net,share,play,settle,container,opts){
   var target=container||(net&&net._activeContainer)||null;
   var roomCode=(net&&net.room&&net.room.code)||'?';
   var isCreator=!!(net&&net.isHost()&&net._created);
@@ -10761,7 +10761,7 @@ function g1Pvp(net,share,play,settle,container){
       }
     }
   }catch(e){console.error('g1Pvp share error:',e);}
-  var started=false,submitted=false,over=false,myScore=0;
+  var started=false,submitted=false,over=false,myScore=0,roomHandler=null;
   function doSettle(scores){
     if(over)return; over=true;
     scores=scores||{};
@@ -10813,9 +10813,12 @@ function g1Pvp(net,share,play,settle,container){
     }
     if(!d){ showWaiting(); return; }
     if(d&&!started){
-      if(!myTurn(room)){ showTurnWaiting(); return; }
+      if(!(opts&&opts.shared)&&!myTurn(room)){ showTurnWaiting(); return; }
       started=true;
-      try{play(d,submit);}catch(e){
+      try{
+        var h=play(d,submit);
+        if(typeof h==='function') roomHandler=h;
+      }catch(e){
         console.error('g1Pvp play error:',e);
         if(target)target.innerHTML='<div class="card"><div class="err">Failed to load game board: '+esc(e&&e.message?e.message:e)+'</div></div>';
       }
@@ -10823,6 +10826,9 @@ function g1Pvp(net,share,play,settle,container){
     var st=room.state;
     if(st&&submitted&&QuizPVP.allDone(st,room.seats||[])){
       doSettle(st.scores);
+    }
+    if(roomHandler&&!over){
+      try{ roomHandler(room); }catch(e){}
     }
   }
   try{net.onUpdate(onRoom);if(net.room)onRoom(net.room);else showWaiting();}catch(e){console.error('g1Pvp init error:',e);}
@@ -10850,7 +10856,7 @@ render:function(c,ctx){
   var net=(ctx&&ctx.mode==='pvp')?ctx.net:null;
   if(g1Guard(c,BANKS1.jeopardy.sets.length))return;
   var share=function(){var s=BANKS1.jeopardy.sets;return JSON.parse(JSON.stringify(s[Math.floor(Math.random()*s.length)]));};
-  if(net)g1Pvp(net,share,function(d,fin){playJ(d,fin);},function(iw,sc){g1Settle(c,iw,sc,'Jeopardize!');},c);
+  if(net)g1Pvp(net,share,function(d,fin){return playJpvp(d,fin);},function(iw,sc){g1Settle(c,iw,sc,'Jeopardize!');},c,{shared:true});
   else playJ(share(),null);
   function playJ(set,fin){
     var useBots=!fin,bots=useBots?g1Bots(2):[];
@@ -11026,6 +11032,208 @@ render:function(c,ctx){
       else Sound.lose();
     }
     board();
+  }
+  /* ---- Shared-board Jeopardy PvP: Player 1 goes first; the turn goes to
+     whoever most recently answered correctly (a correct answer keeps/takes
+     control). A wrong answer opens a steal for the other player; if the
+     steal is right they take the turn, if not the turn stays. Daily Double
+     is answer-only (no steal). Board state lives in state.jb so both
+     phones see the same board, scores and turn. Final Jeopardize is
+     simultaneous (each wagers + answers on their own phone). ---- */
+  function playJpvp(set,fin){
+    var me=Auth.user&&Auth.user.uid;
+    var finished=false,lastKey='';
+    var vals=[200,400,600,800,1000],clues=[];
+    var rawClues=Array.isArray(set&&set.clues)?set.clues:Object.values((set&&set.clues)||{});
+    var cats=Array.isArray(set&&set.categories)?set.categories:Object.values((set&&set.categories)||[]);
+    rawClues.forEach(function(x,k){clues.push({i:k,c:x.c,v:x.v,q:x.q,a:x.a});});
+    function otherUid(room){
+      var seats=(room&&room.seats)||[];
+      for(var k=0;k<seats.length;k++){ if(seats[k]!==me) return seats[k]; }
+      return null;
+    }
+    function getScore(jb,uid){ return (jb&&jb.scores&&jb.scores[uid])||0; }
+    function scoreLine(jb){
+      var o=otherUid(net.room);
+      return '<b>You:</b> '+g1Money(getScore(jb,me))+' · <b>Opponent:</b> '+g1Money(o?getScore(jb,o):0);
+    }
+    function writeJb(jb){ try{ net.set('state/jb',jb); }catch(e){} }
+    function cloneJb(jb){ return JSON.parse(JSON.stringify(jb||{})); }
+    function clueByI(i){ for(var k=0;k<clues.length;k++) if(clues[k].i===i) return clues[k]; return null; }
+    function allDoneJb(jb){
+      for(var k=0;k<clues.length;k++){ if((jb.done||[]).indexOf(clues[k].i)<0) return false; }
+      return true;
+    }
+    /* Host seeds the shared board state once (Daily Double picked here so both phones agree). */
+    (function ensureJb(){
+      var st=net.room&&net.room.state;
+      if(st&&st.jb) return;
+      if(!(net&&net.isHost()&&net._created)) return;
+      var dd=clues.length?clues[Math.floor(Math.random()*clues.length)].i:-1;
+      writeJb({done:[],turn:me,clue:-1,phase:'pick',scores:{},dd:dd,wager:0,msg:'',stealBy:null});
+    })();
+    function actPick(jb,idx){
+      var nj=cloneJb(jb); nj.clue=idx;
+      if(idx===jb.dd){ nj.phase='ddwager'; }
+      else { nj.phase='answer'; var cl=clueByI(idx); nj.wager=cl?cl.v:200; }
+      writeJb(nj);
+    }
+    function actWager(jb,w){
+      var nj=cloneJb(jb); nj.wager=w; nj.phase='answer'; writeJb(nj);
+    }
+    function actAnswer(jb,ans){
+      var cl=clueByI(jb.clue); if(!cl) return;
+      var val=jb.wager||cl.v;
+      var nj=cloneJb(jb);
+      var ok=!!(ans&&String(ans).trim())&&SHG.jeopardyGrade(ans,cl.a);
+      var sc=nj.scores||{}; nj.scores=sc;
+      if(ok){
+        sc[jb.turn]=(sc[jb.turn]||0)+val;
+        nj.done=(nj.done||[]).concat([jb.clue]);
+        nj.msg='✅ Correct! +'+g1Money(val);
+        nj.phase='reveal';
+        /* turn stays with the player who got it right — they keep control */
+      } else {
+        sc[jb.turn]=(sc[jb.turn]||0)-val;
+        if(jb.clue===jb.dd){
+          nj.done=(nj.done||[]).concat([jb.clue]);
+          nj.msg='❌ Wrong Daily Double. −'+g1Money(val)+'.';
+          nj.phase='reveal';
+        } else {
+          nj.stealBy=otherUid(net.room);
+          nj.msg='❌ Wrong. −'+g1Money(val)+'. Steal?';
+          nj.phase='steal';
+        }
+      }
+      writeJb(nj);
+    }
+    function actSteal(jb,ans){
+      var cl=clueByI(jb.clue); if(!cl) return;
+      var val=jb.wager||cl.v;
+      var nj=cloneJb(jb);
+      var sc=nj.scores||{}; nj.scores=sc;
+      var stealer=jb.stealBy;
+      if(ans!==null&&ans!==''&&SHG.jeopardyGrade(ans,cl.a)){
+        sc[stealer]=(sc[stealer]||0)+val;
+        nj.turn=stealer; /* stealer got it right → they take the turn */
+        nj.msg='✅ Steal! +'+g1Money(val)+' — their turn now.';
+      } else {
+        if(ans!==null&&ans!==''){ sc[stealer]=(sc[stealer]||0)-val; }
+        nj.msg='⏭ No steal. Turn stays.';
+        /* turn stays with the player who picked the clue */
+      }
+      nj.done=(nj.done||[]).concat([jb.clue]);
+      nj.phase='reveal';
+      writeJb(nj);
+    }
+    function actContinue(jb){
+      var nj=cloneJb(jb);
+      if(allDoneJb(nj)){ nj.phase='final'; nj.clue=-1; }
+      else { nj.phase='pick'; nj.clue=-1; nj.msg=''; nj.stealBy=null; }
+      writeJb(nj);
+    }
+    function renderBoard(jb,isMyTurn){
+      var h='<h2>🧠 Jeopardize! — '+esc(set.name||'Board')+'</h2>';
+      h+=isMyTurn
+        ?'<div class="turn-banner">🎯 Your turn — pick a clue!</div>'
+        :'<div class="turn-banner">⏳ Opponent\'s turn — they\'re picking a clue…</div>';
+      h+='<div class="card"><div class="status">'+scoreLine(jb)+'</div>';
+      h+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px">';
+      cats.forEach(function(cat){h+='<div class="muted center" style="font-size:10px;font-weight:700">'+esc(cat)+'</div>';});
+      for(var r=0;r<5;r++)for(var col=0;col<6;col++){
+        var cl=null;
+        for(var i=0;i<clues.length;i++)if(clues[i].c===col&&clues[i].v===vals[r]){cl=clues[i];break;}
+        var done=cl&&(jb.done||[]).indexOf(cl.i)>=0;
+        h+=cl?'<button class="btn small" data-cl="'+cl.i+'" '+((done||!isMyTurn)?'disabled':'')+' style="margin:2px;padding:8px 1px;font-size:12px">'+(done?'✓':'$'+cl.v)+'</button>':'<div></div>';
+      }
+      h+='</div></div>';
+      c.innerHTML=h;
+      if(!isMyTurn) return;
+      var btns=c.querySelectorAll('[data-cl]');
+      for(var i=0;i<btns.length;i++)(function(b){b.onclick=function(){Sound.click();actPick(jb,+b.getAttribute('data-cl'));};})(btns[i]);
+    }
+    function renderDDWager(jb,isMyTurn){
+      if(!isMyTurn){
+        c.innerHTML='<h2>⭐ DAILY DOUBLE!</h2><div class="card"><div class="status">Opponent is setting a wager…</div><div class="status">'+scoreLine(jb)+'</div></div>';
+        return;
+      }
+      var maxW=Math.max(1000,getScore(jb,me));
+      c.innerHTML='<h2>⭐ DAILY DOUBLE!</h2><div class="card"><div class="muted">Wager up to '+g1Money(maxW)+'</div><input id="w" type="number" value="'+Math.min(1000,maxW)+'"><button class="btn" id="go">Set wager</button></div>';
+      c.querySelector('#go').onclick=function(){var w=Math.max(5,Math.min(maxW,Math.round(+c.querySelector('#w').value||0)));Sound.click();actWager(jb,w);};
+    }
+    function renderAnswer(jb,isMyTurn){
+      var cl=clueByI(jb.clue); if(!cl){ renderBoard(jb,isMyTurn); return; }
+      var val=jb.wager||cl.v, isDD=jb.clue===jb.dd;
+      if(!isMyTurn){
+        c.innerHTML='<h2>'+esc(cats[cl.c]||'')+' — '+g1Money(val)+(isDD?' ⭐':'')+'</h2><div class="card"><div class="big" style="font-size:19px;margin:8px 0">'+esc(cl.q)+'</div><div class="status">⏳ Opponent is answering…</div><div class="status">'+scoreLine(jb)+'</div></div>';
+        return;
+      }
+      c.innerHTML='<h2>'+esc(cats[cl.c]||'')+' — '+g1Money(val)+(isDD?' ⭐':'')+'</h2><div class="card"><div class="big" style="font-size:19px;margin:8px 0">'+esc(cl.q)+'</div><input id="a" placeholder="Your answer…" autocomplete="off"><div class="status">⏱ <span id="tmr">12s</span></div><button class="btn" id="go">Answer</button></div>';
+      var inp=c.querySelector('#a'), done=false;
+      var timer=g1Timer(c,12,c.querySelector('#tmr'),function(){if(!done){done=true;actAnswer(jb,null);}});
+      function go(){if(done)return;done=true;clearInterval(timer);actAnswer(jb,inp.value);}
+      c.querySelector('#go').onclick=go;
+      inp.addEventListener('keydown',function(e){if(e.key==='Enter')go();});
+    }
+    function renderSteal(jb){
+      var cl=clueByI(jb.clue); if(!cl) return;
+      var val=jb.wager||cl.v;
+      if(jb.stealBy!==me){
+        c.innerHTML='<h2>🔔 Steal! '+esc(cats[cl.c]||'')+' — '+g1Money(val)+'</h2><div class="card"><div class="err">'+esc(jb.msg||'Opponent missed.')+'</div><div class="big" style="font-size:19px;margin:8px 0">'+esc(cl.q)+'</div><div class="status">⏳ Opponent can steal…</div><div class="status">'+scoreLine(jb)+'</div></div>';
+        return;
+      }
+      c.innerHTML='<h2>🔔 Steal! '+esc(cats[cl.c]||'')+' — '+g1Money(val)+'</h2><div class="card"><div class="err">'+esc(jb.msg||'Opponent missed.')+'</div><div class="big" style="font-size:19px;margin:8px 0">'+esc(cl.q)+'</div><input id="a" placeholder="Buzz in with your answer…" autocomplete="off"><div class="status">⏱ <span id="tmr">10s</span></div><div class="row"><button class="btn grow" id="go">Buzz &amp; Answer</button><button class="btn secondary grow" id="pass">Pass</button></div></div>';
+      var inp=c.querySelector('#a'), sDone=false;
+      var sTmr=g1Timer(c,10,c.querySelector('#tmr'),function(){if(!sDone){sDone=true;actSteal(jb,null);}});
+      function doSteal(){ if(sDone)return; sDone=true; clearInterval(sTmr); var pa=inp.value.trim(); if(!pa){actSteal(jb,null);return;} actSteal(jb,pa); }
+      function onPass(){ if(sDone)return; sDone=true; clearInterval(sTmr); actSteal(jb,null); }
+      c.querySelector('#go').onclick=doSteal;
+      c.querySelector('#pass').onclick=function(){Sound.click();onPass();};
+      inp.addEventListener('keydown',function(e){if(e.key==='Enter')doSteal();});
+    }
+    function renderReveal(jb){
+      var cl=clueByI(jb.clue);
+      c.innerHTML='<div class="card"><div class="status">'+esc(jb.msg||'')+'</div>'+(cl?'<div class="muted">Answer: '+esc(cl.a)+'</div>':'')+'<div class="status">'+scoreLine(jb)+'</div><button class="btn" id="nx">Continue</button></div>';
+      c.querySelector('#nx').onclick=function(){Sound.click();actContinue(jb);};
+    }
+    function renderFinal(jb){
+      var f=set.final, maxW=Math.max(1000,getScore(jb,me));
+      c.innerHTML='<h2>🏁 Final Jeopardize</h2><div class="card"><div class="muted">Category: <b>'+esc(f.cat)+'</b></div><div class="muted">Wager up to '+g1Money(maxW)+':</div><input id="w" type="number" value="0"><button class="btn" id="go">Wager</button></div>';
+      c.querySelector('#go').onclick=function(){
+        var w=Math.max(0,Math.min(maxW,Math.round(+c.querySelector('#w').value||0)));Sound.click();
+        c.innerHTML='<h2>🏁 '+esc(f.cat)+'</h2><div class="card"><div class="big" style="font-size:19px">'+esc(f.q)+'</div><input id="a" placeholder="Final answer…" autocomplete="off"><button class="btn" id="go2">Answer</button></div>';
+        var inp=c.querySelector('#a');
+        function fin2(){
+          var ok=SHG.jeopardyGrade(inp.value,f.a);
+          var total=getScore(jb,me)+(ok?w:-w);
+          Sound[ok?'win':'lose']();
+          finished=true;
+          c.innerHTML='<h2>🏁 Final scores</h2><div class="card"><div class="status">You: '+g1Money(total)+'</div><div class="muted">Waiting for opponent…</div></div>';
+          try{ fin(total); }catch(e){}
+        }
+        c.querySelector('#go2').onclick=fin2;
+        inp.addEventListener('keydown',function(e){if(e.key==='Enter')fin2();});
+      };
+    }
+    function renderJb(room){
+      if(finished) return;
+      var jb=room&&room.state&&room.state.jb;
+      if(!jb){
+        if(lastKey!=='noj'){ lastKey='noj'; c.innerHTML='<div class="card center"><div class="big">⏳ Waiting for host\'s board…</div></div>'; }
+        return;
+      }
+      var key=jb.phase+':'+jb.clue+':'+jb.turn+':'+(jb.done||[]).length+':'+JSON.stringify(jb.scores||{});
+      if(key===lastKey) return; /* same state — keeps the answer input + timer alive */
+      lastKey=key;
+      var isMyTurn=jb.turn===me;
+      if(jb.phase==='pick') renderBoard(jb,isMyTurn);
+      else if(jb.phase==='ddwager') renderDDWager(jb,isMyTurn);
+      else if(jb.phase==='answer') renderAnswer(jb,isMyTurn);
+      else if(jb.phase==='steal') renderSteal(jb);
+      else if(jb.phase==='reveal') renderReveal(jb);
+      else if(jb.phase==='final') renderFinal(jb);
+    }
+    return renderJb;
   }
 }});
 
