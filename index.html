@@ -678,13 +678,14 @@ const Net = {
   _activeContainer: null,
   _off: [],
   needNet(){ if(Backend.mode!=='firebase'){ toast('Online PvP needs Firebase connected.'); return false; } return true; },
-  async create(game, seats){
+  async create(game, seats, wager){
     if(!this.needNet()) return null;
     const code=String(rnd(9000)+1000);
-    const room={code, game, seatsNeeded:seats, seats:[Auth.user.uid], names:{[Auth.user.uid]:Auth.user.username}, state:null, turn:0, status:'waiting', host:Auth.user.uid, created:Date.now()};
+    wager=Math.max(0, Math.floor(+wager||0));
+    const room={code, game, seatsNeeded:seats, seats:[Auth.user.uid], names:{[Auth.user.uid]:Auth.user.username}, state:null, turn:0, status:'waiting', host:Auth.user.uid, created:Date.now(), wager:wager, wagerPaid:{}};
     await Backend.db.ref('shg_rooms/'+code).set(room);
     this._sharedRoomCode=null; this._sharedData=null;
-    this.room=room; this._listen(code); this._created=true; Voice.syncPanel();
+    this.room=room; this._listen(code); this._created=true; this._wagerPaid=false; Voice.syncPanel();
     try{ localStorage.setItem('shg_lastRoom', JSON.stringify({code:code, game:game})); }catch(e){}
     return code;
   },
@@ -709,7 +710,7 @@ const Net = {
       await Backend.db.ref('shg_rooms/'+code+'/names').set(room.names);
     }
     this._sharedRoomCode=null; this._sharedData=null;
-    this.room=room; this._listen(code); this._created=false; Voice.syncPanel();
+    this.room=room; this._listen(code); this._created=false; this._wagerPaid=false; Voice.syncPanel();
     try{ localStorage.setItem('shg_lastRoom', JSON.stringify({code:code, game:room.game||expectedGame||null})); }catch(e){}
     return code;
   },
@@ -754,7 +755,7 @@ const Net = {
     if(!silent && this.room && Backend.mode==='firebase'){
       try{ if(this.isHost() && this._created) await Backend.db.ref('shg_rooms/'+this.room.code).remove(); }catch(e){}
     }
-    this.room=null; this._onUpdate=null; this._created=false;
+    this.room=null; this._onUpdate=null; this._created=false; this._wagerPaid=false;
     this._sharedRoomCode=null; this._sharedData=null; this._activeContainer=null;
     Voice.leave();
   }
@@ -10928,7 +10929,9 @@ function g1Pvp(net,share,play,settle,container,opts){
 function g1Settle(c,iWon,scores,title){
   var rows='',k,me,myUid=Auth.user&&Auth.user.uid;
   for(k in (scores||{})){me=k===myUid;rows+='<tr'+(me?' class="me"':'')+'><td>'+(me?'You':'Opponent')+'</td><td>'+Math.round(+scores[k]).toLocaleString('en-US')+'</td></tr>';}
-  c.innerHTML='<h2>'+(iWon?'🏆 You win!':'😞 You lose')+'</h2><div class="card"><table class="lb"><tr><th>Player</th><th>Score</th></tr>'+rows+'</table><div class="muted">'+esc(title||'')+' · winner banks '+PVP_WIN+' ⭐</div></div>';
+  var wag=(typeof Net!=='undefined'&&Net.room)?(+Net.room.wager||0):0, wagLine='';
+  if(wag>0){ var sc2=scores||{}, ks2=Object.keys(sc2), isDraw=ks2.length>=2 && ks2.every(function(k){return (+sc2[k]||0)===(+sc2[ks2[0]]||0);}); wagLine=isDraw?' · 🤝 tie — wager '+wag+' ⭐ refunded':(iWon?' · 🏆 wager won: +'+(wag*2)+' ⭐':' · wager lost: −'+wag+' ⭐'); }
+  c.innerHTML='<h2>'+(iWon?'🏆 You win!':'😞 You lose')+'</h2><div class="card"><table class="lb"><tr><th>Player</th><th>Score</th></tr>'+rows+'</table><div class="muted">'+esc(title||'')+' · winner banks '+PVP_WIN+' ⭐'+wagLine+'</div></div>';
   if(iWon)Sound.win();else Sound.lose();
 }
 /* multiple-choice buttons into #ch; onPick(index) */
@@ -16681,19 +16684,35 @@ function wireModes(container, gameId, start){
       try{ lr=JSON.parse(localStorage.getItem('shg_lastRoom')||'null'); }catch(e){ lr=null; }
       var rejoinHTML='';
       if(lr&&lr.code&&lr.game===gameId){ rejoinHTML='<div class="row" style="margin-top:8px"><button class="btn secondary grow" id="reJoin">↩️ Rejoin Room '+esc(lr.code)+'</button></div><div class="muted">Got booted out? Tap to get back in.</div>'; }
-      box.innerHTML='<div class="card"><h3>Online play</h3><div class="row"><button class="btn small grow" id="mkRoom">Create room</button><input id="joinCode" class="grow" placeholder="Code" maxlength="4" inputmode="numeric"><button class="btn small" id="doJoin">Join</button></div>'+rejoinHTML+'<div class="muted">Share the 4-digit code with your opponent. First to join plays.</div></div>';
+      box.innerHTML='<div class="card"><h3>Online play</h3><div class="betrow" id="wagerRow"><span class="muted" style="align-self:center">Wager:</span><button class="sel" data-w="0">Free</button><button data-w="50">50 ⭐</button><button data-w="100">100 ⭐</button><button data-w="250">250 ⭐</button><button data-w="500">500 ⭐</button></div><div class="muted">Winner takes the pot (2× wager). A tie refunds both.</div><div class="row"><button class="btn small grow" id="mkRoom">Create room</button><input id="joinCode" class="grow" placeholder="Code" maxlength="4" inputmode="numeric"><button class="btn small" id="doJoin">Join</button></div>'+rejoinHTML+'<div class="muted">Share the 4-digit code with your opponent. First to join plays.</div></div>';
+      var wager=0;
+      box.querySelectorAll('#wagerRow button').forEach(function(b){
+        var amt=+b.getAttribute('data-w');
+        if(amt>0 && Wallet.balance>0 && amt>Wallet.balance){ b.disabled=true; b.style.opacity='0.4'; }
+        b.onclick=function(){ Sound.click(); wager=amt; box.querySelectorAll('#wagerRow button').forEach(function(x){x.classList.remove('sel');}); b.classList.add('sel'); };
+      });
       var rj=box.querySelector('#reJoin');
       if(rj) rj.onclick=async()=>{ Sound.click(); const ok=await Net.join(String(lr.code), gameId); if(ok){ if(Net.room&&Net.room.status!=='playing'){ await Net.push({status:'playing'}); } start({mode:'pvp', net:Net}); } };
       box.querySelector('#mkRoom').onclick=async()=>{
         const seats=(Games[gameId]&&Games[gameId].seats)||2;
-        const code=await Net.create(gameId, seats);
-        if(code){ box.innerHTML='<div class="turn-banner">Room code: <span class="big">'+code+'</span><br><span class="muted">Waiting for opponent... · Build '+esc(BUILD_VERSION)+'</span></div><div id="chatWrap"></div>';
+        const code=await Net.create(gameId, seats, wager);
+        if(code){ box.innerHTML='<div class="turn-banner">Room code: <span class="big">'+code+'</span><br><span class="muted">Waiting for opponent...'+(wager>0?' · Wager '+wager+' ⭐':'')+' · Build '+esc(BUILD_VERSION)+'</span></div><div id="chatWrap"></div>';
           Chat.renderBox(box.querySelector('#chatWrap'), 'room-'+code);
           let launched=false;
           Net.onUpdate(()=>{ if(launched)return; launched=true; start({mode:'pvp', net:Net}); }); }
       };
       box.querySelector('#doJoin').onclick=async()=>{
-        const code=box.querySelector('#joinCode').value;
+        const code=box.querySelector('#joinCode').value.trim();
+        if(!code) return;
+        var wag=0;
+        try{ if(Backend.mode==='firebase'){ var s=await Backend.db.ref('shg_rooms/'+code).get(); var r=s&&s.val(); if(r && (!r.game || r.game===gameId)) wag=+r.wager||0; } }catch(e){}
+        if(wag>0){
+          if(wag>Wallet.balance){ toast('Wager is '+wag+' ⭐ — you only have '+Wallet.balance+' ⭐.'); return; }
+          box.innerHTML='<div class="card center"><h3>💰 Points wager</h3><div class="big">'+wag+' ⭐</div><div class="muted">Winner takes '+(wag*2)+' ⭐ · tie refunds both · your balance '+Wallet.balance+' ⭐</div><div class="row" style="margin-top:10px"><button class="btn grow" id="wagYes">Accept &amp; play</button><button class="btn secondary grow" id="wagNo">Decline</button></div></div>';
+          box.querySelector('#wagYes').onclick=async()=>{ Sound.click(); const ok=await Net.join(code, gameId); if(ok){ if(Net.room&&Net.room.status!=='playing'){ await Net.push({status:'playing'}); } start({mode:'pvp', net:Net}); } };
+          box.querySelector('#wagNo').onclick=()=>{ Sound.click(); showGame(gameId); };
+          return;
+        }
         const ok=await Net.join(code, gameId);
         if(ok){ if(Net.room&&Net.room.status!=='playing'){ await Net.push({status:'playing'}); } start({mode:'pvp', net:Net}); }
       };
@@ -16746,7 +16765,31 @@ const QuizPVP = {
     for(const k of Object.keys(scores||{})){ if(scores[k]>bv){ bv=scores[k]; best=k; } }
     return best; // tie → first uid wins
   },
-  async award(didWin){ await Wallet.add(didWin?PVP_WIN:0, didWin?'pvp-win':'pvp-loss'); }
+  async award(didWin){
+    await Wallet.add(didWin?PVP_WIN:0, didWin?'pvp-win':'pvp-loss');
+    // Points wager: winner takes the pot (2x), a tie refunds both, and if the
+    // other side never funded their half the wager is refunded.
+    try{
+      var room=(typeof Net!=='undefined')?Net.room:null;
+      var wag=room? (+room.wager||0):0;
+      if(!wag||wag<=0) return;
+      var me=Auth.user&&Auth.user.uid;
+      var paid=(room&&room.wagerPaid)||{};
+      var mePaid=!!(me&&paid[me]);
+      if(!mePaid) return;
+      var seats=(room&&room.seats)||[];
+      var others=seats.filter(function(s){return s!==me;});
+      var otherPaid=others.length>0 && others.every(function(s){return !!paid[s];});
+      if(!otherPaid){ await Wallet.add(wag,'wager-refund'); toast('Wager refunded — opponent never put up points.'); return; }
+      var sc=(room.state&&room.state.scores)||{};
+      var keys=Object.keys(sc);
+      var isDraw=false;
+      if(keys.length>=2){ var v0=+sc[keys[0]]||0; isDraw=keys.every(function(k){return (+sc[k]||0)===v0;}); }
+      if(isDraw){ await Wallet.add(wag,'wager-draw'); toast('🤝 Tie — wager of '+wag+' ⭐ refunded.'); }
+      else if(didWin){ await Wallet.add(wag*2,'wager-win'); toast('🏆 You won the wager — +'+(wag*2)+' ⭐!'); }
+      else { toast('Wager lost — '+wag+' ⭐ to the winner.'); }
+    }catch(e){ /* wager settle must never break the normal award */ }
+  }
 };
 </script>
 <script>
@@ -16833,7 +16876,7 @@ function showGame(id){
     const gm=stage.querySelector('#gameMeta');
     if(gm){
       gm.innerHTML = (ctx.mode==='pvp' && Net.room)
-        ? 'Room <b>'+esc(Net.room.code)+'</b> ('+(Net._created?'Host':'Guest')+') · Build '+esc(BUILD_VERSION)
+        ? 'Room <b>'+esc(Net.room.code)+'</b> ('+(Net._created?'Host':'Guest')+')'+((+Net.room.wager||0)>0?' · Wager '+Net.room.wager+' ⭐':'')+' · Build '+esc(BUILD_VERSION)
         : 'Vs Computer · Build '+esc(BUILD_VERSION);
     }
     if(typeof g.render!=='function'){ play.innerHTML='<div class="msg">This game show is still being built — check back soon.</div>'; return; }
@@ -16846,6 +16889,10 @@ function showGame(id){
       Net._activeContainer=cv;
       try{ g.render(cv, ctx); }catch(err){ console.error('Game render error:', id, err); cv.innerHTML='<div class="card"><div class="err">Failed to load game: '+esc(err&&err.message?err.message:err)+'</div></div>'; }
       var rc=stage.querySelector('#roomChat'); if(rc && Net.room && !rc.querySelector('.chatbox')){ rc.innerHTML='<h3 style="margin-top:14px">💬 Room chat</h3><div id="roomChatWrap"></div>'; Chat.renderBox(rc.querySelector('#roomChatWrap'), 'room-'+Net.room.code); }
+      var wag=(Net.room && +Net.room.wager)||0, meUid=Auth.user&&Auth.user.uid;
+      var alreadyPaid=!!(Net.room&&Net.room.wagerPaid&&meUid&&Net.room.wagerPaid[meUid]);
+      if(wag>0 && !Net._wagerPaid && !alreadyPaid){ try{ Wallet.bet(wag); Net._wagerPaid=true; Net.set('wagerPaid/'+meUid, true); }catch(e){ toast('Wager void: '+(e&&e.message?e.message:e)); } }
+      else if(alreadyPaid){ Net._wagerPaid=true; }
     } else {
       setCleanup(null);
       try{ g.render(play, ctx); }catch(err){ console.error('Game render error:', id, err); play.innerHTML='<div class="card"><div class="err">Failed to load game: '+esc(err&&err.message?err.message:err)+'</div></div>'; }
