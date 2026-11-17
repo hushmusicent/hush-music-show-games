@@ -1,0 +1,32 @@
+PROMPT FOR THE AI STUDIO AGENT — Hush Music Show Games voice: wire it like the Hand and Board games
+
+Your v2026.11.17.1 microphone work went the wrong way. You invented preview workarounds (a metadata.json "permissions" flag, an "Open outside preview" button, a rewritten error helper) instead of copying the voice wiring that already works in the Hand and Board game hubs. The proof it is wrong: after your fix the preview STILL reports mic-policy:blocked, because you wrote the wrong metadata key. Do not invent another workaround. Copy the Hand/Board wiring exactly, as specified below. The live file is the root index.html (NOT src/ — src/ is orphaned and not the entry point).
+
+THE ONE ROOT CAUSE — metadata.json uses the WRONG KEYS
+- Hand (hush-music-hand-game/metadata.json) and Board (hush-music-board-games/metadata.json) both use:
+    "requestFramePermissions": ["microphone"],
+    "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+- Show's metadata.json currently has "permissions": ["microphone"] and "capabilities": [...]. AI Studio does NOT read "permissions" for the preview iframe's permissions-policy, so the iframe still gets no microphone delegation and still reports mic-policy:blocked.
+- FIX: rewrite Show's metadata.json to use EXACTLY the Hand/Board shape above (same keys, same values). Do not add any other key.
+
+REVERT THESE (all from v2026.11.16.6 / v2026.11.17.1 — none of them exist in Hand or Board):
+1. DELETE the "Open outside preview" button and its directUrl logic from _errHtml(). Board's _errHtml() is ONLY the red error div with the error text. There is no outside-preview link anywhere in Hand or Board. The fix is the wiring, not an escape hatch out of the preview.
+2. DELETE _micErrorText() and restore Board's inline error build in join()'s catch: raw = 'Voice error: ' + name + ': ' + message; hint for NotAllowedError is ONLY ' — allow the microphone for this site in your browser settings, reload, then try again.'; then the [frame:.. secure mic-policy:.. perm:..] diagnostics line, built exactly like Board's (permissionsPolicy.allowsFeature('microphone') + navigator.permissions.query({name:'microphone'})). Keep the diagnostics — Board has them. Remove the "Tap Open outside preview below" wording from the hint.
+3. RESTORE Board's join() order: call getUserMedia({audio:true}) FIRST, THEN create the AudioContext + remoteGain (2.5) + local analyser from the captured stream, inside the same try block. Board does NOT create the AudioContext synchronously before getUserMedia. Remove the pre-getUserMedia AudioContext creation and the _voiceResumeHooked change that came with it (Board hooks its resume listeners after capture, like its code does).
+4. RESTORE Board's exact ICE list in _createPeer(): STUN stun:stun.l.google.com:19302, TURN turn:openrelay.metered.ca:80 and turn:openrelay.metered.ca:443 (username 'openrelayproject', credential 'openrelayproject'), with the STUN-only catch fallback if the browser rejects the full list. Remove the global.relay.metered.ca entries and remove restartIce(). Do not change the relay host again — both relay hosts accept connections, the "dead host" claim was never proven, and Board works on openrelay.
+5. RESTORE Board's offer write: sig.child('offer').set({from, session, sdp, type}) — NOT sig.set({offer}) whole-document overwrite. Answer stays sig.child('answer').set(...), candidates stay sig.child('cands').push(...), exactly like Board.
+6. DELETE the screenshot file d36fc22 committed (public/.../Screenshot_20261117-100522_2703bf5f.png). Do not commit screenshots or user photos to the repo.
+
+KEEP — DO NOT TOUCH (these already match Board/Hand):
+- Pair-document signaling under shg_rooms/<code>/voice_signals/<pairId> + voice_presence, session stamping (session = Date.now() + '-' + random), _onPeerSeen/_createPeer/_dropPeer, signalingState guards, _sigBusy, _flushPending, lower-uid offers.
+- Remote audio: _wireRemoteAudio — remote track -> createMediaStreamSource -> shared remoteGain (2.5) -> speakers, with the hidden muted audioBridge element (Chromium audio-sink fix). This is Board's wiring.
+- The voice panel itself: Live Voice Conversation card, Join Voice Talk button, connecting spinner, Voice Connected + "N in call" pill, mic / speaker / Test / leave / collapse buttons, participant rows with Speaking/Muted/Connected + the per-peer media state line, _ensurePanel/_renderPanel/syncPanel, #micBtn.
+- The "Ask for microphone permission" button + askPermission() (added by the user, commit 375681c) — it stays. It calls getUserMedia on tap and stops the test stream at once.
+- Game logic, PvP rooms, friends, chat, Firebase config, the Feud face-off fix (faceIdx + 30s timer). Change nothing there.
+
+ACCEPTANCE — prove it in the preview, on two phones, before you call it done:
+1. Rebuild and show the preview. The preview must load the new build.
+2. In the preview, open a PvP room and tap Join Voice Talk. The voice error diagnostics must read mic-policy:allowed (NOT blocked) and perm:prompt or granted — if it still says blocked, the metadata.json fix did not take effect; do not paper over it with another button.
+3. Two phones in the same room in the preview: both join voice, panel shows 2 in call on both, and both players ACTUALLY HEAR each other (speaking bars and "2 in call" do not count as proof — real sound does).
+4. No "Open outside preview" button anywhere in the panel. No new buttons, no new metadata keys, no new files in the repo.
+5. Report exactly what you changed (file + lines), the BUILD_VERSION, and the two-phone result. If any acceptance step fails, report the raw panel error (name + message + diagnostics) instead of inventing another fix.
