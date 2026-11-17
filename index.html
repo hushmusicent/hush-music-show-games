@@ -899,6 +899,28 @@ const Voice = {
       return false;
     }
   },
+  async askPermission(){
+    /* Ask the browser for the microphone. Must run from a tap: browsers will
+       not show the permission prompt without a user gesture, and once the
+       permission is denied they will NOT re-prompt — a denial can only be
+       undone in the browser's site settings, which the error below explains.
+       On grant we stop the test stream at once; Voice.join() captures its
+       own stream when the player taps Join Voice Talk. */
+    try{
+      var s=await navigator.mediaDevices.getUserMedia({audio:true});
+      try{ s.getTracks().forEach(function(t){ t.stop(); }); }catch(e){}
+      this.voiceError='';
+      toast('Microphone allowed — tap Join Voice Talk');
+      this.syncPanel();
+      return true;
+    }catch(e){
+      var raw='Voice error: '+(e&&e.name?e.name+': ':'')+(e&&e.message?e.message:e);
+      var hint=(e&&e.name==='NotAllowedError')?' — allow the microphone for this site in your browser settings, reload, then try again.':'';
+      this.voiceError=raw+hint;
+      this.syncPanel();
+      return false;
+    }
+  },
   _onPeerSeen(uid,session){
     if(!session) return;
     var old=this.peers[uid];
@@ -1199,6 +1221,7 @@ const Voice = {
       try{ Sound.click(); }catch(e){}
       var a=t.getAttribute('data-vp-action');
       if(a==='join') self.join();
+      else if(a==='ask') self.askPermission();
       else if(a==='mic') self.toggleMic();
       else if(a==='speaker') self.toggleDeafen();
       else if(a==='test') self._testVoiceTone();
@@ -1236,7 +1259,7 @@ const Voice = {
       return;
     }
     if(!this.active){
-      p.innerHTML='<div class="vp-card"><div class="vp-join-wrap"><div class="vp-join-left"><div class="vp-radio">📻</div><div><div class="vp-join-title">Live Voice Conversation</div><div class="vp-join-sub">Talk in real-time with other humans at the table</div></div></div><button class="vp-join-btn" data-vp-action="join">🎤 Join Voice Talk</button></div>'+this._errHtml()+'</div>';
+      p.innerHTML='<div class="vp-card"><div class="vp-join-wrap"><div class="vp-join-left"><div class="vp-radio">📻</div><div><div class="vp-join-title">Live Voice Conversation</div><div class="vp-join-sub">Talk in real-time with other humans at the table</div></div></div><button class="vp-join-btn" data-vp-action="join">🎤 Join Voice Talk</button></div><div class="row" style="margin-top:8px"><button class="btn grow" data-vp-action="ask">🎤 Ask for microphone permission</button></div>'+this._errHtml()+'</div>';
       return;
     }
     var rows=[];
