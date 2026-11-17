@@ -338,7 +338,7 @@ const CONFIG = {
   },
 };
 const DAILY_BONUS = 500, START_POINTS = 1000, PVP_WIN = 200;
-const BUILD_VERSION = 'v2026.11.16.5';
+const BUILD_VERSION = 'v2026.11.16.6';
 const CPU_PAYOUTS = {jeopardy:150,wheel:150,millionaire:200,price:120,feud:150,chase:150,matchgame:80,password:80,whatsmline:100,hollywood:120,deal:150,pressluck:150,pyramid:150,weakestlink:120,'1v100':200,fifthgrader:120};
 
 /* ---------------- utils ---------------- */
@@ -785,29 +785,46 @@ const Voice = {
     this.connecting=true; this.voiceError=''; this.sigError='';
     this.code=String(Net.room.code); this.myUid=String(Auth.user.uid);
     this.session=Date.now()+'-'+Math.random().toString(36).slice(2,8);
+    // Create and unlock AudioContext synchronously inside the tap gesture BEFORE
+    // await getUserMedia, so mobile browsers keep the output audio path 'running'
+    // even if the mic permission prompt takes a few seconds.
+    try{
+      var AC=window.AudioContext||window.webkitAudioContext;
+      if(AC){
+        this.ctx=new AC();
+        if(this.ctx.resume){ var r0=this.ctx.resume(); if(r0&&r0.catch) r0.catch(function(){}); }
+        this.remoteGain=this.ctx.createGain();
+        this.remoteGain.gain.value=2.5;
+        this.remoteGain.connect(this.ctx.destination);
+      }
+      if(!window._voiceResumeHooked){
+        window._voiceResumeHooked=true;
+        var res=function(){
+          try{ if(this.ctx&&this.ctx.state==='suspended'&&this.ctx.resume) this.ctx.resume(); }catch(e){}
+          try{
+            var self=this;
+            Object.keys(this.peers||{}).forEach(function(u){
+              var p=self.peers[u];
+              if(p&&p.audioBridge&&p.audioBridge.paused){ var pl=p.audioBridge.play(); if(pl&&pl.catch) pl.catch(function(){}); }
+            });
+          }catch(e){}
+        }.bind(this);
+        window.addEventListener('touchstart',res,{passive:true});
+        window.addEventListener('click',res,{passive:true});
+      }
+    }catch(e){ console.warn(e); }
     this.syncPanel();
     try{
       // Capture ONCE and share that one stream with every peer connection.
       this.stream=await navigator.mediaDevices.getUserMedia({audio:true});
       try{ if(navigator.audioSession) navigator.audioSession.type='play-and-record'; }catch(e){}
-      // AudioContext, created inside the tap gesture: feeds the local speaking
-      // analyser and plays remote audio on the speaker/media path.
       try{
-        var AC=window.AudioContext||window.webkitAudioContext;
-        this.ctx=new AC();
-        if(this.ctx.resume){ var r=this.ctx.resume(); if(r&&r.catch) r.catch(function(){}); }
-        this._localSrc=this.ctx.createMediaStreamSource(this.stream);
-        this.localAnalyser=this.ctx.createAnalyser();
-        this.localAnalyser.fftSize=256;
-        this._localSrc.connect(this.localAnalyser);
-        this.remoteGain=this.ctx.createGain();
-        this.remoteGain.gain.value=2.5;
-        this.remoteGain.connect(this.ctx.destination);
-        if(!window._voiceResumeHooked){
-          window._voiceResumeHooked=true;
-          var res=function(){ try{ if(this.ctx&&this.ctx.state==='suspended'&&this.ctx.resume) this.ctx.resume(); }catch(e){} }.bind(this);
-          window.addEventListener('touchstart',res,{passive:true});
-          window.addEventListener('click',res,{passive:true});
+        if(this.ctx){
+          if(this.ctx.state==='suspended'&&this.ctx.resume){ var r1=this.ctx.resume(); if(r1&&r1.catch) r1.catch(function(){}); }
+          this._localSrc=this.ctx.createMediaStreamSource(this.stream);
+          this.localAnalyser=this.ctx.createAnalyser();
+          this.localAnalyser.fftSize=256;
+          this._localSrc.connect(this.localAnalyser);
         }
       }catch(e){ console.warn(e); }
       var pres=this._presRef();
@@ -849,17 +866,22 @@ const Voice = {
     }catch(e){
       console.warn(e);
       var raw='Voice error: '+(e&&e.name?e.name+': ':'')+(e&&e.message?e.message:e);
-      var hint=(e&&e.name==='NotAllowedError')?' — allow the microphone for this site in your browser settings, reload, then try again.':'';
-      var diag='';
+      var inFrame='?', secure='?', pol='?', perm='?';
       try{
-        var inFrame=window.self!==window.top?'iframe':'top';
-        var secure=window.isSecureContext?'secure':'not-secure';
-        var pol='?';
+        inFrame=window.self!==window.top?'iframe':'top';
+        secure=window.isSecureContext?'secure':'not-secure';
         try{ var pp=document.permissionsPolicy; if(pp&&pp.allowsFeature) pol=pp.allowsFeature('microphone')?'allowed':'blocked'; }catch(e2){}
-        var perm='?';
         try{ var q=await navigator.permissions.query({name:'microphone'}); perm=q.state; }catch(e2){}
-        diag=' [frame:'+inFrame+' '+secure+' mic-policy:'+pol+' perm:'+perm+']';
       }catch(e2){}
+      var hint='';
+      if(e&&e.name==='NotAllowedError'){
+        hint=(inFrame==='iframe'&&pol==='blocked')
+          ?' — preview iframe blocks the microphone; open the published app link directly in your browser and allow microphone access.'
+          :' — allow the microphone for this site in your browser settings, reload, then try again.';
+      } else if(e&&e.name==='NotReadableError'){
+        hint=' — microphone is busy in another app/tab or unavailable on this device.';
+      }
+      var diag=' [frame:'+inFrame+' '+secure+' mic-policy:'+pol+' perm:'+perm+']';
       toast(raw+hint);
       this._teardown();
       this.voiceError=raw+hint+diag;
@@ -879,16 +901,19 @@ const Voice = {
   _createPeer(uid,session){
     var self=this;
     var pair=this._pairId(this.myUid,uid);
-    // ICE: Google STUN first (direct phone-to-phone whenever possible), plus a free
-    // public TURN relay as fallback, used ONLY if the two phones cannot reach each
-    // other directly. If a browser rejects the full list, fall back to STUN-only
-    // rather than dying silently with no peer, no answer, and no candidates.
+    var isOfferer=this.myUid<uid;
+    // ICE: Google STUN first (direct phone-to-phone whenever possible), plus public
+    // Metered TURN relays as fallback for cellular/CGNAT phones. If the full list is
+    // rejected, fall back to STUN-only rather than dying silently.
     var pc=null;
     try{
       pc=new RTCPeerConnection({iceServers:[
         {urls:'stun:stun.l.google.com:19302'},
-        {urls:'turn:openrelay.metered.ca:80', username:'openrelayproject', credential:'openrelayproject'},
-        {urls:'turn:openrelay.metered.ca:443', username:'openrelayproject', credential:'openrelayproject'}
+        {urls:'stun:stun1.l.google.com:19302'},
+        {urls:'turn:global.relay.metered.ca:80', username:'openrelayproject', credential:'openrelayproject'},
+        {urls:'turn:global.relay.metered.ca:80?transport=tcp', username:'openrelayproject', credential:'openrelayproject'},
+        {urls:'turn:global.relay.metered.ca:443', username:'openrelayproject', credential:'openrelayproject'},
+        {urls:'turns:global.relay.metered.ca:443?transport=tcp', username:'openrelayproject', credential:'openrelayproject'}
       ]});
     }catch(e1){
       try{
@@ -898,7 +923,7 @@ const Voice = {
         this._renderPanel(); return;
       }
     }
-    var peer={pc:pc, session:session, pending:[]};
+    var peer={pc:pc, session:session, pending:[], localCands:[], sigReady:!isOfferer, iceRestarts:0};
     this.peers[uid]=peer;
     try{
       this.stream.getAudioTracks().forEach(function(t){ t.enabled=!self.micMuted; pc.addTrack(t,self.stream); });
@@ -906,18 +931,24 @@ const Voice = {
         pc.getTransceivers().forEach(function(tc){ if(tc.direction&&tc.direction!=='sendrecv') tc.direction='sendrecv'; });
       }
     }catch(e){}
+    function pushLocalCand(candObj){
+      try{
+        var rr=self._sigRef(pair).child('cands').push({
+          from:self.myUid, session:self.session, toSession:session, cand:candObj
+        });
+        if(rr&&rr.catch) rr.catch(function(e){ self.sigError='signal write failed: '+(e&&e.message?e.message:e); self._renderPanel(); });
+      }catch(e){}
+    }
     pc.onicecandidate=function(ev){
       if(ev.candidate){
-        try{
-          var rr=self._sigRef(pair).child('cands').push({from:self.myUid, session:self.session, cand:ev.candidate.toJSON()});
-          if(rr&&rr.catch) rr.catch(function(e){ self.sigError='signal write failed: '+(e&&e.message?e.message:e); self._renderPanel(); });
-        }catch(e){}
+        var cj=ev.candidate.toJSON();
+        if(!peer.sigReady){ peer.localCands.push(cj); return; }
+        pushLocalCand(cj);
       }
     };
-    // Remote audio goes through the shared remote gain (speaker path) so the
-    // speaker/deafen button can silence it. Wired through _wireRemoteAudio,
-    // re-wired on track.onunmute when RTP packets arrive, with a playing
-    // HTML media bridge element to activate Chromium's WebRTC audio sink.
+    // Remote audio goes through the audioBridge + shared remote gain (2.5) so the
+    // speaker/deafen button can silence it. Re-wired on track.onunmute when RTP
+    // packets arrive.
     pc.ontrack=function(ev){
       try{
         var track=ev.track;
@@ -935,25 +966,40 @@ const Voice = {
         self._renderPanel();
       }catch(e){ console.warn(e); }
     };
-    pc.oniceconnectionstatechange=function(){ try{ self._renderPanel(); }catch(e){} };
+    pc.oniceconnectionstatechange=function(){
+      try{
+        if(pc.iceConnectionState==='failed'&&isOfferer&&peer.iceRestarts<2&&pc.restartIce){
+          peer.iceRestarts++;
+          pc.restartIce();
+        }
+        self._renderPanel();
+      }catch(e){}
+    };
     var sig=this._sigRef(pair);
     var valH=async function(snap){
       var v=snap.val()||{};
       if(peer._sigBusy) return;
       try{
-        if(v.offer&&v.offer.from!==self.myUid&&v.offer.session===peer.session&&pc.signalingState==='stable'&&!peer.offerAnswered){
+        if(!isOfferer&&v.offer&&v.offer.from!==self.myUid&&v.offer.session===peer.session
+          &&(!v.offer.toSession||v.offer.toSession===self.session)
+          &&pc.signalingState==='stable'&&!peer.offerAnswered){
           peer._sigBusy=true;
           await pc.setRemoteDescription(new RTCSessionDescription({type:v.offer.type, sdp:v.offer.sdp}));
           var ans=await pc.createAnswer();
           await pc.setLocalDescription(ans);
           try{
-            await sig.child('answer').set({from:self.myUid, session:self.session, sdp:ans.sdp, type:ans.type});
+            await sig.child('answer').set({
+              from:self.myUid, session:self.session, toSession:session, sdp:ans.sdp, type:ans.type
+            });
             peer.offerAnswered=true;
           }catch(e){ self.sigError='answer write failed: '+(e&&e.message?e.message:e); self._renderPanel(); }
           self._flushPending(peer);
-        }else if(v.answer&&v.answer.from!==self.myUid&&v.answer.session===peer.session&&pc.signalingState==='have-local-offer'){
+        }else if(isOfferer&&v.answer&&v.answer.from!==self.myUid&&v.answer.session===peer.session
+          &&(!v.answer.toSession||v.answer.toSession===self.session)
+          &&pc.signalingState==='have-local-offer'&&!peer.answerApplied){
           peer._sigBusy=true;
           await pc.setRemoteDescription(new RTCSessionDescription({type:v.answer.type, sdp:v.answer.sdp}));
+          peer.answerApplied=true;
           self._flushPending(peer);
         }
       }catch(e){ self.sigError='voice negotiation failed: '+(e&&e.message?e.message:e); self._renderPanel(); console.warn(e); }
@@ -964,6 +1010,7 @@ const Voice = {
       var c=snap.val()||{};
       if(c.from===self.myUid) return;
       if(c.session&&c.session!==peer.session) return;
+      if(c.toSession&&c.toSession!==self.session) return;
       if(!c.cand) return;
       if(pc.remoteDescription) pc.addIceCandidate(new RTCIceCandidate(c.cand)).catch(function(){});
       else peer.pending.push(c.cand);
@@ -973,14 +1020,20 @@ const Voice = {
       try{ sig.off('value',valH); }catch(e){}
       try{ sig.child('cands').off('child_added',candH); }catch(e){}
     };
-    // Only the lower uid offers — the other side answers. Deterministic,
-    // so a race can never leave both sides in have-local-offer.
-    if(this.myUid<uid){
+    // Only the lower uid offers — the other side answers. Deterministic, so a race
+    // can never leave both sides in have-local-offer. Overwrite the whole pair doc
+    // (NOT child/merge) so a rejoin starts cleanly with no stale answer or cands.
+    if(isOfferer){
       (async function(){
         try{
           var off=await pc.createOffer({offerToReceiveAudio:true});
           await pc.setLocalDescription(off);
-          await sig.child('offer').set({from:self.myUid, session:self.session, sdp:off.sdp, type:off.type});
+          await sig.set({
+            offer:{from:self.myUid, session:self.session, toSession:session, sdp:off.sdp, type:off.type, ts:Date.now()}
+          });
+          peer.sigReady=true;
+          var queued=peer.localCands.splice(0);
+          queued.forEach(pushLocalCand);
         }catch(e){ self.sigError='offer write failed: '+(e&&e.message?e.message:e); self._renderPanel(); console.warn(e); }
       })();
     }
@@ -988,36 +1041,53 @@ const Voice = {
   },
   _wireRemoteAudio(peer){
     if(!peer||!peer.remoteStream) return;
-    if(!this.ctx||!this.remoteGain) return;
-    if(this.ctx.state==='suspended'&&this.ctx.resume){
+    if(!this.ctx){
+      try{
+        var AC=window.AudioContext||window.webkitAudioContext;
+        if(AC){
+          this.ctx=new AC();
+          this.remoteGain=this.ctx.createGain();
+          this.remoteGain.gain.value=this.speakerOff?0:2.5;
+          this.remoteGain.connect(this.ctx.destination);
+        }
+      }catch(e){}
+    }
+    if(this.ctx&&this.ctx.state==='suspended'&&this.ctx.resume){
       var r=this.ctx.resume(); if(r&&r.catch) r.catch(function(){});
     }
     // Chromium WebRTC bug workaround: Chromium only starts decoding incoming WebRTC
     // RTP audio packets into createMediaStreamSource if an HTMLMediaElement is
-    // attached and playing.
-    var isChromium=!!window.chrome||/Chrome|Chromium|Android|CriOS/i.test(navigator.userAgent);
-    if(isChromium){
-      if(!peer.audioBridge){
-        var el=document.createElement('audio');
-        el.autoplay=true; el.playsInline=true;
-        el.setAttribute('playsinline','true');
-        el.muted=true;
-        el.style.cssText='position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0.01;pointer-events:none;';
-        document.body.appendChild(el);
-        peer.audioBridge=el;
-      }
-      try{
-        if(peer.audioBridge.srcObject!==peer.remoteStream) peer.audioBridge.srcObject=peer.remoteStream;
-        var p=peer.audioBridge.play();
-        if(p&&p.catch) p.catch(function(){});
-      }catch(e){}
+    // attached and playing (muted so WebAudio remoteGain 2.5 plays without echo).
+    // On iOS Safari/WebKit, createMediaStreamSource emits silence on remote WebRTC
+    // tracks, so keep audioBridge unmuted (unless deafened) for audible playback.
+    var isChromium=!!window.chrome||/Chrome|Chromium|Android|CriOS|Edg|SamsungBrowser/i.test(navigator.userAgent);
+    if(!peer.audioBridge){
+      var el=document.createElement('audio');
+      el.autoplay=true; el.playsInline=true;
+      el.setAttribute('playsinline','true');
+      el.muted=isChromium?true:!!this.speakerOff;
+      el.style.cssText='position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0.01;pointer-events:none;';
+      document.body.appendChild(el);
+      peer.audioBridge=el;
+    }else{
+      peer.audioBridge.muted=isChromium?true:!!this.speakerOff;
     }
-    try{ if(peer.audioNodes&&peer.audioNodes.src) peer.audioNodes.src.disconnect(); }catch(e){}
     try{
-      var rsrc=this.ctx.createMediaStreamSource(peer.remoteStream);
-      rsrc.connect(this.remoteGain);
-      peer.audioNodes={src:rsrc};
-    }catch(e){ console.warn(e); }
+      if(peer.audioBridge.srcObject!==peer.remoteStream) peer.audioBridge.srcObject=peer.remoteStream;
+      var p=peer.audioBridge.play();
+      if(p&&p.catch) p.catch(function(){});
+    }catch(e){}
+    try{ if(peer.audioNodes&&peer.audioNodes.src) peer.audioNodes.src.disconnect(); }catch(e){}
+    if(isChromium&&this.ctx&&this.remoteGain){
+      try{
+        var rsrc=this.ctx.createMediaStreamSource(peer.remoteStream);
+        rsrc.connect(this.remoteGain);
+        peer.audioNodes={src:rsrc};
+      }catch(e){ console.warn(e); }
+    }else if(!isChromium){
+      // Non-Chromium (e.g. iOS Safari / Firefox): audio plays directly via unmuted audioBridge
+      peer.audioNodes={viaBridge:true};
+    }
   },
   // Truth signal for "is the mic hooked to the speakers": presence and Speaking bars
   // say nothing about the audio path, so each remote row reports the actual media
@@ -1058,6 +1128,7 @@ const Voice = {
     if(!this.active||!this.stream) return;
     this.micMuted=!this.micMuted;
     if(this.micMuted) this._mySpeaking=false;
+    if(this.presenceInfo[this.myUid]) this.presenceInfo[this.myUid].muted=this.micMuted;
     try{ this.stream.getAudioTracks().forEach(function(t){ t.enabled=!this.micMuted; }.bind(this)); }catch(e){}
     try{ this._presRef().update({muted:this.micMuted, isSpeaking:false}); }catch(e){}
     this._micBtn(); this._renderPanel();
@@ -1066,17 +1137,34 @@ const Voice = {
     if(!this.active) return;
     this.speakerOff=!this.speakerOff;
     try{ if(this.remoteGain) this.remoteGain.gain.value=this.speakerOff?0:2.5; }catch(e){}
+    try{
+      var isChromium=!!window.chrome||/Chrome|Chromium|Android|CriOS|Edg|SamsungBrowser/i.test(navigator.userAgent);
+      if(!isChromium){
+        var self=this;
+        Object.keys(this.peers||{}).forEach(function(u){
+          var p=self.peers[u]; if(p&&p.audioBridge) p.audioBridge.muted=!!self.speakerOff;
+        });
+      }
+    }catch(e){}
     this._renderPanel();
   },
   _testVoiceTone(){
     try{
-      if(!this.ctx) return;
+      if(!this.ctx){
+        var AC=window.AudioContext||window.webkitAudioContext;
+        if(!AC) return;
+        this.ctx=new AC();
+        this.remoteGain=this.ctx.createGain();
+        this.remoteGain.gain.value=this.speakerOff?0:2.5;
+        this.remoteGain.connect(this.ctx.destination);
+      }
       if(this.ctx.resume){ var r=this.ctx.resume(); if(r&&r.catch) r.catch(function(){}); }
+      if(this.speakerOff) toast('🔇 Speaker is deafened — tap 🔇 to hear voice audio');
       var o=this.ctx.createOscillator(), g=this.ctx.createGain();
       o.type='sine'; o.frequency.value=880;
       g.gain.setValueAtTime(.25,this.ctx.currentTime);
       g.gain.exponentialRampToValueAtTime(.001,this.ctx.currentTime+.6);
-      o.connect(g); g.connect(this.ctx.destination);
+      o.connect(g); g.connect(this.remoteGain||this.ctx.destination);
       o.start(); o.stop(this.ctx.currentTime+.6);
       this._renderPanel();
     }catch(e){}
@@ -1143,7 +1231,7 @@ const Voice = {
     }
     var rows=[];
     var me=this.presenceInfo[this.myUid];
-    if(me) rows.push(this._partRow(this.myUid,me.name,true,!!me.muted,this._mySpeaking,this.stream?'mic live':''));
+    if(me) rows.push(this._partRow(this.myUid,me.name,true,this.micMuted,this._mySpeaking,this.stream?'mic live':''));
     var self=this;
     Object.keys(this.presenceInfo).forEach(function(uid){
       if(uid===self.myUid) return;

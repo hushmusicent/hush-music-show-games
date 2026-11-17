@@ -1,0 +1,26 @@
+Fix the mic in Hush Music Show Games voice chat. The job is: two phones in one PvP room both tap Join Voice Talk and actually HEAR each other. Speaking bars alone don't count — real sound on both phones is the pass.
+
+FIRST — reproduce it and read the exact error before you change any code.
+1. Get two phones (or preview + phone) into the same PvP room.
+2. Both tap Join Voice Talk.
+3. Read the red error the voice panel shows. The code already prints the REAL error name and message plus diagnostics (frame: iframe/top, secure or not, mic permissions-policy, mic permission state). Tell me that exact error first. Do not guess from a friendly message.
+
+WHAT IS ALREADY THERE (do not rebuild voice from scratch):
+- The Voice object is in root index.html (around line 765). Pure WebRTC mesh, no LiveKit, no token server, no keys. Do NOT bring LiveKit back.
+- Mic capture is one call: navigator.mediaDevices.getUserMedia({audio:true}), captured once and shared with every peer connection and the speaking analyser.
+- Signaling lives in the same database as the rooms: shg_rooms/<code>/voice_presence/<uid> and shg_rooms/<code>/voice_signals/<pairId>, SDP as plain strings, session id stamped on every join, stale sessions ignored.
+- ICE: Google STUN (stun:stun.l.google.com:19302) plus OpenRelay TURN fallback. If the full list is rejected, fall back to STUN-only rather than dying silently.
+- Remote audio goes through the audioBridge (a hidden muted <audio> element per peer — this is the fix for Chrome's dormant audio sink) into a shared gain of 2.5. The panel has a Test button that plays a test tone through the voice audio path.
+- The panel is #voicePanel (shown whenever you are in a room, hooked into Net.create/join via Voice.syncPanel). The header mic button is #micBtn (appears when voice is active, toggles mute).
+
+CHECK THESE, IN ORDER:
+1. Mic permission. If the diagnostics say the mic is blocked by permissions-policy or NotAllowedError in the preview iframe, say so plainly and test on the published link instead — the published app is the real test surface, don't hack around the iframe.
+2. getUserMedia errors. NotAllowedError means the mic was denied — the panel must keep showing the raw error and the hint to allow the mic for the site. NotReadableError means the mic is busy or missing.
+3. Presence and signaling actually reaching Firebase. Both phones must appear under voice_presence, and offers/answers/ICE candidates must land under voice_signals/<pairId>. Check the shg_* rules allow those paths.
+4. The peer connection actually connecting. Offer/answer must exchange, ICE candidates must flow, and a rejoin must start from clean signaling (overwrite, not merge) or it throws InvalidStateError and leaves a call with no audio.
+5. Audio actually audible. The audioBridge must stay wired — if you rewrote the audio path, restore it. The Test tone must be audible through the voice path.
+6. Panel and button. #voicePanel shows in a room, #micBtn appears when voice is active, mute toggles, and the panel shows both players with their real status.
+
+ACCEPTANCE: two phones in one room, both join voice, panel shows 2 in call, both hear each other, Test tone audible. If any step fails, report the exact error from the panel.
+
+DO NOT: touch game logic, PvP rooms, or the Firebase config/apiKey. The live file is root index.html — do not fix anything in src/, that is not the entry. Do not push to GitHub. When done, show me the preview.
