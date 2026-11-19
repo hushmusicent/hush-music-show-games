@@ -734,7 +734,7 @@ const Net = {
       // compare against the pre-listen room, not the wiped null, or it looks like a change
       // and the game starts the moment the room is created, before anyone joins.
       const old=first ? (prev || r) : this.room;
-      const changed = normS(r.state)!==normS(old?old.state:null) || r.turn!==(old?old.turn:-1) || r.status!==(old?old.status:'');
+      const changed = normS(r.state)!==normS(old?old.state:null) || r.turn!==(old?old.turn:-1) || r.status!==(old?old.status:'') || JSON.stringify(r.seats||[])!==JSON.stringify(old?old.seats||[]:[]);
       this.room=r; if(changed && this._onUpdate) this._onUpdate(r); first=false;
     };
     ref.on('value', h); this._off.push(()=>ref.off('value',h));
@@ -10856,9 +10856,11 @@ function g1Pvp(net,share,play,settle,container,opts){
     if(!target||started||over)return;
     target.innerHTML='<div class="card center"><div class="big">⏳ Waiting for host\'s board…</div><div class="muted" style="margin-top:6px">Room <b>'+esc(roomCode)+'</b> · Build '+esc(BUILD_VERSION)+'</div></div>';
   }
-  function showTurnWaiting(){
+  function showTurnWaiting(room){
     if(!target||started||over)return;
-    target.innerHTML='<div class="card center"><div class="big">⏳ Player 1 is playing…</div><div class="muted" style="margin-top:6px">Your turn is next · Room <b>'+esc(roomCode)+'</b> · Build '+esc(BUILD_VERSION)+'</div></div>';
+    var turnUid=room&&room.state?room.state.turn:null;
+    var turnNm=turnUid?(((net.room&&net.room.names)||{})[turnUid]||'Player 1'):'Player 1';
+    target.innerHTML='<div class="card center"><div class="big">⏳ '+esc(turnNm)+' is playing…</div><div class="muted" style="margin-top:6px">Your turn is next · Room <b>'+esc(roomCode)+'</b> · Build '+esc(BUILD_VERSION)+'</div></div>';
   }
   function someoneElseDone(state){
     var me=Auth.user&&Auth.user.uid, done=state&&state.done;
@@ -10905,7 +10907,7 @@ function g1Pvp(net,share,play,settle,container,opts){
           doSettle(scores2);
         },600000);
       } else {
-        if(!(opts&&opts.shared)&&!myTurn(room)){ showTurnWaiting(); return; }
+        if(!(opts&&opts.shared)&&!myTurn(room)){ showTurnWaiting(room); return; }
         started=true;
         try{
           var h=play(d,submit);
@@ -10927,15 +10929,35 @@ function g1Pvp(net,share,play,settle,container,opts){
   try{net.onUpdate(onRoom);if(net.room)onRoom(net.room);else showWaiting();}catch(e){console.error('g1Pvp init error:',e);}
 }
 function g1Settle(c,iWon,scores,title){
-  var rows='',k,me,myUid=Auth.user&&Auth.user.uid;
-  for(k in (scores||{})){me=k===myUid;rows+='<tr'+(me?' class="me"':'')+'><td>'+(me?'You':'Opponent')+'</td><td>'+Math.round(+scores[k]).toLocaleString('en-US')+'</td></tr>';}
-  var sc2=scores||{}, ks2=Object.keys(sc2), isDraw=ks2.length>=2 && ks2.every(function(k){return (+sc2[k]||0)===(+sc2[ks2[0]]||0);});
+  var myUid=Auth.user&&Auth.user.uid;
+  var names=(typeof Net!=='undefined'&&Net.room&&Net.room.names)||{};
+  var sc0=scores||{};
+  var keys=Object.keys(sc0).sort(function(a,b){ return (+sc0[b]||0)-(+sc0[a]||0); });
+  var rows='';
+  keys.forEach(function(k){
+    var me=k===myUid, nm=me?'You':(names[k]||'Player');
+    rows+='<tr'+(me?' class="me"':'')+'><td>'+esc(nm)+'</td><td>'+Math.round(+sc0[k]).toLocaleString('en-US')+'</td></tr>';
+  });
+  var best=-Infinity; keys.forEach(function(k){ var v=+sc0[k]||0; if(v>best) best=v; });
+  var tied=keys.filter(function(k){ return (+sc0[k]||0)===best; });
+  var isDraw=keys.length>=2 && tied.length===keys.length;
+  var isPartialTie=tied.length>1 && !isDraw;
+  var amTied=tied.indexOf(myUid)>=0;
   var wag=(typeof Net!=='undefined'&&Net.room)?(+Net.room.wager||0):0, wagLine='';
-  if(wag>0){ wagLine=isDraw?' · 🤝 tie — wager '+wag+' ⭐ refunded':(iWon?' · 🏆 wager won: +'+(wag*2)+' ⭐':' · wager lost: −'+wag+' ⭐'); }
-  var head=isDraw?'🤝 Tie!':(iWon?'🏆 You win!':'😞 You lose');
+  var nPlayers=(typeof Net!=='undefined'&&Net.room&&Net.room.seats)?Net.room.seats.length:2;
+  if(wag>0){
+    if(isDraw){ wagLine=' · 🤝 tie — wager '+wag+' ⭐ refunded'; }
+    else if(isPartialTie){
+      var pot=nPlayers*wag, share=Math.floor(pot/tied.length);
+      wagLine=amTied?' · 🤝 tied for first — you split the '+pot+' ⭐ pot, +'+share+' ⭐':' · 🤝 tied for first — the '+pot+' ⭐ pot is split';
+    }
+    else if(iWon){ wagLine=' · 🏆 wager won: +'+(nPlayers*wag)+' ⭐'; }
+    else { wagLine=' · wager lost: −'+wag+' ⭐'; }
+  }
+  var head=isDraw?'🤝 Tie!':(isPartialTie&&amTied?'🤝 Tied for first!':(iWon?'🏆 You win!':'😞 You lose'));
   var ptsLine=isDraw?'split '+Math.floor(PVP_WIN/2)+' ⭐ each':'winner banks '+PVP_WIN+' ⭐';
   c.innerHTML='<h2>'+head+'</h2><div class="card"><table class="lb"><tr><th>Player</th><th>Score</th></tr>'+rows+'</table><div class="muted">'+esc(title||'')+' · '+ptsLine+wagLine+'</div></div>';
-  if(isDraw||iWon)Sound.win();else Sound.lose();
+  if(isDraw||amTied||iWon)Sound.win();else Sound.lose();
 }
 /* multiple-choice buttons into #ch; onPick(index) */
 function g1Choices(c,q,onPick){
@@ -11150,10 +11172,22 @@ render:function(c,ctx){
       for(var k=0;k<seats.length;k++){ if(seats[k]!==me) return seats[k]; }
       return null;
     }
+    function pName(uid){
+      if(uid===me) return 'You';
+      var names=(net.room&&net.room.names)||{};
+      return names[uid]||'Player';
+    }
+    function nextUid(room,afterUid){
+      var seats=(room&&room.seats)||[];
+      if(!seats.length) return null;
+      var i=seats.indexOf(afterUid); if(i<0) i=0;
+      for(var k=1;k<=seats.length;k++){ var u=seats[(i+k)%seats.length]; if(u&&u!==afterUid) return u; }
+      return null;
+    }
     function getScore(jb,uid){ return (jb&&jb.scores&&jb.scores[uid])||0; }
     function scoreLine(jb){
-      var o=otherUid(net.room);
-      return '<b>You:</b> '+g1Money(getScore(jb,me))+' · <b>Opponent:</b> '+g1Money(o?getScore(jb,o):0);
+      var seats=(net.room&&net.room.seats)||[];
+      return seats.map(function(uid){ return '<b>'+esc(pName(uid))+':</b> '+g1Money(getScore(jb,uid)); }).join(' · ');
     }
     function writeJb(jb){ try{ net.set('state/jb',jb); }catch(e){} }
     function cloneJb(jb){ return JSON.parse(JSON.stringify(jb||{})); }
@@ -11223,7 +11257,7 @@ render:function(c,ctx){
           nj.msg='❌ Wrong Daily Double. −'+g1Money(val)+'.';
           nj.phase='reveal';
         } else {
-          nj.stealBy=otherUid(net.room);
+          nj.stealBy=nextUid(net.room, jb.turn);
           nj.msg='❌ Wrong. −'+g1Money(val)+'. Steal?';
           nj.phase='steal';
         }
@@ -11259,7 +11293,7 @@ render:function(c,ctx){
       var h='<h2>🧠 Jeopardize! — '+esc(set.name||'Board')+'</h2>';
       h+=isMyTurn
         ?'<div class="turn-banner">🎯 Your turn — pick a clue!</div>'
-        :'<div class="turn-banner">⏳ Opponent\'s turn — they\'re picking a clue…</div>';
+        :'<div class="turn-banner">⏳ '+esc(pName(jb.turn))+'\'s turn — they\'re picking a clue…</div>';
       h+='<div class="card"><div class="status">'+scoreLine(jb)+'</div>';
       h+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px">';
       cats.forEach(function(cat){h+='<div class="muted center" style="font-size:10px;font-weight:700">'+esc(cat)+'</div>';});
@@ -11277,7 +11311,7 @@ render:function(c,ctx){
     }
     function renderDDWager(jb,isMyTurn){
       if(!isMyTurn){
-        c.innerHTML='<h2>⭐ DAILY DOUBLE!</h2><div class="card"><div class="status">Opponent is setting a wager…</div><div class="status">'+scoreLine(jb)+'</div></div>';
+        c.innerHTML='<h2>⭐ DAILY DOUBLE!</h2><div class="card"><div class="status">'+esc(pName(jb.turn))+' is setting a wager…</div><div class="status">'+scoreLine(jb)+'</div></div>';
         return;
       }
       var maxW=Math.max(1000,getScore(jb,me));
@@ -11288,7 +11322,7 @@ render:function(c,ctx){
       var cl=clueByI(jb.clue); if(!cl){ renderBoard(jb,isMyTurn); return; }
       var val=jb.wager||cl.v, isDD=jb.clue===jb.dd;
       if(!isMyTurn){
-        c.innerHTML='<h2>'+esc(cats[cl.c]||'')+' — '+g1Money(val)+(isDD?' ⭐':'')+'</h2><div class="card"><div class="big" style="font-size:19px;margin:8px 0">'+esc(cl.q)+'</div><div class="status">⏳ Opponent is answering…</div><div class="status">'+scoreLine(jb)+'</div></div>';
+        c.innerHTML='<h2>'+esc(cats[cl.c]||'')+' — '+g1Money(val)+(isDD?' ⭐':'')+'</h2><div class="card"><div class="big" style="font-size:19px;margin:8px 0">'+esc(cl.q)+'</div><div class="status">⏳ '+esc(pName(jb.turn))+' is answering…</div><div class="status">'+scoreLine(jb)+'</div></div>';
         return;
       }
       c.innerHTML='<h2>'+esc(cats[cl.c]||'')+' — '+g1Money(val)+(isDD?' ⭐':'')+'</h2><div class="card"><div class="big" style="font-size:19px;margin:8px 0">'+esc(cl.q)+'</div><input id="a" placeholder="Your answer…" autocomplete="off"><div class="status">⏱ <span id="tmr">12s</span></div><button class="btn" id="go">Answer</button></div>';
@@ -11302,10 +11336,10 @@ render:function(c,ctx){
       var cl=clueByI(jb.clue); if(!cl) return;
       var val=jb.wager||cl.v;
       if(jb.stealBy!==me){
-        c.innerHTML='<h2>🔔 Steal! '+esc(cats[cl.c]||'')+' — '+g1Money(val)+'</h2><div class="card"><div class="err">'+esc(jb.msg||'Opponent missed.')+'</div><div class="big" style="font-size:19px;margin:8px 0">'+esc(cl.q)+'</div><div class="status">⏳ Opponent can steal…</div><div class="status">'+scoreLine(jb)+'</div></div>';
+        c.innerHTML='<h2>🔔 Steal! '+esc(cats[cl.c]||'')+' — '+g1Money(val)+'</h2><div class="card"><div class="err">'+esc(jb.msg||pName(jb.turn)+' missed.')+'</div><div class="big" style="font-size:19px;margin:8px 0">'+esc(cl.q)+'</div><div class="status">⏳ '+esc(pName(jb.stealBy))+' can steal…</div><div class="status">'+scoreLine(jb)+'</div></div>';
         return;
       }
-      c.innerHTML='<h2>🔔 Steal! '+esc(cats[cl.c]||'')+' — '+g1Money(val)+'</h2><div class="card"><div class="err">'+esc(jb.msg||'Opponent missed.')+'</div><div class="big" style="font-size:19px;margin:8px 0">'+esc(cl.q)+'</div><input id="a" placeholder="Buzz in with your answer…" autocomplete="off"><div class="status">⏱ <span id="tmr">10s</span></div><div class="row"><button class="btn grow" id="go">Buzz &amp; Answer</button><button class="btn secondary grow" id="pass">Pass</button></div></div>';
+      c.innerHTML='<h2>🔔 Steal! '+esc(cats[cl.c]||'')+' — '+g1Money(val)+'</h2><div class="card"><div class="err">'+esc(jb.msg||pName(jb.turn)+' missed.')+'</div><div class="big" style="font-size:19px;margin:8px 0">'+esc(cl.q)+'</div><input id="a" placeholder="Buzz in with your answer…" autocomplete="off"><div class="status">⏱ <span id="tmr">10s</span></div><div class="row"><button class="btn grow" id="go">Buzz &amp; Answer</button><button class="btn secondary grow" id="pass">Pass</button></div></div>';
       var inp=c.querySelector('#a'), sDone=false;
       var sTmr=g1Timer(c,10,c.querySelector('#tmr'),function(){if(!sDone){sDone=true;actSteal(jb,null);}});
       function doSteal(){ if(sDone)return; sDone=true; clearInterval(sTmr); var pa=inp.value.trim(); if(!pa){actSteal(jb,null);return;} actSteal(jb,pa); }
@@ -14329,8 +14363,12 @@ function shgPvp(net,opt){
     try{ w=QuizPVP.winnerUid(sc); }catch(e){}
     var iWon=!!w&&!!shgMyUid()&&w===shgMyUid();
     var ks3=Object.keys(sc||{}), isDraw3=ks3.length>=2 && ks3.every(function(k){return (+sc[k]||0)===(+sc[ks3[0]]||0);});
+    var best3=-Infinity; ks3.forEach(function(k){ var v=+sc[k]||0; if(v>best3) best3=v; });
+    var tied3=ks3.filter(function(k){ return (+sc[k]||0)===best3; });
+    var isPartialTie3=tied3.length>1 && !isDraw3;
+    var tieInfo={partial:isPartialTie3, amTied:tied3.indexOf(shgMyUid())>=0, tied:tied3};
     if(isDraw3){ iWon=false; w=null; }
-    try{ opt.onSettle(iWon,room||{},w); }catch(e){}
+    try{ opt.onSettle(iWon,room||{},w,tieInfo); }catch(e){}
     try{ Net.push({status:'done'}); }catch(e2){}
     try{ Voice.leave(); }catch(e3){}
   }
@@ -14399,8 +14437,9 @@ function shgPvp(net,opt){
 }
 async function shgAward(iWon){ try{ await QuizPVP.award(iWon); }catch(e){} }
 function shgPayLoad(score){ return {score:score,uid:shgMyUid(),name:(typeof Auth!=='undefined'&&Auth.user)?Auth.user.username:'?'}; }
-function shgResultBanner(el,iWon,w,winMsg,loseMsg){
+function shgResultBanner(el,iWon,w,winMsg,loseMsg,tie){
   if(!el) return;
+  if(tie&&tie.partial&&tie.amTied){ el.innerHTML='<div class="status"><span class="muted">🤝 Tied for first!</span></div>'; return; }
   if(w&&shgMyUid()&&w!==shgMyUid()&&!iWon){ el.innerHTML='<div class="status"><span class="err">'+loseMsg+'</span></div>'; }
   else if(iWon){ el.innerHTML='<div class="status"><span class="ok">'+winMsg+'</span></div>'; }
   else { el.innerHTML='<div class="status"><span class="muted">🤝 It\'s a tie!</span></div>'; }
@@ -14573,12 +14612,12 @@ render(c,ctx){
       share:function(){ return {values:SHG.dealShuffle()}; },
       onData:function(d){ start(d); },
       submitPayload:function(){ return shgPayLoad(S.won); },
-      onSettle:function(iWon,room,w){
+      onSettle:function(iWon,room,w,tie){
         var res=dz.querySelector('#dRes');
         shgResultBanner(res,iWon,w,
           '🎉 You win the head-to-head with '+SHG.money(S.won)+'!',
-          '😞 Opponent banked more. You had '+SHG.money(S.won)+'.');
-        Sound[iWon?'win':'lose']();
+          '😞 Opponent banked more. You had '+SHG.money(S.won)+'.,tie');
+        Sound[(iWon||(tie&&tie.amTied))?'win':'lose']();
         shgAward(iWon);
       }
     });
@@ -14964,12 +15003,12 @@ render(c,ctx){
       share:function(){ return {qs:SHG.pickN(bank,8)}; },
       onData:function(d){ start(d); },
       submitPayload:function(){ return shgPayLoad(me().bank); },
-      onSettle:function(iWon,room,w){
+      onSettle:function(iWon,room,w,tie){
         var res=pz.querySelector('#pRes');
         shgResultBanner(res,iWon,w,
           '🎉 You win with $'+me().bank.toLocaleString('en-US')+' banked!',
-          '😞 Opponent banked more. You had $'+me().bank.toLocaleString('en-US')+'.');
-        Sound[iWon?'win':'lose']();
+          '😞 Opponent banked more. You had $'+me().bank.toLocaleString('en-US')+'.,tie');
+        Sound[(iWon||(tie&&tie.amTied))?'win':'lose']();
         shgAward(iWon);
       }
     });
@@ -15268,12 +15307,12 @@ render(c,ctx){
       },
       onData:function(d){ start(d); },
       submitPayload:function(){ return shgPayLoad(S.my$+S.wcMoney); },
-      onSettle:function(iWon,room,w){
+      onSettle:function(iWon,room,w,tie){
         var res=py.querySelector('#pyRes');
         shgResultBanner(res,iWon,w,
           '🎉 You win the Pyramid!',
-          '😞 Opponent out-scored you this episode.');
-        Sound[iWon?'win':'lose']();
+          '😞 Opponent out-scored you this episode.,tie');
+        Sound[(iWon||(tie&&tie.amTied))?'win':'lose']();
         shgAward(iWon);
       }
     });
@@ -15575,12 +15614,12 @@ render(c,ctx){
       share:function(){ return {qs:SHG.pickN(BANKS2.weakestlink,10)}; },
       onData:function(d){ startPvp(d); },
       submitPayload:function(){ return shgPayLoad(S.total); },
-      onSettle:function(iWon,room,w){
+      onSettle:function(iWon,room,w,tie){
         var res=wk.querySelector('#wRes');
         shgResultBanner(res,iWon,w,
           '🎉 You win the The Worst Player sprint with '+money(S.total)+'!',
-          '😞 Opponent banked more. You had '+money(S.total)+'.');
-        Sound[iWon?'win':'lose']();
+          '😞 Opponent banked more. You had '+money(S.total)+'.,tie');
+        Sound[(iWon||(tie&&tie.amTied))?'win':'lose']();
         shgAward(iWon);
       }
     });
@@ -15856,12 +15895,12 @@ render(c,ctx){
       share:function(){ return {qs:SHG.v100Pick(BANKS2.v100)}; },
       onData:function(d){ startPvp(d); },
       submitPayload:function(){ return shgPayLoad(S.survived*10000+S.elim); },
-      onSettle:function(iWon,room,w){
+      onSettle:function(iWon,room,w,tie){
         var res=mv.querySelector('#mRes');
         shgResultBanner(res,iWon,w,
           '🎉 You go further against the mob — you win!',
-          '😞 Opponent went further against the mob.');
-        Sound[iWon?'win':'lose']();
+          '😞 Opponent went further against the mob.,tie');
+        Sound[(iWon||(tie&&tie.amTied))?'win':'lose']();
         shgAward(iWon);
       }
     });
@@ -16149,12 +16188,12 @@ render(c,ctx){
       },
       onData:function(d){ start(d); },
       submitPayload:function(){ return shgPayLoad(S.win); },
-      onSettle:function(iWon,room,w){
+      onSettle:function(iWon,room,w,tie){
         var res=fg.querySelector('#fRes');
         shgResultBanner(res,iWon,w,
           '🎉 You out-grade your opponent with '+money(S.win)+'!',
-          '😞 Opponent climbed higher. You had '+money(S.win)+'.');
-        Sound[iWon?'win':'lose']();
+          '😞 Opponent climbed higher. You had '+money(S.win)+'.,tie');
+        Sound[(iWon||(tie&&tie.amTied))?'win':'lose']();
         shgAward(iWon);
       }
     });
@@ -16336,12 +16375,12 @@ render(c,ctx){
       },
       onData:function(d){ start(d); },
       submitPayload:function(){ return shgPayLoad(scoreNow()); },
-      onSettle:function(iWon,room,w){
+      onSettle:function(iWon,room,w,tie){
         var res=wl.querySelector('#wRes');
         shgResultBanner(res,iWon,w,
           '🎉 Your panel figured out the line!',
-          '😞 Their panel got it faster.');
-        Sound[iWon?'win':'lose']();
+          '😞 Their panel got it faster.,tie');
+        Sound[(iWon||(tie&&tie.amTied))?'win':'lose']();
         shgAward(iWon);
       }
     });
@@ -16617,12 +16656,12 @@ render(c,ctx){
       },
       onData:function(d){ start(d); },
       submitPayload:function(){ return shgPayLoad(S.mine); },
-      onSettle:function(iWon,room,w){
+      onSettle:function(iWon,room,w,tie){
         var res=hw2.querySelector('#hRes');
         shgResultBanner(res,iWon,w,
           '🎉 Your team wins Game Night with '+S.mine+' points!',
-          '😞 Their team scored higher. You had '+S.mine+'.');
-        Sound[iWon?'win':'lose']();
+          '😞 Their team scored higher. You had '+S.mine+'.,tie');
+        Sound[(iWon||(tie&&tie.amTied))?'win':'lose']();
         shgAward(iWon);
       }
     });
@@ -16689,37 +16728,72 @@ function wireModes(container, gameId, start){
       try{ lr=JSON.parse(localStorage.getItem('shg_lastRoom')||'null'); }catch(e){ lr=null; }
       var rejoinHTML='';
       if(lr&&lr.code&&lr.game===gameId){ rejoinHTML='<div class="row" style="margin-top:8px"><button class="btn secondary grow" id="reJoin">↩️ Rejoin Room '+esc(lr.code)+'</button></div><div class="muted">Got booted out? Tap to get back in.</div>'; }
-      box.innerHTML='<div class="card"><h3>Online play</h3><div class="betrow" id="wagerRow"><span class="muted" style="align-self:center">Wager:</span><button class="sel" data-w="0">Free</button><button data-w="50">50 ⭐</button><button data-w="100">100 ⭐</button><button data-w="250">250 ⭐</button><button data-w="500">500 ⭐</button></div><div class="muted">Winner takes the pot (2× wager). A tie refunds both.</div><div class="row"><button class="btn small grow" id="mkRoom">Create room</button><input id="joinCode" class="grow" placeholder="Code" maxlength="4" inputmode="numeric"><button class="btn small" id="doJoin">Join</button></div>'+rejoinHTML+'<div class="muted">Share the 4-digit code with your opponent. First to join plays.</div></div>';
+      box.innerHTML='<div class="card"><h3>Online play</h3><div class="betrow" id="playersRow"><span class="muted" style="align-self:center">Players:</span><button class="sel" data-n="2">2</button><button data-n="3">3</button><button data-n="4">4</button></div><div class="betrow" id="wagerRow"><span class="muted" style="align-self:center">Wager:</span><button class="sel" data-w="0">Free</button><button data-w="50">50 ⭐</button><button data-w="100">100 ⭐</button><button data-w="250">250 ⭐</button><button data-w="500">500 ⭐</button></div><div class="muted" id="wagerNote">Winner takes the pot (2× wager). A tie refunds both.</div><div class="row"><button class="btn small grow" id="mkRoom">Create room</button><input id="joinCode" class="grow" placeholder="Code" maxlength="4" inputmode="numeric"><button class="btn small" id="doJoin">Join</button></div>'+rejoinHTML+'<div class="muted">Share the 4-digit code with your opponent. First to join plays.</div></div>';
+      var playerCount=2;
+      box.querySelectorAll('#playersRow button').forEach(function(b){
+        b.onclick=function(){ Sound.click(); playerCount=+b.getAttribute('data-n'); box.querySelectorAll('#playersRow button').forEach(function(x){x.classList.remove('sel');}); b.classList.add('sel');
+          var wn=box.querySelector('#wagerNote'); if(wn) wn.textContent='Winner takes the pot ('+playerCount+'× wager). A tie refunds both.'; };
+      });
       var wager=0;
       box.querySelectorAll('#wagerRow button').forEach(function(b){
         var amt=+b.getAttribute('data-w');
         if(amt>0 && Wallet.balance>0 && amt>Wallet.balance){ b.disabled=true; b.style.opacity='0.4'; }
         b.onclick=function(){ Sound.click(); wager=amt; box.querySelectorAll('#wagerRow button').forEach(function(x){x.classList.remove('sel');}); b.classList.add('sel'); };
       });
+      function joinAndMaybeStart(code){
+        return Net.join(code, gameId).then(function(ok){
+          if(!ok) return false;
+          var room=Net.room;
+          var full=room && room.seats && room.seatsNeeded && room.seats.length>=room.seatsNeeded;
+          if(full){
+            if(room.status!=='playing'){ Net.push({status:'playing'}); }
+            start({mode:'pvp', net:Net});
+          } else {
+            var need=room?room.seatsNeeded:2, joined=room?room.seats.length:1;
+            box.innerHTML='<div class="card center"><div class="big" id="waitJoin">⏳ Waiting for '+(need-joined)+' more player'+((need-joined)===1?'':'s')+'…</div><div class="muted">Room <b>'+esc(code)+'</b> ('+joined+'/'+need+' joined) · Build '+esc(BUILD_VERSION)+'</div><div id="chatWrap"></div>';
+            Chat.renderBox(box.querySelector('#chatWrap'), 'room-'+code);
+            var launchedG=false;
+            Net.onUpdate(function(r){
+              if(!r||launchedG) return;
+              var j=(r.seats||[]).length, n=r.seatsNeeded||need;
+              var wm=box.querySelector('#waitJoin');
+              if(wm && r.status==='waiting'){ wm.textContent='⏳ Waiting for '+(n-j)+' more player'+((n-j)===1?'':'s')+'…'; }
+              if(r.status==='playing'){ launchedG=true; start({mode:'pvp', net:Net}); }
+            });
+          }
+          return true;
+        });
+      }
       var rj=box.querySelector('#reJoin');
       if(rj) rj.onclick=async()=>{ Sound.click(); const ok=await Net.join(String(lr.code), gameId); if(ok){ if(Net.room&&Net.room.status!=='playing'){ await Net.push({status:'playing'}); } start({mode:'pvp', net:Net}); } };
       box.querySelector('#mkRoom').onclick=async()=>{
-        const seats=(Games[gameId]&&Games[gameId].seats)||2;
+        const seats=playerCount;
         const code=await Net.create(gameId, seats, wager);
-        if(code){ box.innerHTML='<div class="turn-banner">Room code: <span class="big">'+code+'</span><br><span class="muted">Waiting for opponent...'+(wager>0?' · Wager '+wager+' ⭐':'')+' · Build '+esc(BUILD_VERSION)+'</span></div><div id="chatWrap"></div>';
+        if(code){ box.innerHTML='<div class="turn-banner">Room code: <span class="big">'+code+'</span><br><span class="muted" id="waitMsg">Waiting for '+(seats-1)+' more player'+((seats-1)===1?'':'s')+' (1/'+seats+' joined)...'+(wager>0?' · Wager '+wager+' ⭐':'')+' · Build '+esc(BUILD_VERSION)+'</span></div><div id="chatWrap"></div>';
           Chat.renderBox(box.querySelector('#chatWrap'), 'room-'+code);
           let launched=false;
-          Net.onUpdate(()=>{ if(launched)return; launched=true; start({mode:'pvp', net:Net}); }); }
+          Net.onUpdate((room)=>{
+            if(launched||!room) return;
+            var joined=(room.seats||[]).length, need=room.seatsNeeded||seats;
+            var wm=box.querySelector('#waitMsg');
+            if(wm && room.status==='waiting'){ wm.innerHTML='Waiting for '+(need-joined)+' more player'+((need-joined)===1?'':'s')+' ('+joined+'/'+need+' joined)...'+(wager>0?' · Wager '+wager+' ⭐':'')+' · Build '+esc(BUILD_VERSION); }
+            if(room.status==='waiting' && joined>=need){ Net.push({status:'playing'}); return; }
+            if(room.status==='playing'){ launched=true; start({mode:'pvp', net:Net}); }
+          }); }
       };
       box.querySelector('#doJoin').onclick=async()=>{
         const code=box.querySelector('#joinCode').value.trim();
         if(!code) return;
-        var wag=0;
-        try{ if(Backend.mode==='firebase'){ var s=await Backend.db.ref('shg_rooms/'+code).get(); var r=s&&s.val(); if(r && (!r.game || r.game===gameId)) wag=+r.wager||0; } }catch(e){}
+        var wag=0, need=2;
+        try{ if(Backend.mode==='firebase'){ var s=await Backend.db.ref('shg_rooms/'+code).get(); var r=s&&s.val(); if(r && (!r.game || r.game===gameId)){ wag=+r.wager||0; need=+r.seatsNeeded||2; } } }catch(e){}
         if(wag>0){
           if(wag>Wallet.balance){ toast('Wager is '+wag+' ⭐ — you only have '+Wallet.balance+' ⭐.'); return; }
-          box.innerHTML='<div class="card center"><h3>💰 Points wager</h3><div class="big">'+wag+' ⭐</div><div class="muted">Winner takes '+(wag*2)+' ⭐ · tie refunds both · your balance '+Wallet.balance+' ⭐</div><div class="row" style="margin-top:10px"><button class="btn grow" id="wagYes">Accept &amp; play</button><button class="btn secondary grow" id="wagNo">Decline</button></div></div>';
-          box.querySelector('#wagYes').onclick=async()=>{ Sound.click(); const ok=await Net.join(code, gameId); if(ok){ if(Net.room&&Net.room.status!=='playing'){ await Net.push({status:'playing'}); } start({mode:'pvp', net:Net}); } };
+          box.innerHTML='<div class="card center"><h3>💰 Points wager</h3><div class="big">'+wag+' ⭐</div><div class="muted">Winner takes '+(need*wag)+' ⭐ ('+need+' players) · tie refunds both · your balance '+Wallet.balance+' ⭐</div><div class="row" style="margin-top:10px"><button class="btn grow" id="wagYes">Accept &amp; play</button><button class="btn secondary grow" id="wagNo">Decline</button></div></div>';
+          box.querySelector('#wagYes').onclick=async()=>{ Sound.click(); joinAndMaybeStart(code); };
           box.querySelector('#wagNo').onclick=()=>{ Sound.click(); showGame(gameId); };
           return;
         }
-        const ok=await Net.join(code, gameId);
-        if(ok){ if(Net.room&&Net.room.status!=='playing'){ await Net.push({status:'playing'}); } start({mode:'pvp', net:Net}); }
+        joinAndMaybeStart(code);
       };
     }
   });
@@ -16759,7 +16833,13 @@ const QuizPVP = {
   passTurn(net){
     if(!net||!net.room) return;
     const me=Auth.user&&Auth.user.uid, seats=net.room.seats||[];
-    for(let i=0;i<seats.length;i++){ if(seats[i]!==me){ try{ net.set('state/turn', seats[i]); }catch(e){} return; } }
+    const done=(net.room.state&&net.room.state.done)||{};
+    var myIdx=seats.indexOf(me); if(myIdx<0) myIdx=0;
+    for(var k=1;k<=seats.length;k++){
+      var nxt=seats[(myIdx+k)%seats.length];
+      if(nxt&&nxt!==me&&!done[nxt]){ try{ net.set('state/turn', nxt); }catch(e){} return; }
+    }
+    // every other seat is done — settle happens via allDone
   },
   allDone(state, seats){
     if(!state || !state.done || !Array.isArray(seats)) return false;
@@ -16780,8 +16860,9 @@ const QuizPVP = {
     }catch(e){}
     var winAmt=isTie?Math.floor(PVP_WIN/2):(didWin?PVP_WIN:0);
     await Wallet.add(winAmt, isTie?'pvp-tie':(didWin?'pvp-win':'pvp-loss'));
-    // Points wager: winner takes the pot (2x), a tie refunds both, and if the
-    // other side never funded their half the wager is refunded.
+    // Points wager: winner takes the pot (players x wager). A full tie refunds
+    // everyone; a partial tie for first splits the pot among the tied leaders.
+    // If the other side(s) never funded their share the wager is refunded.
     try{
       var room=(typeof Net!=='undefined')?Net.room:null;
       var wag=room? (+room.wager||0):0;
@@ -16796,10 +16877,18 @@ const QuizPVP = {
       if(!otherPaid){ await Wallet.add(wag,'wager-refund'); toast('Wager refunded — opponent never put up points.'); return; }
       var sc=(room.state&&room.state.scores)||{};
       var keys=Object.keys(sc);
-      var isDraw=false;
-      if(keys.length>=2){ var v0=+sc[keys[0]]||0; isDraw=keys.every(function(k){return (+sc[k]||0)===v0;}); }
-      if(isDraw){ await Wallet.add(wag,'wager-draw'); toast('🤝 Tie — wager of '+wag+' ⭐ refunded.'); }
-      else if(didWin){ await Wallet.add(wag*2,'wager-win'); toast('🏆 You won the wager — +'+(wag*2)+' ⭐!'); }
+      var best=-Infinity;
+      keys.forEach(function(k){ var v=+sc[k]||0; if(v>best) best=v; });
+      var tied=keys.filter(function(k){ return (+sc[k]||0)===best; });
+      var pot=seats.length*wag;
+      var isDraw=keys.length>=2 && tied.length===keys.length;
+      if(isDraw){ await Wallet.add(wag,'wager-draw'); toast('🤝 Tie — wager of '+wag+' ⭐ refunded.'); return; }
+      if(tied.length>1){
+        if(tied.indexOf(me)>=0){ var share=Math.floor(pot/tied.length); await Wallet.add(share,'wager-tie-split'); toast('🤝 Tied for first — you split the pot, +'+share+' ⭐!'); }
+        else { toast('🤝 Tied for first — the pot is split among the leaders.'); }
+        return;
+      }
+      if(didWin){ await Wallet.add(pot,'wager-win'); toast('🏆 You won the wager — +'+pot+' ⭐!'); }
       else { toast('Wager lost — '+wag+' ⭐ to the winner.'); }
     }catch(e){ /* wager settle must never break the normal award */ }
   }
