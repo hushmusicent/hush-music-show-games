@@ -344,7 +344,7 @@ const CONFIG = {
   },
 };
 const DAILY_BONUS = 500, START_POINTS = 1000, PVP_WIN = 200;
-const BUILD_VERSION = 'v2026.11.17.2';
+const BUILD_VERSION = 'v2026.11.17.3';
 const CPU_PAYOUTS = {jeopardy:150,wheel:150,millionaire:200,price:120,feud:150,chase:150,matchgame:80,password:80,whatsmline:100,hollywood:120,deal:150,pressluck:150,pyramid:150,weakestlink:120,'1v100':200,fifthgrader:120};
 
 /* ---------------- utils ---------------- */
@@ -10929,10 +10929,13 @@ function g1Pvp(net,share,play,settle,container,opts){
 function g1Settle(c,iWon,scores,title){
   var rows='',k,me,myUid=Auth.user&&Auth.user.uid;
   for(k in (scores||{})){me=k===myUid;rows+='<tr'+(me?' class="me"':'')+'><td>'+(me?'You':'Opponent')+'</td><td>'+Math.round(+scores[k]).toLocaleString('en-US')+'</td></tr>';}
+  var sc2=scores||{}, ks2=Object.keys(sc2), isDraw=ks2.length>=2 && ks2.every(function(k){return (+sc2[k]||0)===(+sc2[ks2[0]]||0);});
   var wag=(typeof Net!=='undefined'&&Net.room)?(+Net.room.wager||0):0, wagLine='';
-  if(wag>0){ var sc2=scores||{}, ks2=Object.keys(sc2), isDraw=ks2.length>=2 && ks2.every(function(k){return (+sc2[k]||0)===(+sc2[ks2[0]]||0);}); wagLine=isDraw?' · 🤝 tie — wager '+wag+' ⭐ refunded':(iWon?' · 🏆 wager won: +'+(wag*2)+' ⭐':' · wager lost: −'+wag+' ⭐'); }
-  c.innerHTML='<h2>'+(iWon?'🏆 You win!':'😞 You lose')+'</h2><div class="card"><table class="lb"><tr><th>Player</th><th>Score</th></tr>'+rows+'</table><div class="muted">'+esc(title||'')+' · winner banks '+PVP_WIN+' ⭐'+wagLine+'</div></div>';
-  if(iWon)Sound.win();else Sound.lose();
+  if(wag>0){ wagLine=isDraw?' · 🤝 tie — wager '+wag+' ⭐ refunded':(iWon?' · 🏆 wager won: +'+(wag*2)+' ⭐':' · wager lost: −'+wag+' ⭐'); }
+  var head=isDraw?'🤝 Tie!':(iWon?'🏆 You win!':'😞 You lose');
+  var ptsLine=isDraw?'split '+Math.floor(PVP_WIN/2)+' ⭐ each':'winner banks '+PVP_WIN+' ⭐';
+  c.innerHTML='<h2>'+head+'</h2><div class="card"><table class="lb"><tr><th>Player</th><th>Score</th></tr>'+rows+'</table><div class="muted">'+esc(title||'')+' · '+ptsLine+wagLine+'</div></div>';
+  if(isDraw||iWon)Sound.win();else Sound.lose();
 }
 /* multiple-choice buttons into #ch; onPick(index) */
 function g1Choices(c,q,onPick){
@@ -14325,6 +14328,8 @@ function shgPvp(net,opt){
     var w=null;
     try{ w=QuizPVP.winnerUid(sc); }catch(e){}
     var iWon=!!w&&!!shgMyUid()&&w===shgMyUid();
+    var ks3=Object.keys(sc||{}), isDraw3=ks3.length>=2 && ks3.every(function(k){return (+sc[k]||0)===(+sc[ks3[0]]||0);});
+    if(isDraw3){ iWon=false; w=null; }
     try{ opt.onSettle(iWon,room||{},w); }catch(e){}
     try{ Net.push({status:'done'}); }catch(e2){}
     try{ Voice.leave(); }catch(e3){}
@@ -16766,7 +16771,15 @@ const QuizPVP = {
     return best; // tie → first uid wins
   },
   async award(didWin){
-    await Wallet.add(didWin?PVP_WIN:0, didWin?'pvp-win':'pvp-loss');
+    var isTie=false;
+    try{
+      var roomA=(typeof Net!=='undefined')?Net.room:null;
+      var scA=(roomA&&roomA.state&&roomA.state.scores)||{};
+      var keysA=Object.keys(scA);
+      if(keysA.length>=2){ var vA=+scA[keysA[0]]||0; isTie=keysA.every(function(k){return (+scA[k]||0)===vA;}); }
+    }catch(e){}
+    var winAmt=isTie?Math.floor(PVP_WIN/2):(didWin?PVP_WIN:0);
+    await Wallet.add(winAmt, isTie?'pvp-tie':(didWin?'pvp-win':'pvp-loss'));
     // Points wager: winner takes the pot (2x), a tie refunds both, and if the
     // other side never funded their half the wager is refunded.
     try{
