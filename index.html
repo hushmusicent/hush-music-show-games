@@ -23,6 +23,7 @@ header .logo{font-size:20px; font-weight:800; color:var(--gold); flex:1; white-s
 .pill.gold{color:var(--gold2); border-color:var(--gold);}
 .iconbtn{background:var(--card2); border:1px solid var(--line); color:var(--text); border-radius:12px; font-size:18px; padding:6px 10px; cursor:pointer;}
 .voicepick{background:var(--card2); border:1px solid var(--line); color:var(--text); border-radius:12px; font-size:13px; padding:6px 4px; cursor:pointer; max-width:108px;}
+.voicedl{font-size:11px;color:var(--muted);max-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .iconbtn.off{opacity:.45;}
 main{padding:12px 12px 90px; max-width:640px; margin:0 auto;}
 nav.bottom{position:fixed; bottom:0; left:0; right:0; background:#101828; border-top:1px solid var(--line); display:flex; z-index:50;}
@@ -308,6 +309,7 @@ button.mg-seat{cursor:pointer;font-family:inherit;text-align:center;}
 @keyframes ffxpop{from{transform:scale(.6);opacity:0;}}
 .ff-x{width:86px;height:86px;border-radius:16px;background:linear-gradient(#f04438,#8f130d);border:4px solid #ffc9c2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:56px;font-weight:900;text-shadow:0 3px 8px #000;box-shadow:0 6px 20px rgba(0,0,0,.7);}
 </style>
+<script type="importmap">{"imports":{"onnxruntime-web/wasm":"https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/esm/ort.wasm.min.js"}}</script>
 </head>
 <body>
 <header>
@@ -323,6 +325,7 @@ button.mg-seat{cursor:pointer;font-family:inherit;text-align:center;}
     <option value="Frank">Frank (British male)</option>
     <option value="Gina">Gina (British female)</option>
   </select>
+  <span id="voiceDl" class="voicedl" title="Voice download"></span>
   <button class="iconbtn hidden" id="micBtn" title="Mute microphone">🎤</button>
 </header>
 <main id="view"><div class="card center" style="margin-top:24px"><div class="big" style="font-size:20px">🎙️ Loading Hush Music Show Games...</div><div class="muted" style="margin-top:6px">Connecting to game servers</div></div></main>
@@ -354,7 +357,7 @@ const CONFIG = {
   },
 };
 const DAILY_BONUS = 500, START_POINTS = 1000, PVP_WIN = 200;
-const BUILD_VERSION = 'v2026.11.22.3';
+const BUILD_VERSION = 'v2026.11.22.4';
 const CPU_PAYOUTS = {jeopardy:150,wheel:150,millionaire:200,price:120,feud:150,chase:150,matchgame:80,password:80,whatsmline:100,hollywood:120,deal:150,pressluck:150,pyramid:150,weakestlink:120,'1v100':200,fifthgrader:120};
 
 /* ---------------- utils ---------------- */
@@ -388,21 +391,30 @@ if(Sound.muted){ $('#soundBtn').textContent='🔇'; $('#soundBtn').classList.add
    in voice metadata, so James/Kelly map to distinct male/female English
    voices (different from John/Sarah) — the names are labels only. */
 const VOICE_NAMES = {
-  John:  {lang:'en-US', gender:'male',   distinct:false, pitch:0.75},
-  Sarah: {lang:'en-US', gender:'female', distinct:false, pitch:1},
-  James: {lang:'en-US', gender:'male',   distinct:true,  pitch:0.6},
-  Kelly: {lang:'en-US', gender:'female', distinct:true,  pitch:1.25},
-  Frank: {lang:'en-GB', gender:'male',   distinct:false, pitch:0.85},
-  Gina:  {lang:'en-GB', gender:'female', distinct:false, pitch:1.15}
+  John:  {lang:'en-US', gender:'male',   distinct:false, pitch:0.75, piper:'en_US-ryan-medium'},
+  Sarah: {lang:'en-US', gender:'female', distinct:false, pitch:1,    piper:'en_US-amy-medium'},
+  James: {lang:'en-US', gender:'male',   distinct:true,  pitch:0.6,  piper:'en_US-joe-medium'},
+  Kelly: {lang:'en-US', gender:'female', distinct:true,  pitch:1.25, piper:'en_US-kristin-medium'},
+  Frank: {lang:'en-GB', gender:'male',   distinct:false, pitch:0.85, piper:'en_GB-alan-medium'},
+  Gina:  {lang:'en-GB', gender:'female', distinct:false, pitch:1.15, piper:'en_GB-jenny_dioco-medium'}
 };
 const Speak = {
   on: (()=>{ try{ return localStorage.getItem('shg_speak')!=='0'; }catch(e){ return true; } })(),
   voice: (()=>{ try{ var v=localStorage.getItem('shg_voice'); if(v && VOICE_NAMES[v]) return v; }catch(e){} return 'Sarah'; })(),
+  /* Piper (real voices) state. Each model is ~60MB, downloaded ONCE from
+     Hugging Face and cached in the browser (OPFS) — the game file stays small.
+     If Piper can't load, everything falls back to the phone's built-in voice. */
+  _piperMod: null, _piperModP: null, _piperSess: null, _piperSessVoice: null,
+  _piperReady: {}, _piperDl: {}, _piperDlP: {}, _piperChain: null,
+  _piperAudio: null, _piperFailAt: {}, _gen: 0,
   /* Distinct pitch per name — the layer that makes voices sound different
      even when the device exposes only one speechSynthesis voice (all six
-     names then share that voice, so pitch is what separates them). */
+     names then share that voice, so pitch is what separates them).
+     Used ONLY on the built-in fallback path; Piper voices are already
+     distinct people, so no pitch is applied to Piper audio. */
   pitchFor(name){ var d=VOICE_NAMES[name]; return d ? d.pitch : 1; },
   langFor(name){ var d=VOICE_NAMES[name]; return d ? d.lang : 'en-US'; },
+  piperId(name){ var d=VOICE_NAMES[name]; return d ? d.piper : null; },
   pickVoice(){
     /* Resolve all six names at once so no two names share a voice unless
        the device simply has fewer English voices than names. US pair first,
@@ -444,8 +456,122 @@ const Speak = {
       return v || null;
     }catch(e){ return null; }
   },
-  say(text){
-    if(!this.on||!text) return;
+  /* ---------- Piper (real voices) ---------- */
+  _piperOk(){
+    /* Low-memory guard: Piper needs a ~60MB model + the ONNX engine in RAM. */
+    try{ if(typeof navigator!=='undefined' && typeof navigator.deviceMemory==='number' && navigator.deviceMemory<2) return false; }catch(e){}
+    return true;
+  },
+  _loadPiperMod(){
+    if(this._piperMod) return Promise.resolve(this._piperMod);
+    if(this._piperModP) return this._piperModP;
+    var self=this;
+    var p=(async function(){
+      var mod=await import('https://cdn.jsdelivr.net/npm/@mintplex-labs/piper-tts-web@1.0.5/dist/piper-tts-web.js');
+      self._piperMod=mod; return mod;
+    })();
+    this._piperModP=p;
+    p.catch(function(){ self._piperModP=null; });
+    return p;
+  },
+  _updateVoiceDl(){
+    var el=$('#voiceDl'); if(!el) return;
+    var vid=this.piperId(this.voice);
+    var st=vid?this._piperDl[vid]:null;
+    if(!st){ el.textContent=''; return; }
+    if(st.state==='downloading'){ el.textContent='\u2193 '+this.voice+' '+Math.round(st.pct||0)+'%'; return; }
+    if(st.state==='ready'){
+      el.textContent='\u2713 '+this.voice+' ready';
+      var self=this;
+      setTimeout(function(){ var v2=self.piperId(self.voice); if(v2&&self._piperDl[v2]&&self._piperDl[v2].state==='ready'){ self._piperDl[v2]=null; self._updateVoiceDl(); } },4000);
+      return;
+    }
+    if(st.state==='failed'){ el.textContent='\u26A0 voice download failed'; return; }
+    el.textContent='';
+  },
+  _ensurePiper(name, opts){
+    var vid=this.piperId(name);
+    if(!vid || !this._piperOk()) return Promise.resolve(false);
+    var preview=!!(opts&&opts.preview);
+    /* Already loaded for this voice — preview straight away. */
+    if(this._piperReady[vid] && this._piperSessVoice===vid){
+      if(preview) this.say("Hi, I'm "+name);
+      return Promise.resolve(true);
+    }
+    /* Already fetching this voice — attach the preview to that fetch. */
+    if(this._piperDlP[vid]){
+      if(preview){ var self=this; this._piperDlP[vid].then(function(ok){ self.say("Hi, I'm "+name); }); }
+      return this._piperDlP[vid];
+    }
+    /* Don't hammer a failed download — one retry a minute at most. */
+    if(this._piperDl[vid]&&this._piperDl[vid].state==='failed' && Date.now()-(this._piperFailAt[vid]||0)<60000){
+      if(preview) this._sayBuiltIn("Hi, I'm "+name);
+      return Promise.resolve(false);
+    }
+    var self=this;
+    /* Serialize session creation — the library keeps one singleton session,
+       so two voices must not init at the same time. */
+    var p=(this._piperChain||Promise.resolve()).then(function(){ return self._ensurePiperInner(name, preview); });
+    this._piperChain=p.catch(function(){});
+    this._piperDlP[vid]=p;
+    p.then(function(){ if(self._piperDlP[vid]===p) self._piperDlP[vid]=null; },
+          function(){ if(self._piperDlP[vid]===p) self._piperDlP[vid]=null; });
+    return p;
+  },
+  async _ensurePiperInner(name, preview){
+    var vid=this.piperId(name); if(!vid) return false;
+    this._piperDl[vid]={state:'downloading', pct:0}; this._updateVoiceDl();
+    try{
+      /* OPFS must work, or the 60MB model would re-download every load. */
+      await navigator.storage.getDirectory();
+      var mod=await this._loadPiperMod();
+      var self=this;
+      /* Skip the download if this voice is already cached (e.g. the user
+         switched away and back, or a previous session saved it). */
+      var cached=false;
+      try{ var list=await mod.stored(); cached=list.indexOf(vid)>=0; }catch(e){}
+      if(!cached){
+        await mod.download(vid, function(pr){
+          if(pr&&pr.url&&pr.url.indexOf('.onnx')>=0&&pr.total>0){
+            self._piperDl[vid]={state:'downloading', pct:Math.min(100, Math.round(pr.loaded*100/pr.total))};
+            self._updateVoiceDl();
+          }
+        });
+      }
+      /* The library reuses one singleton session — null it when switching
+         voices, or the new voice would keep speaking with the old model. */
+      if(mod.TtsSession._instance && mod.TtsSession._instance.voiceId!==vid) mod.TtsSession._instance=null;
+      var sess=await mod.TtsSession.create({voiceId:vid});
+      this._piperSess=sess; this._piperSessVoice=vid; this._piperReady[vid]=true;
+      this._piperDl[vid]={state:'ready', pct:100}; this._updateVoiceDl();
+      if(preview) this.say("Hi, I'm "+name);
+      return true;
+    }catch(e){
+      this._piperDl[vid]={state:'failed', pct:0}; this._piperFailAt[vid]=Date.now(); this._updateVoiceDl();
+      if(preview) this._sayBuiltIn("Hi, I'm "+name);
+      return false;
+    }
+  },
+  async _sayPiper(text){
+    var gen=this._gen;
+    try{
+      if(!this._piperSess || this._piperSessVoice!==this.piperId(this.voice)) return false;
+      var blob=await this._piperSess.predict(text);
+      if(gen!==this._gen || !this.on) return true;
+      var url=URL.createObjectURL(blob);
+      var a=new Audio(url);
+      this._piperAudio=a;
+      var self=this;
+      a.onended=function(){ try{URL.revokeObjectURL(url);}catch(e){} if(self._piperAudio===a) self._piperAudio=null; };
+      a.onerror=function(){ try{URL.revokeObjectURL(url);}catch(e){} if(self._piperAudio===a) self._piperAudio=null; };
+      await a.play();
+      return true;
+    }catch(e){ return false; }
+  },
+  _stopPiperAudio(){
+    try{ if(this._piperAudio){ this._piperAudio.pause(); this._piperAudio.src=''; this._piperAudio=null; } }catch(e){}
+  },
+  _sayBuiltIn(text){
     try{
       if(!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
@@ -457,13 +583,40 @@ const Speak = {
       window.speechSynthesis.speak(u);
     }catch(e){}
   },
-  stop(){ try{ if('speechSynthesis' in window) window.speechSynthesis.cancel(); }catch(e){} },
+  say(text){
+    if(!this.on||!text) return;
+    var clean=String(text).replace(/<[^>]*>/g,'');
+    if(!clean.trim()) return;
+    var gen=++this._gen;
+    this._stopPiperAudio();
+    try{ if('speechSynthesis' in window) window.speechSynthesis.cancel(); }catch(e){}
+    var vid=this.piperId(this.voice);
+    /* Piper path, when this voice's real model is loaded. */
+    if(vid && this._piperReady[vid] && this._piperSessVoice===vid){
+      var self=this;
+      this._sayPiper(clean).then(function(ok){ if(!ok && gen===self._gen) self._sayBuiltIn(clean); });
+      return;
+    }
+    /* Otherwise the phone voice now, and fetch the real voice in the
+       background so the next question uses it. */
+    this._sayBuiltIn(clean);
+    if(vid) this._ensurePiper(this.voice);
+  },
+  stop(){
+    this._gen++;
+    this._stopPiperAudio();
+    try{ if('speechSynthesis' in window) window.speechSynthesis.cancel(); }catch(e){}
+  },
   setVoice(name){
     if(!VOICE_NAMES[name]) name='Sarah';
     this.voice=name;
     try{ localStorage.setItem('shg_voice', name); }catch(e){}
     var s=$('#voicePick'); if(s) s.value=name;
-    if(this.on) this.say("Hi, I'm "+name);
+    this._updateVoiceDl();
+    if(!this.on) return;
+    /* Preview in the real voice once its model lands (phone voice if the
+       download fails). */
+    this._ensurePiper(name, {preview:true});
   },
   toggle(){
     this.on=!this.on;
