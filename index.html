@@ -22,6 +22,7 @@ header .logo{font-size:20px; font-weight:800; color:var(--gold); flex:1; white-s
 .pill{background:var(--card2); border:1px solid var(--line); border-radius:20px; padding:6px 12px; font-weight:700; font-size:14px; white-space:nowrap;}
 .pill.gold{color:var(--gold2); border-color:var(--gold);}
 .iconbtn{background:var(--card2); border:1px solid var(--line); color:var(--text); border-radius:12px; font-size:18px; padding:6px 10px; cursor:pointer;}
+.voicepick{background:var(--card2); border:1px solid var(--line); color:var(--text); border-radius:12px; font-size:13px; padding:6px 4px; cursor:pointer; max-width:108px;}
 .iconbtn.off{opacity:.45;}
 main{padding:12px 12px 90px; max-width:640px; margin:0 auto;}
 nav.bottom{position:fixed; bottom:0; left:0; right:0; background:#101828; border-top:1px solid var(--line); display:flex; z-index:50;}
@@ -314,6 +315,14 @@ button.mg-seat{cursor:pointer;font-family:inherit;text-align:center;}
   <div class="pill gold" id="pointsPill" title="Your points">⭐ 0</div>
   <button class="iconbtn" id="soundBtn" title="Mute game sounds">🔊</button>
   <button class="iconbtn" id="speakBtn" title="Read questions out loud">🔊</button>
+  <select class="voicepick" id="voicePick" title="Voice">
+    <option value="John">John (Male)</option>
+    <option value="Sarah">Sarah (Female)</option>
+    <option value="James">James (Black male)</option>
+    <option value="Kelly">Kelly (Black female)</option>
+    <option value="Frank">Frank (British male)</option>
+    <option value="Gina">Gina (British female)</option>
+  </select>
   <button class="iconbtn hidden" id="micBtn" title="Mute microphone">🎤</button>
 </header>
 <main id="view"><div class="card center" style="margin-top:24px"><div class="big" style="font-size:20px">🎙️ Loading Hush Music Show Games...</div><div class="muted" style="margin-top:6px">Connecting to game servers</div></div></main>
@@ -345,7 +354,7 @@ const CONFIG = {
   },
 };
 const DAILY_BONUS = 500, START_POINTS = 1000, PVP_WIN = 200;
-const BUILD_VERSION = 'v2026.11.22.1';
+const BUILD_VERSION = 'v2026.11.22.2';
 const CPU_PAYOUTS = {jeopardy:150,wheel:150,millionaire:200,price:120,feud:150,chase:150,matchgame:80,password:80,whatsmline:100,hollywood:120,deal:150,pressluck:150,pyramid:150,weakestlink:120,'1v100':200,fifthgrader:120};
 
 /* ---------------- utils ---------------- */
@@ -375,8 +384,61 @@ $('#soundBtn').addEventListener('click', ()=>Sound.toggle());
 if(Sound.muted){ $('#soundBtn').textContent='🔇'; $('#soundBtn').classList.add('off'); }
 
 /* ---------------- TEXT-TO-SPEECH (reads questions out loud) ---------------- */
+/* Voice names the user picked. The Web Speech API exposes no race/ethnicity
+   in voice metadata, so James/Kelly map to distinct male/female English
+   voices (different from John/Sarah) — the names are labels only. */
+const VOICE_NAMES = {
+  John:  {lang:'en-US', gender:'male',   distinct:false},
+  Sarah: {lang:'en-US', gender:'female', distinct:false},
+  James: {lang:'en-US', gender:'male',   distinct:true},
+  Kelly: {lang:'en-US', gender:'female', distinct:true},
+  Frank: {lang:'en-GB', gender:'male',   distinct:false},
+  Gina:  {lang:'en-GB', gender:'female', distinct:false}
+};
 const Speak = {
   on: (()=>{ try{ return localStorage.getItem('shg_speak')!=='0'; }catch(e){ return true; } })(),
+  voice: (()=>{ try{ var v=localStorage.getItem('shg_voice'); if(v && VOICE_NAMES[v]) return v; }catch(e){} return 'Sarah'; })(),
+  pickVoice(){
+    /* Resolve all six names at once so no two names share a voice unless
+       the device simply has fewer English voices than names. US pair first,
+       then the British pair, then the distinct US pair. */
+    try{
+      if(!('speechSynthesis' in window)) return null;
+      var all=window.speechSynthesis.getVoices()||[];
+      if(!all.length) return null;
+      function key(v){ return (v.name||'')+'|'+(v.lang||'')+'|'+(v.voiceURI||''); }
+      function isF(v){ var s=((v.name||'')+' '+(v.voiceURI||'')).toLowerCase(); return s.indexOf('female')>=0; }
+      function isM(v){ var s=((v.name||'')+' '+(v.voiceURI||'')).toLowerCase(); return s.indexOf('female')<0 && s.indexOf('male')>=0; }
+      var en=all.filter(function(v){ return (v.lang||'').toLowerCase().indexOf('en')===0; });
+      if(!en.length) return null;
+      var used={};
+      function take(list, pred){
+        for(var i=0;i<list.length;i++){
+          var v=list[i];
+          if(used[key(v)]) continue;
+          if(pred && !pred(v)) continue;
+          used[key(v)]=1;
+          return v;
+        }
+        return null;
+      }
+      function byLang(p){ return en.filter(function(v){ return (v.lang||'').toLowerCase().indexOf(p)===0; }); }
+      var us=byLang('en-us'), gb=byLang('en-gb');
+      var m={};
+      /* US pair first (they own the US accent), then the British pair, then
+         the distinct US pair — so Frank/Gina never steal John/Sarah's voices
+         on a device with no British voices installed. */
+      m.John  = take(us, isM) || take(en, isM);
+      m.Sarah = take(us, isF) || take(en, isF);
+      m.Frank = take(gb, isM) || take(en, isM);
+      m.Gina  = take(gb, isF) || take(en, isF);
+      m.James = take(us, function(v){ return !isF(v); }) || take(en, function(v){ return !isF(v); });
+      m.Kelly = take(us, function(v){ return !isM(v); }) || take(en, function(v){ return !isM(v); });
+      var v=m[this.voice];
+      if(!v) v=take(en, null) || en[0];
+      return v || null;
+    }catch(e){ return null; }
+  },
   say(text){
     if(!this.on||!text) return;
     try{
@@ -384,10 +446,18 @@ const Speak = {
       window.speechSynthesis.cancel();
       var u=new SpeechSynthesisUtterance(String(text).replace(/<[^>]*>/g,''));
       u.rate=0.95; u.pitch=1;
+      var v=this.pickVoice(); if(v) u.voice=v;
       window.speechSynthesis.speak(u);
     }catch(e){}
   },
   stop(){ try{ if('speechSynthesis' in window) window.speechSynthesis.cancel(); }catch(e){} },
+  setVoice(name){
+    if(!VOICE_NAMES[name]) name='Sarah';
+    this.voice=name;
+    try{ localStorage.setItem('shg_voice', name); }catch(e){}
+    var s=$('#voicePick'); if(s) s.value=name;
+    if(this.on) this.say("Hi, I'm "+name);
+  },
   toggle(){
     this.on=!this.on;
     try{ localStorage.setItem('shg_speak', this.on?'1':'0'); }catch(e){}
@@ -396,6 +466,15 @@ const Speak = {
   }
 };
 (function(){ var b=$('#speakBtn'); if(b){ b.addEventListener('click', ()=>Speak.toggle()); if(!Speak.on){ b.textContent='🔇'; b.classList.add('off'); } } })();
+(function(){
+  var s=$('#voicePick'); if(!s) return;
+  s.value=Speak.voice;
+  s.addEventListener('change', function(){ Speak.setVoice(s.value); });
+  /* Voices load async — getVoices() may be empty on first call. pickVoice()
+     reads the live list on every say(), so new voices are picked up then;
+     this just warms the list when it arrives. */
+  try{ if('speechSynthesis' in window) window.speechSynthesis.addEventListener('voiceschanged', function(){ window.speechSynthesis.getVoices(); }); }catch(e){}
+})();
 
 /* ---------------- local storage (shg_ prefix for EVERYTHING) ---------------- */
 const store = {
