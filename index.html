@@ -352,7 +352,7 @@ const CONFIG = {
   },
 };
 const DAILY_BONUS = 500, START_POINTS = 1000, PVP_WIN = 200;
-const BUILD_VERSION = 'v2026.11.22.8';
+const BUILD_VERSION = 'v2026.11.22.9';
 const CPU_PAYOUTS = {jeopardy:150,wheel:150,millionaire:200,price:120,feud:150,chase:150,matchgame:80,password:80,whatsmline:100,hollywood:120,deal:150,pressluck:150,pyramid:150,weakestlink:120,'1v100':200,fifthgrader:120};
 
 /* ---------------- utils ---------------- */
@@ -384,7 +384,9 @@ if(Sound.muted){ $('#soundBtn').textContent='🔇'; $('#soundBtn').classList.add
 /* ---------------- TEXT-TO-SPEECH (reads questions out loud) ---------------- */
 const Speak = {
   on: (()=>{ try{ return localStorage.getItem('shg_speak')!=='0'; }catch(e){ return true; } })(),
-  /* Read-aloud uses American English only — the phone's default may be Indian English. No voice selection. */
+  /* Read-aloud prefers American English — but ONLY if a US voice is actually
+     installed. If none is found, leave voice/lang unset so the default voice
+     reads (forcing en-US with no US voice loaded can silence speech). */
   say(text){
     if(!this.on||!text) return;
     try{
@@ -392,10 +394,9 @@ const Speak = {
       window.speechSynthesis.cancel();
       var u=new SpeechSynthesisUtterance(String(text).replace(/<[^>]*>/g,''));
       u.rate=0.95;
-      u.lang='en-US';
       try{
         var vs=window.speechSynthesis.getVoices()||[];
-        for(var i=0;i<vs.length;i++){ if(vs[i]&&vs[i].lang&&vs[i].lang.toLowerCase().indexOf('en-us')===0){ u.voice=vs[i]; break; } }
+        for(var i=0;i<vs.length;i++){ if(vs[i]&&vs[i].lang&&vs[i].lang.toLowerCase().indexOf('en-us')===0){ u.lang='en-US'; try{ u.voice=vs[i]; }catch(e){} break; } }
       }catch(e){}
       window.speechSynthesis.speak(u);
     }catch(e){}
