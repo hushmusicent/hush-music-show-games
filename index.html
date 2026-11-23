@@ -25,6 +25,11 @@ header .logo{font-size:20px; font-weight:800; color:var(--gold); flex:1; white-s
 .iconbtn.off{opacity:.45;}
 .voicebtn{background:var(--card2); border:1px solid var(--line); color:var(--text); border-radius:12px; font-size:14px; font-weight:700; padding:7px 10px; cursor:pointer; white-space:nowrap;}
 .voicebtn.off{opacity:.45;}
+.va-mic{background:var(--card2); border:1px solid var(--line); color:var(--text); border-radius:12px; font-size:18px; padding:6px 10px; cursor:pointer; flex:none;}
+.va-mic.listening{border-color:#ff5a4e; box-shadow:0 0 10px rgba(255,90,78,.7); animation:vapulse 1s infinite;}
+.va-mic-choice{display:block;width:100%;margin:0 0 8px;background:var(--card2);border:1px solid var(--gold);color:var(--gold2);border-radius:12px;font-size:15px;font-weight:700;padding:10px;cursor:pointer;}
+.va-mic-choice.listening{border-color:#ff5a4e;color:#ff8a80;animation:vapulse 1s infinite;}
+@keyframes vapulse{50%{opacity:.45;}}
 main{padding:12px 12px 90px; max-width:640px; margin:0 auto;}
 nav.bottom{position:fixed; bottom:0; left:0; right:0; background:#101828; border-top:1px solid var(--line); display:flex; z-index:50;}
 nav.bottom button{flex:1; background:none; border:none; color:var(--muted); font-size:11px; padding:10px 4px 12px; cursor:pointer;}
@@ -347,7 +352,7 @@ const CONFIG = {
   },
 };
 const DAILY_BONUS = 500, START_POINTS = 1000, PVP_WIN = 200;
-const BUILD_VERSION = 'v2026.11.22.6';
+const BUILD_VERSION = 'v2026.11.22.7';
 const CPU_PAYOUTS = {jeopardy:150,wheel:150,millionaire:200,price:120,feud:150,chase:150,matchgame:80,password:80,whatsmline:100,hollywood:120,deal:150,pressluck:150,pyramid:150,weakestlink:120,'1v100':200,fifthgrader:120};
 
 /* ---------------- utils ---------------- */
@@ -399,6 +404,222 @@ const Speak = {
   }
 };
 (function(){ var b=$('#speakBtn'); if(b){ b.addEventListener('click', ()=>Speak.toggle()); if(!Speak.on){ b.textContent='Voice Off'; b.classList.add('off'); } } })();
+/* ---------------- voice answering (speak your answer) ---------------- */
+/* Browser built-in speech recognition — no download, no server, no API key.
+   If the device has no speech recognition, the mic buttons are never shown.
+   Mic buttons are injected by a scanner (MutationObserver on #view) so they
+   appear on every dynamically-rendered answer screen. A spoken answer fills
+   the input / picks the choice and then clicks the game's OWN submit button,
+   so PvP, scoring and game logic are untouched. */
+const VoiceAnswer = {
+  _SR: null, _rec: null, _listening: false, _supported: null,
+  isSupported(){
+    if(this._supported!==null) return this._supported;
+    var SR=null;
+    try{ SR=window.SpeechRecognition||window.webkitSpeechRecognition||null; }catch(e){ SR=null; }
+    this._SR=SR; this._supported=!!SR; return this._supported;
+  },
+  listen(onResult,onError){
+    if(!this.isSupported()){ if(onError) onError('not-supported'); return false; }
+    var self=this;
+    try{ if(this._rec){ try{ this._rec.stop(); }catch(e){} } }catch(e){}
+    var rec;
+    try{
+      rec=new this._SR();
+      rec.lang='en-US'; rec.continuous=false; rec.interimResults=false; rec.maxAlternatives=3;
+    }catch(e){ if(onError) onError('start-failed'); return false; }
+    this._rec=rec; this._listening=true;
+    var got=false;
+    rec.onresult=function(ev){
+      got=true;
+      var alts=[];
+      try{
+        var res=ev.results&&ev.results[0];
+        if(res){ for(var i=0;i<res.length;i++){ if(res[i]&&res[i].transcript) alts.push(res[i].transcript); } }
+      }catch(e){}
+      self._listening=false; self._rec=null;
+      if(onResult) onResult(alts[0]||'', alts);
+    };
+    rec.onerror=function(ev){
+      self._listening=false; self._rec=null;
+      if(!got && onError) onError((ev&&ev.error)||'error');
+    };
+    rec.onend=function(){
+      self._listening=false; self._rec=null;
+      if(!got && onError) onError('no-speech');
+    };
+    try{ rec.start(); }catch(e){ this._listening=false; this._rec=null; if(onError) onError('start-failed'); return false; }
+    return true;
+  },
+  stop(){ try{ if(this._rec) this._rec.stop(); }catch(e){} this._listening=false; this._rec=null; },
+  /* ---- fuzzy matching ---- */
+  _NUMW:{zero:'0',one:'1',two:'2',three:'3',four:'4',five:'5',six:'6',seven:'7',eight:'8',nine:'9',ten:'10',eleven:'11',twelve:'12',thirteen:'13',fourteen:'14',fifteen:'15',sixteen:'16',seventeen:'17',eighteen:'18',nineteen:'19',twenty:'20',thirty:'30',forty:'40',fifty:'50',sixty:'60',seventy:'70',eighty:'80',ninety:'90',hundred:'100',thousand:'1000'},
+  norm(s){
+    var t=String(s||'').toLowerCase().trim();
+    t=t.replace(/\./g,''); /* drop periods: D.C. -> DC, U.S.A. -> USA, 3.14 -> 314 */
+    t=t.replace(/[^a-z0-9\s]/g,' ');
+    t=t.replace(/\s+/g,' ').trim();
+    var self=this;
+    t=t.split(' ').map(function(w){ return (w in self._NUMW)?self._NUMW[w]:w; }).join(' ');
+    return t.replace(/\s+/g,' ').trim();
+  },
+  cleanTranscript(t){
+    var s=String(t||'').trim();
+    s=s.replace(/^(the answer is|my answer is|i think it'?s|i think|it'?s|answer is|answer:)\s+/i,'');
+    return s.trim();
+  },
+  fuzzyMatch(transcript, expected){
+    var a=this.norm(transcript), b=this.norm(expected);
+    if(!a||!b) return false;
+    if(a===b) return true;
+    var a2=a.replace(/^the\s+/,' '), b2=b.replace(/^the\s+/,' ');
+    if(a2===b2) return true;
+    if(a2.length>=3 && b2.indexOf(a2)>=0) return true;
+    if(b2.length>=3 && a2.indexOf(b2)>=0) return true;
+    return false;
+  },
+  /* ---- mic button wiring ---- */
+  _INPUT_IDS:['a','wAns','sl','pwIn','hAns','g','fa','fg','sg','pAns','wGIn'],
+  _mkBtn(cls,label){
+    var b=document.createElement('button');
+    b.type='button'; b.className=cls; b.textContent=label; b.title='Answer by voice';
+    return b;
+  },
+  _findSubmit(input){
+    var p=input.parentElement; if(!p) return null;
+    var btns=p.querySelectorAll('button.btn:not(.va-mic)');
+    var pick=null;
+    for(var i=0;i<btns.length;i++){ if(btns[i].className.indexOf('secondary')<0){ pick=btns[i]; break; } }
+    if(!pick && btns.length) pick=btns[0];
+    if(pick) return pick;
+    var card=input.closest?input.closest('.card'):null;
+    if(card){ var c2=card.querySelectorAll('button.btn:not(.va-mic)'); if(c2.length) return c2[0]; }
+    return null;
+  },
+  _wireInput(input){
+    if(!input||input.dataset.vaWired) return;
+    input.dataset.vaWired='1';
+    var btn=this._mkBtn('va-mic','🎤');
+    var self=this;
+    btn.onclick=function(){
+      if(self._listening){ self.stop(); return; }
+      btn.classList.add('listening'); btn.textContent='🎤…'; btn.disabled=true;
+      var done=function(){ btn.classList.remove('listening'); btn.textContent='🎤'; btn.disabled=false; };
+      self.listen(function(tr){
+        done();
+        var clean=self.cleanTranscript(tr);
+        if(!clean || /^(um|uh|hmm|huh)$/i.test(clean)){ toast('🎤 Didn\'t catch that — try again or type it'); return; }
+        input.value=clean;
+        var sub=self._findSubmit(input);
+        if(sub){ setTimeout(function(){ try{ sub.click(); }catch(e){} },250); }
+        else { toast('🎤 Heard: "'+clean+'"'); }
+      },function(err){
+        done();
+        toast('🎤 Didn\'t catch that — try again or type it');
+      });
+    };
+    if(input.parentNode) input.parentNode.insertBefore(btn, input.nextSibling);
+  },
+  _choiceInfo(container){
+    var sel='';
+    if(container.querySelector('.qbtn')) sel='.qbtn';
+    else if(container.id==='ch') sel='.btn.secondary';
+    else if(container.id==='chA') sel='.ch-a';
+    else if(container.id==='qCh'||container.id==='bzCh') sel='.btn.small';
+    else sel='.qbtn, .ch-a';
+    var all=container.querySelectorAll(sel);
+    var btns=[];
+    for(var i=0;i<all.length;i++){
+      var b=all[i];
+      if(b.className.indexOf('va-mic')>=0) continue;
+      if(b.disabled) continue;
+      var raw=b.textContent||'';
+      var letter='', text=raw;
+      var m=raw.match(/^\s*([A-D])\s*[:.)]\s*/i);
+      if(m){ letter=m[1].toUpperCase(); text=raw.slice(m[0].length); }
+      else { letter='ABCD'[btns.length]||''; }
+      btns.push({btn:b, letter:letter, text:text});
+    }
+    return btns;
+  },
+  _wireChoices(container){
+    if(!container||container.dataset.vaWired) return;
+    var infos=this._choiceInfo(container);
+    if(infos.length<2) return;
+    container.dataset.vaWired='1';
+    var btn=this._mkBtn('va-mic va-mic-choice','🎤 Speak your answer');
+    var self=this;
+    btn.onclick=function(){
+      if(self._listening){ self.stop(); return; }
+      btn.classList.add('listening'); btn.textContent='🎤 Listening… speak now'; btn.disabled=true;
+      var done=function(){ btn.classList.remove('listening'); btn.textContent='🎤 Speak your answer'; btn.disabled=false; };
+      self.listen(function(tr, alts){
+        done();
+        var clean=self.cleanTranscript(tr);
+        var n=self.norm(clean);
+        var ln=n.replace(/^(option|letter|choice|number)\s+/,'').trim();
+        var picked=null;
+        if(/^[a-d]$/.test(ln)){
+          var L=ln.toUpperCase();
+          for(var i=0;i<infos.length;i++){ if(infos[i].letter===L){ picked=infos[i]; break; } }
+        }
+        if(!picked){
+          var cands=[clean].concat(alts||[]);
+          outer:
+          for(var c=0;c<cands.length;c++){
+            var cc=self.cleanTranscript(cands[c]);
+            for(var j=0;j<infos.length;j++){
+              if(self.fuzzyMatch(cc, infos[j].text)){ picked=infos[j]; break outer; }
+            }
+          }
+        }
+        if(picked){ try{ picked.btn.click(); }catch(e){} }
+        else { toast('🎤 Didn\'t match a choice — try again or tap one'); }
+      },function(err){
+        done();
+        toast('🎤 Didn\'t catch that — try again or tap one');
+      });
+    };
+    container.insertBefore(btn, infos[0].btn);
+  },
+  scan(){
+    if(!this.isSupported()) return;
+    var view=document.getElementById('view'); if(!view) return;
+    var self=this;
+    this._INPUT_IDS.forEach(function(id){
+      var el=document.getElementById(id);
+      if(el && el.tagName==='INPUT') self._wireInput(el);
+    });
+    ['ch','chA','qCh','bzCh'].forEach(function(id){
+      var c=document.getElementById(id);
+      if(c) self._wireChoices(c);
+    });
+    var qbtns=view.querySelectorAll('.qbtn');
+    var parents=[];
+    for(var i=0;i<qbtns.length;i++){
+      var p=qbtns[i].parentElement;
+      if(p && parents.indexOf(p)<0) parents.push(p);
+    }
+    parents.forEach(function(p){ self._wireChoices(p); });
+  },
+  _obs:null, _obsT:null,
+  start(){
+    if(!this.isSupported()) return;
+    var self=this;
+    this.scan();
+    try{
+      var view=document.getElementById('view');
+      if(view && !this._obs){
+        this._obs=new MutationObserver(function(){
+          if(self._obsT) clearTimeout(self._obsT);
+          self._obsT=setTimeout(function(){ self.scan(); },150);
+        });
+        this._obs.observe(view,{childList:true,subtree:true});
+      }
+    }catch(e){}
+  }
+};
+(function(){ try{ VoiceAnswer.start(); }catch(e){} })();
 /* ---------------- local storage (shg_ prefix for EVERYTHING) ---------------- */
 const store = {
   get(k,d){ try{ const v=localStorage.getItem('shg_'+k); return v==null?d:JSON.parse(v); }catch(e){ return d; } },
